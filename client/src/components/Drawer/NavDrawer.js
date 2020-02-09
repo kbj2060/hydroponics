@@ -11,6 +11,9 @@ import LogOutIcon from 'assets/icons/LogOutIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
 import styles from "assets/jss/navDrawerStyle.js";
 
 const useStyles = makeStyles(styles);
@@ -18,15 +21,17 @@ const useStyles = makeStyles(styles);
 export default function NavDrawer() {
   const classes = useStyles();
 
-  const handleListItems = (items) => {
-    const listItems = {
-      제어 : <ControlIcon />,
-      기록: <HistoryIcon />,
-      로그인: <LogInIcon />,
+  const listItems = {
+    프로필 : <AccountCircle />,
+    알림 : <NotificationsIcon />,
+    제어 : <ControlIcon />,
+    기록: <HistoryIcon />,
+    로그인: <LogInIcon />,
     로그아웃 : <LogOutIcon />,
-      설정 : <SettingsIcon />
-    };
+    설정 : <SettingsIcon />
+  };
 
+  const handleListItems = (items) => {
     return (
       <List>
         {items.map((text, index) => (
@@ -40,6 +45,18 @@ export default function NavDrawer() {
   }
 
   return (
+    {this.props.location === 'right'?
+    <div
+      className={classes.fullList}
+      role="presentation"
+    >
+      {handleListItems(['프로필','알림','제어','기록', '설정'])}
+    <Divider />
+    <List>
+      {handleListItems(['로그인','로그아웃'])}
+      </List>
+    </div>
+    :
     <div
       className={classes.fullList}
       role="presentation"
@@ -50,5 +67,6 @@ export default function NavDrawer() {
       {handleListItems(['로그인','로그아웃'])}
       </List>
     </div>
+    }
   );
 }

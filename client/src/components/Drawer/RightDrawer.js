@@ -12,6 +12,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 
+
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -34,7 +35,6 @@ export default function SwipeableTemporaryDrawer() {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ ...state, [side]: open });
   };
 
@@ -66,14 +66,6 @@ export default function SwipeableTemporaryDrawer() {
   );
 
   return (
-    <div>
-      <IconButton
-        aria-label="show more"
-        aria-haspopup="true"
-        onClick={toggleDrawer('right', true)}
-        color="inherit"
-      >
-        <MenuIcon  style={{ color: '#3c4858' }}/>
         <SwipeableDrawer
           anchor="right"
           open={state.right}
@@ -82,7 +74,5 @@ export default function SwipeableTemporaryDrawer() {
         >
           {sideList('right')}
         </SwipeableDrawer>
-      </IconButton>
-    </div>
   );
 }
