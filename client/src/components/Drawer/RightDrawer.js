@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -20,56 +21,32 @@ const useStyles = makeStyles({
   },
 });
 
-export default function NavDrawer() {
+export default function SwipeableTemporaryDrawer() {
   const classes = useStyles();
-
   const [state, setState] = React.useState({
-    top: false
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
   });
 
   const toggleDrawer = (side, open) => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
+
     setState({ ...state, [side]: open });
   };
 
-  // const sideList = side => (
-  //   <div
-  //     className={classes.list}
-  //     role="presentation"
-  //     onClick={toggleDrawer(side, false)}
-  //     onKeyDown={toggleDrawer(side, false)}
-  //   >
-  //     <List>
-  //       {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-  //         <ListItem button key={text}>
-  //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-  //           <ListItemText primary={text} />
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //     <Divider />
-  //     <List>
-  //       {['All mail', 'Trash', 'Spam'].map((text, index) => (
-  //         <ListItem button key={text}>
-  //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-  //           <ListItemText primary={text} />
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //   </div>
-  // );
-
-  const fullList = side => (
+  const sideList = side => (
     <div
-      className={classes.fullList}
+      className={classes.list}
       role="presentation"
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
     >
       <List>
-        {['CONTROL', 'HISTORY'].map((text, index) => (
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
@@ -78,7 +55,7 @@ export default function NavDrawer() {
       </List>
       <Divider />
       <List>
-        {['LOGOUT'].map((text, index) => (
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
@@ -91,22 +68,21 @@ export default function NavDrawer() {
   return (
     <div>
       <IconButton
-        edge="start"
-        className={classes.menuButton}
+        aria-label="show more"
+        aria-haspopup="true"
+        onClick={toggleDrawer('right', true)}
         color="inherit"
-        onClick={toggleDrawer('top', true)}
-        aria-label="open drawer"
-        >
-        <MenuIcon />
-      </IconButton>
-      <SwipeableDrawer
-        anchor="top"
-        open={state.top}
-        onClose={toggleDrawer('top', false)}
-        onOpen={toggleDrawer('top', true)}
       >
-        {fullList('top')}
-      </SwipeableDrawer>
+        <MenuIcon  style={{ color: '#3c4858' }}/>
+        <SwipeableDrawer
+          anchor="right"
+          open={state.right}
+          onClose={toggleDrawer('right', false)}
+          onOpen={toggleDrawer('right', true)}
+        >
+          {sideList('right')}
+        </SwipeableDrawer>
+      </IconButton>
     </div>
   );
 }
