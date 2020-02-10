@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -18,55 +18,65 @@ import styles from "assets/jss/navDrawerStyle.js";
 
 const useStyles = makeStyles(styles);
 
-export default function NavDrawer() {
+export const NavDrawer = (props) => {
   const classes = useStyles();
 
-  const listItems = {
-    프로필 : <AccountCircle />,
-    알림 : <NotificationsIcon />,
-    제어 : <ControlIcon />,
-    기록: <HistoryIcon />,
+  const [locationState, setLocationState] = React.useState(props);
+
+  useEffect(() => {
+    setLocationState(props);
+    }, [props])
+
+  const leftDrawerItems = {
+    제어  : <ControlIcon />,
+    기록  : <HistoryIcon />,
+    설정  : <SettingsIcon />,
+  };
+  const restDrawerItems = {
+    프로필: <AccountCircle />,
+    알림: <NotificationsIcon />
+  };
+  const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
+  const drawerFooterItems = {
     로그인: <LogInIcon />,
     로그아웃 : <LogOutIcon />,
-    설정 : <SettingsIcon />
   };
 
-  const handleListItems = (items) => {
+  const handleItems = (items) => (
+    <div>
+      {Object.keys(items).map((text, index) => (
+      <ListItem button key={text}>
+        <ListItemIcon>{items[text]}</ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItem>
+      ))}
+    </div>
+  );
+
+  const viewList = (side) => {
     return (
+     <div className={classes.fullList} role="presentation">
       <List>
-        {items.map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{listItems[text]}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        {handleItems(side)}
       </List>
+      <Divider />
+      <List>
+        {handleItems(drawerFooterItems)}
+      </List>
+    </div>
     )
   }
 
   return (
-    {this.props.location === 'right'?
-    <div
-      className={classes.fullList}
-      role="presentation"
-    >
-      {handleListItems(['프로필','알림','제어','기록', '설정'])}
-    <Divider />
-    <List>
-      {handleListItems(['로그인','로그아웃'])}
-      </List>
+    <div>
+      {locationState.location === "right" ?
+      <div>
+        {viewList(rightDrawerItems)}
+      </div> :
+      <div>
+        {viewList(leftDrawerItems)}
+      </div>
+      }
     </div>
-    :
-    <div
-      className={classes.fullList}
-      role="presentation"
-    >
-      {handleListItems(['제어','기록', '설정'])}
-    <Divider />
-    <List>
-      {handleListItems(['로그인','로그아웃'])}
-      </List>
-    </div>
-    }
   );
 }

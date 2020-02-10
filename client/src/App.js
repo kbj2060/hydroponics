@@ -1,5 +1,7 @@
 import React from 'react';
 import AppBar from './components/AppBar/AppBar';
+import Dashboard from './views/Dashboard/Dashboard';
+
 //import {  makeStyles } from '@material-ui/core/styles';
 //
 // const useStyles = makeStyles(theme => ({
@@ -9,8 +11,13 @@ import AppBar from './components/AppBar/AppBar';
 class App extends React.Component {
   render(){
     return (
-      <AppBar />
+      <div>
+        <AppBar />
+        <Dashboard />
+      </div>
+
     )
   }
 }
+
 export default App;
