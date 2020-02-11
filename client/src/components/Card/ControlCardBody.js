@@ -11,19 +11,10 @@ import ECIcon from 'assets/icons/ECIcon';
 
 import useStyles from 'assets/jss/cardStyle.js'
 
-const colors = {
-  co2 : {backgroundColor : '#9DC8C8'},
-  temp : {backgroundColor : '#58C9B9'},
-  hum : {backgroundColor : '#519D9E'},
-  ph : {backgroundColor : '#8CD790'},
-  ec : {backgroundColor : '#D7FFF1'},
-};
-
-export default function ControlIcon(props) {
-  const {color, ...rest} = props;
-  const classes = useStyles(colors[color]);
+export default function ControlCardBody(props) {
+  const classes = useStyles();
+  const {...rest} = props;
   const cardClass = Object.keys(rest)[0];
-
   const cardClassList = {
     'Co2Icon' : <Co2Icon />,
     'TemperatureIcon' : <TemperatureIcon />,
@@ -32,10 +23,8 @@ export default function ControlIcon(props) {
     'ECIcon' : <ECIcon />,
   }
   return (
-      <div>
-        <Card className={classes.iconCard}>
+        <Card className={classes.controlCardBody}>
           {cardClassList[cardClass]}
         </Card>
-      </div>
     );
 }

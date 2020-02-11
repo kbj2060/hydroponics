@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ControlCard from 'components/Card/ControlCard';
+import ControlCardBody from 'components/Card/ControlCardBody';
+
 import FigureCard from 'components/Card/FigureCard';
 import IconCard from 'components/Card/IconCard';
 
@@ -11,83 +13,75 @@ import Card from '@material-ui/core/Card';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+const useStyles = makeStyles(theme =>({
+root: {
+  overflow: 'hidden',
+  flexGrow: 1,
+  [theme.breakpoints.up('md')]: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    flexGrow: 1,
     }
   },
-  iconCard : {
-    padding : '20px',
-    width : "8em",
-    height : '8em',
-    position: 'relative',
-    zIndex : '2',
-    left : '30px',
-    top : '40px',
-  },
-  card: {
-    position: 'relative',
-    top: '-50px',
-    zIndex : '1',
-  },
+  tableGrid : {
+  display : 'table',
+  margin : '-10em 10px 0 10px',
+},
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
   return (
       <div className={classes.root}>
-        <CssBaseline />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12}>
-            <ControlCard className={classes.Card}>제어</ControlCard>
+        <Grid container spacing={1}>
+
+          <Grid item xs={12} sm={12} md={12} className={classes.tableGrid}>
+              <ControlCardBody>sdsd</ControlCardBody>
+              <ControlCard>제어</ControlCard>
           </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <div>
-              <Card className={classes.iconCard} >
-                <IconCard Co2Icon />
-              </Card>
+              <IconCard Co2Icon color='co2'/>
             </div>
-            <div className={classes.card}>
-              <FigureCard className={classes.Card}>온도</FigureCard>
+            <div >
+              <FigureCard>온도</FigureCard>
             </div>
           </Grid>
+
           <Grid item xs={12} sm={6} md={3}>
             <div>
-              <Card className={classes.iconCard} >
-                <IconCard TemperatureIcon />
-              </Card>
+              <IconCard TemperatureIcon color='temp' />
             </div>
-            <div className={classes.card}>
-              <FigureCard className={classes.Card}>온도</FigureCard>
-            </div>
-          </Grid><Grid item xs={12} sm={6} md={3}>
             <div>
-              <Card className={classes.iconCard} >
-                <IconCard HumidityIcon />
-              </Card>
+              <FigureCard >온도</FigureCard>
             </div>
-            <div className={classes.card}>
-              <FigureCard className={classes.Card}>온도</FigureCard>
-            </div>
-          </Grid><Grid item xs={12} sm={6} md={3}>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
             <div>
-              <Card className={classes.iconCard} >
-                <IconCard PHIcon />
-              </Card>
+              <IconCard HumidityIcon color='hum'/>
             </div>
-            <div className={classes.card}>
-              <FigureCard className={classes.Card}>온도</FigureCard>
-            </div>
-          </Grid><Grid item xs={12} sm={6} md={3}>
             <div>
-              <Card className={classes.iconCard} >
-                <IconCard ECIcon />
-              </Card>
+              <FigureCard>온도</FigureCard>
             </div>
-            <div className={classes.card}>
-              <FigureCard className={classes.Card}>온도</FigureCard>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <div>
+              <IconCard PHIcon color='ph'/>
+            </div>
+            <div>
+              <FigureCard>온도</FigureCard>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <div>
+              <IconCard ECIcon color='ec' />
+            </div>
+            <div>
+              <FigureCard>온도</FigureCard>
             </div>
           </Grid>
 

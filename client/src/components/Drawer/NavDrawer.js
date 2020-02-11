@@ -37,7 +37,7 @@ export const NavDrawer = (props) => {
     알림: <NotificationsIcon />
   };
   const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
-  const drawerFooterItems = {
+  const footerDrawerItems = {
     로그인: <LogInIcon />,
     로그아웃 : <LogOutIcon />,
   };
@@ -61,7 +61,7 @@ export const NavDrawer = (props) => {
       </List>
       <Divider />
       <List>
-        {handleItems(drawerFooterItems)}
+        {handleItems(footerDrawerItems)}
       </List>
     </div>
     )

@@ -32,13 +32,14 @@ const appBarStyle = makeStyles(theme => ({
   drawer: {
     display : 'none',
     [theme.breakpoints.up('md')]: {
-      display : 'flex',
+      display : 'contents',
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   drawerPaper: {
     width: drawerWidth,
+    overflow : 'hidden'
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -50,7 +51,7 @@ const appBarStyle = makeStyles(theme => ({
     color : '#3c4858',
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
+      display: 'flex',
     },
   },
   search: {
