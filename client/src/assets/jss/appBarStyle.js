@@ -27,6 +27,7 @@ const appBarStyle = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
+      marginRight : -drawerWidth,
     },
   },
   drawer: {

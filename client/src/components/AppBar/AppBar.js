@@ -12,6 +12,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
 
 import { NavDrawer } from 'components/Drawer/NavDrawer';
 import styles from 'assets/jss/appBarStyle.js'
@@ -64,8 +65,7 @@ export default function PermanentAppBar(props) {
           />
         </div>
         <div className={classes.grow} />
-
-        <div className={classes.sectionDesktop}>
+        <Hidden smDown>
           <IconButton aria-label="show 17 new notifications" color="inherit">
             <Badge badgeContent={100} color="secondary">
               <NotificationsIcon style={{ color: '#3c4858' }} />
@@ -79,46 +79,48 @@ export default function PermanentAppBar(props) {
           >
             <AccountCircle style={{ color: '#3c4858' }}/>
           </IconButton>
-        </div>
-
-        <div className={classes.sectionMobile} >
-          <IconButton
-            aria-label="show more"
-            aria-haspopup="true"
-            color="inherit"
-            onClick={() => handleLocationChange('right')}
-            >
-            <MenuIcon
-              onClick={toggleDrawer('right', true)}
-              style={{ color: '#3c4858' }}
-            />
-            <Drawer
-              anchor="right"
-              open={state.right}
-              onClose={toggleDrawer('right', false)}
-              onOpen={toggleDrawer('right', true)}
-            >
-              <div
-                className={classes.list}
-                role="presentation"
+        </Hidden>
+        <Hidden mdUp>
+          <div >
+            <IconButton
+              aria-label="show more"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => handleLocationChange('right')}
               >
-                <NavDrawer {...locationState}/>
-              </div>
-            </Drawer>
-          </IconButton>
-        </div>
+              <MenuIcon
+                onClick={toggleDrawer('right', true)}
+                style={{ color: '#3c4858' }}
+              />
+              <Drawer
+                anchor="right"
+                open={state.right}
+                onClose={toggleDrawer('right', false)}
+                onOpen={toggleDrawer('right', true)}
+              >
+                <div
+                  className={classes.list}
+                  role="presentation"
+                >
+                  <NavDrawer {...locationState}/>
+                </div>
+              </Drawer>
+            </IconButton>
+          </div>
+        </Hidden>
       </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="left"
-      >
-        <NavDrawer locationState='left'/>
-      </Drawer>
+      <Hidden smDown>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="left"
+        >
+          <NavDrawer locationState='left'/>
+        </Drawer>
+      </Hidden>
     </div>
   );
 }
