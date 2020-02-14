@@ -94,7 +94,6 @@ export default function Dashboard() {
       <div className={classes.root}>
         <CssBaseline />
         <Grid container spacing={1}>
-
           <Grid item xs={12} sm={6} md={6} className={classes.tableGrid}>
             <Card className={classes.controlCardWeather}>
                 <Typography>오늘의 날씨</Typography>
@@ -215,7 +214,6 @@ export default function Dashboard() {
               </div>
             </Card>
           </Grid>
-
         </Grid>
       </div>
       );
