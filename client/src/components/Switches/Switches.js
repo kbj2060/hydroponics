@@ -12,10 +12,11 @@ const IOSSwitch = withStyles(theme => ({
     width: 42,
     height: 26,
     padding: 0,
-    margin: theme.spacing(1),
   },
   switchBase: {
     padding: 1,
+    display:'flex',
+    alignItems:'center',
     '&$checked': {
       transform: 'translateX(16px)',
       color: theme.palette.common.white,

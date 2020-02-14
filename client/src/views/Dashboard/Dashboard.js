@@ -12,6 +12,8 @@ import Switch from 'components/Switches/Switches';
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import Box from '@material-ui/core/Box';
+import GreenLightIcon from 'assets/icons/GreenLightIcon';
+import RedLightIcon from 'assets/icons/RedLightIcon';
 
 const drawerWidth = 240;
 
@@ -52,7 +54,7 @@ const useStyles = makeStyles(theme =>({
     zIndex : '2',
     top : '12em',
     margin : '0 5% 0 5%',
-    backgroundColor : '#8CD790',
+    backgroundColor : '#f9a11b',
     },
   controlCardButtons : {
     height : '20em',
@@ -60,7 +62,7 @@ const useStyles = makeStyles(theme =>({
     zIndex : '2',
     top : '12em',
     margin : '0 5% 0 5%',
-    backgroundColor : '#218380',
+    backgroundColor : '#ffc952',
   },
   updateInfo : {
     margin : 0,
@@ -86,6 +88,19 @@ const useStyles = makeStyles(theme =>({
     margin : '0 10px 0 10px',
     height : '20em',
   },
+  alignButtonIcon : {
+    display:'inline',
+    alignItems:'center',
+    width:'calc(100%/3)',
+    margin:'auto',
+  },
+  alignNameBox : {
+    textAlign:'center',
+    margin:'auto',
+    display:'inline',
+    alignItems:'center',
+    width:'calc(100%/3)',
+  }
 }));
 
 export default function Dashboard() {
@@ -94,6 +109,7 @@ export default function Dashboard() {
       <div className={classes.root}>
         <CssBaseline />
         <Grid container spacing={1}>
+
           <Grid item xs={12} sm={6} md={6} className={classes.tableGrid}>
             <Card className={classes.controlCardWeather}>
                 <Typography>오늘의 날씨</Typography>
@@ -107,39 +123,44 @@ export default function Dashboard() {
                 <ControlIcon />
               </div>
               <div style={{height:'75%'}}>
-                <Box style={{height:'calc(100%/3)'}} display='flex' p={1}>
-                  <Box style={{marginLeft:'24px', display:'flex', alignItems:'center'}} flexGrow={1} p={1} >
-                    <Typography>조 명</Typography>
+
+                <Box style={{height:'calc(100% / 3)'}} display='flex'>
+                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
+                    <Typography >조&nbsp;&nbsp;&nbsp;명</Typography>
                   </Box>
-                  <Box flexGrow={1} p={1}>
-                    <Typography>11</Typography>
+                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
+                    <GreenLightIcon />
                   </Box>
-                  <Box p={1}>
+                  <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
                   </Box>
                 </Box>
-                <Box style={{height:'calc(100%/3)'}} display='flex' p={1}>
-                  <Box style={{marginLeft:'24px', display:'flex', alignItems:'center'}} flexGrow={1} p={1} >
+
+
+                <Box style={{height:'calc(100% / 3)'}} display='flex'>
+                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                     <Typography >가습기</Typography>
                   </Box>
-                  <Box flexGrow={1} p={1}>
-                    <Typography>11</Typography>
+                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
+                    <GreenLightIcon />
                   </Box>
-                  <Box p={1}>
+                  <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
                   </Box>
                 </Box>
-                <Box style={{height:'calc(100%/3)'}} display='flex' p={1}>
-                  <Box style={{marginLeft:'24px', display:'flex', alignItems:'center'}} flexGrow={1} p={1} >
-                    <Typography >송풍기</Typography>
+
+                <Box style={{height:'calc(100% / 3)'}} display='flex'>
+                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
+                    <Typography style={{textAlign:'center'}} >송풍기</Typography>
                   </Box>
-                  <Box flexGrow={1} p={1}>
-                    <Typography>11</Typography>
+                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
+                    <RedLightIcon />
                   </Box>
-                  <Box p={1}>
+                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
                     <Switch />
                   </Box>
                 </Box>
+
               </div>
             </Card>
             <Card className={classes.controlCardBack} />
@@ -214,6 +235,7 @@ export default function Dashboard() {
               </div>
             </Card>
           </Grid>
+
         </Grid>
       </div>
       );
