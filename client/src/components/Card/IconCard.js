@@ -12,11 +12,11 @@ import ECIcon from 'assets/icons/ECIcon';
 import useStyles from 'assets/jss/cardStyle.js'
 
 const colors = {
-  co2 : {backgroundColor : '#FFBC42'},
-  temp : {backgroundColor : '#D81159'},
-  hum : {backgroundColor : '#8F2D56'},
-  ph : {backgroundColor : '#8CD790'},
-  ec : {backgroundColor : '#218380'},
+  co2 : {backgroundColor : '#ff7473'},
+  temp : {backgroundColor : '#ffc952'},
+  hum : {backgroundColor : '#47b8e0'},
+  ph : {backgroundColor : '#67D5B5'},
+  ec : {backgroundColor : '#f9a11b'},
 };
 
 export default function ControlIcon(props) {
