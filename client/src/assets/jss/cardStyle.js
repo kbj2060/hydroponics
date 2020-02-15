@@ -21,6 +21,7 @@ const cardStyle = makeStyles(theme =>({
     left : '30px',
     top : '40px',
     backgroundColor : props.backgroundColor,
+    borderRadius: '0.5rem',
   }),
 }));
 

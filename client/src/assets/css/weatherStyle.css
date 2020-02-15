@@ -1,0 +1,167 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+html,
+body {
+  align-items: center;
+  background-color: #f8f8f8 !important;
+  color: #333;
+  display: flex;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.3em;
+  justify-content: center;
+  text-align: center;
+}
+
+.WeatherCard {
+  height: 100vh;
+  transition: all 0.3s ease-in-out;
+  width: 100vw;
+}
+
+.widget {
+  height : 100%;
+  width : 100%;
+  margin : 0;
+  padding : 5%;
+  display : inline-block;
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
+}
+
+.inline-input {
+  align-items: flex-start;
+  border-bottom: 1px dotted #fff;
+  display: flex;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.inline-input:focus-within {
+  border-bottom: 1px dotted #333;
+  transition: all 0.3s ease-in-out;
+}
+
+.inline-input .mdi-icon {
+  color: #fff;
+  padding: 0.2rem 0.5rem 0 0;
+}
+
+.location-input {
+  display: flex;
+  align-items: flex-start;
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  max-width: 16rem;
+  outline: none;
+  padding-bottom: 0.3rem;
+}
+
+.main-display {
+  align-items: flex-start;
+  display: flex;
+  justify-content: start;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.main-info {
+  align-items: flex-start;
+  display: flex;
+  justify-content: start;
+  order: 0;
+}
+
+.temp-measurement {
+  color: #333;
+  font-size: 5rem;
+  font-weight: 500;
+  line-height: 0.85;
+}
+
+.temp-unit {
+  vertical-align: top;
+}
+
+.sub-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0 0 0 0.8rem;
+  order: 1;
+}
+
+.sub-info-title {
+  font-size: 1.15rem;
+  margin: 0 0 0.3rem 0;
+  text-align: start;
+}
+
+.sub-info-text {
+  font-size: 0.7rem;
+  color: #333;
+  margin: 0 0 0.4rem 0;
+  text-align: start;
+}
+
+.sub-info-text .max-temp {
+  /*     font-weight: 700; */
+  margin: 0 0.5rem 0 -0.1rem;
+}
+
+.selection-panel {
+  margin: 1rem 0 1rem -0.6rem;
+}
+
+.selection-row {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0.2rem 0 0 0;
+  flex-direction: row;
+}
+
+.selection-days {
+  color: #333;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 3.5rem;
+}
+
+.selection-weather {
+  color: #333;
+  font-size: 0.7rem;
+  width: 3.5rem;
+}
+
+.selection-icons {
+  color: #333;
+  font-size: 1.7rem;
+  width: 3.5rem;
+}
+
+.selected {
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.cloudy {
+  background-image: linear-gradient(0deg, #bbdefb, #2196f3);
+}
+
+.clear {
+  background-image: linear-gradient(0deg, #b3e5fc, #29b6f6);
+}
+
+.snow {
+  background-image: linear-gradient(0deg, #b2ebf2, #26c6da);
+}
+
+.rain {
+  background-image: linear-gradient(0deg, #c5cae9, #5c6bc0);
+}
+
+.thunderstorm {
+  background-image: linear-gradient(0deg, #e0e0e0, #757575);
+}

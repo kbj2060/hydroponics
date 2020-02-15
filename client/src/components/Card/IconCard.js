@@ -13,7 +13,7 @@ import useStyles from 'assets/jss/cardStyle.js'
 
 const colors = {
   co2 : {backgroundColor : '#ff7473'},
-  temp : {backgroundColor : '#fLocation dot lime.svgfc952'},
+  temp : {backgroundColor : '#ffc952'},
   hum : {backgroundColor : '#47b8e0'},
   ph : {backgroundColor : '#67D5B5'},
   ec : {backgroundColor : '#f9a11b'},

@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ControlCard from 'components/Card/ControlCard';
 import CardContent from '@material-ui/core/CardContent';
-import FigureCard from 'components/Card/FigureCard';
 import IconCard from 'components/Card/IconCard';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +13,7 @@ import ControlIcon from 'assets/icons/ControlIcon';
 import Box from '@material-ui/core/Box';
 import GreenLightIcon from 'assets/icons/GreenLightIcon';
 import RedLightIcon from 'assets/icons/RedLightIcon';
+import WeatherCard from 'components/Card/WeatherCard';
 
 const drawerWidth = 240;
 
@@ -54,7 +54,6 @@ const useStyles = makeStyles(theme =>({
     zIndex : '2',
     top : '12em',
     margin : '0 5% 0 5%',
-    backgroundColor : '#f9a11b',
     },
   controlCardButtons : {
     height : '20em',
@@ -62,7 +61,8 @@ const useStyles = makeStyles(theme =>({
     zIndex : '2',
     top : '12em',
     margin : '0 5% 0 5%',
-    backgroundColor : '#ffc952',
+    borderRadius: '0.5rem',
+    backgroundImage: 'linear-gradient(0deg, #f0ce84, #ffc952)'
   },
   updateInfo : {
     margin : 0,
@@ -105,14 +105,19 @@ const useStyles = makeStyles(theme =>({
   greenDot : {
     height : '12px',
     width : '12px',
+    margin : 'auto',
     backgroundColor : 'green',
     borderRadius : '50%',
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px',
   },
   redDot : {
       height : '12px',
       width : '12px',
+      margin : 'auto',
       backgroundColor : 'red',
       borderRadius : '50%',
+      backgroundColor: 'red',
+      boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
   }
 }));
 
@@ -125,7 +130,7 @@ export default function Dashboard() {
 
           <Grid item xs={12} sm={6} md={6} className={classes.tableGrid}>
             <Card className={classes.controlCardWeather}>
-                <Typography>오늘의 날씨</Typography>
+                <WeatherCard />
             </Card>
             <Card className={classes.controlCardBack} />
           </Grid>
