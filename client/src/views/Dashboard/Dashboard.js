@@ -93,6 +93,7 @@ const useStyles = makeStyles(theme =>({
     alignItems:'center',
     width:'calc(100%/3)',
     margin:'auto',
+    textAlign:'center',
   },
   alignNameBox : {
     textAlign:'center',
@@ -100,6 +101,18 @@ const useStyles = makeStyles(theme =>({
     display:'inline',
     alignItems:'center',
     width:'calc(100%/3)',
+  },
+  greenDot : {
+    height : '12px',
+    width : '12px',
+    backgroundColor : 'green',
+    borderRadius : '50%',
+  },
+  redDot : {
+      height : '12px',
+      width : '12px',
+      backgroundColor : 'red',
+      borderRadius : '50%',
   }
 }));
 
@@ -129,7 +142,9 @@ export default function Dashboard() {
                     <Typography >조&nbsp;&nbsp;&nbsp;명</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <GreenLightIcon />
+                  <svg className={classes.greenDot}>
+                    <circle cx="50" cy="50" r="10"/>
+                  </svg>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
@@ -142,7 +157,9 @@ export default function Dashboard() {
                     <Typography >가습기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <GreenLightIcon />
+                  <svg className={classes.greenDot}>
+                    <circle cx="50" cy="50" r="10"/>
+                  </svg>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
@@ -154,7 +171,9 @@ export default function Dashboard() {
                     <Typography style={{textAlign:'center'}} >송풍기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <RedLightIcon />
+                  <svg className={classes.redDot}>
+                    <circle cx="50" cy="50" r="10"/>
+                  </svg>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
                     <Switch />
