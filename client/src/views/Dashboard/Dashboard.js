@@ -7,123 +7,23 @@ import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+
 import Switch from 'components/Switches/Switches';
+import WeatherCard from 'components/Card/WeatherCard';
+
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
-import Box from '@material-ui/core/Box';
 import GreenLightIcon from 'assets/icons/GreenLightIcon';
 import RedLightIcon from 'assets/icons/RedLightIcon';
-import WeatherCard from 'components/Card/WeatherCard';
 import useStyles from 'assets/jss/cardStyle';
+
 
 const drawerWidth = 240;
 
-// const useStyles = makeStyles(theme =>({
-//   root: {
-//     overflow: 'hidden',
-//     flexGrow: 1,
-//     [theme.breakpoints.up('md')]: {
-//       width: `calc(100% - ${drawerWidth}px)`,
-//       marginLeft: drawerWidth,
-//       }
-//   },
-//   tableGrid : {
-//     margin : '-10em 0px -3em 0px',
-//   },
-//   itemGrid : {
-//     height : '80%',
-//     margin : '-36px 0 -36px 0',
-//   },
-//   figureCard : {
-//     padding: theme.spacing(2),
-//     textAlign: 'center',
-//     backgroundcolor: 'black',
-//     margin : '10px',
-//     position: 'relative',
-//     top: '-50px',
-//     zIndex : '1',
-//   },
-//   figureCardContents : {
-//       marginTop : '40px',
-//   },
-//   controlCardContents : {
-//
-//   },
-//   controlCardWeather : {
-//     height : '20em',
-//     position: 'relative',
-//     zIndex : '2',
-//     top : '12em',
-//     margin : '0 5% 0 5%',
-//     },
-//   controlCardButtons : {
-//     height : '20em',
-//     position: 'relative',
-//     zIndex : '2',
-//     top : '12em',
-//     margin : '0 5% 0 5%',
-//     borderRadius: '0.5rem',
-//     backgroundImage: 'linear-gradient(0deg, #f0ce84, #ffc952)'
-//   },
-//   updateInfo : {
-//     margin : 0,
-//     paddingTop : '10px',
-//     display : 'inlineBlock',
-//     borderTopWidth : '1px',
-//     borderTopStyle : 'solid',
-//     borderTopColor : '#eee',
-//     textAlign : 'left',
-//     verticalAlign : 'middle',
-//   },
-//   updateTime : {
-//     display : 'inline',
-//     verticalAlign : 'middle',
-//     fontSize : '10px',
-//   },
-//   controlCardBack : {
-//     position: 'relative',
-//     top: '-4em',
-//     zIndex : '1',
-//     padding: theme.spacing(2),
-//     textAlign: 'center',
-//     margin : '0 10px 0 10px',
-//     height : '20em',
-//   },
-//   alignButtonIcon : {
-//     display:'inline',
-//     alignItems:'center',
-//     width:'calc(100%/3)',
-//     margin:'auto',
-//     textAlign:'center',
-//   },
-//   alignNameBox : {
-//     textAlign:'center',
-//     margin:'auto',
-//     display:'inline',
-//     alignItems:'center',
-//     width:'calc(100%/3)',
-//   },
-//   greenDot : {
-//     height : '12px',
-//     width : '12px',
-//     margin : 'auto',
-//     backgroundColor : 'green',
-//     borderRadius : '50%',
-//     boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px',
-//   },
-//   redDot : {
-//       height : '12px',
-//       width : '12px',
-//       margin : 'auto',
-//       backgroundColor : 'red',
-//       borderRadius : '50%',
-//       backgroundColor: 'red',
-//       boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
-//   }
-// }));
-
 export default function Dashboard() {
   const classes = useStyles();
+
   return (
       <div className={classes.root}>
         <CssBaseline />
@@ -183,7 +83,7 @@ export default function Dashboard() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
               <IconCard Co2Icon color='co2'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -197,7 +97,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
             <IconCard TemperatureIcon color='temp' />
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -211,7 +111,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
             <IconCard HumidityIcon color='hum'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -225,7 +125,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} alignItems={'center'} className={classes.itemGrid}>
             <IconCard PHIcon color='ph'/>
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
@@ -239,11 +139,25 @@ export default function Dashboard() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
             <IconCard ECIcon color='ec' />
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
                   <p>EC</p>
+                  <h3>10</h3>
+              </CardContent>
+              <div className={classes.updateInfo}>
+                <TimerIcon />
+                <p className={classes.updateTime}> 방금 갱신됨</p>
+              </div>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
+            <IconCard LedIcon color='led' />
+            <Card className={classes.figureCard}>
+              <CardContent className={classes.figureCardContents}>
+                  <p>LED</p>
                   <h3>10</h3>
               </CardContent>
               <div className={classes.updateInfo}>

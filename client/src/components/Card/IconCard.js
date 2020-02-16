@@ -8,6 +8,7 @@ import TemperatureIcon from 'assets/icons/TemperatureIcon';
 import HumidityIcon from 'assets/icons/HumidityIcon';
 import PHIcon from 'assets/icons/PHIcon';
 import ECIcon from 'assets/icons/ECIcon';
+import LedIcon from 'assets/icons/LedIcon';
 
 import useStyles from 'assets/jss/cardStyle.js'
 
@@ -17,6 +18,7 @@ const colors = {
   hum : {backgroundColor : '#47b8e0'},
   ph : {backgroundColor : '#67D5B5'},
   ec : {backgroundColor : '#f9a11b'},
+  led : {backgroundColor : '#ff7473'},
 };
 
 export default function ControlIcon(props) {
@@ -30,6 +32,7 @@ export default function ControlIcon(props) {
     'HumidityIcon' : <HumidityIcon />,
     'PHIcon' : <PHIcon />,
     'ECIcon' : <ECIcon />,
+    'LedIcon' : <LedIcon />,
   }
   return (
         <Card className={classes.iconCard}>

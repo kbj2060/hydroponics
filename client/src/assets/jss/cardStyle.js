@@ -36,13 +36,14 @@ const cardStyle = makeStyles(theme =>({
     margin : '-36px 0 -36px 0',
   },
   figureCard : {
-    padding: theme.spacing(2),
+    padding: '12px',
     textAlign: 'center',
     backgroundcolor: 'black',
     margin : '10px',
     position: 'relative',
     top: '-50px',
     zIndex : '1',
+    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   figureCardContents : {
       marginTop : '40px',
@@ -63,6 +64,7 @@ const cardStyle = makeStyles(theme =>({
     borderRadius: '0.5rem',
     backgroundImage: 'linear-gradient(0deg, #f0ce84, #ffc952)',
     padding: theme.spacing(2),
+    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   updateInfo : {
     margin : 0,
