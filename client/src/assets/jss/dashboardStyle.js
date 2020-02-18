@@ -2,10 +2,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
-const cardStyle = makeStyles(theme =>({
+const dashboardStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
+    backgroundColor: '#eee',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -20,33 +21,34 @@ const cardStyle = makeStyles(theme =>({
     margin : '0 10px 0 10px',
     height : '20em',
   },
+  itemGrid : {
+    position : 'relative',
+    height : '80%',
+    margin : '-40px 0 -40px 0',
+    padding : '1%',
+  },
   iconCard : props => ({
-    padding : '20px',
-    width : "8em",
-    height : '8em',
-    position: 'relative',
+    padding : '1.5em',
+    width : "5em",
+    height : '5em',
+    position : 'absolute',
+    left : '7%',
     zIndex : '2',
-    left : '30px',
-    top : '40px',
     backgroundColor : props.backgroundColor,
     borderRadius: '0.5rem',
   }),
-  itemGrid : {
-    height : '80%',
-    margin : '-36px 0 -36px 0',
-  },
   figureCard : {
-    padding: '12px',
+    padding: '15px',
     textAlign: 'center',
-    backgroundcolor: 'black',
-    margin : '10px',
+    margin : '8px',
     position: 'relative',
-    top: '-50px',
+    //top: '-50px',
     zIndex : '1',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   figureCardContents : {
-      marginTop : '40px',
+    padding : '0px',
+    textAlign: 'right',
   },
   controlCardContents : {
 
@@ -54,7 +56,6 @@ const cardStyle = makeStyles(theme =>({
   controlCardWeather : {
     height : '20em',
     position: 'relative',
-    padding: theme.spacing(2),
     margin : '10px',
     padding : '14px',
     },
@@ -96,6 +97,7 @@ const cardStyle = makeStyles(theme =>({
     width:'calc(100%/3)',
   },
   greenDot : {
+    marginLeft : '10px',
     height : '12px',
     width : '12px',
     margin : 'auto',
@@ -104,14 +106,14 @@ const cardStyle = makeStyles(theme =>({
     boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px',
   },
   redDot : {
-      height : '12px',
-      width : '12px',
-      margin : 'auto',
-      backgroundColor : 'red',
-      borderRadius : '50%',
-      backgroundColor: 'red',
-      boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
+    marginLeft : '10px',
+    height : '12px',
+    width : '12px',
+    margin : 'auto',
+    borderRadius : '50%',
+    backgroundColor: 'red',
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
   }
 }));
 
-export default cardStyle;
+export default dashboardStyle;

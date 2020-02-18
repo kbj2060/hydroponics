@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 
 import LogInIcon from 'assets/icons/LogInIcon';
 import LogOutIcon from 'assets/icons/LogOutIcon';
@@ -16,16 +17,18 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import styles from "assets/jss/navDrawerStyle.js";
+import backgroundImage from 'assets/img/london-eye.png';
 
 const useStyles = makeStyles(styles);
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
 
-  const [locationState, setLocationState] = React.useState(props);
+  const [state, setstate] = React.useState(props);
 
   useEffect(() => {
-    setLocationState(props);
+    setstate(props);
+    console.log(props);
     }, [props])
 
   const leftDrawerItems = {
@@ -48,7 +51,7 @@ export const NavDrawer = (props) => {
       {Object.keys(items).map((text, index) => (
       <ListItem button key={text}>
         <ListItemIcon>{items[text]}</ListItemIcon>
-        <ListItemText primary={text} />
+        <ListItemText primary={<Typography style={{fontSize:'14px'}}>{text}</Typography>} />
       </ListItem>
       ))}
     </div>
@@ -69,8 +72,12 @@ export const NavDrawer = (props) => {
   }
 
   return (
-    <div>
-      {locationState.location === "right" ?
+    <div >
+      <div className={classes.drawerTitle}>
+        <p style={{marginBottom:'6px'}}>HYDROPONICS</p>
+      </div>
+
+      {state.right === true ?
       <div>
         <CssBaseline />
         {viewList(rightDrawerItems)}

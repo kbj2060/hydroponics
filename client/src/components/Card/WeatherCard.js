@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import axios from "axios";
 import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";

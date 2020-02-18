@@ -21,23 +21,27 @@ import styles from 'assets/jss/appBarStyle.js'
 // 페이지 상단의 앱바를 만드는 함수형 컴포넌트
 export default function PermanentAppBar(props) {
   const classes = styles();
+
   const [state, setState] = React.useState({
     right: false,
   });
-  const [locationState, setLocationState] = React.useState({
-    location : 'left'
-  });
+  // const [locationState, setLocationState] = React.useState({
+  //   location : 'left'
+  // });
 
+  // const toggleDrawer = (side, open) => event => {
+  //   if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+  //   return;
+  //   }
+  //   setState({[side]: open });
+  // }
   const toggleDrawer = (side, open) => event => {
+    setState({
+        [side] : open,
+    });
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
     return;
     }
-    setState({[side]: open });
-  }
-  const handleLocationChange = (side) => {
-    setLocationState({
-      location : side,
-    });
   }
 
   return (
@@ -46,9 +50,10 @@ export default function PermanentAppBar(props) {
       <AppBar position="sticky"
       className={classes.appBar}
       elevation={0}
+      color='primary'
       >
       <Toolbar>
-        <Typography className={classes.title} variant="h5" noWrap>
+        <Typography className={classes.title} variant="h6" noWrap>
           수경재배 관리 시스템
         </Typography>
         <div className={classes.search}>
@@ -81,12 +86,11 @@ export default function PermanentAppBar(props) {
           </IconButton>
         </Hidden>
         <Hidden mdUp>
-          <div >
+          <div>
             <IconButton
               aria-label="show more"
               aria-haspopup="true"
               color="inherit"
-              onClick={() => handleLocationChange('right')}
               >
               <MenuIcon
                 onClick={toggleDrawer('right', true)}
@@ -96,13 +100,13 @@ export default function PermanentAppBar(props) {
                 anchor="right"
                 open={state.right}
                 onClose={toggleDrawer('right', false)}
-                onOpen={toggleDrawer('right', true)}
+
               >
                 <div
                   className={classes.list}
                   role="presentation"
                 >
-                  <NavDrawer {...locationState}/>
+                  <NavDrawer {...state}/>
                 </div>
               </Drawer>
             </IconButton>
@@ -118,7 +122,7 @@ export default function PermanentAppBar(props) {
           }}
           anchor="left"
         >
-          <NavDrawer locationState='left'/>
+          <NavDrawer />
         </Drawer>
       </Hidden>
     </div>

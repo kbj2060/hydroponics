@@ -1,8 +1,8 @@
 import React from 'react';
 import AppBar from './components/AppBar/AppBar';
-import Dashboard from './views/Dashboard/Dashboard';
+//import Dashboard from './views/Dashboard/Dashboard';
+import History from './views/History/History';
 
-import {  makeStyles } from '@material-ui/core/styles';
 //
 // const useStyles = makeStyles(theme => ({
 //     wrapper: {
@@ -17,7 +17,7 @@ export default function App() {
     return (
       <div>
         <AppBar />
-        <Dashboard />
+        <History />
       </div>
 
     )

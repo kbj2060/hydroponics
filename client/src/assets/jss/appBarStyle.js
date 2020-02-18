@@ -1,5 +1,5 @@
 import { fade, makeStyles } from '@material-ui/core/styles';
-
+import backgroundImage from 'assets/img/winter.jpg'
 
 const drawerWidth = 240;
 
@@ -23,7 +23,7 @@ const appBarStyle = makeStyles(theme => ({
     },
   },
   appBar: {
-    backgroundColor : 'white',
+    backgroundColor : '#eee',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -40,7 +40,9 @@ const appBarStyle = makeStyles(theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    overflow : 'hidden'
+    overflow : 'hidden',
+    backgroundColor : '#eee',
+
   },
   toolbar: theme.mixins.toolbar,
   content: {

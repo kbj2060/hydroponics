@@ -1,6 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ControlCard from 'components/Card/ControlCard';
 import CardContent from '@material-ui/core/CardContent';
 import IconCard from 'components/Card/IconCard';
 import Grid from '@material-ui/core/Grid';
@@ -14,12 +12,8 @@ import WeatherCard from 'components/Card/WeatherCard';
 
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
-import GreenLightIcon from 'assets/icons/GreenLightIcon';
-import RedLightIcon from 'assets/icons/RedLightIcon';
-import useStyles from 'assets/jss/cardStyle';
+import useStyles from 'assets/jss/dashboardStyle';
 
-
-const drawerWidth = 240;
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -27,52 +21,40 @@ export default function Dashboard() {
   return (
       <div className={classes.root}>
         <CssBaseline />
-        <Grid container spacing={1}>
+        <Grid container style={{padding :'15px 30px 15px 30px'}}>
 
-          <Grid item xs={12} sm={6} md={6} style={{padding:'14px',}}>
+          <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <WeatherCard />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6} style={{padding:'14px',}}>
+          <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <Card className={classes.controlCardButtons}>
               <div style={{height:'25%'}}>
                 <ControlIcon />
               </div>
               <div style={{height:'75%'}}>
+                
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography >조&nbsp;&nbsp;&nbsp;명</Typography>
-                  </Box>
-                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <svg className={classes.greenDot}>
-                      <circle cx="50" cy="50" r="10"/>
-                    </svg>
+                    <Typography variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
                   </Box>
                 </Box>
+
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography >가습기</Typography>
-                  </Box>
-                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                  <svg className={classes.greenDot}>
-                    <circle cx="50" cy="50" r="10"/>
-                  </svg>
+                    <Typography variant="subtitle2">가습기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                     <Switch />
                   </Box>
                 </Box>
+
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography style={{textAlign:'center'}} >송풍기</Typography>
-                  </Box>
-                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                  <svg className={classes.redDot}>
-                    <circle cx="50" cy="50" r="10"/>
-                  </svg>
+                    <Typography variant="subtitle2" >송풍기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
                     <Switch />
@@ -87,8 +69,12 @@ export default function Dashboard() {
               <IconCard Co2Icon color='co2'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
-                    <p>이산화탄소</p>
-                    <h3>50%</h3>
+                    <p>CO2
+                      <svg className={classes.greenDot}>
+                        <circle cx="50" cy="50" r="10"/>
+                      </svg>
+                    </p>
+                    <h4>50%</h4>
                 </CardContent>
                 <div className={classes.updateInfo}>
                   <TimerIcon />
@@ -101,8 +87,13 @@ export default function Dashboard() {
             <IconCard TemperatureIcon color='temp' />
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
-                    <p>온도</p>
-                    <h3>24</h3>
+                      <p>
+                        온도
+                        <svg className={classes.greenDot}>
+                          <circle cx="50" cy="50" r="10"/>
+                        </svg>
+                      </p>
+                      <h4>24°C</h4>
                 </CardContent>
                 <div className={classes.updateInfo}>
                   <TimerIcon />
@@ -115,8 +106,12 @@ export default function Dashboard() {
             <IconCard HumidityIcon color='hum'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
-                    <p>습도</p>
-                    <h3>50%</h3>
+                    <p>습도
+                      <svg className={classes.redDot}>
+                        <circle cx="50" cy="50" r="10"/>
+                      </svg>
+                    </p>
+                    <h4>50%</h4>
                 </CardContent>
                 <div className={classes.updateInfo}>
                   <TimerIcon />
@@ -125,12 +120,16 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} alignItems={'center'} className={classes.itemGrid}>
+          <Grid item xs={12} sm={6} md={4} className={classes.itemGrid}>
             <IconCard PHIcon color='ph'/>
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
-                  <p>PH</p>
-                  <h3>5.5</h3>
+                  <p>PH
+                    <svg className={classes.redDot}>
+                      <circle cx="50" cy="50" r="10"/>
+                    </svg>
+                  </p>
+                  <h4>5.5</h4>
               </CardContent>
               <div className={classes.updateInfo}>
                 <TimerIcon />
@@ -143,8 +142,12 @@ export default function Dashboard() {
             <IconCard ECIcon color='ec' />
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
-                  <p>EC</p>
-                  <h3>10</h3>
+                  <p>EC
+                    <svg className={classes.greenDot}>
+                      <circle cx="50" cy="50" r="10"/>
+                    </svg>
+                  </p>
+                  <h4>10</h4>
               </CardContent>
               <div className={classes.updateInfo}>
                 <TimerIcon />
@@ -157,8 +160,12 @@ export default function Dashboard() {
             <IconCard LedIcon color='led' />
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
-                  <p>LED</p>
-                  <h3>10</h3>
+                  <p>LED
+                    <svg className={classes.greenDot}>
+                      <circle cx="50" cy="50" r="10"/>
+                    </svg>
+                  </p>
+                  <h4>10</h4>
               </CardContent>
               <div className={classes.updateInfo}>
                 <TimerIcon />

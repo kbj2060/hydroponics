@@ -1,6 +1,4 @@
-import SvgIcon from '@material-ui/core/SvgIcon';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 
 import Co2Icon from 'assets/icons/Co2Icon';
@@ -10,7 +8,7 @@ import PHIcon from 'assets/icons/PHIcon';
 import ECIcon from 'assets/icons/ECIcon';
 import LedIcon from 'assets/icons/LedIcon';
 
-import useStyles from 'assets/jss/cardStyle.js'
+import useStyles from 'assets/jss/dashboardStyle.js'
 
 const colors = {
   co2 : {backgroundColor : '#ff7473'},

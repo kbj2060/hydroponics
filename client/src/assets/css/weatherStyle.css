@@ -62,14 +62,14 @@ body {
 .main-display {
   align-items: flex-start;
   display: flex;
-  justify-content: start;
+  flex-start: start;
   margin: 0.5rem 0 0.5rem 0;
 }
 
 .main-info {
   align-items: flex-start;
   display: flex;
-  justify-content: start;
+  flex-start: start;
   order: 0;
 }
 
