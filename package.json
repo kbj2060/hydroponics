@@ -9,5 +9,8 @@
     "client": "cd client && cross-env NODE_PATH=src yarn start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
-    }
+  },
+  "dependencies": {
+    "cross-env": "^7.0.0"
+  }
 }
