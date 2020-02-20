@@ -25,23 +25,17 @@ export default function PermanentAppBar(props) {
   const [state, setState] = React.useState({
     right: false,
   });
-  // const [locationState, setLocationState] = React.useState({
-  //   location : 'left'
-  // });
 
-  // const toggleDrawer = (side, open) => event => {
-  //   if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-  //   return;
-  //   }
-  //   setState({[side]: open });
-  // }
   const toggleDrawer = (side, open) => event => {
-    setState({
-        [side] : open,
-    });
+    setState({ ...state, [side]: open });
+
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
     return;
     }
+  }
+
+  const closeDrawer = () => {
+    setState(false);
   }
 
   return (
@@ -100,11 +94,11 @@ export default function PermanentAppBar(props) {
                 anchor="right"
                 open={state.right}
                 onClose={toggleDrawer('right', false)}
-
               >
                 <div
                   className={classes.list}
                   role="presentation"
+                  onClick={closeDrawer}
                 >
                   <NavDrawer {...state}/>
                 </div>

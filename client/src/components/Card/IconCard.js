@@ -32,6 +32,7 @@ export default function ControlIcon(props) {
     'ECIcon' : <ECIcon />,
     'LedIcon' : <LedIcon />,
   }
+  
   return (
         <Card className={classes.iconCard}>
           {cardClassList[cardClass]}

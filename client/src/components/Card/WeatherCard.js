@@ -49,8 +49,7 @@ class WeatherCard extends React.Component {
         "Saturday"
       ];
       const currentDay = "Today";
-      const currentDayFull =
-        dayOfWeekFull[new Date(currentData.dt_txt).getDay()];
+      const currentDayFull = dayOfWeekFull[new Date(currentData.dt_txt).getDay()];
       const currentTemp = Math.round(currentData.main.temp);
       const currentMinTemp = Math.round(currentData.main.temp_min);
       const currentMaxTemp = Math.round(currentData.main.temp_max);
@@ -109,9 +108,8 @@ class WeatherCard extends React.Component {
   };
 
   currentData = () => {
-    const list = this.state.data.list;
+    const list = this.state.data.list
     const nearestHr = this.computeNearestHr();
-
     return list.find(e => new Date(e.dt_txt).getHours() === nearestHr);
   };
 
