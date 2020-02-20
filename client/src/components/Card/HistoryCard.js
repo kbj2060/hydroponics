@@ -20,9 +20,9 @@ const state = {
 
 
 export default function HistoryCard(props) {
-  const { gradationStart, gradationEnd, ...rest } = props;
-  const classes = useStyles({gradationStart, gradationEnd});
-  console.log(rest);
+  const { backgroundColor, ...rest } = props;
+  const classes = useStyles({backgroundColor});
+
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>

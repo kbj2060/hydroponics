@@ -15,22 +15,22 @@ export default function History() {
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='온도' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='온도' backgroundColor='#ffc952'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='습도' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='습도' backgroundColor='#47b8e0'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='CO2' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='CO2' backgroundColor='#f9a11b'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='조명' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='조명' backgroundColor='#ffb3b3'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='PH' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='PH' backgroundColor='#67D5B5'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='EC' gradationStart='#66bb6a' gradationEnd='#43a047'/>
+            <HistoryCard subject='EC' backgroundColor='#ff7473'/>
           </Grid>
         </Grid>
       </div>

@@ -7,8 +7,8 @@ const HistoryStyle = makeStyles(theme =>({
     height : 'auto',
     width : 'auto',
     padding : '15px',
-    boxShadow : '0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(76, 175, 80.4)',
-    background : `linear-gradient(60deg, ${props.gradationStart}, ${props.gradationEnd})`,
+    boxShadow : '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+    backgroundColor : props.backgroundColor,
     borderRadius : '6px',
   }),
   background : {
@@ -27,6 +27,11 @@ const HistoryStyle = makeStyles(theme =>({
     padding : '15px 20px',
     flex : '1 1 auto',
     position : 'relative',
+    textAlign : 'left',
+    '& h4, & p' : {
+      margin : '0px',
+      padding : '3px',
+    }
   },
   updateTime : {
     display : 'inline',

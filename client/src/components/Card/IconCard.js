@@ -16,7 +16,7 @@ const colors = {
   hum : {backgroundColor : '#47b8e0'},
   ph : {backgroundColor : '#67D5B5'},
   ec : {backgroundColor : '#f9a11b'},
-  led : {backgroundColor : '#ff7473'},
+  led : {backgroundColor : '#ffb3b3'},
 };
 
 export default function ControlIcon(props) {
