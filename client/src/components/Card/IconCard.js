@@ -11,12 +11,12 @@ import LedIcon from 'assets/icons/LedIcon';
 import useStyles from 'assets/jss/dashboardStyle.js'
 
 const colors = {
-  co2 : {backgroundColor : '#ff7473'},
-  temp : {backgroundColor : '#ffc952'},
-  hum : {backgroundColor : '#47b8e0'},
-  ph : {backgroundColor : '#67D5B5'},
-  ec : {backgroundColor : '#f9a11b'},
-  led : {backgroundColor : '#ffb3b3'},
+  co2 : {backgroundColor : '#eee'},
+  temp : {backgroundColor : '#eee'},
+  hum : {backgroundColor : '#eee'},
+  ph : {backgroundColor : '#eee'},
+  ec : {backgroundColor : '#eee'},
+  led : {backgroundColor : '#eee'},
 };
 
 export default function ControlIcon(props) {
@@ -32,6 +32,7 @@ export default function ControlIcon(props) {
     'ECIcon' : <ECIcon />,
     'LedIcon' : <LedIcon />,
   }
+
   return (
         <Card className={classes.iconCard}>
           {cardClassList[cardClass]}

@@ -42,8 +42,8 @@ const dashboardStyle = makeStyles(theme =>({
     textAlign: 'center',
     margin : '8px',
     position: 'relative',
-    //top: '-50px',
     zIndex : '1',
+    backgroundColor : '#dadada',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   figureCardContents : {
@@ -63,8 +63,8 @@ const dashboardStyle = makeStyles(theme =>({
     height : '20em',
     position: 'relative',
     borderRadius: '0.5rem',
-    backgroundImage: 'linear-gradient(0deg, #f0ce84, #ffc952)',
     padding: theme.spacing(2),
+    backgroundColor: '#dadada !important',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   updateInfo : {

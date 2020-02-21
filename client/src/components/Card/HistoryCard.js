@@ -2,6 +2,7 @@ import React from 'react';
 import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
+
 const state = {
   labels: ['January', 'February', 'March',
            'April', 'May'],
@@ -17,7 +18,6 @@ const state = {
     }
   ]
 }
-
 
 export default function HistoryCard(props) {
   const { backgroundColor, ...rest } = props;
@@ -37,7 +37,17 @@ export default function HistoryCard(props) {
             },
             responsive : true,
             maintainAspectRatio : false,
-            }}
+            color : 'white',
+            scales: {
+              xAxes: [{
+                gridLines: {color: "white"},
+                ticks: {fontColor: 'white'}
+              }],
+              yAxes: [{
+                gridLines: { color: "white"},
+                ticks: {fontColor: 'white'} 
+              }]
+            }}}
         />
       </div>
       <div className={classes.footer} >
@@ -45,7 +55,7 @@ export default function HistoryCard(props) {
         <p>문제가 발견되지 않았습니다.</p>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <p className={classes.updateTime}> 방금 갱신됨</p>
+          <p className={classes.updateTime}>방금 갱신됨</p>
         </div>
       </div>
     </div>

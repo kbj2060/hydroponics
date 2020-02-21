@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
 import Switch from 'components/Switches/Switches';
 import WeatherCard from 'components/Card/WeatherCard';
 
@@ -33,7 +32,7 @@ export default function Dashboard() {
                 <ControlIcon />
               </div>
               <div style={{height:'75%'}}>
-                
+
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                     <Typography variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>

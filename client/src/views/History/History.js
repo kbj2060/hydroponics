@@ -15,22 +15,22 @@ export default function History() {
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='온도' backgroundColor='#ffc952'/>
+            <HistoryCard subject='온도' backgroundColor='#dadada'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='습도' backgroundColor='#47b8e0'/>
+            <HistoryCard subject='조명' backgroundColor='#dadada'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='CO2' backgroundColor='#f9a11b'/>
+            <HistoryCard subject='CO2' backgroundColor='#dadada'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='조명' backgroundColor='#ffb3b3'/>
+            <HistoryCard subject='습도' backgroundColor='#dadada'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='PH' backgroundColor='#67D5B5'/>
+            <HistoryCard subject='PH' backgroundColor='#dadada'/>
           </Grid>
           <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='EC' backgroundColor='#ff7473'/>
+            <HistoryCard subject='EC' backgroundColor='#dadada'/>
           </Grid>
         </Grid>
       </div>

@@ -25,23 +25,17 @@ export default function PermanentAppBar(props) {
   const [state, setState] = React.useState({
     right: false,
   });
-  // const [locationState, setLocationState] = React.useState({
-  //   location : 'left'
-  // });
 
-  // const toggleDrawer = (side, open) => event => {
-  //   if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-  //   return;
-  //   }
-  //   setState({[side]: open });
-  // }
   const toggleDrawer = (side, open) => event => {
-    setState({
-        [side] : open,
-    });
+    setState({ ...state, [side]: open });
+
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
     return;
     }
+  }
+
+  const closeDrawer = () => {
+    setState(false);
   }
 
   return (
@@ -52,23 +46,10 @@ export default function PermanentAppBar(props) {
       elevation={0}
       color='primary'
       >
-      <Toolbar>
-        <Typography className={classes.title} variant="h6" noWrap>
-          수경재배 관리 시스템
+      <Toolbar >
+        <Typography className={classes.title} variant="h6">
+          Hydroponics Management System
         </Typography>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="검색.."
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
         <div className={classes.grow} />
         <Hidden smDown>
           <IconButton aria-label="show 17 new notifications" color="inherit">
@@ -100,11 +81,11 @@ export default function PermanentAppBar(props) {
                 anchor="right"
                 open={state.right}
                 onClose={toggleDrawer('right', false)}
-
               >
                 <div
                   className={classes.list}
                   role="presentation"
+                  onClick={closeDrawer}
                 >
                   <NavDrawer {...state}/>
                 </div>
