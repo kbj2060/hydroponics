@@ -23,7 +23,7 @@ const appBarStyle = makeStyles(theme => ({
     },
   },
   appBar: {
-    backgroundColor : '#eee',
+    backgroundColor : '#ddeeee',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -33,6 +33,8 @@ const appBarStyle = makeStyles(theme => ({
   drawer: {
     display : 'none',
     [theme.breakpoints.up('md')]: {
+      backgroundColor : '#ddeeee',
+      borderRadius: '0.5rem',
       display : 'contents',
       width: drawerWidth,
       flexShrink: 0,
@@ -41,8 +43,10 @@ const appBarStyle = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth,
     overflow : 'hidden',
-    backgroundColor : '#eee',
-
+    background: "#304444"
+  },
+  paper: {
+    background: "#304444"
   },
   toolbar: theme.mixins.toolbar,
   content: {

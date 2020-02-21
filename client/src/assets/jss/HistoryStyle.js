@@ -44,7 +44,7 @@ const HistoryStyle = makeStyles(theme =>({
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : '#eee',
+    borderTopColor : '#ddeeee',
     textAlign : 'left',
     verticalAlign : 'middle',
   },

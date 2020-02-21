@@ -6,7 +6,7 @@ const dashboardStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
-    backgroundColor: '#eee',
+    backgroundColor: '#ddeeee',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -73,7 +73,7 @@ const dashboardStyle = makeStyles(theme =>({
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : '#eee',
+    borderTopColor : '#ddeeee',
     textAlign : 'left',
     verticalAlign : 'middle',
   },
