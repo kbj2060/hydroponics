@@ -75,17 +75,15 @@ export const NavDrawer = (props) => {
   }
 
   return (
-    <div >
+    <div>
       <div className={classes.drawerTitle}>
         <p style={{marginBottom:'6px'}}>HYDROPONICS</p>
       </div>
       {state.right === true ?
       <div>
-        <CssBaseline />
         {viewList(rightDrawerItems)}
       </div> :
       <div>
-        <CssBaseline />
         {viewList(leftDrawerItems)}
       </div>
       }

@@ -17,7 +17,7 @@ const navDrawerStyle = {
     borderBottomStyle : 'solid',
     padding:'10px',
     display:'inline-block',
-  }
+  },
 };
 
 export default navDrawerStyle;

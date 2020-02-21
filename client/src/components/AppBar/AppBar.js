@@ -81,9 +81,8 @@ export default function PermanentAppBar(props) {
                 anchor="right"
                 open={state.right}
                 onClose={toggleDrawer('right', false)}
-              >
+                classes={{ paper: classes.paper }}              >
                 <div
-                  className={classes.list}
                   role="presentation"
                   onClick={closeDrawer}
                 >
@@ -99,7 +98,7 @@ export default function PermanentAppBar(props) {
         <Drawer
           variant="permanent"
           classes={{
-            paper: classes.drawerPaper,
+            paper: classes.paper,
           }}
           anchor="left"
         >
