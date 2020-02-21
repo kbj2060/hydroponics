@@ -20,12 +20,6 @@ const navDrawerStyle = {
     padding:'10px',
     display:'inline-block',
   },
-  fullListItems : {
-    '&:hover' : {
-      backgroundColor : '#ABBFBE',
-      borderRadius : '15px',
-    }
-  },
   clickedItem : {
     backgroundColor : '#ABBFBE',
     borderRadius : '15px',

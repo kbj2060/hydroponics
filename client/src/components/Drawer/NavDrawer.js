@@ -55,7 +55,7 @@ export const NavDrawer = (props) => {
         let icon = items[text][0];
         let routes = items[text][1];
         return (
-        <MenuItem className={menuClicked === text ? classes.clickedItem : classes.fullListItems}
+        <MenuItem className={menuClicked === text ? classes.clickedItem : ''}
           component={Link} to={routes} button key={text}
           onClick={handleMenuClicked}>
           <ListItemIcon>{icon}</ListItemIcon>
