@@ -46,23 +46,10 @@ export default function PermanentAppBar(props) {
       elevation={0}
       color='primary'
       >
-      <Toolbar>
-        <Typography className={classes.title} variant="h6" noWrap>
-          수경재배 관리 시스템
+      <Toolbar >
+        <Typography className={classes.title} variant="h6">
+          Hydroponics Management System
         </Typography>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="검색.."
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
         <div className={classes.grow} />
         <Hidden smDown>
           <IconButton aria-label="show 17 new notifications" color="inherit">

@@ -5,7 +5,7 @@
 html,
 body {
   align-items: center;
-  background-color: #f8f8f8 !important;
+  background-color: rgb(55, 56, 52) !important;
   color: #333;
   display: flex;
   font-family: Arial, Helvetica, sans-serif;
@@ -25,9 +25,10 @@ body {
   width : 100%;
   margin : 0;
   padding : 5%;
+  background-color: #dadada !important;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
   display : inline-block;
   border-radius: 0.5rem;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
 }
 
 .inline-input {
@@ -147,21 +148,30 @@ body {
 }
 
 .cloudy {
-  background-image: linear-gradient(0deg, #bbdefb, #2196f3);
+  background-color: 'rgb(55, 56, 52)'
+  /* background-image: linear-gradient(0deg, #bbdefb, #2196f3); */
 }
 
 .clear {
-  background-image: linear-gradient(0deg, #b3e5fc, #29b6f6);
+  background-color: 'rgb(55, 56, 52)'
+
+  /* background-image: linear-gradient(0deg, #b3e5fc, #29b6f6); */
 }
 
 .snow {
-  background-image: linear-gradient(0deg, #b2ebf2, #26c6da);
+  background-color: 'rgb(55, 56, 52)'
+
+  /* background-image: linear-gradient(0deg, #b2ebf2, #26c6da); */
 }
 
 .rain {
-  background-image: linear-gradient(0deg, #c5cae9, #5c6bc0);
+  background-color: 'rgb(55, 56, 52)'
+
+  /* background-image: linear-gradient(0deg, #c5cae9, #5c6bc0); */
 }
 
 .thunderstorm {
-  background-image: linear-gradient(0deg, #e0e0e0, #757575);
+  background-color: 'rgb(55, 56, 52)'
+
+  /* background-image: linear-gradient(0deg, #e0e0e0, #757575); */
 }

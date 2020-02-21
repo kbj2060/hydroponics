@@ -37,7 +37,17 @@ export default function HistoryCard(props) {
             },
             responsive : true,
             maintainAspectRatio : false,
-            }}
+            color : 'white',
+            scales: {
+              xAxes: [{
+                gridLines: {color: "white"},
+                ticks: {fontColor: 'white'}
+              }],
+              yAxes: [{
+                gridLines: { color: "white"},
+                ticks: {fontColor: 'white'} 
+              }]
+            }}}
         />
       </div>
       <div className={classes.footer} >
