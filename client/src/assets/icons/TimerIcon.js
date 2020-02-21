@@ -7,7 +7,8 @@ const useStyles = makeStyles(theme => ({
   icon:{
     height : '12px',
     width : '12px',
-    verticalAlign : 'middle'
+    verticalAlign : 'middle',
+    fill : '#405C5A',
   }
 }));
 

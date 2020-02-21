@@ -6,7 +6,7 @@ const dashboardStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
-    backgroundColor: '#ddeeee',
+    backgroundColor: '#ABBFBE',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -38,12 +38,12 @@ const dashboardStyle = makeStyles(theme =>({
     borderRadius: '0.5rem',
   }),
   figureCard : {
-    padding: '15px',
+    padding: '15px 15px 5px 15px',
     textAlign: 'center',
     margin : '8px',
     position: 'relative',
     zIndex : '1',
-    backgroundColor : '#dadada',
+    backgroundColor : 'white',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   figureCardContents : {
@@ -64,16 +64,15 @@ const dashboardStyle = makeStyles(theme =>({
     position: 'relative',
     borderRadius: '0.5rem',
     padding: theme.spacing(2),
-    backgroundColor: '#dadada !important',
+    backgroundColor: '#white !important',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },
   updateInfo : {
     margin : 0,
-    paddingTop : '10px',
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : '#ddeeee',
+    borderTopColor : '#405C5A',
     textAlign : 'left',
     verticalAlign : 'middle',
   },
@@ -81,6 +80,7 @@ const dashboardStyle = makeStyles(theme =>({
     display : 'inline',
     verticalAlign : 'middle',
     fontSize : '10px',
+    color : '#405C5A',
   },
   alignButtonIcon : {
     display:'inline',
@@ -98,22 +98,27 @@ const dashboardStyle = makeStyles(theme =>({
   },
   greenDot : {
     marginLeft : '10px',
-    height : '12px',
-    width : '12px',
+    height : '9px',
+    width : '9px',
     margin : 'auto',
     backgroundColor : 'green',
     borderRadius : '50%',
-    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #304701 0 -1px 9px, #89FF00 0 2px 12px',
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #aaff00 0 -1px 9px, #89FF00 0 2px 12px',
   },
   redDot : {
     marginLeft : '10px',
-    height : '12px',
-    width : '12px',
+    height : '9px',
+    width : '9px',
     margin : 'auto',
     borderRadius : '50%',
     backgroundColor: 'red',
-    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #441313 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
-  }
+    boxShadow: 'rgba(0, 0, 0, 0.2) 0 -1px 7px 1px, inset #ff0000 0 -1px 9px, rgba(255, 0, 0, 0.5) 0 2px 12px',
+  },
+  textColor : {
+    padding : '5px 0 5px 0',
+    color : '#405C5A',
+    fontWeight : 'bold',
+  },
 }));
 
 export default dashboardStyle;

@@ -9,6 +9,13 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  Typography: {
+    fontFamily : '"Noto Sans KR", serif'
+  }
+})
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000'
@@ -22,7 +29,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <BrowserRouter>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')

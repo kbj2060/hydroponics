@@ -11,12 +11,12 @@ import LedIcon from 'assets/icons/LedIcon';
 import useStyles from 'assets/jss/dashboardStyle.js'
 
 const colors = {
-  co2 : {backgroundColor : '#eee'},
-  temp : {backgroundColor : '#eee'},
-  hum : {backgroundColor : '#eee'},
-  ph : {backgroundColor : '#eee'},
-  ec : {backgroundColor : '#eee'},
-  led : {backgroundColor : '#eee'},
+  co2 : {backgroundColor : 'white'},
+  temp : {backgroundColor : 'white'},
+  hum : {backgroundColor : 'white'},
+  ph : {backgroundColor : 'white'},
+  ec : {backgroundColor : 'white'},
+  led : {backgroundColor : 'white'},
 };
 
 export default function ControlIcon(props) {

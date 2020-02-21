@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -13,6 +12,7 @@ import LogOutIcon from 'assets/icons/LogOutIcon';
 import DashboardIcon from 'assets/icons/DashboardIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
+
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
@@ -23,10 +23,11 @@ const useStyles = makeStyles(styles);
 export const NavDrawer = (props) => {
   const classes = useStyles();
 
+  const [menuClicked, setMenuClicked ] = React.useState('제어')
   const [state, setstate] = React.useState(props);
 
   useEffect(() => {
-    setstate(props);
+    setstate(state);
     }, [props])
 
   const leftDrawerItems = {
@@ -35,8 +36,8 @@ export const NavDrawer = (props) => {
     설정  : [<SettingsIcon />, '/settings'],
   };
   const restDrawerItems = {
-    프로필: [<AccountCircle />, '/account'],
-    알림: [<NotificationsIcon />, '/notification']
+    프로필: [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    알림: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
   };
   const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
   const footerDrawerItems = {
@@ -44,16 +45,22 @@ export const NavDrawer = (props) => {
     로그아웃 : [<LogOutIcon />, '/logout'],
   };
 
+  const handleMenuClicked = (e) => {
+    e.persist();
+    setMenuClicked(e.target.textContent);
+  }
   const handleItems = (items) => (
     <div>
       {Object.keys(items).map((text, index) => {
         let icon = items[text][0];
         let routes = items[text][1];
         return (
-        <MenuItem component={Link} to={routes} button key={text} >
+        <MenuItem className={menuClicked === text ? classes.clickedItem : classes.fullListItems}
+          component={Link} to={routes} button key={text}
+          onClick={handleMenuClicked}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={
-              <Typography style={{fontSize:'14px'}}>{text}</Typography>
+              <Typography className={classes.listText}>{text}</Typography>
             } />
         </MenuItem>
     )})}
@@ -77,7 +84,7 @@ export const NavDrawer = (props) => {
   return (
     <div>
       <div className={classes.drawerTitle}>
-        <p style={{marginBottom:'6px'}}>HYDROPONICS</p>
+        <p style={{marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
       </div>
       {state.right === true ?
       <div>

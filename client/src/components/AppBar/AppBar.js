@@ -4,9 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,12 +13,16 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 
 import { NavDrawer } from 'components/Drawer/NavDrawer';
-import styles from 'assets/jss/appBarStyle.js'
+import useStyles from 'assets/jss/appBarStyle.js'
+import {  makeStyles } from '@material-ui/core/styles';
 
+const style = makeStyles(theme => ({
+  badge : {backgroundColor:'#a87f0b'}
+}))
 
-// 페이지 상단의 앱바를 만드는 함수형 컴포넌트
 export default function PermanentAppBar(props) {
-  const classes = styles();
+  const classes = useStyles();
+  const overrideClasses = style();
 
   const [state, setState] = React.useState({
     right: false,
@@ -53,8 +55,8 @@ export default function PermanentAppBar(props) {
         <div className={classes.grow} />
         <Hidden smDown>
           <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={100} color="secondary">
-              <NotificationsIcon style={{ color: '#3c4858' }} />
+            <Badge badgeContent={100} classes={{badge: overrideClasses.badge}}>
+              <NotificationsIcon style={{ heigth: '27px', width:'27px', color: '#405C5A' }} />
             </Badge>
           </IconButton>
           <IconButton
@@ -63,7 +65,7 @@ export default function PermanentAppBar(props) {
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle style={{ color: '#3c4858' }}/>
+            <AccountCircle style={{ heigth: '27px', width:'27px', color: '#405C5A' }}/>
           </IconButton>
         </Hidden>
         <Hidden mdUp>
@@ -71,11 +73,11 @@ export default function PermanentAppBar(props) {
             <IconButton
               aria-label="show more"
               aria-haspopup="true"
-              color="inherit"
+              color="#405C5A"
               >
               <MenuIcon
                 onClick={toggleDrawer('right', true)}
-                style={{ color: '#3c4858' }}
+                style={{ color: '#405C5A' }}
               />
               <Drawer
                 anchor="right"

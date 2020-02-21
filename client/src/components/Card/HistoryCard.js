@@ -2,6 +2,7 @@ import React from 'react';
 import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
+import Typography from '@material-ui/core/Typography';
 
 const state = {
   labels: ['January', 'February', 'March',
@@ -11,8 +12,8 @@ const state = {
       label: 'Rainfall',
       fill: false,
       lineTension: 0.5,
-      backgroundColor: 'white',
-      borderColor: 'white',
+      backgroundColor: '#D7A310',
+      borderColor: '#D7A310',
       borderWidth: 1,
       data: [65, 59, 80, 81, 56]
     }
@@ -37,25 +38,25 @@ export default function HistoryCard(props) {
             },
             responsive : true,
             maintainAspectRatio : false,
-            color : 'white',
+            color : '#405C5A',
             scales: {
               xAxes: [{
-                gridLines: {color: "white"},
-                ticks: {fontColor: 'white'}
+                gridLines: {color: "#405C5A"},
+                ticks: {fontColor: '#405C5A'}
               }],
               yAxes: [{
-                gridLines: { color: "white"},
-                ticks: {fontColor: 'white'} 
+                gridLines: { color: "#405C5A"},
+                ticks: {fontColor: '#405C5A'}
               }]
             }}}
         />
       </div>
       <div className={classes.footer} >
-        <h4>{props.subject}</h4>
-        <p>문제가 발견되지 않았습니다.</p>
+        <Typography variant="body1" className={classes.textColor}>{props.subject}</Typography>
+        <Typography variant="body2" className={classes.textColor}>문제가 발견되지 않았습니다.</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <p className={classes.updateTime}>방금 갱신됨</p>
+          <Typography variant="inherit" className={classes.updateTime}>방금 갱신됨</Typography>
         </div>
       </div>
     </div>
