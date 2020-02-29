@@ -27,6 +27,14 @@ const navDrawerStyle = {
   listText : {
     fontSize:'14px',
     color:'white',
+  },
+  hoverItem : {
+    backgroundColor : "#405C5A",
+    borderRadius : '15px',
+    '&:hover': {
+      backgroundColor : "#ABBFBE",
+      borderRadius : '15px',
+    }
   }
 };
 

@@ -13,6 +13,7 @@ import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import useStyles from 'assets/jss/dashboardStyle';
 
+import Circle from 'react-circle';
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -63,8 +64,33 @@ export default function Dashboard() {
               </div>
             </Card>
           </Grid>
-
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          
+          <Grid xs={12} sm={12} md={12} lg={6} className={classes.parentItem}>
+            <div>
+              <Typography>온도</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+            <div>
+              <Typography>습도</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+            <div>
+              <Typography>조명</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+            <div>
+              <Typography>CO2</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+            <div>
+              <Typography>PH</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+            <div>
+              <Typography>EC</Typography>
+              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            </div>
+          {/* <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
               <IconCard Co2Icon color='co2'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -82,7 +108,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
             <IconCard TemperatureIcon color='temp' />
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -101,7 +127,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
             <IconCard HumidityIcon color='hum'/>
               <Card className={classes.figureCard}>
                 <CardContent className={classes.figureCardContents}>
@@ -119,7 +145,7 @@ export default function Dashboard() {
               </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
             <IconCard PHIcon color='ph'/>
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
@@ -137,7 +163,7 @@ export default function Dashboard() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
             <IconCard ECIcon color='ec' />
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
@@ -155,7 +181,7 @@ export default function Dashboard() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4} lg={2} className={classes.itemGrid}>
+          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
             <IconCard LedIcon color='led' />
             <Card className={classes.figureCard}>
               <CardContent className={classes.figureCardContents}>
@@ -171,8 +197,8 @@ export default function Dashboard() {
                 <p className={classes.updateTime}> 방금 갱신됨</p>
               </div>
             </Card>
+          </Grid> */}
           </Grid>
-
         </Grid>
       </div>
       );

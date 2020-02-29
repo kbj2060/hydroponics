@@ -23,9 +23,19 @@ const dashboardStyle = makeStyles(theme =>({
   },
   itemGrid : {
     position : 'relative',
-    height : '80%',
-    margin : '-40px 0 -40px 0',
-    padding : '1%',
+    // height : '80%',
+    // margin : '-40px 0 -40px 0',
+    // padding : '1%',
+  },
+  parentItem : {
+    display : 'grid',
+    backgroundColor : 'white',
+    gridTemplateColumns: 'auto auto auto',
+    borderRadius : '15px',
+    margin : '15px',
+  },
+  childItem : {
+    padding:  1
   },
   iconCard : props => ({
     padding : '1.5em',
@@ -40,7 +50,7 @@ const dashboardStyle = makeStyles(theme =>({
   figureCard : {
     padding: '15px 15px 5px 15px',
     textAlign: 'center',
-    margin : '8px',
+    margin : '5%',
     position: 'relative',
     zIndex : '1',
     backgroundColor : 'white',
@@ -49,9 +59,6 @@ const dashboardStyle = makeStyles(theme =>({
   figureCardContents : {
     padding : '0px',
     textAlign: 'right',
-  },
-  controlCardContents : {
-
   },
   controlCardWeather : {
     height : '20em',
