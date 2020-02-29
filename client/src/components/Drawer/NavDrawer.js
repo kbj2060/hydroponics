@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -23,11 +24,12 @@ const useStyles = makeStyles(styles);
 export const NavDrawer = (props) => {
   const classes = useStyles();
 
-  const [menuClicked, setMenuClicked ] = React.useState('제어')
+  const [menuClicked, setMenuClicked ] = React.useState('')
   const [state, setstate] = React.useState(props);
 
   useEffect(() => {
     setstate(state);
+
     }, [props])
 
   const leftDrawerItems = {
@@ -47,6 +49,7 @@ export const NavDrawer = (props) => {
 
   const handleMenuClicked = (e) => {
     e.persist();
+    console.log(e);
     setMenuClicked(e.target.textContent);
   }
   const handleItems = (items) => (

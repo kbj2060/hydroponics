@@ -43,7 +43,8 @@ const appBarStyle = makeStyles(theme => ({
   paper: {
     width: drawerWidth,
     background: "#405C5A",
-    borderRadius: '0.5rem',
+    borderTopRightRadius: '0.5rem',
+    borderBottomRightRadius: '0.5rem',
     overflowX : 'hidden',
     borderColor : '#ABBFBE',
   },

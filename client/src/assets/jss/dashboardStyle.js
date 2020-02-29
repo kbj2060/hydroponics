@@ -28,14 +28,9 @@ const dashboardStyle = makeStyles(theme =>({
     // padding : '1%',
   },
   parentItem : {
-    display : 'grid',
     backgroundColor : 'white',
-    gridTemplateColumns: 'auto auto auto',
     borderRadius : '15px',
-    margin : '15px',
-  },
-  childItem : {
-    padding:  1
+    padding : '15px',
   },
   iconCard : props => ({
     padding : '1.5em',

@@ -12,6 +12,7 @@ import WeatherCard from 'components/Card/WeatherCard';
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import useStyles from 'assets/jss/dashboardStyle';
+import EnviromentsIcon from 'assets/icons/EnviromentsIcon';
 
 import Circle from 'react-circle';
 
@@ -29,11 +30,10 @@ export default function Dashboard() {
 
           <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <Card className={classes.controlCardButtons}>
-              <div style={{height:'25%'}}>
+              <div>
                 <ControlIcon />
               </div>
-              <div style={{height:'75%'}}>
-
+              <div style={{height:'100%', padding:'5% 0 5% 0'}}>
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                     <Typography className={classes.textColor} variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>
@@ -65,31 +65,39 @@ export default function Dashboard() {
             </Card>
           </Grid>
           
-          <Grid xs={12} sm={12} md={12} lg={6} className={classes.parentItem}>
+          <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
+            
+          <Card className={classes.parentItem}>
             <div>
-              <Typography>온도</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              <EnviromentsIcon />
             </div>
-            <div>
-              <Typography>습도</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
+              <div>
+                <Typography className={classes.textColor}>온도</Typography>
+                <Circle progress={15} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
+              <div>
+                <Typography className={classes.textColor}>습도</Typography>
+                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
+              <div>
+                <Typography className={classes.textColor}>조명</Typography>
+                <Circle progress={15} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
+              <div>
+                <Typography className={classes.textColor}>CO2</Typography>
+                <Circle progress={10} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
+              <div>
+                <Typography className={classes.textColor}>PH</Typography>
+                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
+              <div>
+                <Typography className={classes.textColor}>EC</Typography>
+                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+              </div>
             </div>
-            <div>
-              <Typography>조명</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-            </div>
-            <div>
-              <Typography>CO2</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-            </div>
-            <div>
-              <Typography>PH</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-            </div>
-            <div>
-              <Typography>EC</Typography>
-              <Circle progress={35} size={125} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-            </div>
+          </Card>
           {/* <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
               <IconCard Co2Icon color='co2'/>
               <Card className={classes.figureCard}>

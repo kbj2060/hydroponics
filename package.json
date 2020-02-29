@@ -6,9 +6,9 @@
   "author": "kbj2060 <kbj2060@naver.com>",
   "license": "MIT",
   "scripts": {
-    "client": "cd client && cross-env NODE_PATH=src yarn start",
+    "client": "cd client && cross-env NODE_PATH=src npm start",
     "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"npm server\" \"npm client\""
   },
   "dependencies": {
     "cross-env": "^7.0.0",
