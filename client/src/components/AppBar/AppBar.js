@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,7 +18,10 @@ import useStyles from 'assets/jss/appBarStyle.js'
 import {  makeStyles } from '@material-ui/core/styles';
 
 const style = makeStyles(theme => ({
-  badge : {backgroundColor:'#a87f0b'}
+  badge : {
+    backgroundColor:'#a87f0b',
+    color : 'white',
+  }
 }))
 
 export default function PermanentAppBar(props) {
@@ -54,19 +58,24 @@ export default function PermanentAppBar(props) {
         </Typography>
         <div className={classes.grow} />
         <Hidden smDown>
-          <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={100} classes={{badge: overrideClasses.badge}}>
-              <NotificationsIcon style={{ heigth: '27px', width:'27px', color: '#405C5A' }} />
-            </Badge>
-          </IconButton>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle style={{ heigth: '27px', width:'27px', color: '#405C5A' }}/>
-          </IconButton>
+          <Link to="/notification">
+            <IconButton aria-label="show 17 new notifications" 
+                        color="inherit">            
+              <Badge badgeContent={100} classes={{badge: overrideClasses.badge}}>
+                <NotificationsIcon style={{ heigth: '27px', width:'27px', color: '#405C5A' }} />
+              </Badge>
+            </IconButton>
+          </Link>
+          <Link to="/account">
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle style={{ heigth: '27px', width:'27px', color: '#405C5A' }}/>
+            </IconButton>
+          </Link>
         </Hidden>
         <Hidden mdUp>
           <div>

@@ -12,22 +12,22 @@ export default function History() {
       <div className={classes.root}>
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='온도' backgroundColor='white'/>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='조명' backgroundColor='white'/>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='CO2' backgroundColor='white'/>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='습도' backgroundColor='white'/>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='PH' backgroundColor='white'/>
           </Grid>
-          <Grid item xs={12} sm={12} md={4} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
             <HistoryCard subject='EC' backgroundColor='white'/>
           </Grid>
         </Grid>

@@ -33,7 +33,7 @@ export default function Dashboard() {
               <div>
                 <ControlIcon />
               </div>
-              <div style={{height:'100%', padding:'5% 0 5% 0'}}>
+              <div style={{height:'90%', padding:'5% 0 5% 0'}}>
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                     <Typography className={classes.textColor} variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>

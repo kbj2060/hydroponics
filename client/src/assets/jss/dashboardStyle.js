@@ -30,7 +30,7 @@ const dashboardStyle = makeStyles(theme =>({
   parentItem : {
     backgroundColor : 'white',
     borderRadius : '15px',
-    padding : '15px',
+    padding : '20px',
   },
   iconCard : props => ({
     padding : '1.5em',
@@ -62,10 +62,10 @@ const dashboardStyle = makeStyles(theme =>({
     padding : '14px',
     },
   controlCardButtons : {
-    height : '20em',
+    height : '22em',
     position: 'relative',
     borderRadius: '0.5rem',
-    padding: theme.spacing(2),
+    padding: '20px',
     backgroundColor: '#white !important',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
   },

@@ -24,7 +24,7 @@ body {
   height : 100%;
   width : 100%;
   margin : 0;
-  padding : 5%;
+  padding : 20px;
   background-color: white !important;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
   display : inline-block;
@@ -64,7 +64,7 @@ body {
   align-items: flex-start;
   display: flex;
   flex-start: start;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 2rem 0 2rem 0;
 }
 
 .main-info {
@@ -91,6 +91,11 @@ body {
   justify-content: flex-start;
   margin: 0 0 0 0.8rem;
   order: 1;
+}
+
+.loading-text {
+  text-align: center;
+  color: #405C5A;
 }
 
 .sub-info-title {
@@ -141,6 +146,10 @@ body {
   color: #405C5A;
   font-size: 1.7rem;
   width: 3.5rem;
+}
+
+.title-icon {
+  padding-bottom : '8%';
 }
 
 .selected {
