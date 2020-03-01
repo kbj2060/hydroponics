@@ -11,8 +11,15 @@ import WeatherLightningRainyIcon from "mdi-react/WeatherLightningRainyIcon";
 import WeatherPouringIcon from "mdi-react/WeatherPouringIcon";
 import WeatherSnowyIcon from "mdi-react/WeatherSnowyIcon";
 import WeatherIcon from 'assets/icons/WeatherIcon';
+import { withStyles } from '@material-ui/core/styles';
 
 import "assets/css/weatherStyle.css";
+
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 class WeatherCard extends React.Component {
   constructor(props) {
@@ -41,70 +48,71 @@ class WeatherCard extends React.Component {
     let res = await axios.get(url);
     this.setState({ data: res.data });
 
-    const currentData = this.currentData();
-    const dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const dayOfWeekFull = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-    const currentDay = "Today";
-    const currentDayFull = dayOfWeekFull[new Date(currentData.dt_txt).getDay()];
-    const currentTemp = Math.round(currentData.main.temp);
-    const currentMinTemp = Math.round(currentData.main.temp_min);
-    const currentMaxTemp = Math.round(currentData.main.temp_max);
-    const currentWeather =
-      currentData.weather[0].main === "Clouds"
-        ? "Cloudy"
-        : currentData.weather[0].main;
-    const currentIcon = this.convertWeatherIcons(currentData.weather[0].main);
+    if( typeof this.state.data.list === 'undefined') {
+      this.setState({
+        isLoading : true
+      });
+    } else {
+      const currentData = this.currentData();
+      const dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dayOfWeekFull = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
+      const currentDay = "Today";
+      const currentDayFull = dayOfWeekFull[new Date(currentData.dt_txt).getDay()];
+      const currentTemp = Math.round(currentData.main.temp);
+      const currentMinTemp = Math.round(currentData.main.temp_min);
+      const currentMaxTemp = Math.round(currentData.main.temp_max);
+      const currentWeather =
+        currentData.weather[0].main === "Clouds"
+          ? "Cloudy"
+          : currentData.weather[0].main;
+      const currentIcon = this.convertWeatherIcons(currentData.weather[0].main);
 
-    const days = [];
-    const daysFull = [];
-    const temps = [];
-    const minTemps = [];
-    const maxTemps = [];
-    const weather = [];
-    const icons = [];
-    for (let i = 0; i < this.state.data.list.length; i = i + 8) {
-      let date = new Date(this.state.data.list[i].dt_txt);
-      let day = dayOfWeek[date.getDay()];
-      let dayFull = dayOfWeekFull[date.getDay()];
-      days.push(day);
-      daysFull.push(dayFull);
-      temps.push(Math.round(this.state.data.list[i].main.temp));
-      minTemps.push(Math.round(this.state.data.list[i].main.temp_min));
-      maxTemps.push(Math.round(this.state.data.list[i].main.temp_max));
+      const days = [];
+      const daysFull = [];
+      const temps = [];
+      const minTemps = [];
+      const maxTemps = [];
+      const weather = [];
+      const icons = [];
+      for (let i = 0; i < this.state.data.list.length; i = i + 8) {
+        let date = new Date(this.state.data.list[i].dt_txt);
+        let day = dayOfWeek[date.getDay()];
+        let dayFull = dayOfWeekFull[date.getDay()];
+        days.push(day);
+        daysFull.push(dayFull);
+        temps.push(Math.round(this.state.data.list[i].main.temp));
+        minTemps.push(Math.round(this.state.data.list[i].main.temp_min));
+        maxTemps.push(Math.round(this.state.data.list[i].main.temp_max));
 
-      if (this.state.data.list[i].weather[0].main === "Clouds") {
-        weather.push("Cloudy");
-      } else {
-        weather.push(this.state.data.list[i].weather[0].main);
+        if (this.state.data.list[i].weather[0].main === "Clouds") {
+          weather.push("Cloudy");
+        } else {
+          weather.push(this.state.data.list[i].weather[0].main);
+        }
+
+        icons.push(
+          this.convertWeatherIcons(this.state.data.list[i].weather[0].main)
+        );
       }
 
-      icons.push(
-        this.convertWeatherIcons(this.state.data.list[i].weather[0].main)
-      );
+      this.setState({
+        days: [currentDay, ...days.slice(1)],
+        daysFull: [currentDayFull, ...daysFull.slice(1)],
+        temps: [currentTemp, ...temps.slice(1)],
+        minTemps: [currentMinTemp, ...minTemps.slice(1)],
+        maxTemps: [currentMaxTemp, ...maxTemps.slice(1)],
+        weather: [currentWeather, ...weather.slice(1)],
+        icons: [currentIcon, ...icons.slice(1)]
+      });
     }
-
-  this.setState({
-    days: [currentDay, ...days.slice(1)],
-    daysFull: [currentDayFull, ...daysFull.slice(1)],
-    temps: [currentTemp, ...temps.slice(1)],
-    minTemps: [currentMinTemp, ...minTemps.slice(1)],
-    maxTemps: [currentMaxTemp, ...maxTemps.slice(1)],
-    weather: [currentWeather, ...weather.slice(1)],
-    icons: [currentIcon, ...icons.slice(1)]
-  });
-
-  this.setState(prevState => ({
-    isLoading: !prevState.isLoading,
-    })
-  )
   };
 
   buildUrlApi = () => {
@@ -220,9 +228,10 @@ class WeatherCard extends React.Component {
     return (
       <div className={"widget ".concat(...background)}>
         <WeatherIcon />
-      {this.state.isLoading === true ? 
-      <div className="loading-text">
-        <Typography>Loading...</Typography> 
+      {
+      this.state.isLoading === true ? 
+      <div className="loading">
+        <ColorCircularProgress size={40} thickness={4} /> 
       </div>
           : 
       <div>

@@ -93,8 +93,12 @@ body {
   order: 1;
 }
 
-.loading-text {
-  text-align: center;
+.loading {
+  height : 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 35px;
+  align-items: center;
   color: #405C5A;
 }
 

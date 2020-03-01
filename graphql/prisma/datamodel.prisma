@@ -1,6 +1,27 @@
-type Link {
+type Dashboard {
   id: ID! @id
-  createdAt: DateTime! @createdAt
-  description: String!
   url: String!
+}
+
+type Controller {
+  id : ID! @id
+  led : Switch!
+  humidifier : Switch!
+  fan : Switch!
+}
+
+type Switch {
+  id : ID! @id
+  machine : String!
+  updateAt : DateTime!
+  status : Boolean!
+}
+
+
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  links: [Link!]!
 }
