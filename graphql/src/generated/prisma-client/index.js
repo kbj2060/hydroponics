@@ -5,7 +5,35 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Link",
+    name: "FigureFormat",
+    embedded: false
+  },
+  {
+    name: "SwitchFormat",
+    embedded: false
+  },
+  {
+    name: "Dashboard",
+    embedded: false
+  },
+  {
+    name: "Enviroment",
+    embedded: false
+  },
+  {
+    name: "Figure",
+    embedded: false
+  },
+  {
+    name: "Controller",
+    embedded: false
+  },
+  {
+    name: "Switch",
+    embedded: false
+  },
+  {
+    name: "User",
     embedded: false
   }
 ];

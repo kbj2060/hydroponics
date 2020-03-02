@@ -1,3 +1,13 @@
+type Query {
+    info : String!
+    feed : [User!]!
+}
+
+type Mutation {
+    post(name: String!, password: String!): User!
+}
+
+scalar DateTime 
 
 enum FigureFormat {
   LUX
@@ -15,44 +25,44 @@ enum SwitchFormat {
 }
 
 type Dashboard {
-  id: ID! @id
+  id: ID! 
   controller : Controller!
   enviroment : Enviroment!
 }
 
 type Enviroment {
-  id : ID! @id
+  id : ID! 
   figures : [Figure!]!
-  updatedAt : DateTime! @updatedAt
-  createdAt : DateTime! @createdAt
+  updatedAt : DateTime!
+  createdAt : DateTime! 
 }
 
 type Figure {
-  id : ID! @id
-  updatedAt : DateTime! @updatedAt
+  id : ID! 
+  updatedAt : DateTime!
   value : Float!
-  enviroment : Enviroment! @relation(link : INLINE)
+  enviroment : Enviroment! 
   measurement : FigureFormat! 
 }
 type Controller {
-  id : ID! @id
+  id : ID! 
   switches : [Switch!]!
-  createdAt : DateTime! @createdAt
-  updatedAt : DateTime! @updatedAt
+  createdAt : DateTime! 
+  updatedAt : DateTime!
 }
 
 type Switch {
-  id : ID! @id
-  controller : Controller! @relation(link:INLINE)
+  id : ID! 
+  controller : Controller! 
   switch : SwitchFormat!
-  updatedAt : DateTime! @updatedAt
+  updatedAt : DateTime!
   status : Boolean!
   controledBy : User!
 }
 
 type User {
-  id: ID! @id
+  id: ID! 
   name: String!
   password: String!
-  createdAt : DateTime! @createdAt
+  createdAt : DateTime! 
 }

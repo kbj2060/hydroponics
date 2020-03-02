@@ -48,7 +48,7 @@ class WeatherCard extends React.Component {
     let res = await axios.get(url);
     this.setState({ data: res.data });
 
-    if( typeof this.state.data.list === 'undefined') {
+    if(typeof this.state.data.list === "undefined" || this.state.data.list.length == 0) {
       this.setState({
         isLoading : true
       });
@@ -112,6 +112,8 @@ class WeatherCard extends React.Component {
         weather: [currentWeather, ...weather.slice(1)],
         icons: [currentIcon, ...icons.slice(1)]
       });
+
+      this.setState(prevState => ({ isLoading: !prevState.isLoading }));
     }
   };
 
@@ -157,12 +159,7 @@ class WeatherCard extends React.Component {
   };
 
   componentDidMount() {
-    try{ this.fetchData(); }
-    catch(e){
-      this.setState({
-        isLoading : true
-      })
-    }
+    this.fetchData();
   }
 
   handleFocus = e => {

@@ -3,7 +3,27 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateLink {
+/* GraphQL */ `type AggregateController {
+  count: Int!
+}
+
+type AggregateDashboard {
+  count: Int!
+}
+
+type AggregateEnviroment {
+  count: Int!
+}
+
+type AggregateFigure {
+  count: Int!
+}
+
+type AggregateSwitch {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -11,79 +31,102 @@ type BatchPayload {
   count: Long!
 }
 
-scalar DateTime
-
-type Link {
+type Controller {
   id: ID!
+  switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch!]
   createdAt: DateTime!
-  description: String!
-  url: String!
+  updatedAt: DateTime!
 }
 
-type LinkConnection {
+type ControllerConnection {
   pageInfo: PageInfo!
-  edges: [LinkEdge]!
-  aggregate: AggregateLink!
+  edges: [ControllerEdge]!
+  aggregate: AggregateController!
 }
 
-input LinkCreateInput {
+input ControllerCreateInput {
   id: ID
-  description: String!
-  url: String!
+  switches: SwitchCreateManyWithoutControllerInput
 }
 
-type LinkEdge {
-  node: Link!
+input ControllerCreateOneInput {
+  create: ControllerCreateInput
+  connect: ControllerWhereUniqueInput
+}
+
+input ControllerCreateOneWithoutSwitchesInput {
+  create: ControllerCreateWithoutSwitchesInput
+  connect: ControllerWhereUniqueInput
+}
+
+input ControllerCreateWithoutSwitchesInput {
+  id: ID
+}
+
+type ControllerEdge {
+  node: Controller!
   cursor: String!
 }
 
-enum LinkOrderByInput {
+enum ControllerOrderByInput {
   id_ASC
   id_DESC
   createdAt_ASC
   createdAt_DESC
-  description_ASC
-  description_DESC
-  url_ASC
-  url_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
-type LinkPreviousValues {
+type ControllerPreviousValues {
   id: ID!
   createdAt: DateTime!
-  description: String!
-  url: String!
+  updatedAt: DateTime!
 }
 
-type LinkSubscriptionPayload {
+type ControllerSubscriptionPayload {
   mutation: MutationType!
-  node: Link
+  node: Controller
   updatedFields: [String!]
-  previousValues: LinkPreviousValues
+  previousValues: ControllerPreviousValues
 }
 
-input LinkSubscriptionWhereInput {
+input ControllerSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: LinkWhereInput
-  AND: [LinkSubscriptionWhereInput!]
-  OR: [LinkSubscriptionWhereInput!]
-  NOT: [LinkSubscriptionWhereInput!]
+  node: ControllerWhereInput
+  AND: [ControllerSubscriptionWhereInput!]
+  OR: [ControllerSubscriptionWhereInput!]
+  NOT: [ControllerSubscriptionWhereInput!]
 }
 
-input LinkUpdateInput {
-  description: String
-  url: String
+input ControllerUpdateDataInput {
+  switches: SwitchUpdateManyWithoutControllerInput
 }
 
-input LinkUpdateManyMutationInput {
-  description: String
-  url: String
+input ControllerUpdateInput {
+  switches: SwitchUpdateManyWithoutControllerInput
 }
 
-input LinkWhereInput {
+input ControllerUpdateOneRequiredInput {
+  create: ControllerCreateInput
+  update: ControllerUpdateDataInput
+  upsert: ControllerUpsertNestedInput
+  connect: ControllerWhereUniqueInput
+}
+
+input ControllerUpdateOneRequiredWithoutSwitchesInput {
+  create: ControllerCreateWithoutSwitchesInput
+  connect: ControllerWhereUniqueInput
+}
+
+input ControllerUpsertNestedInput {
+  update: ControllerUpdateDataInput!
+  create: ControllerCreateInput!
+}
+
+input ControllerWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -98,6 +141,9 @@ input LinkWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  switches_every: SwitchWhereInput
+  switches_some: SwitchWhereInput
+  switches_none: SwitchWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -106,52 +152,496 @@ input LinkWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  url: String
-  url_not: String
-  url_in: [String!]
-  url_not_in: [String!]
-  url_lt: String
-  url_lte: String
-  url_gt: String
-  url_gte: String
-  url_contains: String
-  url_not_contains: String
-  url_starts_with: String
-  url_not_starts_with: String
-  url_ends_with: String
-  url_not_ends_with: String
-  AND: [LinkWhereInput!]
-  OR: [LinkWhereInput!]
-  NOT: [LinkWhereInput!]
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ControllerWhereInput!]
+  OR: [ControllerWhereInput!]
+  NOT: [ControllerWhereInput!]
 }
 
-input LinkWhereUniqueInput {
+input ControllerWhereUniqueInput {
+  id: ID
+}
+
+type Dashboard {
+  id: ID!
+  controller: Controller!
+  enviroment: Enviroment!
+}
+
+type DashboardConnection {
+  pageInfo: PageInfo!
+  edges: [DashboardEdge]!
+  aggregate: AggregateDashboard!
+}
+
+input DashboardCreateInput {
+  id: ID
+  controller: ControllerCreateOneInput!
+  enviroment: EnviromentCreateOneInput!
+}
+
+type DashboardEdge {
+  node: Dashboard!
+  cursor: String!
+}
+
+enum DashboardOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type DashboardPreviousValues {
+  id: ID!
+}
+
+type DashboardSubscriptionPayload {
+  mutation: MutationType!
+  node: Dashboard
+  updatedFields: [String!]
+  previousValues: DashboardPreviousValues
+}
+
+input DashboardSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DashboardWhereInput
+  AND: [DashboardSubscriptionWhereInput!]
+  OR: [DashboardSubscriptionWhereInput!]
+  NOT: [DashboardSubscriptionWhereInput!]
+}
+
+input DashboardUpdateInput {
+  controller: ControllerUpdateOneRequiredInput
+  enviroment: EnviromentUpdateOneRequiredInput
+}
+
+input DashboardWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  controller: ControllerWhereInput
+  enviroment: EnviromentWhereInput
+  AND: [DashboardWhereInput!]
+  OR: [DashboardWhereInput!]
+  NOT: [DashboardWhereInput!]
+}
+
+input DashboardWhereUniqueInput {
+  id: ID
+}
+
+scalar DateTime
+
+type Enviroment {
+  id: ID!
+  figures(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Figure!]
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type EnviromentConnection {
+  pageInfo: PageInfo!
+  edges: [EnviromentEdge]!
+  aggregate: AggregateEnviroment!
+}
+
+input EnviromentCreateInput {
+  id: ID
+  figures: FigureCreateManyWithoutEnviromentInput
+}
+
+input EnviromentCreateOneInput {
+  create: EnviromentCreateInput
+  connect: EnviromentWhereUniqueInput
+}
+
+input EnviromentCreateOneWithoutFiguresInput {
+  create: EnviromentCreateWithoutFiguresInput
+  connect: EnviromentWhereUniqueInput
+}
+
+input EnviromentCreateWithoutFiguresInput {
+  id: ID
+}
+
+type EnviromentEdge {
+  node: Enviroment!
+  cursor: String!
+}
+
+enum EnviromentOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type EnviromentPreviousValues {
+  id: ID!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type EnviromentSubscriptionPayload {
+  mutation: MutationType!
+  node: Enviroment
+  updatedFields: [String!]
+  previousValues: EnviromentPreviousValues
+}
+
+input EnviromentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: EnviromentWhereInput
+  AND: [EnviromentSubscriptionWhereInput!]
+  OR: [EnviromentSubscriptionWhereInput!]
+  NOT: [EnviromentSubscriptionWhereInput!]
+}
+
+input EnviromentUpdateDataInput {
+  figures: FigureUpdateManyWithoutEnviromentInput
+}
+
+input EnviromentUpdateInput {
+  figures: FigureUpdateManyWithoutEnviromentInput
+}
+
+input EnviromentUpdateOneRequiredInput {
+  create: EnviromentCreateInput
+  update: EnviromentUpdateDataInput
+  upsert: EnviromentUpsertNestedInput
+  connect: EnviromentWhereUniqueInput
+}
+
+input EnviromentUpdateOneRequiredWithoutFiguresInput {
+  create: EnviromentCreateWithoutFiguresInput
+  connect: EnviromentWhereUniqueInput
+}
+
+input EnviromentUpsertNestedInput {
+  update: EnviromentUpdateDataInput!
+  create: EnviromentCreateInput!
+}
+
+input EnviromentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  figures_every: FigureWhereInput
+  figures_some: FigureWhereInput
+  figures_none: FigureWhereInput
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [EnviromentWhereInput!]
+  OR: [EnviromentWhereInput!]
+  NOT: [EnviromentWhereInput!]
+}
+
+input EnviromentWhereUniqueInput {
+  id: ID
+}
+
+type Figure {
+  id: ID!
+  updatedAt: DateTime!
+  value: Float!
+  enviroment: Enviroment!
+  measurement: FigureFormat!
+}
+
+type FigureConnection {
+  pageInfo: PageInfo!
+  edges: [FigureEdge]!
+  aggregate: AggregateFigure!
+}
+
+input FigureCreateInput {
+  id: ID
+  value: Float!
+  enviroment: EnviromentCreateOneWithoutFiguresInput!
+  measurement: FigureFormat!
+}
+
+input FigureCreateManyWithoutEnviromentInput {
+  create: [FigureCreateWithoutEnviromentInput!]
+  connect: [FigureWhereUniqueInput!]
+}
+
+input FigureCreateWithoutEnviromentInput {
+  id: ID
+  value: Float!
+  measurement: FigureFormat!
+}
+
+type FigureEdge {
+  node: Figure!
+  cursor: String!
+}
+
+enum FigureFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+
+enum FigureOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  value_ASC
+  value_DESC
+  measurement_ASC
+  measurement_DESC
+}
+
+type FigurePreviousValues {
+  id: ID!
+  updatedAt: DateTime!
+  value: Float!
+  measurement: FigureFormat!
+}
+
+input FigureScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  value: Float
+  value_not: Float
+  value_in: [Float!]
+  value_not_in: [Float!]
+  value_lt: Float
+  value_lte: Float
+  value_gt: Float
+  value_gte: Float
+  measurement: FigureFormat
+  measurement_not: FigureFormat
+  measurement_in: [FigureFormat!]
+  measurement_not_in: [FigureFormat!]
+  AND: [FigureScalarWhereInput!]
+  OR: [FigureScalarWhereInput!]
+  NOT: [FigureScalarWhereInput!]
+}
+
+type FigureSubscriptionPayload {
+  mutation: MutationType!
+  node: Figure
+  updatedFields: [String!]
+  previousValues: FigurePreviousValues
+}
+
+input FigureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FigureWhereInput
+  AND: [FigureSubscriptionWhereInput!]
+  OR: [FigureSubscriptionWhereInput!]
+  NOT: [FigureSubscriptionWhereInput!]
+}
+
+input FigureUpdateInput {
+  value: Float
+  enviroment: EnviromentUpdateOneRequiredWithoutFiguresInput
+  measurement: FigureFormat
+}
+
+input FigureUpdateManyDataInput {
+  value: Float
+  measurement: FigureFormat
+}
+
+input FigureUpdateManyMutationInput {
+  value: Float
+  measurement: FigureFormat
+}
+
+input FigureUpdateManyWithoutEnviromentInput {
+  create: [FigureCreateWithoutEnviromentInput!]
+  delete: [FigureWhereUniqueInput!]
+  connect: [FigureWhereUniqueInput!]
+  set: [FigureWhereUniqueInput!]
+  disconnect: [FigureWhereUniqueInput!]
+  update: [FigureUpdateWithWhereUniqueWithoutEnviromentInput!]
+  upsert: [FigureUpsertWithWhereUniqueWithoutEnviromentInput!]
+  deleteMany: [FigureScalarWhereInput!]
+  updateMany: [FigureUpdateManyWithWhereNestedInput!]
+}
+
+input FigureUpdateManyWithWhereNestedInput {
+  where: FigureScalarWhereInput!
+  data: FigureUpdateManyDataInput!
+}
+
+input FigureUpdateWithoutEnviromentDataInput {
+  value: Float
+  measurement: FigureFormat
+}
+
+input FigureUpdateWithWhereUniqueWithoutEnviromentInput {
+  where: FigureWhereUniqueInput!
+  data: FigureUpdateWithoutEnviromentDataInput!
+}
+
+input FigureUpsertWithWhereUniqueWithoutEnviromentInput {
+  where: FigureWhereUniqueInput!
+  update: FigureUpdateWithoutEnviromentDataInput!
+  create: FigureCreateWithoutEnviromentInput!
+}
+
+input FigureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  value: Float
+  value_not: Float
+  value_in: [Float!]
+  value_not_in: [Float!]
+  value_lt: Float
+  value_lte: Float
+  value_gt: Float
+  value_gte: Float
+  enviroment: EnviromentWhereInput
+  measurement: FigureFormat
+  measurement_not: FigureFormat
+  measurement_in: [FigureFormat!]
+  measurement_not_in: [FigureFormat!]
+  AND: [FigureWhereInput!]
+  OR: [FigureWhereInput!]
+  NOT: [FigureWhereInput!]
+}
+
+input FigureWhereUniqueInput {
   id: ID
 }
 
 scalar Long
 
 type Mutation {
-  createLink(data: LinkCreateInput!): Link!
-  updateLink(data: LinkUpdateInput!, where: LinkWhereUniqueInput!): Link
-  updateManyLinks(data: LinkUpdateManyMutationInput!, where: LinkWhereInput): BatchPayload!
-  upsertLink(where: LinkWhereUniqueInput!, create: LinkCreateInput!, update: LinkUpdateInput!): Link!
-  deleteLink(where: LinkWhereUniqueInput!): Link
-  deleteManyLinks(where: LinkWhereInput): BatchPayload!
+  createController(data: ControllerCreateInput!): Controller!
+  updateController(data: ControllerUpdateInput!, where: ControllerWhereUniqueInput!): Controller
+  upsertController(where: ControllerWhereUniqueInput!, create: ControllerCreateInput!, update: ControllerUpdateInput!): Controller!
+  deleteController(where: ControllerWhereUniqueInput!): Controller
+  deleteManyControllers(where: ControllerWhereInput): BatchPayload!
+  createDashboard(data: DashboardCreateInput!): Dashboard!
+  updateDashboard(data: DashboardUpdateInput!, where: DashboardWhereUniqueInput!): Dashboard
+  upsertDashboard(where: DashboardWhereUniqueInput!, create: DashboardCreateInput!, update: DashboardUpdateInput!): Dashboard!
+  deleteDashboard(where: DashboardWhereUniqueInput!): Dashboard
+  deleteManyDashboards(where: DashboardWhereInput): BatchPayload!
+  createEnviroment(data: EnviromentCreateInput!): Enviroment!
+  updateEnviroment(data: EnviromentUpdateInput!, where: EnviromentWhereUniqueInput!): Enviroment
+  upsertEnviroment(where: EnviromentWhereUniqueInput!, create: EnviromentCreateInput!, update: EnviromentUpdateInput!): Enviroment!
+  deleteEnviroment(where: EnviromentWhereUniqueInput!): Enviroment
+  deleteManyEnviroments(where: EnviromentWhereInput): BatchPayload!
+  createFigure(data: FigureCreateInput!): Figure!
+  updateFigure(data: FigureUpdateInput!, where: FigureWhereUniqueInput!): Figure
+  updateManyFigures(data: FigureUpdateManyMutationInput!, where: FigureWhereInput): BatchPayload!
+  upsertFigure(where: FigureWhereUniqueInput!, create: FigureCreateInput!, update: FigureUpdateInput!): Figure!
+  deleteFigure(where: FigureWhereUniqueInput!): Figure
+  deleteManyFigures(where: FigureWhereInput): BatchPayload!
+  createSwitch(data: SwitchCreateInput!): Switch!
+  updateSwitch(data: SwitchUpdateInput!, where: SwitchWhereUniqueInput!): Switch
+  updateManySwitches(data: SwitchUpdateManyMutationInput!, where: SwitchWhereInput): BatchPayload!
+  upsertSwitch(where: SwitchWhereUniqueInput!, create: SwitchCreateInput!, update: SwitchUpdateInput!): Switch!
+  deleteSwitch(where: SwitchWhereUniqueInput!): Switch
+  deleteManySwitches(where: SwitchWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -172,14 +662,393 @@ type PageInfo {
 }
 
 type Query {
-  link(where: LinkWhereUniqueInput!): Link
-  links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link]!
-  linksConnection(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LinkConnection!
+  controller(where: ControllerWhereUniqueInput!): Controller
+  controllers(where: ControllerWhereInput, orderBy: ControllerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Controller]!
+  controllersConnection(where: ControllerWhereInput, orderBy: ControllerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ControllerConnection!
+  dashboard(where: DashboardWhereUniqueInput!): Dashboard
+  dashboards(where: DashboardWhereInput, orderBy: DashboardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dashboard]!
+  dashboardsConnection(where: DashboardWhereInput, orderBy: DashboardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DashboardConnection!
+  enviroment(where: EnviromentWhereUniqueInput!): Enviroment
+  enviroments(where: EnviromentWhereInput, orderBy: EnviromentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enviroment]!
+  enviromentsConnection(where: EnviromentWhereInput, orderBy: EnviromentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EnviromentConnection!
+  figure(where: FigureWhereUniqueInput!): Figure
+  figures(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Figure]!
+  figuresConnection(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FigureConnection!
+  switch(where: SwitchWhereUniqueInput!): Switch
+  switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch]!
+  switchesConnection(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SwitchConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
 type Subscription {
-  link(where: LinkSubscriptionWhereInput): LinkSubscriptionPayload
+  controller(where: ControllerSubscriptionWhereInput): ControllerSubscriptionPayload
+  dashboard(where: DashboardSubscriptionWhereInput): DashboardSubscriptionPayload
+  enviroment(where: EnviromentSubscriptionWhereInput): EnviromentSubscriptionPayload
+  figure(where: FigureSubscriptionWhereInput): FigureSubscriptionPayload
+  switch(where: SwitchSubscriptionWhereInput): SwitchSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Switch {
+  id: ID!
+  controller: Controller!
+  switch: SwitchFormat!
+  updatedAt: DateTime!
+  status: Boolean!
+  controledBy: User!
+}
+
+type SwitchConnection {
+  pageInfo: PageInfo!
+  edges: [SwitchEdge]!
+  aggregate: AggregateSwitch!
+}
+
+input SwitchCreateInput {
+  id: ID
+  controller: ControllerCreateOneWithoutSwitchesInput!
+  switch: SwitchFormat!
+  status: Boolean!
+  controledBy: UserCreateOneInput!
+}
+
+input SwitchCreateManyWithoutControllerInput {
+  create: [SwitchCreateWithoutControllerInput!]
+  connect: [SwitchWhereUniqueInput!]
+}
+
+input SwitchCreateWithoutControllerInput {
+  id: ID
+  switch: SwitchFormat!
+  status: Boolean!
+  controledBy: UserCreateOneInput!
+}
+
+type SwitchEdge {
+  node: Switch!
+  cursor: String!
+}
+
+enum SwitchFormat {
+  FAN
+  HUMIDIFIER
+  LED
+}
+
+enum SwitchOrderByInput {
+  id_ASC
+  id_DESC
+  switch_ASC
+  switch_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  status_ASC
+  status_DESC
+}
+
+type SwitchPreviousValues {
+  id: ID!
+  switch: SwitchFormat!
+  updatedAt: DateTime!
+  status: Boolean!
+}
+
+input SwitchScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  switch: SwitchFormat
+  switch_not: SwitchFormat
+  switch_in: [SwitchFormat!]
+  switch_not_in: [SwitchFormat!]
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  status: Boolean
+  status_not: Boolean
+  AND: [SwitchScalarWhereInput!]
+  OR: [SwitchScalarWhereInput!]
+  NOT: [SwitchScalarWhereInput!]
+}
+
+type SwitchSubscriptionPayload {
+  mutation: MutationType!
+  node: Switch
+  updatedFields: [String!]
+  previousValues: SwitchPreviousValues
+}
+
+input SwitchSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SwitchWhereInput
+  AND: [SwitchSubscriptionWhereInput!]
+  OR: [SwitchSubscriptionWhereInput!]
+  NOT: [SwitchSubscriptionWhereInput!]
+}
+
+input SwitchUpdateInput {
+  controller: ControllerUpdateOneRequiredWithoutSwitchesInput
+  switch: SwitchFormat
+  status: Boolean
+  controledBy: UserUpdateOneRequiredInput
+}
+
+input SwitchUpdateManyDataInput {
+  switch: SwitchFormat
+  status: Boolean
+}
+
+input SwitchUpdateManyMutationInput {
+  switch: SwitchFormat
+  status: Boolean
+}
+
+input SwitchUpdateManyWithoutControllerInput {
+  create: [SwitchCreateWithoutControllerInput!]
+  delete: [SwitchWhereUniqueInput!]
+  connect: [SwitchWhereUniqueInput!]
+  set: [SwitchWhereUniqueInput!]
+  disconnect: [SwitchWhereUniqueInput!]
+  update: [SwitchUpdateWithWhereUniqueWithoutControllerInput!]
+  upsert: [SwitchUpsertWithWhereUniqueWithoutControllerInput!]
+  deleteMany: [SwitchScalarWhereInput!]
+  updateMany: [SwitchUpdateManyWithWhereNestedInput!]
+}
+
+input SwitchUpdateManyWithWhereNestedInput {
+  where: SwitchScalarWhereInput!
+  data: SwitchUpdateManyDataInput!
+}
+
+input SwitchUpdateWithoutControllerDataInput {
+  switch: SwitchFormat
+  status: Boolean
+  controledBy: UserUpdateOneRequiredInput
+}
+
+input SwitchUpdateWithWhereUniqueWithoutControllerInput {
+  where: SwitchWhereUniqueInput!
+  data: SwitchUpdateWithoutControllerDataInput!
+}
+
+input SwitchUpsertWithWhereUniqueWithoutControllerInput {
+  where: SwitchWhereUniqueInput!
+  update: SwitchUpdateWithoutControllerDataInput!
+  create: SwitchCreateWithoutControllerInput!
+}
+
+input SwitchWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  controller: ControllerWhereInput
+  switch: SwitchFormat
+  switch_not: SwitchFormat
+  switch_in: [SwitchFormat!]
+  switch_not_in: [SwitchFormat!]
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  status: Boolean
+  status_not: Boolean
+  controledBy: UserWhereInput
+  AND: [SwitchWhereInput!]
+  OR: [SwitchWhereInput!]
+  NOT: [SwitchWhereInput!]
+}
+
+input SwitchWhereUniqueInput {
+  id: ID
+}
+
+type User {
+  id: ID!
+  name: String!
+  password: String!
+  createdAt: DateTime!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  name: String!
+  password: String!
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  password_ASC
+  password_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  name: String!
+  password: String!
+  createdAt: DateTime!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateDataInput {
+  name: String
+  password: String
+}
+
+input UserUpdateInput {
+  name: String
+  password: String
+}
+
+input UserUpdateManyMutationInput {
+  name: String
+  password: String
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserWhereUniqueInput {
+  id: ID
 }
 `
       }

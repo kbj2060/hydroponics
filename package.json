@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "cross-env": "^7.0.0",
+    "graphql-yoga": "^1.18.3",
     "prisma": "^1.34.10",
+    "prisma-client-lib": "^1.34.10",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2"
   }
