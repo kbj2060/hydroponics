@@ -5,6 +5,8 @@ type Query {
 
 type Mutation {
     post(name: String!, password: String!): User!
+    signup(name:String!, password:String!): AuthPayload
+    login(name:String!, password:String!): AuthPayload
 }
 
 scalar DateTime 
@@ -22,6 +24,11 @@ enum SwitchFormat {
   FAN
   HUMIDIFIER
   LED
+}
+
+type AuthPayload {
+  token : String
+  user : User
 }
 
 type Dashboard {
