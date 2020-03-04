@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
     info : String!
-    feed : [Switch!]!
+    feed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput) : Feed!
 }
 
 type Mutation {
@@ -15,6 +15,11 @@ type Mutation {
 type Subscription {
   newSwitch: Switch
   newFigure: Figure
+}
+
+type Feed {        
+  switches: [Switch!]!  
+  count: Int!     
 }
 
 enum measurementFormat {
@@ -30,6 +35,13 @@ enum SwitchFormat {
   FAN
   HUMIDIFIER
   LED
+}
+
+enum SwitchOrderByInput {
+  updatedAt_ASC
+  updatedAt_DESC
+  controledBy_ASC
+  controledBy_DESC
 }
 
 type AuthPayload {

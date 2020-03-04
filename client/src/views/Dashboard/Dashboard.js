@@ -1,6 +1,4 @@
 import React from 'react';
-import CardContent from '@material-ui/core/CardContent';
-import IconCard from 'components/Card/IconCard';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
@@ -8,12 +6,15 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Switch from 'components/Switches/Switches';
 import WeatherCard from 'components/Card/WeatherCard';
+import AppBar from 'components/AppBar/AppBar';
 
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import useStyles from 'assets/jss/dashboardStyle';
 import EnviromentsIcon from 'assets/icons/EnviromentsIcon';
 
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 import Circle from 'react-circle';
 
 export default function Dashboard() {
@@ -21,6 +22,7 @@ export default function Dashboard() {
 
   return (
       <div className={classes.root}>
+        <AppBar />
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
 

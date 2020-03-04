@@ -33,7 +33,7 @@ export const NavDrawer = (props) => {
     }, [props])
 
   const leftDrawerItems = {
-    제어  : [<DashboardIcon />, '/'],
+    제어  : [<DashboardIcon />, '/dashboard'],
     기록  : [<HistoryIcon />, '/history'],
     설정  : [<SettingsIcon />, '/settings'],
   };

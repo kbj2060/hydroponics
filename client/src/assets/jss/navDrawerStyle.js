@@ -1,6 +1,3 @@
-import backgroundImage from 'assets/img/winter.jpg'
-
-
 const navDrawerStyle = {
   list: {
     margin : '10px 15px 0 15px',
