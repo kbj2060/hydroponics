@@ -16,9 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  controller: (where?: ControllerWhereInput) => Promise<boolean>;
-  dashboard: (where?: DashboardWhereInput) => Promise<boolean>;
-  enviroment: (where?: EnviromentWhereInput) => Promise<boolean>;
+  authPayload: (where?: AuthPayloadWhereInput) => Promise<boolean>;
   figure: (where?: FigureWhereInput) => Promise<boolean>;
   switch: (where?: SwitchWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -43,63 +41,27 @@ export interface Prisma {
    * Queries
    */
 
-  controller: (where: ControllerWhereUniqueInput) => ControllerNullablePromise;
-  controllers: (args?: {
-    where?: ControllerWhereInput;
-    orderBy?: ControllerOrderByInput;
+  authPayload: (
+    where: AuthPayloadWhereUniqueInput
+  ) => AuthPayloadNullablePromise;
+  authPayloads: (args?: {
+    where?: AuthPayloadWhereInput;
+    orderBy?: AuthPayloadOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Controller>;
-  controllersConnection: (args?: {
-    where?: ControllerWhereInput;
-    orderBy?: ControllerOrderByInput;
+  }) => FragmentableArray<AuthPayload>;
+  authPayloadsConnection: (args?: {
+    where?: AuthPayloadWhereInput;
+    orderBy?: AuthPayloadOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ControllerConnectionPromise;
-  dashboard: (where: DashboardWhereUniqueInput) => DashboardNullablePromise;
-  dashboards: (args?: {
-    where?: DashboardWhereInput;
-    orderBy?: DashboardOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<Dashboard>;
-  dashboardsConnection: (args?: {
-    where?: DashboardWhereInput;
-    orderBy?: DashboardOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => DashboardConnectionPromise;
-  enviroment: (where: EnviromentWhereUniqueInput) => EnviromentNullablePromise;
-  enviroments: (args?: {
-    where?: EnviromentWhereInput;
-    orderBy?: EnviromentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<Enviroment>;
-  enviromentsConnection: (args?: {
-    where?: EnviromentWhereInput;
-    orderBy?: EnviromentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => EnviromentConnectionPromise;
+  }) => AuthPayloadConnectionPromise;
   figure: (where: FigureWhereUniqueInput) => FigureNullablePromise;
   figures: (args?: {
     where?: FigureWhereInput;
@@ -163,42 +125,24 @@ export interface Prisma {
    * Mutations
    */
 
-  createController: (data: ControllerCreateInput) => ControllerPromise;
-  updateController: (args: {
-    data: ControllerUpdateInput;
-    where: ControllerWhereUniqueInput;
-  }) => ControllerPromise;
-  upsertController: (args: {
-    where: ControllerWhereUniqueInput;
-    create: ControllerCreateInput;
-    update: ControllerUpdateInput;
-  }) => ControllerPromise;
-  deleteController: (where: ControllerWhereUniqueInput) => ControllerPromise;
-  deleteManyControllers: (where?: ControllerWhereInput) => BatchPayloadPromise;
-  createDashboard: (data: DashboardCreateInput) => DashboardPromise;
-  updateDashboard: (args: {
-    data: DashboardUpdateInput;
-    where: DashboardWhereUniqueInput;
-  }) => DashboardPromise;
-  upsertDashboard: (args: {
-    where: DashboardWhereUniqueInput;
-    create: DashboardCreateInput;
-    update: DashboardUpdateInput;
-  }) => DashboardPromise;
-  deleteDashboard: (where: DashboardWhereUniqueInput) => DashboardPromise;
-  deleteManyDashboards: (where?: DashboardWhereInput) => BatchPayloadPromise;
-  createEnviroment: (data: EnviromentCreateInput) => EnviromentPromise;
-  updateEnviroment: (args: {
-    data: EnviromentUpdateInput;
-    where: EnviromentWhereUniqueInput;
-  }) => EnviromentPromise;
-  upsertEnviroment: (args: {
-    where: EnviromentWhereUniqueInput;
-    create: EnviromentCreateInput;
-    update: EnviromentUpdateInput;
-  }) => EnviromentPromise;
-  deleteEnviroment: (where: EnviromentWhereUniqueInput) => EnviromentPromise;
-  deleteManyEnviroments: (where?: EnviromentWhereInput) => BatchPayloadPromise;
+  createAuthPayload: (data: AuthPayloadCreateInput) => AuthPayloadPromise;
+  updateAuthPayload: (args: {
+    data: AuthPayloadUpdateInput;
+    where: AuthPayloadWhereUniqueInput;
+  }) => AuthPayloadPromise;
+  updateManyAuthPayloads: (args: {
+    data: AuthPayloadUpdateManyMutationInput;
+    where?: AuthPayloadWhereInput;
+  }) => BatchPayloadPromise;
+  upsertAuthPayload: (args: {
+    where: AuthPayloadWhereUniqueInput;
+    create: AuthPayloadCreateInput;
+    update: AuthPayloadUpdateInput;
+  }) => AuthPayloadPromise;
+  deleteAuthPayload: (where: AuthPayloadWhereUniqueInput) => AuthPayloadPromise;
+  deleteManyAuthPayloads: (
+    where?: AuthPayloadWhereInput
+  ) => BatchPayloadPromise;
   createFigure: (data: FigureCreateInput) => FigurePromise;
   updateFigure: (args: {
     data: FigureUpdateInput;
@@ -256,15 +200,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  controller: (
-    where?: ControllerSubscriptionWhereInput
-  ) => ControllerSubscriptionPayloadSubscription;
-  dashboard: (
-    where?: DashboardSubscriptionWhereInput
-  ) => DashboardSubscriptionPayloadSubscription;
-  enviroment: (
-    where?: EnviromentSubscriptionWhereInput
-  ) => EnviromentSubscriptionPayloadSubscription;
+  authPayload: (
+    where?: AuthPayloadSubscriptionWhereInput
+  ) => AuthPayloadSubscriptionPayloadSubscription;
   figure: (
     where?: FigureSubscriptionWhereInput
   ) => FigureSubscriptionPayloadSubscription;
@@ -289,22 +227,20 @@ export type SwitchFormat = "FAN" | "HUMIDIFIER" | "LED";
 export type SwitchOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "switch_ASC"
-  | "switch_DESC"
+  | "machine_ASC"
+  | "machine_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
   | "status_ASC"
   | "status_DESC";
 
-export type ControllerOrderByInput =
+export type AuthPayloadOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "token_ASC"
+  | "token_DESC";
 
-export type FigureFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
+export type measurementFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
 
 export type FigureOrderByInput =
   | "id_ASC"
@@ -315,16 +251,6 @@ export type FigureOrderByInput =
   | "value_DESC"
   | "measurement_ASC"
   | "measurement_DESC";
-
-export type DashboardOrderByInput = "id_ASC" | "id_DESC";
-
-export type EnviromentOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -338,7 +264,7 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ControllerWhereUniqueInput = AtLeastOne<{
+export type AuthPayloadWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -357,11 +283,10 @@ export interface SwitchWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  controller?: Maybe<ControllerWhereInput>;
-  switch?: Maybe<SwitchFormat>;
-  switch_not?: Maybe<SwitchFormat>;
-  switch_in?: Maybe<SwitchFormat[] | SwitchFormat>;
-  switch_not_in?: Maybe<SwitchFormat[] | SwitchFormat>;
+  machine?: Maybe<SwitchFormat>;
+  machine_not?: Maybe<SwitchFormat>;
+  machine_in?: Maybe<SwitchFormat[] | SwitchFormat>;
+  machine_not_in?: Maybe<SwitchFormat[] | SwitchFormat>;
   updatedAt?: Maybe<DateTimeInput>;
   updatedAt_not?: Maybe<DateTimeInput>;
   updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -376,45 +301,6 @@ export interface SwitchWhereInput {
   AND?: Maybe<SwitchWhereInput[] | SwitchWhereInput>;
   OR?: Maybe<SwitchWhereInput[] | SwitchWhereInput>;
   NOT?: Maybe<SwitchWhereInput[] | SwitchWhereInput>;
-}
-
-export interface ControllerWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  switches_every?: Maybe<SwitchWhereInput>;
-  switches_some?: Maybe<SwitchWhereInput>;
-  switches_none?: Maybe<SwitchWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<ControllerWhereInput[] | ControllerWhereInput>;
-  OR?: Maybe<ControllerWhereInput[] | ControllerWhereInput>;
-  NOT?: Maybe<ControllerWhereInput[] | ControllerWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -468,12 +354,50 @@ export interface UserWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
+  switches_every?: Maybe<SwitchWhereInput>;
+  switches_some?: Maybe<SwitchWhereInput>;
+  switches_none?: Maybe<SwitchWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type DashboardWhereUniqueInput = AtLeastOne<{
+export interface AuthPayloadWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  token?: Maybe<String>;
+  token_not?: Maybe<String>;
+  token_in?: Maybe<String[] | String>;
+  token_not_in?: Maybe<String[] | String>;
+  token_lt?: Maybe<String>;
+  token_lte?: Maybe<String>;
+  token_gt?: Maybe<String>;
+  token_gte?: Maybe<String>;
+  token_contains?: Maybe<String>;
+  token_not_contains?: Maybe<String>;
+  token_starts_with?: Maybe<String>;
+  token_not_starts_with?: Maybe<String>;
+  token_ends_with?: Maybe<String>;
+  token_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<AuthPayloadWhereInput[] | AuthPayloadWhereInput>;
+  OR?: Maybe<AuthPayloadWhereInput[] | AuthPayloadWhereInput>;
+  NOT?: Maybe<AuthPayloadWhereInput[] | AuthPayloadWhereInput>;
+}
+
+export type FigureWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -508,84 +432,14 @@ export interface FigureWhereInput {
   value_lte?: Maybe<Float>;
   value_gt?: Maybe<Float>;
   value_gte?: Maybe<Float>;
-  enviroment?: Maybe<EnviromentWhereInput>;
-  measurement?: Maybe<FigureFormat>;
-  measurement_not?: Maybe<FigureFormat>;
-  measurement_in?: Maybe<FigureFormat[] | FigureFormat>;
-  measurement_not_in?: Maybe<FigureFormat[] | FigureFormat>;
+  measurement?: Maybe<measurementFormat>;
+  measurement_not?: Maybe<measurementFormat>;
+  measurement_in?: Maybe<measurementFormat[] | measurementFormat>;
+  measurement_not_in?: Maybe<measurementFormat[] | measurementFormat>;
   AND?: Maybe<FigureWhereInput[] | FigureWhereInput>;
   OR?: Maybe<FigureWhereInput[] | FigureWhereInput>;
   NOT?: Maybe<FigureWhereInput[] | FigureWhereInput>;
 }
-
-export interface EnviromentWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  figures_every?: Maybe<FigureWhereInput>;
-  figures_some?: Maybe<FigureWhereInput>;
-  figures_none?: Maybe<FigureWhereInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<EnviromentWhereInput[] | EnviromentWhereInput>;
-  OR?: Maybe<EnviromentWhereInput[] | EnviromentWhereInput>;
-  NOT?: Maybe<EnviromentWhereInput[] | EnviromentWhereInput>;
-}
-
-export interface DashboardWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  controller?: Maybe<ControllerWhereInput>;
-  enviroment?: Maybe<EnviromentWhereInput>;
-  AND?: Maybe<DashboardWhereInput[] | DashboardWhereInput>;
-  OR?: Maybe<DashboardWhereInput[] | DashboardWhereInput>;
-  NOT?: Maybe<DashboardWhereInput[] | DashboardWhereInput>;
-}
-
-export type EnviromentWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type FigureWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
 
 export type SwitchWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -593,25 +447,13 @@ export type SwitchWhereUniqueInput = AtLeastOne<{
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
-export interface ControllerCreateInput {
+export interface AuthPayloadCreateInput {
   id?: Maybe<ID_Input>;
-  switches?: Maybe<SwitchCreateManyWithoutControllerInput>;
-}
-
-export interface SwitchCreateManyWithoutControllerInput {
-  create?: Maybe<
-    SwitchCreateWithoutControllerInput[] | SwitchCreateWithoutControllerInput
-  >;
-  connect?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
-}
-
-export interface SwitchCreateWithoutControllerInput {
-  id?: Maybe<ID_Input>;
-  switch: SwitchFormat;
-  status: Boolean;
-  controledBy: UserCreateOneInput;
+  token?: Maybe<String>;
+  user?: Maybe<UserCreateOneInput>;
 }
 
 export interface UserCreateOneInput {
@@ -623,27 +465,57 @@ export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   password: String;
+  switches?: Maybe<SwitchCreateManyWithoutControledByInput>;
 }
 
-export interface ControllerUpdateInput {
-  switches?: Maybe<SwitchUpdateManyWithoutControllerInput>;
-}
-
-export interface SwitchUpdateManyWithoutControllerInput {
+export interface SwitchCreateManyWithoutControledByInput {
   create?: Maybe<
-    SwitchCreateWithoutControllerInput[] | SwitchCreateWithoutControllerInput
+    SwitchCreateWithoutControledByInput[] | SwitchCreateWithoutControledByInput
+  >;
+  connect?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
+}
+
+export interface SwitchCreateWithoutControledByInput {
+  id?: Maybe<ID_Input>;
+  machine: SwitchFormat;
+  status: Boolean;
+}
+
+export interface AuthPayloadUpdateInput {
+  token?: Maybe<String>;
+  user?: Maybe<UserUpdateOneInput>;
+}
+
+export interface UserUpdateOneInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateDataInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+  switches?: Maybe<SwitchUpdateManyWithoutControledByInput>;
+}
+
+export interface SwitchUpdateManyWithoutControledByInput {
+  create?: Maybe<
+    SwitchCreateWithoutControledByInput[] | SwitchCreateWithoutControledByInput
   >;
   delete?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
   connect?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
   set?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
   disconnect?: Maybe<SwitchWhereUniqueInput[] | SwitchWhereUniqueInput>;
   update?: Maybe<
-    | SwitchUpdateWithWhereUniqueWithoutControllerInput[]
-    | SwitchUpdateWithWhereUniqueWithoutControllerInput
+    | SwitchUpdateWithWhereUniqueWithoutControledByInput[]
+    | SwitchUpdateWithWhereUniqueWithoutControledByInput
   >;
   upsert?: Maybe<
-    | SwitchUpsertWithWhereUniqueWithoutControllerInput[]
-    | SwitchUpsertWithWhereUniqueWithoutControllerInput
+    | SwitchUpsertWithWhereUniqueWithoutControledByInput[]
+    | SwitchUpsertWithWhereUniqueWithoutControledByInput
   >;
   deleteMany?: Maybe<SwitchScalarWhereInput[] | SwitchScalarWhereInput>;
   updateMany?: Maybe<
@@ -652,38 +524,20 @@ export interface SwitchUpdateManyWithoutControllerInput {
   >;
 }
 
-export interface SwitchUpdateWithWhereUniqueWithoutControllerInput {
+export interface SwitchUpdateWithWhereUniqueWithoutControledByInput {
   where: SwitchWhereUniqueInput;
-  data: SwitchUpdateWithoutControllerDataInput;
+  data: SwitchUpdateWithoutControledByDataInput;
 }
 
-export interface SwitchUpdateWithoutControllerDataInput {
-  switch?: Maybe<SwitchFormat>;
+export interface SwitchUpdateWithoutControledByDataInput {
+  machine?: Maybe<SwitchFormat>;
   status?: Maybe<Boolean>;
-  controledBy?: Maybe<UserUpdateOneRequiredInput>;
 }
 
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateDataInput {
-  name?: Maybe<String>;
-  password?: Maybe<String>;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface SwitchUpsertWithWhereUniqueWithoutControllerInput {
+export interface SwitchUpsertWithWhereUniqueWithoutControledByInput {
   where: SwitchWhereUniqueInput;
-  update: SwitchUpdateWithoutControllerDataInput;
-  create: SwitchCreateWithoutControllerInput;
+  update: SwitchUpdateWithoutControledByDataInput;
+  create: SwitchCreateWithoutControledByInput;
 }
 
 export interface SwitchScalarWhereInput {
@@ -701,10 +555,10 @@ export interface SwitchScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  switch?: Maybe<SwitchFormat>;
-  switch_not?: Maybe<SwitchFormat>;
-  switch_in?: Maybe<SwitchFormat[] | SwitchFormat>;
-  switch_not_in?: Maybe<SwitchFormat[] | SwitchFormat>;
+  machine?: Maybe<SwitchFormat>;
+  machine_not?: Maybe<SwitchFormat>;
+  machine_in?: Maybe<SwitchFormat[] | SwitchFormat>;
+  machine_not_in?: Maybe<SwitchFormat[] | SwitchFormat>;
   updatedAt?: Maybe<DateTimeInput>;
   updatedAt_not?: Maybe<DateTimeInput>;
   updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -726,243 +580,87 @@ export interface SwitchUpdateManyWithWhereNestedInput {
 }
 
 export interface SwitchUpdateManyDataInput {
-  switch?: Maybe<SwitchFormat>;
+  machine?: Maybe<SwitchFormat>;
   status?: Maybe<Boolean>;
 }
 
-export interface DashboardCreateInput {
-  id?: Maybe<ID_Input>;
-  controller: ControllerCreateOneInput;
-  enviroment: EnviromentCreateOneInput;
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
 }
 
-export interface ControllerCreateOneInput {
-  create?: Maybe<ControllerCreateInput>;
-  connect?: Maybe<ControllerWhereUniqueInput>;
-}
-
-export interface EnviromentCreateOneInput {
-  create?: Maybe<EnviromentCreateInput>;
-  connect?: Maybe<EnviromentWhereUniqueInput>;
-}
-
-export interface EnviromentCreateInput {
-  id?: Maybe<ID_Input>;
-  figures?: Maybe<FigureCreateManyWithoutEnviromentInput>;
-}
-
-export interface FigureCreateManyWithoutEnviromentInput {
-  create?: Maybe<
-    FigureCreateWithoutEnviromentInput[] | FigureCreateWithoutEnviromentInput
-  >;
-  connect?: Maybe<FigureWhereUniqueInput[] | FigureWhereUniqueInput>;
-}
-
-export interface FigureCreateWithoutEnviromentInput {
-  id?: Maybe<ID_Input>;
-  value: Float;
-  measurement: FigureFormat;
-}
-
-export interface DashboardUpdateInput {
-  controller?: Maybe<ControllerUpdateOneRequiredInput>;
-  enviroment?: Maybe<EnviromentUpdateOneRequiredInput>;
-}
-
-export interface ControllerUpdateOneRequiredInput {
-  create?: Maybe<ControllerCreateInput>;
-  update?: Maybe<ControllerUpdateDataInput>;
-  upsert?: Maybe<ControllerUpsertNestedInput>;
-  connect?: Maybe<ControllerWhereUniqueInput>;
-}
-
-export interface ControllerUpdateDataInput {
-  switches?: Maybe<SwitchUpdateManyWithoutControllerInput>;
-}
-
-export interface ControllerUpsertNestedInput {
-  update: ControllerUpdateDataInput;
-  create: ControllerCreateInput;
-}
-
-export interface EnviromentUpdateOneRequiredInput {
-  create?: Maybe<EnviromentCreateInput>;
-  update?: Maybe<EnviromentUpdateDataInput>;
-  upsert?: Maybe<EnviromentUpsertNestedInput>;
-  connect?: Maybe<EnviromentWhereUniqueInput>;
-}
-
-export interface EnviromentUpdateDataInput {
-  figures?: Maybe<FigureUpdateManyWithoutEnviromentInput>;
-}
-
-export interface FigureUpdateManyWithoutEnviromentInput {
-  create?: Maybe<
-    FigureCreateWithoutEnviromentInput[] | FigureCreateWithoutEnviromentInput
-  >;
-  delete?: Maybe<FigureWhereUniqueInput[] | FigureWhereUniqueInput>;
-  connect?: Maybe<FigureWhereUniqueInput[] | FigureWhereUniqueInput>;
-  set?: Maybe<FigureWhereUniqueInput[] | FigureWhereUniqueInput>;
-  disconnect?: Maybe<FigureWhereUniqueInput[] | FigureWhereUniqueInput>;
-  update?: Maybe<
-    | FigureUpdateWithWhereUniqueWithoutEnviromentInput[]
-    | FigureUpdateWithWhereUniqueWithoutEnviromentInput
-  >;
-  upsert?: Maybe<
-    | FigureUpsertWithWhereUniqueWithoutEnviromentInput[]
-    | FigureUpsertWithWhereUniqueWithoutEnviromentInput
-  >;
-  deleteMany?: Maybe<FigureScalarWhereInput[] | FigureScalarWhereInput>;
-  updateMany?: Maybe<
-    | FigureUpdateManyWithWhereNestedInput[]
-    | FigureUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface FigureUpdateWithWhereUniqueWithoutEnviromentInput {
-  where: FigureWhereUniqueInput;
-  data: FigureUpdateWithoutEnviromentDataInput;
-}
-
-export interface FigureUpdateWithoutEnviromentDataInput {
-  value?: Maybe<Float>;
-  measurement?: Maybe<FigureFormat>;
-}
-
-export interface FigureUpsertWithWhereUniqueWithoutEnviromentInput {
-  where: FigureWhereUniqueInput;
-  update: FigureUpdateWithoutEnviromentDataInput;
-  create: FigureCreateWithoutEnviromentInput;
-}
-
-export interface FigureScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  value?: Maybe<Float>;
-  value_not?: Maybe<Float>;
-  value_in?: Maybe<Float[] | Float>;
-  value_not_in?: Maybe<Float[] | Float>;
-  value_lt?: Maybe<Float>;
-  value_lte?: Maybe<Float>;
-  value_gt?: Maybe<Float>;
-  value_gte?: Maybe<Float>;
-  measurement?: Maybe<FigureFormat>;
-  measurement_not?: Maybe<FigureFormat>;
-  measurement_in?: Maybe<FigureFormat[] | FigureFormat>;
-  measurement_not_in?: Maybe<FigureFormat[] | FigureFormat>;
-  AND?: Maybe<FigureScalarWhereInput[] | FigureScalarWhereInput>;
-  OR?: Maybe<FigureScalarWhereInput[] | FigureScalarWhereInput>;
-  NOT?: Maybe<FigureScalarWhereInput[] | FigureScalarWhereInput>;
-}
-
-export interface FigureUpdateManyWithWhereNestedInput {
-  where: FigureScalarWhereInput;
-  data: FigureUpdateManyDataInput;
-}
-
-export interface FigureUpdateManyDataInput {
-  value?: Maybe<Float>;
-  measurement?: Maybe<FigureFormat>;
-}
-
-export interface EnviromentUpsertNestedInput {
-  update: EnviromentUpdateDataInput;
-  create: EnviromentCreateInput;
-}
-
-export interface EnviromentUpdateInput {
-  figures?: Maybe<FigureUpdateManyWithoutEnviromentInput>;
+export interface AuthPayloadUpdateManyMutationInput {
+  token?: Maybe<String>;
 }
 
 export interface FigureCreateInput {
   id?: Maybe<ID_Input>;
   value: Float;
-  enviroment: EnviromentCreateOneWithoutFiguresInput;
-  measurement: FigureFormat;
-}
-
-export interface EnviromentCreateOneWithoutFiguresInput {
-  create?: Maybe<EnviromentCreateWithoutFiguresInput>;
-  connect?: Maybe<EnviromentWhereUniqueInput>;
-}
-
-export interface EnviromentCreateWithoutFiguresInput {
-  id?: Maybe<ID_Input>;
+  measurement: measurementFormat;
 }
 
 export interface FigureUpdateInput {
   value?: Maybe<Float>;
-  enviroment?: Maybe<EnviromentUpdateOneRequiredWithoutFiguresInput>;
-  measurement?: Maybe<FigureFormat>;
-}
-
-export interface EnviromentUpdateOneRequiredWithoutFiguresInput {
-  create?: Maybe<EnviromentCreateWithoutFiguresInput>;
-  connect?: Maybe<EnviromentWhereUniqueInput>;
+  measurement?: Maybe<measurementFormat>;
 }
 
 export interface FigureUpdateManyMutationInput {
   value?: Maybe<Float>;
-  measurement?: Maybe<FigureFormat>;
+  measurement?: Maybe<measurementFormat>;
 }
 
 export interface SwitchCreateInput {
   id?: Maybe<ID_Input>;
-  controller: ControllerCreateOneWithoutSwitchesInput;
-  switch: SwitchFormat;
+  machine: SwitchFormat;
   status: Boolean;
-  controledBy: UserCreateOneInput;
+  controledBy?: Maybe<UserCreateOneWithoutSwitchesInput>;
 }
 
-export interface ControllerCreateOneWithoutSwitchesInput {
-  create?: Maybe<ControllerCreateWithoutSwitchesInput>;
-  connect?: Maybe<ControllerWhereUniqueInput>;
+export interface UserCreateOneWithoutSwitchesInput {
+  create?: Maybe<UserCreateWithoutSwitchesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface ControllerCreateWithoutSwitchesInput {
+export interface UserCreateWithoutSwitchesInput {
   id?: Maybe<ID_Input>;
+  name: String;
+  password: String;
 }
 
 export interface SwitchUpdateInput {
-  controller?: Maybe<ControllerUpdateOneRequiredWithoutSwitchesInput>;
-  switch?: Maybe<SwitchFormat>;
+  machine?: Maybe<SwitchFormat>;
   status?: Maybe<Boolean>;
-  controledBy?: Maybe<UserUpdateOneRequiredInput>;
+  controledBy?: Maybe<UserUpdateOneWithoutSwitchesInput>;
 }
 
-export interface ControllerUpdateOneRequiredWithoutSwitchesInput {
-  create?: Maybe<ControllerCreateWithoutSwitchesInput>;
-  connect?: Maybe<ControllerWhereUniqueInput>;
+export interface UserUpdateOneWithoutSwitchesInput {
+  create?: Maybe<UserCreateWithoutSwitchesInput>;
+  update?: Maybe<UserUpdateWithoutSwitchesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutSwitchesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutSwitchesDataInput {
+  name?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutSwitchesInput {
+  update: UserUpdateWithoutSwitchesDataInput;
+  create: UserCreateWithoutSwitchesInput;
 }
 
 export interface SwitchUpdateManyMutationInput {
-  switch?: Maybe<SwitchFormat>;
+  machine?: Maybe<SwitchFormat>;
   status?: Maybe<Boolean>;
 }
 
 export interface UserUpdateInput {
   name?: Maybe<String>;
   password?: Maybe<String>;
+  switches?: Maybe<SwitchUpdateManyWithoutControledByInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -970,54 +668,20 @@ export interface UserUpdateManyMutationInput {
   password?: Maybe<String>;
 }
 
-export interface ControllerSubscriptionWhereInput {
+export interface AuthPayloadSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ControllerWhereInput>;
+  node?: Maybe<AuthPayloadWhereInput>;
   AND?: Maybe<
-    ControllerSubscriptionWhereInput[] | ControllerSubscriptionWhereInput
+    AuthPayloadSubscriptionWhereInput[] | AuthPayloadSubscriptionWhereInput
   >;
   OR?: Maybe<
-    ControllerSubscriptionWhereInput[] | ControllerSubscriptionWhereInput
+    AuthPayloadSubscriptionWhereInput[] | AuthPayloadSubscriptionWhereInput
   >;
   NOT?: Maybe<
-    ControllerSubscriptionWhereInput[] | ControllerSubscriptionWhereInput
-  >;
-}
-
-export interface DashboardSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<DashboardWhereInput>;
-  AND?: Maybe<
-    DashboardSubscriptionWhereInput[] | DashboardSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    DashboardSubscriptionWhereInput[] | DashboardSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    DashboardSubscriptionWhereInput[] | DashboardSubscriptionWhereInput
-  >;
-}
-
-export interface EnviromentSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<EnviromentWhereInput>;
-  AND?: Maybe<
-    EnviromentSubscriptionWhereInput[] | EnviromentSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    EnviromentSubscriptionWhereInput[] | EnviromentSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    EnviromentSubscriptionWhereInput[] | EnviromentSubscriptionWhereInput
+    AuthPayloadSubscriptionWhereInput[] | AuthPayloadSubscriptionWhereInput
   >;
 }
 
@@ -1058,97 +722,31 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Controller {
+export interface AuthPayload {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+  token?: String;
 }
 
-export interface ControllerPromise extends Promise<Controller>, Fragmentable {
+export interface AuthPayloadPromise extends Promise<AuthPayload>, Fragmentable {
   id: () => Promise<ID_Output>;
-  switches: <T = FragmentableArray<Switch>>(args?: {
-    where?: SwitchWhereInput;
-    orderBy?: SwitchOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  token: () => Promise<String>;
+  user: <T = UserPromise>() => T;
 }
 
-export interface ControllerSubscription
-  extends Promise<AsyncIterator<Controller>>,
+export interface AuthPayloadSubscription
+  extends Promise<AsyncIterator<AuthPayload>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  switches: <T = Promise<AsyncIterator<SwitchSubscription>>>(args?: {
-    where?: SwitchWhereInput;
-    orderBy?: SwitchOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  token: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
 }
 
-export interface ControllerNullablePromise
-  extends Promise<Controller | null>,
+export interface AuthPayloadNullablePromise
+  extends Promise<AuthPayload | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  switches: <T = FragmentableArray<Switch>>(args?: {
-    where?: SwitchWhereInput;
-    orderBy?: SwitchOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface Switch {
-  id: ID_Output;
-  switch: SwitchFormat;
-  updatedAt: DateTimeOutput;
-  status: Boolean;
-}
-
-export interface SwitchPromise extends Promise<Switch>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  controller: <T = ControllerPromise>() => T;
-  switch: () => Promise<SwitchFormat>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  status: () => Promise<Boolean>;
-  controledBy: <T = UserPromise>() => T;
-}
-
-export interface SwitchSubscription
-  extends Promise<AsyncIterator<Switch>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  controller: <T = ControllerSubscription>() => T;
-  switch: () => Promise<AsyncIterator<SwitchFormat>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  status: () => Promise<AsyncIterator<Boolean>>;
-  controledBy: <T = UserSubscription>() => T;
-}
-
-export interface SwitchNullablePromise
-  extends Promise<Switch | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  controller: <T = ControllerPromise>() => T;
-  switch: () => Promise<SwitchFormat>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  status: () => Promise<Boolean>;
-  controledBy: <T = UserPromise>() => T;
+  token: () => Promise<String>;
+  user: <T = UserPromise>() => T;
 }
 
 export interface User {
@@ -1163,6 +761,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   name: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  switches: <T = FragmentableArray<Switch>>(args?: {
+    where?: SwitchWhereInput;
+    orderBy?: SwitchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -1172,6 +779,15 @@ export interface UserSubscription
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  switches: <T = Promise<AsyncIterator<SwitchSubscription>>>(args?: {
+    where?: SwitchWhereInput;
+    orderBy?: SwitchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserNullablePromise
@@ -1181,27 +797,71 @@ export interface UserNullablePromise
   name: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  switches: <T = FragmentableArray<Switch>>(args?: {
+    where?: SwitchWhereInput;
+    orderBy?: SwitchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface ControllerConnection {
+export interface Switch {
+  id: ID_Output;
+  machine: SwitchFormat;
+  updatedAt?: DateTimeOutput;
+  status: Boolean;
+}
+
+export interface SwitchPromise extends Promise<Switch>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  machine: () => Promise<SwitchFormat>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  status: () => Promise<Boolean>;
+  controledBy: <T = UserPromise>() => T;
+}
+
+export interface SwitchSubscription
+  extends Promise<AsyncIterator<Switch>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  machine: () => Promise<AsyncIterator<SwitchFormat>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  status: () => Promise<AsyncIterator<Boolean>>;
+  controledBy: <T = UserSubscription>() => T;
+}
+
+export interface SwitchNullablePromise
+  extends Promise<Switch | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  machine: () => Promise<SwitchFormat>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  status: () => Promise<Boolean>;
+  controledBy: <T = UserPromise>() => T;
+}
+
+export interface AuthPayloadConnection {
   pageInfo: PageInfo;
-  edges: ControllerEdge[];
+  edges: AuthPayloadEdge[];
 }
 
-export interface ControllerConnectionPromise
-  extends Promise<ControllerConnection>,
+export interface AuthPayloadConnectionPromise
+  extends Promise<AuthPayloadConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ControllerEdge>>() => T;
-  aggregate: <T = AggregateControllerPromise>() => T;
+  edges: <T = FragmentableArray<AuthPayloadEdge>>() => T;
+  aggregate: <T = AggregateAuthPayloadPromise>() => T;
 }
 
-export interface ControllerConnectionSubscription
-  extends Promise<AsyncIterator<ControllerConnection>>,
+export interface AuthPayloadConnectionSubscription
+  extends Promise<AsyncIterator<AuthPayloadConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ControllerEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateControllerSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AuthPayloadEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAuthPayloadSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -1227,135 +887,53 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ControllerEdge {
-  node: Controller;
+export interface AuthPayloadEdge {
+  node: AuthPayload;
   cursor: String;
 }
 
-export interface ControllerEdgePromise
-  extends Promise<ControllerEdge>,
+export interface AuthPayloadEdgePromise
+  extends Promise<AuthPayloadEdge>,
     Fragmentable {
-  node: <T = ControllerPromise>() => T;
+  node: <T = AuthPayloadPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ControllerEdgeSubscription
-  extends Promise<AsyncIterator<ControllerEdge>>,
+export interface AuthPayloadEdgeSubscription
+  extends Promise<AsyncIterator<AuthPayloadEdge>>,
     Fragmentable {
-  node: <T = ControllerSubscription>() => T;
+  node: <T = AuthPayloadSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateController {
+export interface AggregateAuthPayload {
   count: Int;
 }
 
-export interface AggregateControllerPromise
-  extends Promise<AggregateController>,
+export interface AggregateAuthPayloadPromise
+  extends Promise<AggregateAuthPayload>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateControllerSubscription
-  extends Promise<AsyncIterator<AggregateController>>,
+export interface AggregateAuthPayloadSubscription
+  extends Promise<AsyncIterator<AggregateAuthPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Dashboard {
-  id: ID_Output;
-}
-
-export interface DashboardPromise extends Promise<Dashboard>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  controller: <T = ControllerPromise>() => T;
-  enviroment: <T = EnviromentPromise>() => T;
-}
-
-export interface DashboardSubscription
-  extends Promise<AsyncIterator<Dashboard>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  controller: <T = ControllerSubscription>() => T;
-  enviroment: <T = EnviromentSubscription>() => T;
-}
-
-export interface DashboardNullablePromise
-  extends Promise<Dashboard | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  controller: <T = ControllerPromise>() => T;
-  enviroment: <T = EnviromentPromise>() => T;
-}
-
-export interface Enviroment {
-  id: ID_Output;
-  updatedAt: DateTimeOutput;
-  createdAt: DateTimeOutput;
-}
-
-export interface EnviromentPromise extends Promise<Enviroment>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  figures: <T = FragmentableArray<Figure>>(args?: {
-    where?: FigureWhereInput;
-    orderBy?: FigureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  updatedAt: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface EnviromentSubscription
-  extends Promise<AsyncIterator<Enviroment>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  figures: <T = Promise<AsyncIterator<FigureSubscription>>>(args?: {
-    where?: FigureWhereInput;
-    orderBy?: FigureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface EnviromentNullablePromise
-  extends Promise<Enviroment | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  figures: <T = FragmentableArray<Figure>>(args?: {
-    where?: FigureWhereInput;
-    orderBy?: FigureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  updatedAt: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
 }
 
 export interface Figure {
   id: ID_Output;
   updatedAt: DateTimeOutput;
   value: Float;
-  measurement: FigureFormat;
+  measurement: measurementFormat;
 }
 
 export interface FigurePromise extends Promise<Figure>, Fragmentable {
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  enviroment: <T = EnviromentPromise>() => T;
-  measurement: () => Promise<FigureFormat>;
+  measurement: () => Promise<measurementFormat>;
 }
 
 export interface FigureSubscription
@@ -1364,8 +942,7 @@ export interface FigureSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   value: () => Promise<AsyncIterator<Float>>;
-  enviroment: <T = EnviromentSubscription>() => T;
-  measurement: () => Promise<AsyncIterator<FigureFormat>>;
+  measurement: () => Promise<AsyncIterator<measurementFormat>>;
 }
 
 export interface FigureNullablePromise
@@ -1374,120 +951,7 @@ export interface FigureNullablePromise
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  enviroment: <T = EnviromentPromise>() => T;
-  measurement: () => Promise<FigureFormat>;
-}
-
-export interface DashboardConnection {
-  pageInfo: PageInfo;
-  edges: DashboardEdge[];
-}
-
-export interface DashboardConnectionPromise
-  extends Promise<DashboardConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DashboardEdge>>() => T;
-  aggregate: <T = AggregateDashboardPromise>() => T;
-}
-
-export interface DashboardConnectionSubscription
-  extends Promise<AsyncIterator<DashboardConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DashboardEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDashboardSubscription>() => T;
-}
-
-export interface DashboardEdge {
-  node: Dashboard;
-  cursor: String;
-}
-
-export interface DashboardEdgePromise
-  extends Promise<DashboardEdge>,
-    Fragmentable {
-  node: <T = DashboardPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DashboardEdgeSubscription
-  extends Promise<AsyncIterator<DashboardEdge>>,
-    Fragmentable {
-  node: <T = DashboardSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateDashboard {
-  count: Int;
-}
-
-export interface AggregateDashboardPromise
-  extends Promise<AggregateDashboard>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDashboardSubscription
-  extends Promise<AsyncIterator<AggregateDashboard>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface EnviromentConnection {
-  pageInfo: PageInfo;
-  edges: EnviromentEdge[];
-}
-
-export interface EnviromentConnectionPromise
-  extends Promise<EnviromentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EnviromentEdge>>() => T;
-  aggregate: <T = AggregateEnviromentPromise>() => T;
-}
-
-export interface EnviromentConnectionSubscription
-  extends Promise<AsyncIterator<EnviromentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EnviromentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEnviromentSubscription>() => T;
-}
-
-export interface EnviromentEdge {
-  node: Enviroment;
-  cursor: String;
-}
-
-export interface EnviromentEdgePromise
-  extends Promise<EnviromentEdge>,
-    Fragmentable {
-  node: <T = EnviromentPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface EnviromentEdgeSubscription
-  extends Promise<AsyncIterator<EnviromentEdge>>,
-    Fragmentable {
-  node: <T = EnviromentSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateEnviroment {
-  count: Int;
-}
-
-export interface AggregateEnviromentPromise
-  extends Promise<AggregateEnviroment>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateEnviromentSubscription
-  extends Promise<AsyncIterator<AggregateEnviroment>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  measurement: () => Promise<measurementFormat>;
 }
 
 export interface FigureConnection {
@@ -1668,139 +1132,48 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface ControllerSubscriptionPayload {
+export interface AuthPayloadSubscriptionPayload {
   mutation: MutationType;
-  node: Controller;
+  node: AuthPayload;
   updatedFields: String[];
-  previousValues: ControllerPreviousValues;
+  previousValues: AuthPayloadPreviousValues;
 }
 
-export interface ControllerSubscriptionPayloadPromise
-  extends Promise<ControllerSubscriptionPayload>,
+export interface AuthPayloadSubscriptionPayloadPromise
+  extends Promise<AuthPayloadSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = ControllerPromise>() => T;
+  node: <T = AuthPayloadPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = ControllerPreviousValuesPromise>() => T;
+  previousValues: <T = AuthPayloadPreviousValuesPromise>() => T;
 }
 
-export interface ControllerSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ControllerSubscriptionPayload>>,
+export interface AuthPayloadSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AuthPayloadSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ControllerSubscription>() => T;
+  node: <T = AuthPayloadSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ControllerPreviousValuesSubscription>() => T;
+  previousValues: <T = AuthPayloadPreviousValuesSubscription>() => T;
 }
 
-export interface ControllerPreviousValues {
+export interface AuthPayloadPreviousValues {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+  token?: String;
 }
 
-export interface ControllerPreviousValuesPromise
-  extends Promise<ControllerPreviousValues>,
+export interface AuthPayloadPreviousValuesPromise
+  extends Promise<AuthPayloadPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  token: () => Promise<String>;
 }
 
-export interface ControllerPreviousValuesSubscription
-  extends Promise<AsyncIterator<ControllerPreviousValues>>,
+export interface AuthPayloadPreviousValuesSubscription
+  extends Promise<AsyncIterator<AuthPayloadPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface DashboardSubscriptionPayload {
-  mutation: MutationType;
-  node: Dashboard;
-  updatedFields: String[];
-  previousValues: DashboardPreviousValues;
-}
-
-export interface DashboardSubscriptionPayloadPromise
-  extends Promise<DashboardSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = DashboardPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = DashboardPreviousValuesPromise>() => T;
-}
-
-export interface DashboardSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<DashboardSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = DashboardSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = DashboardPreviousValuesSubscription>() => T;
-}
-
-export interface DashboardPreviousValues {
-  id: ID_Output;
-}
-
-export interface DashboardPreviousValuesPromise
-  extends Promise<DashboardPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-}
-
-export interface DashboardPreviousValuesSubscription
-  extends Promise<AsyncIterator<DashboardPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface EnviromentSubscriptionPayload {
-  mutation: MutationType;
-  node: Enviroment;
-  updatedFields: String[];
-  previousValues: EnviromentPreviousValues;
-}
-
-export interface EnviromentSubscriptionPayloadPromise
-  extends Promise<EnviromentSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = EnviromentPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = EnviromentPreviousValuesPromise>() => T;
-}
-
-export interface EnviromentSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<EnviromentSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = EnviromentSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = EnviromentPreviousValuesSubscription>() => T;
-}
-
-export interface EnviromentPreviousValues {
-  id: ID_Output;
-  updatedAt: DateTimeOutput;
-  createdAt: DateTimeOutput;
-}
-
-export interface EnviromentPreviousValuesPromise
-  extends Promise<EnviromentPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  createdAt: () => Promise<DateTimeOutput>;
-}
-
-export interface EnviromentPreviousValuesSubscription
-  extends Promise<AsyncIterator<EnviromentPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  token: () => Promise<AsyncIterator<String>>;
 }
 
 export interface FigureSubscriptionPayload {
@@ -1832,7 +1205,7 @@ export interface FigurePreviousValues {
   id: ID_Output;
   updatedAt: DateTimeOutput;
   value: Float;
-  measurement: FigureFormat;
+  measurement: measurementFormat;
 }
 
 export interface FigurePreviousValuesPromise
@@ -1841,7 +1214,7 @@ export interface FigurePreviousValuesPromise
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  measurement: () => Promise<FigureFormat>;
+  measurement: () => Promise<measurementFormat>;
 }
 
 export interface FigurePreviousValuesSubscription
@@ -1850,7 +1223,7 @@ export interface FigurePreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   value: () => Promise<AsyncIterator<Float>>;
-  measurement: () => Promise<AsyncIterator<FigureFormat>>;
+  measurement: () => Promise<AsyncIterator<measurementFormat>>;
 }
 
 export interface SwitchSubscriptionPayload {
@@ -1880,8 +1253,8 @@ export interface SwitchSubscriptionPayloadSubscription
 
 export interface SwitchPreviousValues {
   id: ID_Output;
-  switch: SwitchFormat;
-  updatedAt: DateTimeOutput;
+  machine: SwitchFormat;
+  updatedAt?: DateTimeOutput;
   status: Boolean;
 }
 
@@ -1889,7 +1262,7 @@ export interface SwitchPreviousValuesPromise
   extends Promise<SwitchPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  switch: () => Promise<SwitchFormat>;
+  machine: () => Promise<SwitchFormat>;
   updatedAt: () => Promise<DateTimeOutput>;
   status: () => Promise<Boolean>;
 }
@@ -1898,7 +1271,7 @@ export interface SwitchPreviousValuesSubscription
   extends Promise<AsyncIterator<SwitchPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  switch: () => Promise<AsyncIterator<SwitchFormat>>;
+  machine: () => Promise<AsyncIterator<SwitchFormat>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   status: () => Promise<AsyncIterator<Boolean>>;
 }
@@ -1960,6 +1333,11 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -1973,11 +1351,6 @@ export type DateTimeOutput = string;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
@@ -1997,7 +1370,7 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "FigureFormat",
+    name: "measurementFormat",
     embedded: false
   },
   {
@@ -2005,19 +1378,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Dashboard",
-    embedded: false
-  },
-  {
-    name: "Enviroment",
-    embedded: false
-  },
-  {
     name: "Figure",
     embedded: false
   },
   {
-    name: "Controller",
+    name: "AuthPayload",
     embedded: false
   },
   {

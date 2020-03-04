@@ -1,5 +1,5 @@
 
-enum FigureFormat {
+enum measurementFormat {
   LUX
   HUM
   TEMP
@@ -14,45 +14,31 @@ enum SwitchFormat {
   LED
 }
 
-type Dashboard {
-  id: ID! @id
-  controller : Controller!
-  enviroment : Enviroment!
-}
-
-type Enviroment {
-  id : ID! @id
-  figures : [Figure!]!
-  updatedAt : DateTime! @updatedAt
-  createdAt : DateTime! @createdAt
-}
-
 type Figure {
   id : ID! @id
   updatedAt : DateTime! @updatedAt
   value : Float!
-  enviroment : Enviroment! @relation(link : INLINE)
-  measurement : FigureFormat! 
+  measurement : measurementFormat! 
 }
-type Controller {
+
+type AuthPayload {
   id : ID! @id
-  switches : [Switch!]!
-  createdAt : DateTime! @createdAt
-  updatedAt : DateTime! @updatedAt
+  token : String
+  user : User
 }
 
 type Switch {
   id : ID! @id
-  controller : Controller! @relation(link:INLINE)
-  switch : SwitchFormat!
-  updatedAt : DateTime! @updatedAt
+  machine : SwitchFormat!
+  updatedAt : DateTime @updatedAt
   status : Boolean!
-  controledBy : User!
+  controledBy : User
 }
 
 type User {
   id: ID! @id
-  name: String!
+  name: String! @unique
   password: String!
   createdAt : DateTime! @createdAt
+  switches : [Switch!]!
 }

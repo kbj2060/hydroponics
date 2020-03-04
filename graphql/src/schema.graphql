@@ -1,17 +1,23 @@
+scalar DateTime 
+
 type Query {
     info : String!
-    feed : [User!]!
+    feed : [Switch!]!
 }
 
 type Mutation {
-    post(name: String!, password: String!): User!
+    switchControl(machine: SwitchFormat!, status: Boolean!): Switch
+    measure(value: Float!, measurement: measurementFormat!): Figure
     signup(name:String!, password:String!): AuthPayload
     login(name:String!, password:String!): AuthPayload
 }
 
-scalar DateTime 
+type Subscription {
+  newSwitch: Switch
+  newFigure: Figure
+}
 
-enum FigureFormat {
+enum measurementFormat {
   LUX
   HUM
   TEMP
@@ -27,49 +33,30 @@ enum SwitchFormat {
 }
 
 type AuthPayload {
+  id : ID!
   token : String
   user : User
 }
 
-type Dashboard {
-  id: ID! 
-  controller : Controller!
-  enviroment : Enviroment!
-}
-
-type Enviroment {
-  id : ID! 
-  figures : [Figure!]!
-  updatedAt : DateTime!
-  createdAt : DateTime! 
-}
-
 type Figure {
   id : ID! 
-  updatedAt : DateTime!
+  updatedAt : DateTime! 
   value : Float!
-  enviroment : Enviroment! 
-  measurement : FigureFormat! 
-}
-type Controller {
-  id : ID! 
-  switches : [Switch!]!
-  createdAt : DateTime! 
-  updatedAt : DateTime!
+  measurement : measurementFormat! 
 }
 
 type Switch {
   id : ID! 
-  controller : Controller! 
-  switch : SwitchFormat!
-  updatedAt : DateTime!
+  machine : SwitchFormat!
+  updatedAt : DateTime 
   status : Boolean!
-  controledBy : User!
+  controledBy : User
 }
 
 type User {
   id: ID! 
-  name: String!
+  name: String! 
   password: String!
   createdAt : DateTime! 
+  switches : [Switch!]!
 }

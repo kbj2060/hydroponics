@@ -3,15 +3,7 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateController {
-  count: Int!
-}
-
-type AggregateDashboard {
-  count: Int!
-}
-
-type AggregateEnviroment {
+/* GraphQL */ `type AggregateAuthPayload {
   count: Int!
 }
 
@@ -27,375 +19,118 @@ type AggregateUser {
   count: Int!
 }
 
+type AuthPayload {
+  id: ID!
+  token: String
+  user: User
+}
+
+type AuthPayloadConnection {
+  pageInfo: PageInfo!
+  edges: [AuthPayloadEdge]!
+  aggregate: AggregateAuthPayload!
+}
+
+input AuthPayloadCreateInput {
+  id: ID
+  token: String
+  user: UserCreateOneInput
+}
+
+type AuthPayloadEdge {
+  node: AuthPayload!
+  cursor: String!
+}
+
+enum AuthPayloadOrderByInput {
+  id_ASC
+  id_DESC
+  token_ASC
+  token_DESC
+}
+
+type AuthPayloadPreviousValues {
+  id: ID!
+  token: String
+}
+
+type AuthPayloadSubscriptionPayload {
+  mutation: MutationType!
+  node: AuthPayload
+  updatedFields: [String!]
+  previousValues: AuthPayloadPreviousValues
+}
+
+input AuthPayloadSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AuthPayloadWhereInput
+  AND: [AuthPayloadSubscriptionWhereInput!]
+  OR: [AuthPayloadSubscriptionWhereInput!]
+  NOT: [AuthPayloadSubscriptionWhereInput!]
+}
+
+input AuthPayloadUpdateInput {
+  token: String
+  user: UserUpdateOneInput
+}
+
+input AuthPayloadUpdateManyMutationInput {
+  token: String
+}
+
+input AuthPayloadWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  token: String
+  token_not: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_lt: String
+  token_lte: String
+  token_gt: String
+  token_gte: String
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
+  user: UserWhereInput
+  AND: [AuthPayloadWhereInput!]
+  OR: [AuthPayloadWhereInput!]
+  NOT: [AuthPayloadWhereInput!]
+}
+
+input AuthPayloadWhereUniqueInput {
+  id: ID
+}
+
 type BatchPayload {
   count: Long!
 }
 
-type Controller {
-  id: ID!
-  switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch!]
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type ControllerConnection {
-  pageInfo: PageInfo!
-  edges: [ControllerEdge]!
-  aggregate: AggregateController!
-}
-
-input ControllerCreateInput {
-  id: ID
-  switches: SwitchCreateManyWithoutControllerInput
-}
-
-input ControllerCreateOneInput {
-  create: ControllerCreateInput
-  connect: ControllerWhereUniqueInput
-}
-
-input ControllerCreateOneWithoutSwitchesInput {
-  create: ControllerCreateWithoutSwitchesInput
-  connect: ControllerWhereUniqueInput
-}
-
-input ControllerCreateWithoutSwitchesInput {
-  id: ID
-}
-
-type ControllerEdge {
-  node: Controller!
-  cursor: String!
-}
-
-enum ControllerOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type ControllerPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type ControllerSubscriptionPayload {
-  mutation: MutationType!
-  node: Controller
-  updatedFields: [String!]
-  previousValues: ControllerPreviousValues
-}
-
-input ControllerSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: ControllerWhereInput
-  AND: [ControllerSubscriptionWhereInput!]
-  OR: [ControllerSubscriptionWhereInput!]
-  NOT: [ControllerSubscriptionWhereInput!]
-}
-
-input ControllerUpdateDataInput {
-  switches: SwitchUpdateManyWithoutControllerInput
-}
-
-input ControllerUpdateInput {
-  switches: SwitchUpdateManyWithoutControllerInput
-}
-
-input ControllerUpdateOneRequiredInput {
-  create: ControllerCreateInput
-  update: ControllerUpdateDataInput
-  upsert: ControllerUpsertNestedInput
-  connect: ControllerWhereUniqueInput
-}
-
-input ControllerUpdateOneRequiredWithoutSwitchesInput {
-  create: ControllerCreateWithoutSwitchesInput
-  connect: ControllerWhereUniqueInput
-}
-
-input ControllerUpsertNestedInput {
-  update: ControllerUpdateDataInput!
-  create: ControllerCreateInput!
-}
-
-input ControllerWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  switches_every: SwitchWhereInput
-  switches_some: SwitchWhereInput
-  switches_none: SwitchWhereInput
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [ControllerWhereInput!]
-  OR: [ControllerWhereInput!]
-  NOT: [ControllerWhereInput!]
-}
-
-input ControllerWhereUniqueInput {
-  id: ID
-}
-
-type Dashboard {
-  id: ID!
-  controller: Controller!
-  enviroment: Enviroment!
-}
-
-type DashboardConnection {
-  pageInfo: PageInfo!
-  edges: [DashboardEdge]!
-  aggregate: AggregateDashboard!
-}
-
-input DashboardCreateInput {
-  id: ID
-  controller: ControllerCreateOneInput!
-  enviroment: EnviromentCreateOneInput!
-}
-
-type DashboardEdge {
-  node: Dashboard!
-  cursor: String!
-}
-
-enum DashboardOrderByInput {
-  id_ASC
-  id_DESC
-}
-
-type DashboardPreviousValues {
-  id: ID!
-}
-
-type DashboardSubscriptionPayload {
-  mutation: MutationType!
-  node: Dashboard
-  updatedFields: [String!]
-  previousValues: DashboardPreviousValues
-}
-
-input DashboardSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: DashboardWhereInput
-  AND: [DashboardSubscriptionWhereInput!]
-  OR: [DashboardSubscriptionWhereInput!]
-  NOT: [DashboardSubscriptionWhereInput!]
-}
-
-input DashboardUpdateInput {
-  controller: ControllerUpdateOneRequiredInput
-  enviroment: EnviromentUpdateOneRequiredInput
-}
-
-input DashboardWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  controller: ControllerWhereInput
-  enviroment: EnviromentWhereInput
-  AND: [DashboardWhereInput!]
-  OR: [DashboardWhereInput!]
-  NOT: [DashboardWhereInput!]
-}
-
-input DashboardWhereUniqueInput {
-  id: ID
-}
-
 scalar DateTime
-
-type Enviroment {
-  id: ID!
-  figures(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Figure!]
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type EnviromentConnection {
-  pageInfo: PageInfo!
-  edges: [EnviromentEdge]!
-  aggregate: AggregateEnviroment!
-}
-
-input EnviromentCreateInput {
-  id: ID
-  figures: FigureCreateManyWithoutEnviromentInput
-}
-
-input EnviromentCreateOneInput {
-  create: EnviromentCreateInput
-  connect: EnviromentWhereUniqueInput
-}
-
-input EnviromentCreateOneWithoutFiguresInput {
-  create: EnviromentCreateWithoutFiguresInput
-  connect: EnviromentWhereUniqueInput
-}
-
-input EnviromentCreateWithoutFiguresInput {
-  id: ID
-}
-
-type EnviromentEdge {
-  node: Enviroment!
-  cursor: String!
-}
-
-enum EnviromentOrderByInput {
-  id_ASC
-  id_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
-}
-
-type EnviromentPreviousValues {
-  id: ID!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type EnviromentSubscriptionPayload {
-  mutation: MutationType!
-  node: Enviroment
-  updatedFields: [String!]
-  previousValues: EnviromentPreviousValues
-}
-
-input EnviromentSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: EnviromentWhereInput
-  AND: [EnviromentSubscriptionWhereInput!]
-  OR: [EnviromentSubscriptionWhereInput!]
-  NOT: [EnviromentSubscriptionWhereInput!]
-}
-
-input EnviromentUpdateDataInput {
-  figures: FigureUpdateManyWithoutEnviromentInput
-}
-
-input EnviromentUpdateInput {
-  figures: FigureUpdateManyWithoutEnviromentInput
-}
-
-input EnviromentUpdateOneRequiredInput {
-  create: EnviromentCreateInput
-  update: EnviromentUpdateDataInput
-  upsert: EnviromentUpsertNestedInput
-  connect: EnviromentWhereUniqueInput
-}
-
-input EnviromentUpdateOneRequiredWithoutFiguresInput {
-  create: EnviromentCreateWithoutFiguresInput
-  connect: EnviromentWhereUniqueInput
-}
-
-input EnviromentUpsertNestedInput {
-  update: EnviromentUpdateDataInput!
-  create: EnviromentCreateInput!
-}
-
-input EnviromentWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  figures_every: FigureWhereInput
-  figures_some: FigureWhereInput
-  figures_none: FigureWhereInput
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  AND: [EnviromentWhereInput!]
-  OR: [EnviromentWhereInput!]
-  NOT: [EnviromentWhereInput!]
-}
-
-input EnviromentWhereUniqueInput {
-  id: ID
-}
 
 type Figure {
   id: ID!
   updatedAt: DateTime!
   value: Float!
-  enviroment: Enviroment!
-  measurement: FigureFormat!
+  measurement: measurementFormat!
 }
 
 type FigureConnection {
@@ -407,33 +142,12 @@ type FigureConnection {
 input FigureCreateInput {
   id: ID
   value: Float!
-  enviroment: EnviromentCreateOneWithoutFiguresInput!
-  measurement: FigureFormat!
-}
-
-input FigureCreateManyWithoutEnviromentInput {
-  create: [FigureCreateWithoutEnviromentInput!]
-  connect: [FigureWhereUniqueInput!]
-}
-
-input FigureCreateWithoutEnviromentInput {
-  id: ID
-  value: Float!
-  measurement: FigureFormat!
+  measurement: measurementFormat!
 }
 
 type FigureEdge {
   node: Figure!
   cursor: String!
-}
-
-enum FigureFormat {
-  LUX
-  HUM
-  TEMP
-  CO2
-  PH
-  EC
 }
 
 enum FigureOrderByInput {
@@ -451,47 +165,7 @@ type FigurePreviousValues {
   id: ID!
   updatedAt: DateTime!
   value: Float!
-  measurement: FigureFormat!
-}
-
-input FigureScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  value: Float
-  value_not: Float
-  value_in: [Float!]
-  value_not_in: [Float!]
-  value_lt: Float
-  value_lte: Float
-  value_gt: Float
-  value_gte: Float
-  measurement: FigureFormat
-  measurement_not: FigureFormat
-  measurement_in: [FigureFormat!]
-  measurement_not_in: [FigureFormat!]
-  AND: [FigureScalarWhereInput!]
-  OR: [FigureScalarWhereInput!]
-  NOT: [FigureScalarWhereInput!]
+  measurement: measurementFormat!
 }
 
 type FigureSubscriptionPayload {
@@ -514,51 +188,12 @@ input FigureSubscriptionWhereInput {
 
 input FigureUpdateInput {
   value: Float
-  enviroment: EnviromentUpdateOneRequiredWithoutFiguresInput
-  measurement: FigureFormat
-}
-
-input FigureUpdateManyDataInput {
-  value: Float
-  measurement: FigureFormat
+  measurement: measurementFormat
 }
 
 input FigureUpdateManyMutationInput {
   value: Float
-  measurement: FigureFormat
-}
-
-input FigureUpdateManyWithoutEnviromentInput {
-  create: [FigureCreateWithoutEnviromentInput!]
-  delete: [FigureWhereUniqueInput!]
-  connect: [FigureWhereUniqueInput!]
-  set: [FigureWhereUniqueInput!]
-  disconnect: [FigureWhereUniqueInput!]
-  update: [FigureUpdateWithWhereUniqueWithoutEnviromentInput!]
-  upsert: [FigureUpsertWithWhereUniqueWithoutEnviromentInput!]
-  deleteMany: [FigureScalarWhereInput!]
-  updateMany: [FigureUpdateManyWithWhereNestedInput!]
-}
-
-input FigureUpdateManyWithWhereNestedInput {
-  where: FigureScalarWhereInput!
-  data: FigureUpdateManyDataInput!
-}
-
-input FigureUpdateWithoutEnviromentDataInput {
-  value: Float
-  measurement: FigureFormat
-}
-
-input FigureUpdateWithWhereUniqueWithoutEnviromentInput {
-  where: FigureWhereUniqueInput!
-  data: FigureUpdateWithoutEnviromentDataInput!
-}
-
-input FigureUpsertWithWhereUniqueWithoutEnviromentInput {
-  where: FigureWhereUniqueInput!
-  update: FigureUpdateWithoutEnviromentDataInput!
-  create: FigureCreateWithoutEnviromentInput!
+  measurement: measurementFormat
 }
 
 input FigureWhereInput {
@@ -592,11 +227,10 @@ input FigureWhereInput {
   value_lte: Float
   value_gt: Float
   value_gte: Float
-  enviroment: EnviromentWhereInput
-  measurement: FigureFormat
-  measurement_not: FigureFormat
-  measurement_in: [FigureFormat!]
-  measurement_not_in: [FigureFormat!]
+  measurement: measurementFormat
+  measurement_not: measurementFormat
+  measurement_in: [measurementFormat!]
+  measurement_not_in: [measurementFormat!]
   AND: [FigureWhereInput!]
   OR: [FigureWhereInput!]
   NOT: [FigureWhereInput!]
@@ -608,22 +242,22 @@ input FigureWhereUniqueInput {
 
 scalar Long
 
+enum measurementFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+
 type Mutation {
-  createController(data: ControllerCreateInput!): Controller!
-  updateController(data: ControllerUpdateInput!, where: ControllerWhereUniqueInput!): Controller
-  upsertController(where: ControllerWhereUniqueInput!, create: ControllerCreateInput!, update: ControllerUpdateInput!): Controller!
-  deleteController(where: ControllerWhereUniqueInput!): Controller
-  deleteManyControllers(where: ControllerWhereInput): BatchPayload!
-  createDashboard(data: DashboardCreateInput!): Dashboard!
-  updateDashboard(data: DashboardUpdateInput!, where: DashboardWhereUniqueInput!): Dashboard
-  upsertDashboard(where: DashboardWhereUniqueInput!, create: DashboardCreateInput!, update: DashboardUpdateInput!): Dashboard!
-  deleteDashboard(where: DashboardWhereUniqueInput!): Dashboard
-  deleteManyDashboards(where: DashboardWhereInput): BatchPayload!
-  createEnviroment(data: EnviromentCreateInput!): Enviroment!
-  updateEnviroment(data: EnviromentUpdateInput!, where: EnviromentWhereUniqueInput!): Enviroment
-  upsertEnviroment(where: EnviromentWhereUniqueInput!, create: EnviromentCreateInput!, update: EnviromentUpdateInput!): Enviroment!
-  deleteEnviroment(where: EnviromentWhereUniqueInput!): Enviroment
-  deleteManyEnviroments(where: EnviromentWhereInput): BatchPayload!
+  createAuthPayload(data: AuthPayloadCreateInput!): AuthPayload!
+  updateAuthPayload(data: AuthPayloadUpdateInput!, where: AuthPayloadWhereUniqueInput!): AuthPayload
+  updateManyAuthPayloads(data: AuthPayloadUpdateManyMutationInput!, where: AuthPayloadWhereInput): BatchPayload!
+  upsertAuthPayload(where: AuthPayloadWhereUniqueInput!, create: AuthPayloadCreateInput!, update: AuthPayloadUpdateInput!): AuthPayload!
+  deleteAuthPayload(where: AuthPayloadWhereUniqueInput!): AuthPayload
+  deleteManyAuthPayloads(where: AuthPayloadWhereInput): BatchPayload!
   createFigure(data: FigureCreateInput!): Figure!
   updateFigure(data: FigureUpdateInput!, where: FigureWhereUniqueInput!): Figure
   updateManyFigures(data: FigureUpdateManyMutationInput!, where: FigureWhereInput): BatchPayload!
@@ -662,15 +296,9 @@ type PageInfo {
 }
 
 type Query {
-  controller(where: ControllerWhereUniqueInput!): Controller
-  controllers(where: ControllerWhereInput, orderBy: ControllerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Controller]!
-  controllersConnection(where: ControllerWhereInput, orderBy: ControllerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ControllerConnection!
-  dashboard(where: DashboardWhereUniqueInput!): Dashboard
-  dashboards(where: DashboardWhereInput, orderBy: DashboardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dashboard]!
-  dashboardsConnection(where: DashboardWhereInput, orderBy: DashboardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DashboardConnection!
-  enviroment(where: EnviromentWhereUniqueInput!): Enviroment
-  enviroments(where: EnviromentWhereInput, orderBy: EnviromentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enviroment]!
-  enviromentsConnection(where: EnviromentWhereInput, orderBy: EnviromentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EnviromentConnection!
+  authPayload(where: AuthPayloadWhereUniqueInput!): AuthPayload
+  authPayloads(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthPayload]!
+  authPayloadsConnection(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthPayloadConnection!
   figure(where: FigureWhereUniqueInput!): Figure
   figures(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Figure]!
   figuresConnection(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FigureConnection!
@@ -684,9 +312,7 @@ type Query {
 }
 
 type Subscription {
-  controller(where: ControllerSubscriptionWhereInput): ControllerSubscriptionPayload
-  dashboard(where: DashboardSubscriptionWhereInput): DashboardSubscriptionPayload
-  enviroment(where: EnviromentSubscriptionWhereInput): EnviromentSubscriptionPayload
+  authPayload(where: AuthPayloadSubscriptionWhereInput): AuthPayloadSubscriptionPayload
   figure(where: FigureSubscriptionWhereInput): FigureSubscriptionPayload
   switch(where: SwitchSubscriptionWhereInput): SwitchSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -694,11 +320,10 @@ type Subscription {
 
 type Switch {
   id: ID!
-  controller: Controller!
-  switch: SwitchFormat!
-  updatedAt: DateTime!
+  machine: SwitchFormat!
+  updatedAt: DateTime
   status: Boolean!
-  controledBy: User!
+  controledBy: User
 }
 
 type SwitchConnection {
@@ -709,22 +334,20 @@ type SwitchConnection {
 
 input SwitchCreateInput {
   id: ID
-  controller: ControllerCreateOneWithoutSwitchesInput!
-  switch: SwitchFormat!
+  machine: SwitchFormat!
   status: Boolean!
-  controledBy: UserCreateOneInput!
+  controledBy: UserCreateOneWithoutSwitchesInput
 }
 
-input SwitchCreateManyWithoutControllerInput {
-  create: [SwitchCreateWithoutControllerInput!]
+input SwitchCreateManyWithoutControledByInput {
+  create: [SwitchCreateWithoutControledByInput!]
   connect: [SwitchWhereUniqueInput!]
 }
 
-input SwitchCreateWithoutControllerInput {
+input SwitchCreateWithoutControledByInput {
   id: ID
-  switch: SwitchFormat!
+  machine: SwitchFormat!
   status: Boolean!
-  controledBy: UserCreateOneInput!
 }
 
 type SwitchEdge {
@@ -741,8 +364,8 @@ enum SwitchFormat {
 enum SwitchOrderByInput {
   id_ASC
   id_DESC
-  switch_ASC
-  switch_DESC
+  machine_ASC
+  machine_DESC
   updatedAt_ASC
   updatedAt_DESC
   status_ASC
@@ -751,8 +374,8 @@ enum SwitchOrderByInput {
 
 type SwitchPreviousValues {
   id: ID!
-  switch: SwitchFormat!
-  updatedAt: DateTime!
+  machine: SwitchFormat!
+  updatedAt: DateTime
   status: Boolean!
 }
 
@@ -771,10 +394,10 @@ input SwitchScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  switch: SwitchFormat
-  switch_not: SwitchFormat
-  switch_in: [SwitchFormat!]
-  switch_not_in: [SwitchFormat!]
+  machine: SwitchFormat
+  machine_not: SwitchFormat
+  machine_in: [SwitchFormat!]
+  machine_not_in: [SwitchFormat!]
   updatedAt: DateTime
   updatedAt_not: DateTime
   updatedAt_in: [DateTime!]
@@ -809,30 +432,29 @@ input SwitchSubscriptionWhereInput {
 }
 
 input SwitchUpdateInput {
-  controller: ControllerUpdateOneRequiredWithoutSwitchesInput
-  switch: SwitchFormat
+  machine: SwitchFormat
   status: Boolean
-  controledBy: UserUpdateOneRequiredInput
+  controledBy: UserUpdateOneWithoutSwitchesInput
 }
 
 input SwitchUpdateManyDataInput {
-  switch: SwitchFormat
+  machine: SwitchFormat
   status: Boolean
 }
 
 input SwitchUpdateManyMutationInput {
-  switch: SwitchFormat
+  machine: SwitchFormat
   status: Boolean
 }
 
-input SwitchUpdateManyWithoutControllerInput {
-  create: [SwitchCreateWithoutControllerInput!]
+input SwitchUpdateManyWithoutControledByInput {
+  create: [SwitchCreateWithoutControledByInput!]
   delete: [SwitchWhereUniqueInput!]
   connect: [SwitchWhereUniqueInput!]
   set: [SwitchWhereUniqueInput!]
   disconnect: [SwitchWhereUniqueInput!]
-  update: [SwitchUpdateWithWhereUniqueWithoutControllerInput!]
-  upsert: [SwitchUpsertWithWhereUniqueWithoutControllerInput!]
+  update: [SwitchUpdateWithWhereUniqueWithoutControledByInput!]
+  upsert: [SwitchUpsertWithWhereUniqueWithoutControledByInput!]
   deleteMany: [SwitchScalarWhereInput!]
   updateMany: [SwitchUpdateManyWithWhereNestedInput!]
 }
@@ -842,21 +464,20 @@ input SwitchUpdateManyWithWhereNestedInput {
   data: SwitchUpdateManyDataInput!
 }
 
-input SwitchUpdateWithoutControllerDataInput {
-  switch: SwitchFormat
+input SwitchUpdateWithoutControledByDataInput {
+  machine: SwitchFormat
   status: Boolean
-  controledBy: UserUpdateOneRequiredInput
 }
 
-input SwitchUpdateWithWhereUniqueWithoutControllerInput {
+input SwitchUpdateWithWhereUniqueWithoutControledByInput {
   where: SwitchWhereUniqueInput!
-  data: SwitchUpdateWithoutControllerDataInput!
+  data: SwitchUpdateWithoutControledByDataInput!
 }
 
-input SwitchUpsertWithWhereUniqueWithoutControllerInput {
+input SwitchUpsertWithWhereUniqueWithoutControledByInput {
   where: SwitchWhereUniqueInput!
-  update: SwitchUpdateWithoutControllerDataInput!
-  create: SwitchCreateWithoutControllerInput!
+  update: SwitchUpdateWithoutControledByDataInput!
+  create: SwitchCreateWithoutControledByInput!
 }
 
 input SwitchWhereInput {
@@ -874,11 +495,10 @@ input SwitchWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  controller: ControllerWhereInput
-  switch: SwitchFormat
-  switch_not: SwitchFormat
-  switch_in: [SwitchFormat!]
-  switch_not_in: [SwitchFormat!]
+  machine: SwitchFormat
+  machine_not: SwitchFormat
+  machine_in: [SwitchFormat!]
+  machine_not_in: [SwitchFormat!]
   updatedAt: DateTime
   updatedAt_not: DateTime
   updatedAt_in: [DateTime!]
@@ -904,6 +524,7 @@ type User {
   name: String!
   password: String!
   createdAt: DateTime!
+  switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch!]
 }
 
 type UserConnection {
@@ -916,11 +537,23 @@ input UserCreateInput {
   id: ID
   name: String!
   password: String!
+  switches: SwitchCreateManyWithoutControledByInput
 }
 
 input UserCreateOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutSwitchesInput {
+  create: UserCreateWithoutSwitchesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutSwitchesInput {
+  id: ID
+  name: String!
+  password: String!
 }
 
 type UserEdge {
@@ -967,11 +600,13 @@ input UserSubscriptionWhereInput {
 input UserUpdateDataInput {
   name: String
   password: String
+  switches: SwitchUpdateManyWithoutControledByInput
 }
 
 input UserUpdateInput {
   name: String
   password: String
+  switches: SwitchUpdateManyWithoutControledByInput
 }
 
 input UserUpdateManyMutationInput {
@@ -979,16 +614,37 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneRequiredInput {
+input UserUpdateOneInput {
   create: UserCreateInput
   update: UserUpdateDataInput
   upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutSwitchesInput {
+  create: UserCreateWithoutSwitchesInput
+  update: UserUpdateWithoutSwitchesDataInput
+  upsert: UserUpsertWithoutSwitchesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutSwitchesDataInput {
+  name: String
+  password: String
 }
 
 input UserUpsertNestedInput {
   update: UserUpdateDataInput!
   create: UserCreateInput!
+}
+
+input UserUpsertWithoutSwitchesInput {
+  update: UserUpdateWithoutSwitchesDataInput!
+  create: UserCreateWithoutSwitchesInput!
 }
 
 input UserWhereInput {
@@ -1042,6 +698,9 @@ input UserWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  switches_every: SwitchWhereInput
+  switches_some: SwitchWhereInput
+  switches_none: SwitchWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -1049,6 +708,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  name: String
 }
 `
       }

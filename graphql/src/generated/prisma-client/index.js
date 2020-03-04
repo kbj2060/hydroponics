@@ -5,7 +5,7 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "FigureFormat",
+    name: "measurementFormat",
     embedded: false
   },
   {
@@ -13,19 +13,11 @@ var models = [
     embedded: false
   },
   {
-    name: "Dashboard",
-    embedded: false
-  },
-  {
-    name: "Enviroment",
-    embedded: false
-  },
-  {
     name: "Figure",
     embedded: false
   },
   {
-    name: "Controller",
+    name: "AuthPayload",
     embedded: false
   },
   {
@@ -40,6 +32,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/kbj2060-ae9a0a/graphql/dev`
+  endpoint: `https://eu1.prisma.sh/kbj2060-ae9a0a/src/dev`
 });
 exports.prisma = new exports.Prisma();

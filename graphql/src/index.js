@@ -1,33 +1,32 @@
 const { GraphQLServer } = require('graphql-yoga')
 const { prisma } = require('./generated/prisma-client')
 
+const Query = require('./resolvers/Query')
+const Mutation = require('./resolvers/Mutation')
+const User = require('./resolvers/User')
+const Switch = require('./resolvers/Switch')
+const Subscription = require('./resolvers/Subscription')
+
 const resolvers = {
-    Query: {
-        info: () => `this is hydroponics system!`,
-        feed: (root, args, context, info) => { // 수정
-            return context.prisma.users()        // 수정
-          },
-    },
-    Mutation: {
-        post: (root, args, context) => {       // 수정
-            return context.prisma.createUser({   // 수정
-              name: args.name,                     // 수정
-              password: args.password,     // 수정
-            })                                   // 수정
-          },
-        }
+  Query,
+  Mutation,
+  Subscription, 
+  User,
+  Switch
 }
 
 const server = new GraphQLServer({
-  typeDefs: './schema.graphql',
+  typeDefs: './graphql/src/schema.graphql',
   resolvers,
   context: request => {
     return {
       ...request,
       prisma,
-    }
+    } 
   },
 })
 
 
-server.start(() => console.log(`Server is running on http://localhost:4000`))
+server.start(() =>
+console.log(`Server is running on http://localhost:4000`)
+)

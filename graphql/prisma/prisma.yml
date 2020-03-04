@@ -1,6 +1,7 @@
 # The HTTP endpoint for your Prisma API
 #endpoint: ''
-endpoint: https://eu1.prisma.sh/kbj2060-ae9a0a/graphql/dev
+#endpoint: https://eu1.prisma.sh/kbj2060-ae9a0a/graphql/devendpoint: https://eu1.prisma.sh/kbj2060-ae9a0a/src/dev
+
 
 
 # Points to the file that contains your datamodel
@@ -10,7 +11,3 @@ datamodel: datamodel.prisma
 generate:
   - generator: javascript-client
     output: ../src/generated/prisma-client
-
-hooks:
-  post-deploy:
-    - graphql get-schema --project database
