@@ -18,11 +18,18 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: './graphql/src/schema.graphql',
   resolvers,
-  context: request => {
-    return {
-      ...request,
+  context: ({ req }) => {
+    // if (!req.headers.authorization)
+    //   throw new Error("mssing token");
+
+    // const token = req.headers.authorization;
+    // const user = users.find(user => user.token === token);
+    // if (!user) throw new Error("invalid token");
+    return { 
+      ...req,
       prisma,
-    } 
+      // user,
+      };
   },
 })
 

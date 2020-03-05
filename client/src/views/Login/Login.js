@@ -1,6 +1,24 @@
 import React from 'react';
 import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background1.jpg'
+import gql from 'graphql-tag';
+import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
+import { ApolloProvider,  Mutation } from 'react-apollo';
+
+  const client = new ApolloClient({
+    link: new HttpLink({
+        uri: 'http://localhost:4000',
+    }),
+    cache: new InMemoryCache()
+  });
+
+const loginQuery = gql`
+  mutation login($name: String!, $password: String!) {
+    login(name: $name, password: $password) {
+      token
+    }
+  }
+`;
 
 const Background = ({children}) => {
     return(
@@ -23,33 +41,54 @@ const Background = ({children}) => {
 
 export default function Login() {
     const classes = useStyles();
-    const [name, setName] = React.useState(null);
-    const [password, setPassword] = React.useState(null)
+    const [login, setLogin] = React.useState({
+        login: false, 
+        name: '',
+        password: '',
+    });
 
     const handleNameChange = (event) => {
-        setName(event.target.value);
+        setLogin({name: event.target.value});
     }
     const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
+        setLogin({password : event.target.value});
     }
     const handleSubmit = (event) => {
-        alert('A name was submitted: ' + name);
         event.preventDefault();
     }
 
     return(
+    <ApolloProvider client={client}>
     <Background>
-        <div className={classes.loginForm}>
+    <div className={classes.loginForm}>
+        <Mutation mutation={loginQuery}>
+            {(loginMutation, { data }) => (
             <form onSubmit={handleSubmit}>
             <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
-                <input className={classes.login} placeholder="Name"  type="text" value={name} onChange={handleNameChange} />
-                <input className={classes.login} placeholder="Password" type="password" value={password} onChange={handlePasswordChange} />
+                <input className={classes.login} placeholder="Name"  type="text" value={login.name} onChange={handleNameChange} />
+                <input className={classes.login} placeholder="Password" type="password" value={login.password} onChange={handlePasswordChange} />
                 <div>
-                    <button className={classes.loginButton} type="submit">Log in</button>
+                    <button onClick={() => {loginMutation({variables: {    
+                                                            name: login.name,
+                                                            password: login.password
+                                                            }})
+                    .then(res => {
+                    console.log('​LoginScreen -> res.data.login.token',res.data.login.token);
+                    setLogin({login:true})
+                    return res;
+                    })
+                    .catch(err => {
+                    console.log('​LoginScreen -> err', err);
+                    });
+                }} 
+            className={classes.loginButton} type="submit">Log in</button>
                 </div>
             </form>
-        </div>
+            )}
+        </Mutation>
+    </div>
     </Background>
+    </ApolloProvider>
     )
     
 }

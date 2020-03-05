@@ -14,6 +14,7 @@ export default function App(props) {
           <Route exact path="/" component={Login} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/history" component={History} />
+          {/* <Route component={NotFound} /> */}
         </div>
       </BrowserRouter>
     )
