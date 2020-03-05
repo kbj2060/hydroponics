@@ -21,6 +21,7 @@ body {
 }
 
 .widget {
+  margin-top : 3%;
   height : 100%;
   width : 100%;
   margin : 0;
@@ -62,8 +63,7 @@ body {
 
 .main-display {
   align-items: flex-start;
-  display: flex;
-  flex-start: start;
+  display: inline-flex;
   margin: 2rem 0 2rem 0;
 }
 

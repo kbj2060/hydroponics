@@ -224,7 +224,6 @@ class WeatherCard extends React.Component {
 
     return (
       <div className={"widget ".concat(...background)}>
-        <WeatherIcon />
       {
       this.state.isLoading === true ? 
       <div className="loading">

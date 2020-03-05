@@ -12,6 +12,8 @@ import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
 import useStyles from 'assets/jss/dashboardStyle';
 import EnviromentsIcon from 'assets/icons/EnviromentsIcon';
+import Background from 'views/Background/Background';
+import backgroundImage from 'assets/img/background3.jpg'
 
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -32,10 +34,7 @@ export default function Dashboard() {
 
           <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <Card className={classes.controlCardButtons}>
-              <div>
-                <ControlIcon />
-              </div>
-              <div style={{height:'90%', padding:'5% 0 5% 0'}}>
+              <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
                 <Box style={{height:'calc(100% / 3)'}} display='flex'>
                   <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                     <Typography className={classes.textColor} variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>
@@ -70,9 +69,6 @@ export default function Dashboard() {
           <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
             
           <Card className={classes.parentItem}>
-            <div>
-              <EnviromentsIcon />
-            </div>
             <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
               <div>
                 <Typography className={classes.textColor}>온도</Typography>

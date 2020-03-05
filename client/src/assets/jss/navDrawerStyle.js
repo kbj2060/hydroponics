@@ -50,7 +50,7 @@ const navDrawerStyle = {
       height: "100%",
       content: '""',
       display: "block",
-      background: 'black',
+      background: '#283736',
       opacity: ".8"
     }
   },

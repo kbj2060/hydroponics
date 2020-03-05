@@ -31,7 +31,6 @@ export const NavDrawer = (props) => {
 
   useEffect(() => {
     setstate(state);
-
     }, [props])
 
   const leftDrawerItems = {

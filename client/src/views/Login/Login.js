@@ -1,4 +1,5 @@
 import React from 'react';
+import Background from 'views/Background/Background';
 import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
@@ -20,31 +21,13 @@ const LOGIN = gql`
   }
 `;
 
-const Background = ({children}) => {
-    return(
-        <div style={{
-            width: 'auto',
-            height: '100%',
-            backgroundposition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundImage: `url(${backgroundImage})`,
-            backgroundPosition: 'center center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}>
-            {children}
-        </div>
-    )
-}
-
 export default function Login() {
     const classes = useStyles();
     const [login, setLogin] = React.useState({
         loginState: false, 
         name: '',
         password: '',
+        token: '',
     });
 
     const handleNameChange = (event) => {
@@ -61,8 +44,8 @@ export default function Login() {
 
     return(
     <ApolloProvider client={client}>
-    <Background>
-    <div className={classes.loginForm}>
+    <Background  image={backgroundImage}>
+        <div className={classes.loginForm}>
             <form>
                 <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
                 <input className={classes.login} placeholder="Name"  type="text"  onChange={handleNameChange} />
@@ -78,9 +61,11 @@ export default function Login() {
                                 password: login.password
                             }
                         })
-                        .then((res) => { 
-                            setLogin({ loginState: !login.loginState }) 
-                            const token = res.data.login.token; 
+                        .then((res) => {
+                            setLogin({ 
+                                loginState: !login.loginState,
+                                token: res.data.login.token
+                            })
                         })
                         .catch(err => {
                             alert('Your Account is not valid!');
