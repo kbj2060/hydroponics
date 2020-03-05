@@ -11,6 +11,7 @@ const navDrawerStyle = {
     borderColor : '#ABBFBE',
   },
   drawerTitle : {
+    position : 'relative',
     borderBottomColor : 'white',
     borderBottomWidth : '0.5px',
     borderBottomStyle : 'solid',
@@ -26,13 +27,33 @@ const navDrawerStyle = {
     color:'white',
   },
   hoverItem : {
-    backgroundColor : "#405C5A",
     borderRadius : '15px',
     '&:hover': {
       backgroundColor : "#ABBFBE",
       borderRadius : '15px',
     }
-  }
+  },
+  background: {
+    position: "absolute",
+    zIndex: "1",
+    height: "100%",
+    width: "100%",
+    display: "block",
+    top: "0",
+    left: "0",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    "&:before": {
+      position: "absolute",
+      zIndex: "0",
+      width: "100%",
+      height: "100%",
+      content: '""',
+      display: "block",
+      background: 'black',
+      opacity: ".8"
+    }
+  },
 };
 
 export default navDrawerStyle;

@@ -1,6 +1,6 @@
 import React from 'react';
 import useStyles from 'assets/jss/loginStyle';
-import backgroundImage from 'assets/img/background1.jpg'
+import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider,  Mutation } from 'react-apollo';
@@ -49,11 +49,10 @@ export default function Login() {
 
     const handleNameChange = (event) => {
         event.preventDefault();
-        setLogin({name: event.target.value});
+        setLogin({...login, name: event.target.value});
     }
     const handlePasswordChange = (event) => {
         event.preventDefault();
-        console.log(login)
         setLogin({...login, password : event.target.value});
     }
     const handleSubmit = (event) => {
@@ -64,31 +63,35 @@ export default function Login() {
     <ApolloProvider client={client}>
     <Background>
     <div className={classes.loginForm}>
-        <Mutation mutation={LOGIN}>
-            {(loginMutation, { data }) => (
             <form>
                 <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
                 <input className={classes.login} placeholder="Name"  type="text"  onChange={handleNameChange} />
                 <input className={classes.login} placeholder="Password" type="password" onChange={handlePasswordChange} />
                 <div>
+                <Mutation mutation={LOGIN}>
+                {(loginMutation, { data }) => (
                     <button onClick={(e) => {
-                        console.log(login.name);
                         e.preventDefault();
                         loginMutation({
-                        variables: {
-                            name: login.name,
-                            password: login.password
-                        }
-                    }).then(res => {
-                        console.log(res);
-                    }).catch(err => console.log(err))}} className={classes.loginButton} type="submit">Log in</button>
+                            variables: {
+                                name: login.name,
+                                password: login.password
+                            }
+                        })
+                        .then((res) => { 
+                            setLogin({ loginState: !login.loginState }) 
+                            const token = res.data.login.token; 
+                        })
+                        .catch(err => {
+                            alert('Your Account is not valid!');
+                            console.log(err)})
+                    }}
+                    className={classes.loginButton} type="submit">Log in</button>
+                )}
+                </Mutation>
                 </div>
             </form>
-            )}
-        </Mutation>
-        
-        {}
-    </div>
+        </div>
     </Background>
     </ApolloProvider>
     )

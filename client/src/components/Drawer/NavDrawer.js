@@ -19,6 +19,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
 import styles from "assets/jss/navDrawerStyle.js";
 
+import image from "assets/img/navBackground2.jpg"
+
 const useStyles = makeStyles(styles);
 
 export const NavDrawer = (props) => {
@@ -85,9 +87,9 @@ export const NavDrawer = (props) => {
   }
 
   return (
-    <div>
+    <div className={classes.background} style={{ backgroundImage: "url(" + image + ")" }}>
       <div className={classes.drawerTitle}>
-        <p style={{marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
+        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
       </div>
       {state.right === true ?
       <div>
