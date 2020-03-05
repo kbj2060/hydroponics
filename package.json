@@ -9,7 +9,7 @@
     "client": "cd client && cross-env NODE_PATH=src npm start",
     "server": "nodemon graphql/src/index.js",
     "prisma": "cd graphql/ && prisma deploy",
-    "dev": "concurrently --kill-others-on-fail \"npm server\" \"npm client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
     "apollo-boost": "^0.4.7",

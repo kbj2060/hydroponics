@@ -29,7 +29,12 @@ function info(){
   return `this is hydroponics system!`
 }
 
+function getUsers(parent, args, context) {
+  return context.prisma.users();
+}
+
   module.exports = {
+    getUsers,
     feed,
     info
   }

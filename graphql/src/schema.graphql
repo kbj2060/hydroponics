@@ -3,6 +3,7 @@ scalar DateTime
 type Query {
     info : String!
     feed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput) : Feed!
+    getUsers : [User]    
 }
 
 type Mutation {

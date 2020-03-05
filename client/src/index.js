@@ -19,9 +19,7 @@ const theme = createMuiTheme({
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
-  headers: {
-    authorization: ''
-  }
+
 })
 
 const client = new ApolloClient({
