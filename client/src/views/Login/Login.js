@@ -21,8 +21,9 @@ const LOGIN = gql`
   }
 `;
 
-export default function Login() {
+export default function Login(props) {
     const classes = useStyles();
+    
     const [login, setLogin] = React.useState({
         loginState: false, 
         name: '',
@@ -38,8 +39,17 @@ export default function Login() {
         event.preventDefault();
         setLogin({...login, password : event.target.value});
     }
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const onHandleToken = () => {
+        console.log(login.token)
+        props.passToken(login.token);
+    }
+    const resetState = () => {
+        setLogin({
+            loginState: 'false',
+            name : '',
+            password : '',
+            token : '',
+        })
     }
 
     return(
@@ -66,10 +76,13 @@ export default function Login() {
                                 loginState: !login.loginState,
                                 token: res.data.login.token
                             })
+                            onHandleToken();
+                            resetState();
                         })
                         .catch(err => {
                             alert('Your Account is not valid!');
-                            console.log(err)})
+                            console.log(err)});
+                        
                     }}
                     className={classes.loginButton} type="submit">Log in</button>
                 )}
