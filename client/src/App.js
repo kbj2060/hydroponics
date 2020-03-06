@@ -12,6 +12,7 @@ export default function App() {
     const [token, setToken] = React.useState('');
 
     const onGetToken = (newToken) => {
+      console.log(newToken);
       setToken(newToken);
     }
 

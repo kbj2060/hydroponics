@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
 import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
@@ -31,6 +31,10 @@ export default function Login(props) {
         token: '',
     });
 
+    useEffect(() => {
+        onHandleToken();
+      }, [login.token]);
+
     const handleNameChange = (event) => {
         event.preventDefault();
         setLogin({...login, name: event.target.value});
@@ -40,15 +44,15 @@ export default function Login(props) {
         setLogin({...login, password : event.target.value});
     }
     const onHandleToken = () => {
-        console.log(login.token)
+        console.log(login)
         props.passToken(login.token);
     }
     const resetState = () => {
         setLogin({
-            loginState: 'false',
-            name : '',
-            password : '',
-            token : '',
+            loginState: false, 
+            name: '',
+            password: '',
+            token: '',
         })
     }
 
@@ -58,8 +62,8 @@ export default function Login(props) {
         <div className={classes.loginForm}>
             <form>
                 <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
-                <input className={classes.login} placeholder="Name"  type="text"  onChange={handleNameChange} />
-                <input className={classes.login} placeholder="Password" type="password" onChange={handlePasswordChange} />
+                <input className={classes.login} placeholder="Name"  type="text" value={login.name} onChange={handleNameChange} />
+                <input className={classes.login} placeholder="Password" type="password" value={login.password} onChange={handlePasswordChange} />
                 <div>
                 <Mutation mutation={LOGIN}>
                 {(loginMutation, { data }) => (
@@ -72,11 +76,12 @@ export default function Login(props) {
                             }
                         })
                         .then((res) => {
-                            setLogin({ 
-                                loginState: !login.loginState,
-                                token: res.data.login.token
-                            })
-                            onHandleToken();
+                            const _token = res.data.login.token;
+                            setLogin(preState => ({ 
+                                ...login,
+                                loginState: !preState.loginState,
+                                token: _token,
+                            }))
                             resetState();
                         })
                         .catch(err => {
