@@ -4,12 +4,8 @@ import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
-<<<<<<< HEAD
-import { ApolloProvider,  Mutation, Query } from 'react-apollo';
-=======
 import { ApolloProvider,  Mutation } from 'react-apollo';
 import { Redirect } from 'react-router';
->>>>>>> ff5310f5b9a9b47622bce29d07ad347f1c7076aa
 
 const client = new ApolloClient({
 link: new HttpLink({
