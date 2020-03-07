@@ -12,6 +12,7 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
+    "@reach/router": "^1.3.3",
     "apollo-boost": "^0.4.7",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.0",
