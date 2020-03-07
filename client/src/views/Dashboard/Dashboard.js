@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import Switch from 'components/Switches/Switches';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
+import { Redirect } from 'react-router-dom';
 
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
@@ -19,9 +20,12 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import Circle from 'react-circle';
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const classes = useStyles();
+  const { isAuth } = props;
 
+  if (!isAuth) { return <Redirect to="/" /> } 
+  else{
   return (
       <div className={classes.root}>
         <AppBar />
@@ -207,5 +211,5 @@ export default function Dashboard() {
           </Grid>
         </Grid>
       </div>
-      );
+      );}
     }

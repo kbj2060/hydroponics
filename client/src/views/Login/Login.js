@@ -4,7 +4,12 @@ import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
+<<<<<<< HEAD
 import { ApolloProvider,  Mutation, Query } from 'react-apollo';
+=======
+import { ApolloProvider,  Mutation } from 'react-apollo';
+import { Redirect } from 'react-router';
+>>>>>>> ff5310f5b9a9b47622bce29d07ad347f1c7076aa
 
 const client = new ApolloClient({
 link: new HttpLink({
@@ -37,15 +42,15 @@ export default function Login(props) {
     const classes = useStyles();
     
     const [login, setLogin] = React.useState({
-        loginState: false, 
+        isAuth: false, 
         name: '',
         password: '',
         token: '',
     });
 
     useEffect(() => {
-        if (!login.token){ return } 
-        else { onHandleToken(); }
+        if(!login.token || login.token === undefined) {return}
+        else{ onHandleLogin(); }
       }, [login.token]);
 
     const handleNameChange = (event) => {
@@ -56,8 +61,8 @@ export default function Login(props) {
         event.preventDefault();
         setLogin({...login, password : event.target.value});
     }
-    const onHandleToken = () => {
-        props.passToken(login.token);
+    const onHandleLogin = () => {
+        props.passLogin(login.token, login.isAuth);
     }
     const resetState = () => {
         setLogin({
@@ -122,6 +127,7 @@ export default function Login(props) {
                 </div>
             </form>
         </div>
+        {login.isAuth ? <Redirect to="/dashboard" /> : null}
     </Background>
     </ApolloProvider>
     )
