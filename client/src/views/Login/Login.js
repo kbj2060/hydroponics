@@ -5,6 +5,7 @@ import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider,  Mutation } from 'react-apollo';
+import { Redirect } from 'react-router';
 
 const client = new ApolloClient({
 link: new HttpLink({
@@ -25,14 +26,15 @@ export default function Login(props) {
     const classes = useStyles();
     
     const [login, setLogin] = React.useState({
-        loginState: false, 
+        isAuth: false, 
         name: '',
         password: '',
         token: '',
     });
 
     useEffect(() => {
-        onHandleToken();
+        if(!login.token || login.token === undefined) {return}
+        else{ onHandleLogin(); }
       }, [login.token]);
 
     const handleNameChange = (event) => {
@@ -43,13 +45,12 @@ export default function Login(props) {
         event.preventDefault();
         setLogin({...login, password : event.target.value});
     }
-    const onHandleToken = () => {
-        console.log(login)
-        props.passToken(login.token);
+    const onHandleLogin = () => {
+        props.passLogin(login.token, login.isAuth);
     }
     const resetState = () => {
         setLogin({
-            loginState: false, 
+            ...login,
             name: '',
             password: '',
             token: '',
@@ -66,7 +67,10 @@ export default function Login(props) {
                 <input className={classes.login} placeholder="Password" type="password" value={login.password} onChange={handlePasswordChange} />
                 <div>
                 <Mutation mutation={LOGIN}>
-                {(loginMutation, { data }) => (
+                {(loginMutation, { loading, error, data }) => {
+                if (loading) return(<p>Loading...</p>)
+                if (error) return(alert('your account is not valid!'))
+                return (
                     <button onClick={(e) => {
                         e.preventDefault();
                         loginMutation({
@@ -79,7 +83,7 @@ export default function Login(props) {
                             const _token = res.data.login.token;
                             setLogin(preState => ({ 
                                 ...login,
-                                loginState: !preState.loginState,
+                                isAuth: !preState.isAuth,
                                 token: _token,
                             }))
                             resetState();
@@ -90,11 +94,12 @@ export default function Login(props) {
                         
                     }}
                     className={classes.loginButton} type="submit">Log in</button>
-                )}
+                )}}
                 </Mutation>
                 </div>
             </form>
         </div>
+        {login.isAuth ? <Redirect to="/dashboard" /> : null}
     </Background>
     </ApolloProvider>
     )
