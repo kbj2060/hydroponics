@@ -5,12 +5,6 @@ import History from './views/History/History';
 import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
-import { ApolloClient, InMemoryCache } from 'apollo-boost';
-import { ApolloProvider,  Mutation } from 'react-apollo';
-import { createHttpLink } from "apollo-link-http";
-import { setContext } from "apollo-link-context";
-import { Redirect } from 'react-router';
-import { useHistory } from "react-router-dom";
 
 export default function App() {
     // const classes = useStyles();
