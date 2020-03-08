@@ -10,15 +10,14 @@ export default function App() {
     // const classes = useStyles();
 
     const [login, setLogin] = React.useState({token : ''});
-    const onGetToken = async (newToken) => {
-      await setLogin({ token : newToken, });
-      console.log(newToken)
+    const onGetToken = (newToken) => {
+      setLogin({ token : newToken, });
     }
 
     return (
       <BrowserRouter>
         <div style={{width: '100vw', height: '100vh',overflowX:'hidden'}}>
-          <Route exact path="/" component={() => <Login  passToken={onGetToken} />} />
+          <Route exact path="/" component={() => <Login passToken={onGetToken} />} />
           <Route path="/dashboard" component={() => <Dashboard />} />
           <Route path="/history" component={() => <History /> } />
           {/* <Route component={NotFound} /> */}

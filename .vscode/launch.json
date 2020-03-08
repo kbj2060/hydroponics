@@ -10,9 +10,14 @@
             "reAttach": true,
             "name": "Launch localhost",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/client/"
+            "webRoot": "${workspaceFolder}/client/",
+            "pathMappings": [
+                {
+                    "url": "file:///home/llewyn/hydroponics/client/src",
+                    "path": "${workspaceFolder}/client/src"
+                }
+            ]
         },
-
         {
             "type": "chrome",
             "request": "launch",

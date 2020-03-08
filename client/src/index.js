@@ -7,20 +7,20 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider,  Mutation } from 'react-apollo';
 import { createHttpLink } from "apollo-link-http";
-
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-let token = '';
+
+let token = localStorage.getItem("token"); 
 const headers = {
   authorization: token ? `Bearer ${token}` : null
 }
 const httpLink = createHttpLink({
-uri: 'http://localhost:4000',
-credentials: 'same-origin'
+  uri: 'http://localhost:4000',
+  credentials: 'same-origin'
 })
 const client = new ApolloClient({
-link: httpLink,
-headers : headers,
-cache: new InMemoryCache()
+  link: httpLink,
+  headers : headers,
+  cache: new InMemoryCache()
 })
 
 const theme = createMuiTheme({

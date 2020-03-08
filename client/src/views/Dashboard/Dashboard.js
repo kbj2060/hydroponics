@@ -7,15 +7,8 @@ import Box from '@material-ui/core/Box';
 import Switch from 'components/Switches/Switches';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
-import { Redirect } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
-
-import TimerIcon from 'assets/icons/TimerIcon';
-import ControlIcon from 'assets/icons/ControlIcon';
 import useStyles from 'assets/jss/dashboardStyle';
-import EnviromentsIcon from 'assets/icons/EnviromentsIcon';
-import Background from 'views/Background/Background';
-import backgroundImage from 'assets/img/background3.jpg'
 
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -46,7 +39,7 @@ export default function Dashboard(props) {
                     <Typography className={classes.textColor} variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                    <Switch />
+                    <Switch machine="LED" />
                   </Box>
                 </Box>
 
@@ -55,7 +48,7 @@ export default function Dashboard(props) {
                     <Typography className={classes.textColor} variant="subtitle2">가습기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                    <Switch />
+                    <Switch machine="HUMIDIFIER"/>
                   </Box>
                 </Box>
 
@@ -64,7 +57,7 @@ export default function Dashboard(props) {
                     <Typography className={classes.textColor} variant="subtitle2" >송풍기</Typography>
                   </Box>
                   <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <Switch />
+                    <Switch machine="FAN"/>
                   </Box>
                 </Box>
 
