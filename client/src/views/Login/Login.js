@@ -6,13 +6,15 @@ import gql from 'graphql-tag';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost';
 import { ApolloProvider,  Mutation } from 'react-apollo';
 import { Redirect } from 'react-router';
-
-const client = new ApolloClient({
-link: new HttpLink({
-    uri: 'http://localhost:4000',
-}),
-cache: new InMemoryCache()
-});
+import { useHistory } from "react-router-dom";
+import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { createHttpLink } from "apollo-link-http";
+const ColorCircularProgress = withStyles({
+    root: {
+      color: 'black',
+    }
+  })(CircularProgress);
 
 const LOGIN = gql`
   mutation loginMutation($name: String!, $password: String!) {
@@ -35,18 +37,24 @@ const LOGIN = gql`
 // }`;
 
 export default function Login(props) {
+    const history = useHistory();
+    const isAuth = JSON.parse(localStorage.getItem("isAuth"));
+    if (isAuth === null) { localStorage.setItem("isAuth", JSON.stringify(false)) }
+    else if (isAuth) { history.push('/dashboard') }
+
+
+      
     const classes = useStyles();
-    
     const [login, setLogin] = React.useState({
-        isAuth: false, 
         name: '',
         password: '',
         token: '',
     });
 
     useEffect(() => {
-        if(!login.token || login.token === undefined) {return}
-        else{ onHandleLogin(); }
+        console.log(login.token)
+        if(!login.token || login.token === undefined) { return }
+        else { onHandleToken(); }
       }, [login.token]);
 
     const handleNameChange = (event) => {
@@ -57,18 +65,42 @@ export default function Login(props) {
         event.preventDefault();
         setLogin({...login, password : event.target.value});
     }
-    const onHandleLogin = () => {
-        props.passLogin(login.token, login.isAuth);
+    const onHandleToken = (_token) => {
+        props.passToken(_token);
     }
-    const resetState = () => {
-        setLogin({
-            ...login,
-            name: '',
-            password: '',
-            token: '',
+    const onHandleMutate = (event, loginMutation) => {
+        event.preventDefault();
+        loginMutation({
+            variables: {
+                name: login.name,
+                password: login.password
+            }
+        })
+        .then((res) => {
+            const _token = res.data.login.token;
+            setLogin({ ...login, token: _token });
+            localStorage.setItem("isAuth", JSON.stringify(true));
+            history.push("/dashboard")
+        })
+        .catch((err)=> {
+            alert('Your Account Is Not Valid!')
+            console.log(err)
         })
     }
-    
+
+    const headers = {
+        authorization: login.token ? `Bearer ${login.token}` : null
+    }
+    const httpLink = createHttpLink({
+    uri: 'http://localhost:4000',
+    credentials: 'same-origin'
+    })
+    const client = new ApolloClient({
+    link: httpLink,
+    headers : headers,
+    cache: new InMemoryCache()
+    })
+
     return(
     <ApolloProvider client={client}>
     <Background  image={backgroundImage}>
@@ -80,33 +112,13 @@ export default function Login(props) {
                 <div>
                 <Mutation mutation={LOGIN}>
                 {(loginMutation, { loading, error, data }) => {
-                    if (loading) return <p>Loading...</p>;
-                    if (error) return <p>Error :(</p>;
+                    if (loading) 
+                        return <ColorCircularProgress size={15} thickness={1} /> ;
                     return (
                     <button className={classes.loginButton} 
                             type="submit" 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                loginMutation({
-                                    variables: {
-                                        name: login.name,
-                                        password: login.password
-                                    }
-                                })
-                                .then((res) => {
-                                    const _token = res.data.login.token;
-                                    setLogin(preState => ({ 
-                                        ...login,
-                                        loginState: !preState.loginState,
-                                        token: _token,
-                                    }))
-                                })
-                                .catch(err => {
-                                    alert('Your Account is not valid!');
-                                    console.log(err)});
-                                resetState();
-                            }}>Log in</button>
-                    )
+                            onClick={(event) => {
+                                onHandleMutate(event, loginMutation)}}>Log in</button>)
                     }
                 }
                 </Mutation>
@@ -123,9 +135,10 @@ export default function Login(props) {
                 </div>
             </form>
         </div>
-        {login.isAuth ? <Redirect to="/dashboard" /> : null}
+        {/* {localStorage.getItem("isAuth") ? <Redirect to="/dashboard" /> : null} */}
     </Background>
     </ApolloProvider>
+    
     )
     
 }

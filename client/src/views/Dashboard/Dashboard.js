@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
@@ -8,6 +8,7 @@ import Switch from 'components/Switches/Switches';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
 import { Redirect } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 import TimerIcon from 'assets/icons/TimerIcon';
 import ControlIcon from 'assets/icons/ControlIcon';
@@ -21,11 +22,12 @@ import gql from 'graphql-tag'
 import Circle from 'react-circle';
 
 export default function Dashboard(props) {
+  const history = useHistory();
+  const isAuth = JSON.parse(localStorage.getItem("isAuth"));
+  if(!isAuth){ history.push('/'); }
+  
   const classes = useStyles();
-  const { isAuth } = props;
 
-  if (!isAuth) { return <Redirect to="/" /> } 
-  else{
   return (
       <div className={classes.root}>
         <AppBar />
@@ -100,6 +102,7 @@ export default function Dashboard(props) {
               </div>
             </div>
           </Card>
+          
           {/* <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
               <IconCard Co2Icon color='co2'/>
               <Card className={classes.figureCard}>
@@ -211,5 +214,5 @@ export default function Dashboard(props) {
           </Grid>
         </Grid>
       </div>
-      );}
+      );
     }

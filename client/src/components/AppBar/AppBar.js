@@ -27,7 +27,7 @@ const style = makeStyles(theme => ({
 export default function PermanentAppBar(props) {
   const classes = useStyles();
   const overrideClasses = style();
-
+  
   const [state, setState] = React.useState({
     right: false,
   });
