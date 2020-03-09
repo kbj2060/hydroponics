@@ -5,20 +5,25 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Switch from 'components/Switches/Switches';
+import Figure from 'components/Figure/Figure';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
 import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
-
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import Circle from 'react-circle';
 
 export default function Dashboard(props) {
   const history = useHistory();
   const isAuth = JSON.parse(localStorage.getItem("isAuth"));
   if(!isAuth){ history.push('/'); }
   
+  const subjectArr = [
+    "LUX",
+"HUM",
+"TEMP",
+"CO2", "PH", "EC"
+  ]
   const classes = useStyles();
 
   return (
@@ -69,30 +74,7 @@ export default function Dashboard(props) {
             
           <Card className={classes.parentItem}>
             <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
-              <div>
-                <Typography className={classes.textColor}>온도</Typography>
-                <Circle progress={15} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
-              <div>
-                <Typography className={classes.textColor}>습도</Typography>
-                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
-              <div>
-                <Typography className={classes.textColor}>조명</Typography>
-                <Circle progress={15} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
-              <div>
-                <Typography className={classes.textColor}>CO2</Typography>
-                <Circle progress={10} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
-              <div>
-                <Typography className={classes.textColor}>PH</Typography>
-                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
-              <div>
-                <Typography className={classes.textColor}>EC</Typography>
-                <Circle progress={35} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
-              </div>
+              { subjectArr.map((subject) => <Figure subject={subject} />) }
             </div>
           </Card>
           

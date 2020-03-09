@@ -15,8 +15,8 @@ type Mutation {
 }
 
 type Subscription {
-  newSwitch: Switch
-  newFigure: Figure
+  newSwitch(machine: SwitchFormat): Switch
+  newFigure(measurement : measurementFormat): Figure
 }
 
 type Feed {        
