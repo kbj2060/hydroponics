@@ -30,7 +30,7 @@ async function login(parent, args, context, info) {
 }
 
 async function switchControl(parent, args, context, info) {
-  const userId = getUserId(context)
+  const userId = getUserId(context);
   const newSwitch = await context.prisma.createSwitch({
     machine: args.machine,
     status: args.status,

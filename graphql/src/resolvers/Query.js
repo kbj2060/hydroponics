@@ -1,3 +1,5 @@
+const { APP_SECRET, getUserId } = require('../utils')
+
 async function feed(parent, args, context, info) {
   user = await context.prisma.users();
   const where = args.filter ? {              
@@ -29,12 +31,21 @@ function info(){
   return `this is hydroponics system!`
 }
 
-function getUsers(parent, args, context) {
-  return context.prisma.users();
+async function getUserWithToken(parent, args, context) {
+  const user = await context.prisma.authPayloads({ token: args.token });
+  console.log(user);
+  return user;
+}
+
+function allUsers(parent, args, context) {
+  const userId = getUserId(context)
+  console.log(userId)
+  return userId;
 }
 
   module.exports = {
-    getUsers,
+    allUsers,
+    getUserWithToken,
     feed,
     info
   }

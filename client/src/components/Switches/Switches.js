@@ -86,7 +86,6 @@ export default function CustomizedSwitches(props) {
       console.log(res);
     })
     .catch((err)=>{
-      console.log(state)
       console.log(err);
     })
   };
