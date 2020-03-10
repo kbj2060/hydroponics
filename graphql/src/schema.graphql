@@ -9,14 +9,14 @@ type Query {
 
 type Mutation {
     switchControl(machine: SwitchFormat!, status: Boolean!): Switch
-    measure(value: Float!, measurement: measurementFormat!): Figure
+    measure(value: Float!, measurement: MeasurementFormat!): Figure
     signup(name:String!, password:String!): AuthPayload
     login(name:String!, password:String!): AuthPayload
 }
 
 type Subscription {
   newSwitch(machine: SwitchFormat): Switch
-  newFigure(measurement : measurementFormat): Figure
+  newFigure(measurement: MeasurementFormat): Figure
 }
 
 type Feed {        
@@ -24,7 +24,7 @@ type Feed {
   count: Int!     
 }
 
-enum measurementFormat {
+enum MeasurementFormat {
   LUX
   HUM
   TEMP
@@ -56,7 +56,7 @@ type Figure {
   id : ID! 
   updatedAt : DateTime! 
   value : Float!
-  measurement : measurementFormat! 
+  measurement : MeasurementFormat! 
 }
 
 type Switch {

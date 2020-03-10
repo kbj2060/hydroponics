@@ -1,16 +1,13 @@
 import React from "react";
 import axios from "axios";
-import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import CircleOutlineIcon from "mdi-react/CircleOutlineIcon";
-import MagnifyIcon from "mdi-react/MagnifyIcon";
 import WeatherCloudyIcon from "mdi-react/WeatherCloudyIcon";
 import WeatherLightningRainyIcon from "mdi-react/WeatherLightningRainyIcon";
 import WeatherPouringIcon from "mdi-react/WeatherPouringIcon";
 import WeatherSnowyIcon from "mdi-react/WeatherSnowyIcon";
-import WeatherIcon from 'assets/icons/WeatherIcon';
 import { withStyles } from '@material-ui/core/styles';
 
 import "assets/css/weatherStyle.css";
@@ -48,7 +45,7 @@ class WeatherCard extends React.Component {
     let res = await axios.get(url);
     this.setState({ data: res.data });
 
-    if(typeof this.state.data.list === "undefined" || this.state.data.list.length == 0) {
+    if(typeof this.state.data.list === "undefined" || this.state.data.list.length === 0) {
       this.setState({
         isLoading : true
       });
@@ -187,7 +184,7 @@ class WeatherCard extends React.Component {
 
   render() {
     const {
-      location,
+      // location,
       days,
       daysFull,
       temps,

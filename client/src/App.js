@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import AppBar from './components/AppBar/AppBar';
+import React from 'react';
 import Dashboard from './views/Dashboard/Dashboard';
 import History from './views/History/History';
 import Login from './views/Login/Login';
@@ -9,9 +8,9 @@ import { BrowserRouter } from 'react-router-dom';
 export default function App() {
     // const classes = useStyles();
 
-    const [login, setLogin] = React.useState({token : ''});
+    const [token, setToken] = React.useState('');
     const onGetToken = (newToken) => {
-      setLogin({ token : newToken, });
+      setToken( newToken );
     }
 
     return (

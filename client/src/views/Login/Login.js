@@ -4,15 +4,7 @@ import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import gql from 'graphql-tag';
 import { useHistory } from "react-router-dom";
-import { withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useMutation } from '@apollo/react-hooks';
-
-const ColorCircularProgress = withStyles({
-    root: {
-      color: 'black',
-    }
-  })(CircularProgress);
 
 const LOGIN = gql`
   mutation loginMutation($name: String!, $password: String!) {
@@ -46,20 +38,22 @@ export default function Login(props) {
         password: '',
         token: '',
     });
-    const [loginMutation, { data }] = useMutation(LOGIN);
+    const [loginMutation ] = useMutation(LOGIN);
 
     let inputName = '';
     let inputPassword = '';
 
+    
+
     useEffect(() => {
         if(!login.token || login.token === undefined) { return }
-        else { onHandleToken(login.token); }
+        const onHandleToken = async (_token) => {
+            try { await props.passToken(_token); }
+            catch(err){ console.log(err) }
+        }
+    
+        onHandleToken(login.token);
       }, [login.token]);
-
-    const onHandleToken = async (_token) => {
-      try { await props.passToken(_token); }
-      catch(err){ console.log(err) }
-    }
 
     return(
     <Background image={backgroundImage}>

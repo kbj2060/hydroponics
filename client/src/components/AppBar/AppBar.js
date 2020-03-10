@@ -10,8 +10,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Hidden from '@material-ui/core/Hidden';
+import Drawer from '@material-ui/core/Drawer';
+
 
 import { NavDrawer } from 'components/Drawer/NavDrawer';
 import useStyles from 'assets/jss/appBarStyle.js'
@@ -33,16 +35,16 @@ export default function PermanentAppBar(props) {
   });
 
   const toggleDrawer = (side, open) => event => {
-    setState({ ...state, [side]: open });
-
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    return;
+      return;
     }
-  }
 
-  const closeDrawer = () => {
-    setState(false);
-  }
+    setState({ ...state, [side]: open });
+  };
+
+  // const closeDrawer = () => {
+  //   setState(false);
+  // }
 
   return (
     <div className={classes.root}>
@@ -82,25 +84,23 @@ export default function PermanentAppBar(props) {
             <IconButton
               aria-label="show more"
               aria-haspopup="true"
-              color="#405C5A"
+              onClick={toggleDrawer('right', true)}
               >
               <MenuIcon
-                onClick={toggleDrawer('right', true)}
                 style={{ color: '#405C5A' }}
               />
-              <Drawer
-                anchor="right"
-                open={state.right}
-                onClose={toggleDrawer('right', false)}
-                classes={{ paper: classes.paper }}              >
-                <div
-                  role="presentation"
-                  onClick={closeDrawer}
-                >
-                  <NavDrawer {...state}/>
-                </div>
-              </Drawer>
             </IconButton>
+            <SwipeableDrawer
+              anchor="right"
+              open={state.right}
+              onClose={toggleDrawer('right', false)}
+              onOpen={toggleDrawer('right', true)}
+              classes={{ paper: classes.paper }} >
+              <div>
+                <NavDrawer {...state}/>
+              </div>
+            </SwipeableDrawer>
+            
           </div>
         </Hidden>
       </Toolbar>

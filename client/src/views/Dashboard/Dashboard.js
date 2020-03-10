@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
@@ -10,20 +10,15 @@ import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
 import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
 
 export default function Dashboard(props) {
   const history = useHistory();
   const isAuth = JSON.parse(localStorage.getItem("isAuth"));
   if(!isAuth){ history.push('/'); }
   
-  const subjectArr = [
-    "LUX",
-"HUM",
-"TEMP",
-"CO2", "PH", "EC"
-  ]
+  const measurementArr = [ "LUX", "HUM", "TEMP", 
+                        "CO2", "PH", "EC" ]
+  const machineArr = [ "LED" , "HUMIDIFIER", "FAN"]                        
   const classes = useStyles();
 
   return (
@@ -38,45 +33,31 @@ export default function Dashboard(props) {
 
           <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <Card className={classes.controlCardButtons}>
-              <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
-                <Box style={{height:'calc(100% / 3)'}} display='flex'>
-                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography className={classes.textColor} variant="subtitle2">조&nbsp;&nbsp;&nbsp;명</Typography>
+            <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
+                { machineArr.map(machine => { 
+                  return (
+                  <>
+                  <Box style={{height:'calc(100% / 3)'}} display='flex'>
+                    <Box className={classes.alignNameBox} flexGrow={1} p={1} >
+                      <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
+                    </Box>
+                    <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
+                      <Switch key={machine.toString()} machine={machine} />
+                    </Box>
                   </Box>
-                  <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                    <Switch machine="LED" />
-                  </Box>
-                </Box>
-
-                <Box style={{height:'calc(100% / 3)'}} display='flex'>
-                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography className={classes.textColor} variant="subtitle2">가습기</Typography>
-                  </Box>
-                  <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                    <Switch machine="HUMIDIFIER"/>
-                  </Box>
-                </Box>
-
-                <Box style={{height:'calc(100% / 3)'}} display='flex'>
-                  <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                    <Typography className={classes.textColor} variant="subtitle2" >송풍기</Typography>
-                  </Box>
-                  <Box className={classes.alignButtonIcon} flexGrow={1} p={1}>
-                    <Switch machine="FAN"/>
-                  </Box>
-                </Box>
-
-              </div>
+                  </>
+                  )
+                }) }
+            </div>
             </Card>
           </Grid>
           
           <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
-            
-          <Card className={classes.parentItem}>
-            <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
-              { subjectArr.map((subject) => <Figure subject={subject} />) }
-            </div>
-          </Card>
+            <Card className={classes.parentItem}>
+              <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
+                { measurementArr.map((measurement) => <Figure key={measurement.toString()} measurement={measurement} />) }
+              </div>
+            </Card>
           
           {/* <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
               <IconCard Co2Icon color='co2'/>

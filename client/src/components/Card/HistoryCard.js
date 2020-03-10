@@ -21,7 +21,7 @@ const state = {
 }
 
 export default function HistoryCard(props) {
-  const { backgroundColor, ...rest } = props;
+  const { backgroundColor } = props;
   const classes = useStyles({backgroundColor});
 
   return (

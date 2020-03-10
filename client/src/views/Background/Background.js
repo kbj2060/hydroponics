@@ -1,8 +1,7 @@
 import React from 'react';
-import backgroundImage from 'assets/img/background2.jpg'
 
 export default function Background (props) {
-    const {children, image, ...rest } = props;
+    const {children, image } = props;
 
     return(
         <div style={{

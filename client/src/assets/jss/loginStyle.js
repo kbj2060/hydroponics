@@ -22,7 +22,6 @@ const loginStyle = makeStyles(theme => ({
     },
     loginButton : {
         backgroundColor: 'black',
-        color : 'white',
         width:  'auto',
         minWidth:  '100px',
         borderRadius:  '24px', 

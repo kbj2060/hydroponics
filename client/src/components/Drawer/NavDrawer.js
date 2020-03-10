@@ -7,9 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useHistory } from "react-router-dom";
 
-import LogInIcon from 'assets/icons/LogInIcon';
 import LogOutIcon from 'assets/icons/LogOutIcon';
 import DashboardIcon from 'assets/icons/DashboardIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
@@ -26,11 +24,9 @@ const useStyles = makeStyles(styles);
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [menuClicked, setMenuClicked ] = React.useState('')
   const [state, setstate] = React.useState(props);
-  const isAuth = localStorage.getItem("isAuth");
 
   useEffect(() => {
     setstate(state);
@@ -50,10 +46,6 @@ export const NavDrawer = (props) => {
     로그아웃 : [<LogOutIcon />, '/'],
   };
 
-  const handleMenuClicked = (e) => {
-    e.persist();
-    setMenuClicked(e.target.textContent);
-  }
 
   const handleItems = (items) => (
     <div>
@@ -64,7 +56,7 @@ export const NavDrawer = (props) => {
         <MenuItem className={menuClicked === text ? classes.clickedItem : classes.hoverItem}
           component={Link} to={routes} button key={text}
           onClick={(e) => {
-            if (e.target.textContent == "로그아웃") {
+            if (e.target.textContent === "로그아웃") {
               localStorage.clear();
             } else {
               e.persist();

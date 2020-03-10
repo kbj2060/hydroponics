@@ -14,7 +14,6 @@ const resolvers = {
   User,
   Switch
 }
-
 const server = new GraphQLServer({
   typeDefs: 'graphql/src/schema.graphql',
   resolvers,
