@@ -3,8 +3,15 @@ import { withStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
-import { NEW_SWITCH, SWITCH_CONTROL, FEED } from 'resolvers/resolvers';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { SWITCH_CONTROL, FEED } from 'resolvers/resolvers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 const IOSSwitch = withStyles(theme => ({
   root: {
@@ -62,21 +69,22 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-    // let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
+
   const [switchControlMutation] = useMutation(SWITCH_CONTROL);
-  const { loading, error, data  } = useQuery(FEED, {variables : {
-    orderBy: "updatedAt_ASC",
-    filter : machine,
-    last: 1,
-  }})
   const [state, setState] = React.useState({
     prevStatus : null,
     status: true, 
     machine: machine
   });
-  console.log(data)
-  if (loading) {return <p>Loading...</p>}
-  if (error) {return <p>Loading...</p>}
+    // let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
+  const { loading, error, data  } = useQuery(FEED, {variables : {
+    orderBy: "updatedAt_ASC",
+    filter : machine,
+    last: 1,
+  }})
+
+  if (loading) {return <ColorCircularProgress size={40} thickness={4} />}
+  if (error) {return <ColorCircularProgress size={40} thickness={4} />}
 
   try{
     if(state.prevStatus === null){ 
@@ -86,15 +94,20 @@ export default function CustomizedSwitches(props) {
   } catch (error) 
     { console.log("value is not defined") }
 
-  const handleChange = name => event => {
-    setState(prevState => ({ ...state, prevStatus : prevState.status, [name]: !state.status }));
-    
+  const handleChange = event => {
+    const preStatus = state.status
+    const status = !preStatus
+
+    setState(prevState => ({ 
+      ...state, 
+      prevStatus : preStatus, 
+      status : status }));
+
     switchControlMutation({
       variables : {
         machine : state.machine,
-        status : state.status
-      }
-    })
+        status : status
+      } })
     .then((res) => {
       console.log(res);
     })
@@ -109,7 +122,7 @@ export default function CustomizedSwitches(props) {
         control={
           <IOSSwitch
             checked={state.status}
-            onChange={handleChange('status')}
+            onChange={handleChange}
             value="status"
           />
         }
