@@ -96,7 +96,7 @@ export default function CustomizedSwitches(props) {
   if (error) { console.log(error); }
   if (data === undefined || loading){
     console.log('No subscripted data!')}
-  console.log(data)
+  console.log(data)  
 
   const handleChange = name => event => {
     console.log(event)
