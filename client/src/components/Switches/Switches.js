@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { useMutation, useSubscription } from '@apollo/react-hooks';
-import { NEW_SWITCH, SWITCH_CONTROL } from 'resolvers/resolvers';
+import { useMutation, useSubscription, useQuery } from '@apollo/react-hooks';
+import { NEW_SWITCH, SWITCH_CONTROL, FEED } from 'resolvers/resolvers';
 
 const IOSSwitch = withStyles(theme => ({
   root: {
@@ -60,52 +60,39 @@ const IOSSwitch = withStyles(theme => ({
   );
 });
 
-// const SWITCH_CONTROL = gql`
-//     mutation switchControlMutation( $machine: SwitchFormat!, $status:Boolean! ){
-//       switchControl(machine: $machine, status: $status){
-//         updatedAt
-//         controledBy {
-//           name
-//         }
-//      }
-// }`;
-
-// const NEW_SWITCH = gql`
-//     subscription newSwitchSubscription ($machine: SwitchFormat!) {
-//         newSwitch(machine: $machine){
-//           machine
-//           status
-//           updatedAt
-//           controledBy{
-//             name
-//           }
-//         }
-//     }
-// `;
-
-
 export default function CustomizedSwitches(props) {
   const {machine} = props
+    // let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
+  const [switchControlMutation] = useMutation(SWITCH_CONTROL);
+  const { loading, error, data  } = useQuery(FEED, {variables : {
+    orderBy: "updatedAt_ASC",
+    filter : machine,
+    last: 1,
+  }})
   const [state, setState] = React.useState({
-    checked: true, //쿼리문으로 이전 값 갖고 와야 할 것.
+    prevStatus : null,
+    status: true, 
     machine: machine
   });
+  console.log(data)
+  if (loading) {return <p>Loading...</p>}
+  if (error) {return <p>Loading...</p>}
 
-  const [switchControlMutation] = useMutation(SWITCH_CONTROL);
-  let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
-  if (error) { console.log(error); }
-  if (data === undefined || loading){
-    console.log('No subscripted data!')}
-  console.log(data)  
+  try{
+    if(state.prevStatus === null){ 
+      const status = data.feed.switches[0].status;
+      setState({...state, prevStatus : !status, status: status}) 
+      console.log(machine, data.feed.switches[0].status)}
+  } catch (error) 
+    { console.log("value is not defined") }
 
   const handleChange = name => event => {
-    console.log(event)
-    setState({ ...state, [name]: !state.checked });
-    console.log(state)
+    setState(prevState => ({ ...state, prevStatus : prevState.status, [name]: !state.status }));
+    
     switchControlMutation({
       variables : {
         machine : state.machine,
-        status : state.checked
+        status : state.status
       }
     })
     .then((res) => {
@@ -121,9 +108,9 @@ export default function CustomizedSwitches(props) {
       <FormControlLabel
         control={
           <IOSSwitch
-            checked={state.checked}
-            onChange={handleChange('checked')}
-            value="checked"
+            checked={state.status}
+            onChange={handleChange('status')}
+            value="status"
           />
         }
         style={{margin:'auto'}}

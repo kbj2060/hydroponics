@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
     info : String!
-    feed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput) : Feed!
+    feed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : Feed!
     getUserWithToken(token : String!): AuthPayload
     allUsers : String!
 }
