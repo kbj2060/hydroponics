@@ -4,7 +4,7 @@ type Query {
     info : String!
     switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
     figureFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : FigureFeed!
-    getUserWithToken(token : String!): AuthPayload
+    getCurrentUser: User
     allUsers : String!
 }
 

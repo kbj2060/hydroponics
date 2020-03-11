@@ -1,4 +1,6 @@
-const navDrawerStyle = {
+import { makeStyles } from '@material-ui/core/styles';
+
+const navDrawerStyle = makeStyles(theme =>({
   list: {
     margin : '10px 15px 0 15px',
     width: 240,
@@ -54,6 +56,6 @@ const navDrawerStyle = {
       opacity: ".8"
     }
   },
-};
+}));
 
 export default navDrawerStyle;

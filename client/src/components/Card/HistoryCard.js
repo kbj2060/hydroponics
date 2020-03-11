@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
@@ -37,18 +37,17 @@ export default function HistoryCard(props) {
       }
     ]
   }
-
+  useEffect(() => {
+    try {
+      data.figureFeed.figures.forEach((currentValue, index) => {
+        state.datasets[0].data.push(currentValue.value);
+        state.labels.push(index);
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    }, [data])
   if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
-
-  try {
-    data.figureFeed.figures.forEach((currentValue, index) => {
-      state.datasets[0].data.push(currentValue.value);
-      state.labels.push(index);
-    })
-  } catch (error) {
-    console.log("figure data error!")
-  }
-  console.log(data)
 
   return (
     <div className={classes.background}>

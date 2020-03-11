@@ -58,9 +58,10 @@ function info(){
   return `this is hydroponics system!`
 }
 
-async function getUserWithToken(parent, args, context) {
-  const user = await context.prisma.authPayloads({ token: args.token });
-  console.log(user);
+async function getCurrentUser(parent, args, context) {
+  const userId = getUserId(context)
+  const user = await context.prisma.user({ id : userId })
+  console.log(user)
   return user;
 }
 
@@ -72,7 +73,7 @@ function allUsers(parent, args, context) {
 
   module.exports = {
     allUsers,
-    getUserWithToken,
+    getCurrentUser,
     switchFeed,
     figureFeed,
     info
