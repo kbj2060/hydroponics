@@ -3,26 +3,52 @@ import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
+import { FIGURE_FEED } from 'resolvers/resolvers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
+import { useQuery } from '@apollo/react-hooks';
 
-const state = {
-  labels: ['January', 'February', 'March',
-           'April', 'May'],
-  datasets: [
-    {
-      label: 'Rainfall',
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: '#D7A310',
-      borderColor: '#D7A310',
-      borderWidth: 1,
-      data: [65, 59, 80, 81, 56]
-    }
-  ]
-}
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 export default function HistoryCard(props) {
-  const { backgroundColor } = props;
-  const classes = useStyles({backgroundColor});
+  const { measurement } = props;
+  const classes = useStyles();
+  const { loading, error, data  } = useQuery(FIGURE_FEED, {variables : {
+    orderBy: "updatedAt_ASC",
+    filter : measurement,
+    last: 60,
+  }})
+  
+  const state = {
+    labels: [],
+    datasets: [
+      {
+        label: measurement,
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: '#D7A310',
+        borderColor: '#D7A310',
+        borderWidth: 1,
+        data: []
+      }
+    ]
+  }
+
+  if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
+
+  try {
+    data.figureFeed.figures.forEach((currentValue, index) => {
+      state.datasets[0].data.push(currentValue.value);
+      state.labels.push(index);
+    })
+  } catch (error) {
+    console.log("figure data error!")
+  }
+  console.log(data)
 
   return (
     <div className={classes.background}>
@@ -52,7 +78,7 @@ export default function HistoryCard(props) {
         />
       </div>
       <div className={classes.footer} >
-        <Typography variant="body1" className={classes.textColor}>{props.subject}</Typography>
+        <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>
         <Typography variant="body2" className={classes.textColor}>문제가 발견되지 않았습니다.</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />

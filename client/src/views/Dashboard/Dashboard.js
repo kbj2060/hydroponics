@@ -16,9 +16,8 @@ export default function Dashboard(props) {
   const isAuth = JSON.parse(localStorage.getItem("isAuth"));
   if(!isAuth){ history.push('/'); }
   
-  const measurementArr = [ "LUX", "HUM", "TEMP", 
-                        "CO2", "PH", "EC" ]
-  const machineArr = [ "LED" , "HUMIDIFIER", "FAN"]                        
+  const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
+  const machineArr = [ "LED" , "HUMIDIFIER", "FAN" ]                        
   const classes = useStyles();
 
   return (
@@ -58,115 +57,6 @@ export default function Dashboard(props) {
                 { measurementArr.map((measurement) => <Figure key={measurement.toString()} measurement={measurement} />) }
               </div>
             </Card>
-          
-          {/* <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-              <IconCard Co2Icon color='co2'/>
-              <Card className={classes.figureCard}>
-                <CardContent className={classes.figureCardContents}>
-                    <Typography className={classes.textColor}>CO2
-                      <svg className={classes.greenDot}>
-                        <circle cx="50" cy="50" r="10"/>
-                      </svg>
-                    </Typography>
-                    <Typography className={classes.textColor}>50%</Typography>
-                </CardContent>
-                <div className={classes.updateInfo}>
-                  <TimerIcon />
-                  <Typography className={classes.updateTime}> 방금 갱신됨</Typography>
-                </div>
-              </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-            <IconCard TemperatureIcon color='temp' />
-              <Card className={classes.figureCard}>
-                <CardContent className={classes.figureCardContents}>
-                      <Typography className={classes.textColor}>
-                        온도
-                        <svg className={classes.greenDot}>
-                          <circle cx="50" cy="50" r="10"/>
-                        </svg>
-                      </Typography>
-                      <Typography className={classes.textColor}>24°C</Typography>
-                </CardContent>
-                <div className={classes.updateInfo}>
-                  <TimerIcon />
-                  <p className={classes.updateTime}> 방금 갱신됨</p>
-                </div>
-              </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-            <IconCard HumidityIcon color='hum'/>
-              <Card className={classes.figureCard}>
-                <CardContent className={classes.figureCardContents}>
-                    <Typography className={classes.textColor}>습도
-                      <svg className={classes.redDot}>
-                        <circle cx="50" cy="50" r="10"/>
-                      </svg>
-                    </Typography>
-                    <Typography  className={classes.textColor}>50%</Typography>
-                </CardContent>
-                <div className={classes.updateInfo}>
-                  <TimerIcon />
-                  <p className={classes.updateTime}> 방금 갱신됨</p>
-                </div>
-              </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-            <IconCard PHIcon color='ph'/>
-            <Card className={classes.figureCard}>
-              <CardContent className={classes.figureCardContents}>
-                  <Typography className={classes.textColor}>PH
-                    <svg className={classes.redDot}>
-                      <circle cx="50" cy="50" r="10"/>
-                    </svg>
-                  </Typography>
-                  <Typography className={classes.textColor}>5.5</Typography>
-              </CardContent>
-              <div className={classes.updateInfo}>
-                <TimerIcon />
-                <p className={classes.updateTime}> 방금 갱신됨</p>
-              </div>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-            <IconCard ECIcon color='ec' />
-            <Card className={classes.figureCard}>
-              <CardContent className={classes.figureCardContents}>
-                  <Typography className={classes.textColor}>EC
-                    <svg className={classes.greenDot}>
-                      <circle cx="50" cy="50" r="10"/>
-                    </svg>
-                  </Typography>
-                  <Typography className={classes.textColor}>10</Typography>
-              </CardContent>
-              <div className={classes.updateInfo}>
-                <TimerIcon />
-                <p className={classes.updateTime}> 방금 갱신됨</p>
-              </div>
-            </Card>
-          </Grid>
-
-          <Grid item xs={6} sm={6} md={6} lg={6} className={classes.itemGrid}>
-            <IconCard LedIcon color='led' />
-            <Card className={classes.figureCard}>
-              <CardContent className={classes.figureCardContents}>
-                  <Typography className={classes.textColor}>LED
-                    <svg className={classes.greenDot}>
-                      <circle cx="50" cy="50" r="10"/>
-                    </svg>
-                  </Typography>
-                  <Typography className={classes.textColor}>10</Typography>
-              </CardContent>
-              <div className={classes.updateInfo}>
-                <TimerIcon />
-                <p className={classes.updateTime}> 방금 갱신됨</p>
-              </div>
-            </Card>
-          </Grid> */}
           </Grid>
         </Grid>
       </div>

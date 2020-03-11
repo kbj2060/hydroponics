@@ -8,30 +8,17 @@ import AppBar from 'components/AppBar/AppBar';
 
 export default function History() {
   const classes = useStyles();
+  const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
 
   return (
       <div className={classes.root}>
         <AppBar />
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='온도' backgroundColor='white'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='조명' backgroundColor='white'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='CO2' backgroundColor='white'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='습도' backgroundColor='white'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='PH' backgroundColor='white'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='EC' backgroundColor='white'/>
-          </Grid>
+          { measurementArr.map(measurement => { return (
+                  <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
+                    <HistoryCard measurement={measurement}/>
+                  </Grid>)}) }
         </Grid>
       </div>
     )

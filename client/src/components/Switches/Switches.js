@@ -4,7 +4,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { SWITCH_CONTROL, FEED } from 'resolvers/resolvers';
+import { SWITCH_CONTROL, SWITCH_FEED } from 'resolvers/resolvers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const ColorCircularProgress = withStyles({
@@ -77,7 +77,7 @@ export default function CustomizedSwitches(props) {
     machine: machine
   });
     // let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
-  const { loading, error, data  } = useQuery(FEED, {variables : {
+  const { loading, error, data  } = useQuery(SWITCH_FEED, {variables : {
     orderBy: "updatedAt_ASC",
     filter : machine,
     last: 1,
@@ -88,9 +88,9 @@ export default function CustomizedSwitches(props) {
 
   try{
     if(state.prevStatus === null){ 
-      const status = data.feed.switches[0].status;
+      const status = data.switchFeed.switches[0].status;
       setState({...state, prevStatus : !status, status: status}) 
-      console.log(machine, data.feed.switches[0].status)}
+      console.log(machine, data.switchFeed.switches[0].status)}
   } catch (error) 
     { console.log("value is not defined") }
 

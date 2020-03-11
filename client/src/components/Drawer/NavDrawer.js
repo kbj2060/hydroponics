@@ -73,7 +73,7 @@ export const NavDrawer = (props) => {
 
   const viewList = (side) => {
     return (
-     <div className={classes.fullList} role="presentation">
+      <div className={classes.fullList} role="presentation">
       <MenuList>
         {handleItems(side)}
       </MenuList>

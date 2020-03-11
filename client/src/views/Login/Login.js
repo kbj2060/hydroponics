@@ -53,7 +53,7 @@ export default function Login(props) {
         }
     
         onHandleToken(login.token);
-      }, [login.token]);
+    }, [login.token]);
 
     return(
     <Background image={backgroundImage}>
