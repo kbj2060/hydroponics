@@ -17,7 +17,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
 import styles from "assets/jss/navDrawerStyle.js";
-
 import image from "assets/img/navBackground2.jpg"
 
 const useStyles = makeStyles(styles);
@@ -33,17 +32,17 @@ export const NavDrawer = (props) => {
     }, [props])
 
   const leftDrawerItems = {
-    제어  : [<DashboardIcon />, '/dashboard'],
-    기록  : [<HistoryIcon />, '/history'],
-    설정  : [<SettingsIcon />, '/settings'],
+    Dashboard  : [<DashboardIcon />, '/dashboard'],
+    History  : [<HistoryIcon />, '/history'],
+    Settings  : [<SettingsIcon />, '/settings'],
   };
   const restDrawerItems = {
-    프로필: [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
-    알림: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
+    Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    Alarm: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
   };
   const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
   const footerDrawerItems = {
-    로그아웃 : [<LogOutIcon />, '/'],
+    Logout : [<LogOutIcon />, '/'],
   };
 
 
@@ -56,7 +55,7 @@ export const NavDrawer = (props) => {
         <MenuItem className={menuClicked === text ? classes.clickedItem : classes.hoverItem}
           component={Link} to={routes} button key={text}
           onClick={(e) => {
-            if (e.target.textContent === "로그아웃") {
+            if (e.target.textContent === "Logout") {
               localStorage.clear();
             } else {
               e.persist();
@@ -87,6 +86,9 @@ export const NavDrawer = (props) => {
 
   return (
     <div className={classes.background} style={{ backgroundImage: "url(" + image + ")" }}>
+      <div style={{ display:'block', position:'relative', height: "auto", paddingTop : '10px'}}>
+        <AccountCircle style={{ heigth: '55px', width:'auto', color: 'white' }}/>
+      </div>
       <div className={classes.drawerTitle}>
         <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
       </div>
