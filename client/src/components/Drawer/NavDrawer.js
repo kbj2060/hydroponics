@@ -17,6 +17,7 @@ import useStyles from "assets/jss/navDrawerStyle";
 import image from "assets/img/navBackground2.jpg"
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CURRENT_USER } from 'resolvers/resolvers';
+import { useHistory } from "react-router-dom";
 
 const ColorAccountCircle = withStyles({
     root: {
@@ -28,6 +29,7 @@ const ColorAccountCircle = withStyles({
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
+  const history = useHistory();
   const { loading, error, data  } = useQuery(GET_CURRENT_USER);
 
   const [menuClicked, setMenuClicked ] = React.useState('')
@@ -35,14 +37,13 @@ export const NavDrawer = (props) => {
   const [name, setName] = React.useState('');
   const [type, setType] = React.useState('');
 
-  const username = localStorage.getItem("name");
-
   useEffect(() => {
+    if(loading) { return }
     try {
       setstate(state);
       setName(data.getCurrentUser.name);
       setType(data.getCurrentUser.__typename.toUpperCase());
-      console.log(state, data)
+      console.log(props, state, data)
     } catch (error) {
       console.log(error)
     }
@@ -88,28 +89,31 @@ export const NavDrawer = (props) => {
 
   const viewList = (side) => {
     return (
-      <div className={classes.fullList} role="presentation">
-      <MenuList>
-        {handleItems(side)}
-      </MenuList>
-      <Divider />
-      <MenuList>
-        {handleItems(footerDrawerItems)}
-      </MenuList>
-    </div>
+      <>
+        <MenuItem component={Link} to={'/account'} 
+          style={{ textAlign:'center', display:'inline-block', position:'relative', height: "auto", paddingTop : '10px'}}>
+          <ColorAccountCircle />
+          <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {name}</Typography>
+          <Typography style={{ color: 'white', fontSize : '10px' }}>{type}</Typography>
+        </MenuItem>
+        <div className={classes.drawerTitle}>
+          <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
+        </div>
+        <div className={classes.fullList} role="presentation">
+          <MenuList>
+            {handleItems(side)}
+          </MenuList>
+          <Divider />
+          <MenuList>
+            {handleItems(footerDrawerItems)}
+          </MenuList>
+        </div>
+      </>
     )
   }
 
   return (
     <div className={classes.background} style={{ backgroundImage: "url(" + image + ")" }}>
-      <div style={{ display:'block', position:'relative', height: "auto", paddingTop : '10px'}}>
-        <ColorAccountCircle/>
-        <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {name}</Typography>
-        <Typography style={{ color: 'white', fontSize : '10px' }}>{type}</Typography>
-      </div>
-      <div className={classes.drawerTitle}>
-        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
-      </div>
       {state.right === true ?
       <div>
         {viewList(rightDrawerItems)}

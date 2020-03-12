@@ -38,6 +38,8 @@ export default function HistoryCard(props) {
     ]
   }
   useEffect(() => {
+    if (loading) { return }
+    console.log(data)
     try {
       data.figureFeed.figures.forEach((currentValue, index) => {
         state.datasets[0].data.push(currentValue.value);
@@ -47,6 +49,7 @@ export default function HistoryCard(props) {
       console.log(error)
     }
     }, [data])
+
   if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
 
   return (
@@ -78,10 +81,10 @@ export default function HistoryCard(props) {
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>
-        <Typography variant="body2" className={classes.textColor}>문제가 발견되지 않았습니다.</Typography>
+        <Typography variant="body2" className={classes.textColor}>No problem found</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <Typography variant="inherit" className={classes.updateTime}>방금 갱신됨</Typography>
+          <Typography variant="inherit" className={classes.updateTime}>Just Updated</Typography>
         </div>
       </div>
     </div>

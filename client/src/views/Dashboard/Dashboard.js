@@ -35,16 +35,14 @@ export default function Dashboard(props) {
             <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
                 { machineArr.map(machine => { 
                   return (
-                  <>
-                  <Box style={{height:'calc(100% / 3)'}} display='flex'>
+                  <Box key={machine.toString()} style={{height:'calc(100% / 3)'}} display='flex'>
                     <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                       <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
                     </Box>
                     <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                      <Switch key={machine.toString()} machine={machine} />
+                      <Switch machine={machine} />
                     </Box>
                   </Box>
-                  </>
                   )
                 }) }
             </div>
@@ -54,7 +52,8 @@ export default function Dashboard(props) {
           <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
             <Card className={classes.parentItem}>
               <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
-                { measurementArr.map((measurement) => <Figure key={measurement.toString()} measurement={measurement} />) }
+                { measurementArr.map((measurement) => 
+                        <Figure key={measurement.toString()} measurement={measurement} />) }
               </div>
             </Card>
           </Grid>

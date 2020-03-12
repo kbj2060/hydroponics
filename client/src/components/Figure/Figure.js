@@ -11,12 +11,11 @@ export default function Figure(props) {
     let value = 0;
 
     data === undefined || loading ?
-        (console.log('No subscripted data!')):
+        (value = 0):
         (value = data.newFigure.value)
 
     return (
         <div>
-            { console.log(data) }
             <Typography style={{padding : '5px 0 5px 0',
                                 color : '#405C5A',
                                 fontWeight : 'bold',}}>{measurement}</Typography>

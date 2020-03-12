@@ -16,7 +16,7 @@ export default function History() {
         <CssBaseline />
         <Grid container style={{padding :'15px 30px 15px 30px'}}>
           { measurementArr.map(measurement => { return (
-                  <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
+                  <Grid key={measurement.toString()} item xs={12} sm={12} md={6} style={{padding:'15px',}}>
                     <HistoryCard measurement={measurement}/>
                   </Grid>)}) }
         </Grid>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -82,7 +82,7 @@ export default function CustomizedSwitches(props) {
     filter : machine,
     last: 1,
   }})
-
+  
   if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
 
   try{

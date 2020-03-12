@@ -33,7 +33,6 @@ export default function PermanentAppBar(props) {
     setState({ ...state, [side]: open });
   };
 
-  console.log(state)
   return (  
     <div className={classes.root}>
       <CssBaseline />
