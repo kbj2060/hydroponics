@@ -26,6 +26,10 @@ const settingsStyle = makeStyles(theme =>({
     borderRadius : '15px',
     padding : '20px',
   },
+  applyButton:{
+    backgroundColor:'#405C5A',
+    color:'white',
+  }
 })
 )
 
