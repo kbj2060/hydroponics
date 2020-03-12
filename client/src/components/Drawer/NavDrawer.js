@@ -1,35 +1,52 @@
 import React, { useEffect } from 'react';
-
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-
 import LogOutIcon from 'assets/icons/LogOutIcon';
 import DashboardIcon from 'assets/icons/DashboardIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
-
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
-import styles from "assets/jss/navDrawerStyle.js";
+import useStyles from "assets/jss/navDrawerStyle";
 import image from "assets/img/navBackground2.jpg"
+import { useQuery } from '@apollo/react-hooks';
+import { GET_CURRENT_USER } from 'resolvers/resolvers';
 
-const useStyles = makeStyles(styles);
+const ColorAccountCircle = withStyles({
+    root: {
+      height: 'auto', 
+      width:'70px', 
+      color: 'white'
+    },
+  })(AccountCircle);
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
+  const { loading, error, data  } = useQuery(GET_CURRENT_USER);
 
   const [menuClicked, setMenuClicked ] = React.useState('')
   const [state, setstate] = React.useState(props);
+  const [name, setName] = React.useState('');
+  const [type, setType] = React.useState('');
+
+  const username = localStorage.getItem("name");
 
   useEffect(() => {
-    setstate(state);
-    }, [props])
+    try {
+      setstate(state);
+      setName(data.getCurrentUser.name);
+      setType(data.getCurrentUser.__typename.toUpperCase());
+      console.log(state, data)
+    } catch (error) {
+      console.log(error)
+    }
+    }, [props, data])
 
   const leftDrawerItems = {
     Dashboard  : [<DashboardIcon />, '/dashboard'],
@@ -44,7 +61,6 @@ export const NavDrawer = (props) => {
   const footerDrawerItems = {
     Logout : [<LogOutIcon />, '/'],
   };
-
 
   const handleItems = (items) => (
     <div>
@@ -87,7 +103,9 @@ export const NavDrawer = (props) => {
   return (
     <div className={classes.background} style={{ backgroundImage: "url(" + image + ")" }}>
       <div style={{ display:'block', position:'relative', height: "auto", paddingTop : '10px'}}>
-        <AccountCircle style={{ heigth: '55px', width:'auto', color: 'white' }}/>
+        <ColorAccountCircle/>
+        <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {name}</Typography>
+        <Typography style={{ color: 'white', fontSize : '10px' }}>{type}</Typography>
       </div>
       <div className={classes.drawerTitle}>
         <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>

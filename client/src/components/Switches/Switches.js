@@ -83,8 +83,7 @@ export default function CustomizedSwitches(props) {
     last: 1,
   }})
 
-  if (loading) {return <ColorCircularProgress size={40} thickness={4} />}
-  if (error) {return <ColorCircularProgress size={40} thickness={4} />}
+  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
 
   try{
     if(state.prevStatus === null){ 

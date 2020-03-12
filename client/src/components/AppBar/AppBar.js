@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,8 +12,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
-
-
 import { NavDrawer } from 'components/Drawer/NavDrawer';
 import useStyles from 'assets/jss/appBarStyle.js'
 import {  makeStyles } from '@material-ui/core/styles';
@@ -29,24 +26,15 @@ const style = makeStyles(theme => ({
 export default function PermanentAppBar(props) {
   const classes = useStyles();
   const overrideClasses = style();
-  
-  const [state, setState] = React.useState({
-    right: false,
-  });
+  const [state, setState] = React.useState({ right: false });
 
   const toggleDrawer = (side, open) => event => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {return;}
     setState({ ...state, [side]: open });
   };
 
-  // const closeDrawer = () => {
-  //   setState(false);
-  // }
-
-  return (
+  console.log(state)
+  return (  
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="sticky"

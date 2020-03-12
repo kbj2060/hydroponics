@@ -7,11 +7,11 @@ import { useHistory } from "react-router-dom";
 import { useMutation } from '@apollo/react-hooks';
 
 const LOGIN = gql`
-  mutation loginMutation($name: String!, $password: String!) {
+mutation loginMutation($name: String!, $password: String!) {
     login(name: $name, password: $password) {
-      token
+        token
     }
-  }
+}
 `;
 
 // const FEED = gql`
@@ -40,37 +40,37 @@ export default function Login(props) {
     });
     const [loginMutation ] = useMutation(LOGIN);
 
-    let inputName = '';
-    let inputPassword = '';
-
-    
-
     useEffect(() => {
         if(!login.token || login.token === undefined) { return }
         const onHandleToken = async (_token) => {
             try { await props.passToken(_token); }
             catch(err){ console.log(err) }
         }
-    
         onHandleToken(login.token);
     }, [login.token]);
+
+    const handleChange = target => (e) => {
+        setLogin({
+            ...login,
+            [target]: e.target.value
+        })
+    }
 
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
+            {console.log(login)}
             <form onSubmit={(event) => {
                     event.preventDefault();
                     loginMutation({
                         variables: {
-                            name: inputName.value,
-                            password: inputPassword.value
+                            name: login.name,
+                            password: login.password
                         }
                     })
                     .then((res) => {
                         const _token = res.data.login.token;
-                        setLogin({  name : inputName,
-                                    password : inputPassword,
-                                    token: _token   });
+                        localStorage.setItem("name", login.name)
                         localStorage.setItem("token", _token)
                         localStorage.setItem("isAuth", JSON.stringify(true));
                         history.push("/dashboard")
@@ -80,20 +80,10 @@ export default function Login(props) {
                         console.log(err)
                     })}}>
                 <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
-                <input ref={(node) => { inputName = node }} className={classes.login} placeholder="Name"  type="text"  />
-                <input ref={(node) => { inputPassword = node }} className={classes.login} placeholder="Password" type="password" />
+                <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
+                <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>
                 <div>
                     <button className={classes.loginButton} type="submit" >Log in</button>
-                {/* <Query query={FEED}>
-                {({ data }) => {
-                    return(<button className={classes.loginButton} 
-                            type="submit" 
-                            onClick={(e) => {
-                                e.preventDefault();
-                                console.log(data);
-                            }}>FEED</button>)
-                }}
-                </Query>                 */}
                 </div>
             </form>
         </div>
