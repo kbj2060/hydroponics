@@ -11,6 +11,14 @@ type AggregateFigure {
   count: Int!
 }
 
+type AggregateSetting {
+  count: Int!
+}
+
+type AggregateSettingRange {
+  count: Int!
+}
+
 type AggregateSwitch {
   count: Int!
 }
@@ -130,7 +138,7 @@ type Figure {
   id: ID!
   updatedAt: DateTime!
   value: Float!
-  measurement: measurementFormat!
+  measurement: MeasurementFormat!
 }
 
 type FigureConnection {
@@ -142,7 +150,7 @@ type FigureConnection {
 input FigureCreateInput {
   id: ID
   value: Float!
-  measurement: measurementFormat!
+  measurement: MeasurementFormat!
 }
 
 type FigureEdge {
@@ -165,7 +173,7 @@ type FigurePreviousValues {
   id: ID!
   updatedAt: DateTime!
   value: Float!
-  measurement: measurementFormat!
+  measurement: MeasurementFormat!
 }
 
 type FigureSubscriptionPayload {
@@ -188,12 +196,12 @@ input FigureSubscriptionWhereInput {
 
 input FigureUpdateInput {
   value: Float
-  measurement: measurementFormat
+  measurement: MeasurementFormat
 }
 
 input FigureUpdateManyMutationInput {
   value: Float
-  measurement: measurementFormat
+  measurement: MeasurementFormat
 }
 
 input FigureWhereInput {
@@ -227,10 +235,10 @@ input FigureWhereInput {
   value_lte: Float
   value_gt: Float
   value_gte: Float
-  measurement: measurementFormat
-  measurement_not: measurementFormat
-  measurement_in: [measurementFormat!]
-  measurement_not_in: [measurementFormat!]
+  measurement: MeasurementFormat
+  measurement_not: MeasurementFormat
+  measurement_in: [MeasurementFormat!]
+  measurement_not_in: [MeasurementFormat!]
   AND: [FigureWhereInput!]
   OR: [FigureWhereInput!]
   NOT: [FigureWhereInput!]
@@ -242,7 +250,7 @@ input FigureWhereUniqueInput {
 
 scalar Long
 
-enum measurementFormat {
+enum MeasurementFormat {
   LUX
   HUM
   TEMP
@@ -264,6 +272,17 @@ type Mutation {
   upsertFigure(where: FigureWhereUniqueInput!, create: FigureCreateInput!, update: FigureUpdateInput!): Figure!
   deleteFigure(where: FigureWhereUniqueInput!): Figure
   deleteManyFigures(where: FigureWhereInput): BatchPayload!
+  createSetting(data: SettingCreateInput!): Setting!
+  updateSetting(data: SettingUpdateInput!, where: SettingWhereUniqueInput!): Setting
+  upsertSetting(where: SettingWhereUniqueInput!, create: SettingCreateInput!, update: SettingUpdateInput!): Setting!
+  deleteSetting(where: SettingWhereUniqueInput!): Setting
+  deleteManySettings(where: SettingWhereInput): BatchPayload!
+  createSettingRange(data: SettingRangeCreateInput!): SettingRange!
+  updateSettingRange(data: SettingRangeUpdateInput!, where: SettingRangeWhereUniqueInput!): SettingRange
+  updateManySettingRanges(data: SettingRangeUpdateManyMutationInput!, where: SettingRangeWhereInput): BatchPayload!
+  upsertSettingRange(where: SettingRangeWhereUniqueInput!, create: SettingRangeCreateInput!, update: SettingRangeUpdateInput!): SettingRange!
+  deleteSettingRange(where: SettingRangeWhereUniqueInput!): SettingRange
+  deleteManySettingRanges(where: SettingRangeWhereInput): BatchPayload!
   createSwitch(data: SwitchCreateInput!): Switch!
   updateSwitch(data: SwitchUpdateInput!, where: SwitchWhereUniqueInput!): Switch
   updateManySwitches(data: SwitchUpdateManyMutationInput!, where: SwitchWhereInput): BatchPayload!
@@ -302,6 +321,12 @@ type Query {
   figure(where: FigureWhereUniqueInput!): Figure
   figures(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Figure]!
   figuresConnection(where: FigureWhereInput, orderBy: FigureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FigureConnection!
+  setting(where: SettingWhereUniqueInput!): Setting
+  settings(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Setting]!
+  settingsConnection(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SettingConnection!
+  settingRange(where: SettingRangeWhereUniqueInput!): SettingRange
+  settingRanges(where: SettingRangeWhereInput, orderBy: SettingRangeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SettingRange]!
+  settingRangesConnection(where: SettingRangeWhereInput, orderBy: SettingRangeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SettingRangeConnection!
   switch(where: SwitchWhereUniqueInput!): Switch
   switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch]!
   switchesConnection(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SwitchConnection!
@@ -311,9 +336,317 @@ type Query {
   node(id: ID!): Node
 }
 
+type Setting {
+  id: ID!
+  subjects(where: SettingRangeWhereInput, orderBy: SettingRangeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SettingRange!]
+  appliedBy: User!
+  updatedAt: DateTime!
+}
+
+type SettingConnection {
+  pageInfo: PageInfo!
+  edges: [SettingEdge]!
+  aggregate: AggregateSetting!
+}
+
+input SettingCreateInput {
+  id: ID
+  subjects: SettingRangeCreateManyInput
+  appliedBy: UserCreateOneInput!
+}
+
+type SettingEdge {
+  node: Setting!
+  cursor: String!
+}
+
+enum SettingFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+
+enum SettingOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SettingPreviousValues {
+  id: ID!
+  updatedAt: DateTime!
+}
+
+type SettingRange {
+  id: ID!
+  measurement: SettingFormat!
+  start: Float!
+  end: Float!
+}
+
+type SettingRangeConnection {
+  pageInfo: PageInfo!
+  edges: [SettingRangeEdge]!
+  aggregate: AggregateSettingRange!
+}
+
+input SettingRangeCreateInput {
+  id: ID
+  measurement: SettingFormat!
+  start: Float!
+  end: Float!
+}
+
+input SettingRangeCreateManyInput {
+  create: [SettingRangeCreateInput!]
+  connect: [SettingRangeWhereUniqueInput!]
+}
+
+type SettingRangeEdge {
+  node: SettingRange!
+  cursor: String!
+}
+
+enum SettingRangeOrderByInput {
+  id_ASC
+  id_DESC
+  measurement_ASC
+  measurement_DESC
+  start_ASC
+  start_DESC
+  end_ASC
+  end_DESC
+}
+
+type SettingRangePreviousValues {
+  id: ID!
+  measurement: SettingFormat!
+  start: Float!
+  end: Float!
+}
+
+input SettingRangeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  measurement: SettingFormat
+  measurement_not: SettingFormat
+  measurement_in: [SettingFormat!]
+  measurement_not_in: [SettingFormat!]
+  start: Float
+  start_not: Float
+  start_in: [Float!]
+  start_not_in: [Float!]
+  start_lt: Float
+  start_lte: Float
+  start_gt: Float
+  start_gte: Float
+  end: Float
+  end_not: Float
+  end_in: [Float!]
+  end_not_in: [Float!]
+  end_lt: Float
+  end_lte: Float
+  end_gt: Float
+  end_gte: Float
+  AND: [SettingRangeScalarWhereInput!]
+  OR: [SettingRangeScalarWhereInput!]
+  NOT: [SettingRangeScalarWhereInput!]
+}
+
+type SettingRangeSubscriptionPayload {
+  mutation: MutationType!
+  node: SettingRange
+  updatedFields: [String!]
+  previousValues: SettingRangePreviousValues
+}
+
+input SettingRangeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SettingRangeWhereInput
+  AND: [SettingRangeSubscriptionWhereInput!]
+  OR: [SettingRangeSubscriptionWhereInput!]
+  NOT: [SettingRangeSubscriptionWhereInput!]
+}
+
+input SettingRangeUpdateDataInput {
+  measurement: SettingFormat
+  start: Float
+  end: Float
+}
+
+input SettingRangeUpdateInput {
+  measurement: SettingFormat
+  start: Float
+  end: Float
+}
+
+input SettingRangeUpdateManyDataInput {
+  measurement: SettingFormat
+  start: Float
+  end: Float
+}
+
+input SettingRangeUpdateManyInput {
+  create: [SettingRangeCreateInput!]
+  update: [SettingRangeUpdateWithWhereUniqueNestedInput!]
+  upsert: [SettingRangeUpsertWithWhereUniqueNestedInput!]
+  delete: [SettingRangeWhereUniqueInput!]
+  connect: [SettingRangeWhereUniqueInput!]
+  set: [SettingRangeWhereUniqueInput!]
+  disconnect: [SettingRangeWhereUniqueInput!]
+  deleteMany: [SettingRangeScalarWhereInput!]
+  updateMany: [SettingRangeUpdateManyWithWhereNestedInput!]
+}
+
+input SettingRangeUpdateManyMutationInput {
+  measurement: SettingFormat
+  start: Float
+  end: Float
+}
+
+input SettingRangeUpdateManyWithWhereNestedInput {
+  where: SettingRangeScalarWhereInput!
+  data: SettingRangeUpdateManyDataInput!
+}
+
+input SettingRangeUpdateWithWhereUniqueNestedInput {
+  where: SettingRangeWhereUniqueInput!
+  data: SettingRangeUpdateDataInput!
+}
+
+input SettingRangeUpsertWithWhereUniqueNestedInput {
+  where: SettingRangeWhereUniqueInput!
+  update: SettingRangeUpdateDataInput!
+  create: SettingRangeCreateInput!
+}
+
+input SettingRangeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  measurement: SettingFormat
+  measurement_not: SettingFormat
+  measurement_in: [SettingFormat!]
+  measurement_not_in: [SettingFormat!]
+  start: Float
+  start_not: Float
+  start_in: [Float!]
+  start_not_in: [Float!]
+  start_lt: Float
+  start_lte: Float
+  start_gt: Float
+  start_gte: Float
+  end: Float
+  end_not: Float
+  end_in: [Float!]
+  end_not_in: [Float!]
+  end_lt: Float
+  end_lte: Float
+  end_gt: Float
+  end_gte: Float
+  AND: [SettingRangeWhereInput!]
+  OR: [SettingRangeWhereInput!]
+  NOT: [SettingRangeWhereInput!]
+}
+
+input SettingRangeWhereUniqueInput {
+  id: ID
+}
+
+type SettingSubscriptionPayload {
+  mutation: MutationType!
+  node: Setting
+  updatedFields: [String!]
+  previousValues: SettingPreviousValues
+}
+
+input SettingSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SettingWhereInput
+  AND: [SettingSubscriptionWhereInput!]
+  OR: [SettingSubscriptionWhereInput!]
+  NOT: [SettingSubscriptionWhereInput!]
+}
+
+input SettingUpdateInput {
+  subjects: SettingRangeUpdateManyInput
+  appliedBy: UserUpdateOneRequiredInput
+}
+
+input SettingWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  subjects_every: SettingRangeWhereInput
+  subjects_some: SettingRangeWhereInput
+  subjects_none: SettingRangeWhereInput
+  appliedBy: UserWhereInput
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [SettingWhereInput!]
+  OR: [SettingWhereInput!]
+  NOT: [SettingWhereInput!]
+}
+
+input SettingWhereUniqueInput {
+  id: ID
+}
+
 type Subscription {
   authPayload(where: AuthPayloadSubscriptionWhereInput): AuthPayloadSubscriptionPayload
   figure(where: FigureSubscriptionWhereInput): FigureSubscriptionPayload
+  setting(where: SettingSubscriptionWhereInput): SettingSubscriptionPayload
+  settingRange(where: SettingRangeSubscriptionWhereInput): SettingRangeSubscriptionPayload
   switch(where: SwitchSubscriptionWhereInput): SwitchSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -620,6 +953,13 @@ input UserUpdateOneInput {
   upsert: UserUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
   connect: UserWhereUniqueInput
 }
 

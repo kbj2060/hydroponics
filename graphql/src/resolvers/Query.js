@@ -58,6 +58,11 @@ function info(){
   return `this is hydroponics system!`
 }
 
+async function getSetting(parent, args, context) {
+  return await context.prisma.settings({ 
+    last : args.last
+  })
+}
 async function getCurrentUser(parent, args, context) {
   const userId = getUserId(context)
   const user = await context.prisma.user({ id : userId })
@@ -76,5 +81,6 @@ function allUsers(parent, args, context) {
     getCurrentUser,
     switchFeed,
     figureFeed,
-    info
+    info,
+    getSetting
   }

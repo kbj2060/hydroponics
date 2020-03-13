@@ -2,6 +2,15 @@ import React, {useEffect, useState} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import { useQuery  } from '@apollo/react-hooks';
+import { GET_SETTING } from 'resolvers/resolvers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 const CustomSlider = withStyles({
     valueLabel: {
@@ -28,23 +37,40 @@ function valuetext(value) {
 }
 
 export default function RangeSlider(props) {
-  const { measurement, isApplied, getValue } = props;
+  const { measurement, isApplied, getValue, index } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState([0, 0]);
-  
+  const {loading, error, data} = useQuery(GET_SETTING, { variables: {filter: measurement, last:1}})
+
+  useEffect(() => {
+    if (loading || error) {return}
+    if(data) {
+      console.log(data)
+      const values = data.getSetting[0].subjects.find(element => 
+        element.measurement === measurement
+      )
+      setValue([values.start, values.end])
+    }
+  }, [data])
+
   useEffect(() => {
     if(isApplied){
-      giveValue();
-      console.log(value)
+      giveValue(index);
     }
-  }, [isApplied])
+  }, [isApplied,data])
 
-  const giveValue = () => {
-    getValue(measurement, value);
+  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
+
+
+
+  const giveValue = (idx) => {
+    getValue(measurement, value, idx);
+    console.log(measurement, value, idx)
   }
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>

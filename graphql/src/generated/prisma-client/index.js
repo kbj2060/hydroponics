@@ -5,14 +5,6 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "measurementFormat",
-    embedded: false
-  },
-  {
-    name: "SwitchFormat",
-    embedded: false
-  },
-  {
     name: "Figure",
     embedded: false
   },
@@ -26,6 +18,26 @@ var models = [
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "SettingRange",
+    embedded: false
+  },
+  {
+    name: "Setting",
+    embedded: false
+  },
+  {
+    name: "MeasurementFormat",
+    embedded: false
+  },
+  {
+    name: "SettingFormat",
+    embedded: false
+  },
+  {
+    name: "SwitchFormat",
     embedded: false
   }
 ];

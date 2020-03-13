@@ -1,18 +1,20 @@
 scalar DateTime 
 
 type Query {
-    info : String!
-    switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
-    figureFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : FigureFeed!
-    getCurrentUser: User
-    allUsers : String!
+  info : String!
+  switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
+  figureFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : FigureFeed!
+  getCurrentUser: User
+  allUsers : String!
+  getSetting(last: Int) : [Setting!]!
 }
 
 type Mutation {
-    switchControl(machine: SwitchFormat!, status: Boolean!): Switch
-    measure(value: Float!, measurement: MeasurementFormat!): Figure
-    signup(name:String!, password:String!): AuthPayload
-    login(name:String!, password:String!): AuthPayload
+  switchControl(machine: SwitchFormat!, status: Boolean!): Switch
+  measure(value: Float!, measurement: MeasurementFormat!): Figure
+  setting(start: [Float!]!, end: [Float!]!, measurement: [SettingFormat!]!): Setting
+  signup(name:String!, password:String!): AuthPayload
+  login(name:String!, password:String!): AuthPayload
 }
 
 type Subscription {
@@ -56,6 +58,27 @@ enum FigureOrderByInput {
   updatedAt_DESC
   controledBy_ASC
   controledBy_DESC
+}
+enum SettingFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+type SettingRange {
+  id : ID!
+  measurement : SettingFormat!
+  start : Float!
+  end : Float!
+}
+
+type Setting {
+  id : ID!
+  subjects : [SettingRange!]!
+  appliedBy : User!
+  updatedAt : DateTime!
 }
 
 type AuthPayload {

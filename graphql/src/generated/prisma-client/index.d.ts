@@ -18,6 +18,8 @@ export type Maybe<T> = T | undefined | null;
 export interface Exists {
   authPayload: (where?: AuthPayloadWhereInput) => Promise<boolean>;
   figure: (where?: FigureWhereInput) => Promise<boolean>;
+  setting: (where?: SettingWhereInput) => Promise<boolean>;
+  settingRange: (where?: SettingRangeWhereInput) => Promise<boolean>;
   switch: (where?: SwitchWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -81,6 +83,46 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => FigureConnectionPromise;
+  setting: (where: SettingWhereUniqueInput) => SettingNullablePromise;
+  settings: (args?: {
+    where?: SettingWhereInput;
+    orderBy?: SettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Setting>;
+  settingsConnection: (args?: {
+    where?: SettingWhereInput;
+    orderBy?: SettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SettingConnectionPromise;
+  settingRange: (
+    where: SettingRangeWhereUniqueInput
+  ) => SettingRangeNullablePromise;
+  settingRanges: (args?: {
+    where?: SettingRangeWhereInput;
+    orderBy?: SettingRangeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<SettingRange>;
+  settingRangesConnection: (args?: {
+    where?: SettingRangeWhereInput;
+    orderBy?: SettingRangeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SettingRangeConnectionPromise;
   switch: (where: SwitchWhereUniqueInput) => SwitchNullablePromise;
   switches: (args?: {
     where?: SwitchWhereInput;
@@ -159,6 +201,38 @@ export interface Prisma {
   }) => FigurePromise;
   deleteFigure: (where: FigureWhereUniqueInput) => FigurePromise;
   deleteManyFigures: (where?: FigureWhereInput) => BatchPayloadPromise;
+  createSetting: (data: SettingCreateInput) => SettingPromise;
+  updateSetting: (args: {
+    data: SettingUpdateInput;
+    where: SettingWhereUniqueInput;
+  }) => SettingPromise;
+  upsertSetting: (args: {
+    where: SettingWhereUniqueInput;
+    create: SettingCreateInput;
+    update: SettingUpdateInput;
+  }) => SettingPromise;
+  deleteSetting: (where: SettingWhereUniqueInput) => SettingPromise;
+  deleteManySettings: (where?: SettingWhereInput) => BatchPayloadPromise;
+  createSettingRange: (data: SettingRangeCreateInput) => SettingRangePromise;
+  updateSettingRange: (args: {
+    data: SettingRangeUpdateInput;
+    where: SettingRangeWhereUniqueInput;
+  }) => SettingRangePromise;
+  updateManySettingRanges: (args: {
+    data: SettingRangeUpdateManyMutationInput;
+    where?: SettingRangeWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSettingRange: (args: {
+    where: SettingRangeWhereUniqueInput;
+    create: SettingRangeCreateInput;
+    update: SettingRangeUpdateInput;
+  }) => SettingRangePromise;
+  deleteSettingRange: (
+    where: SettingRangeWhereUniqueInput
+  ) => SettingRangePromise;
+  deleteManySettingRanges: (
+    where?: SettingRangeWhereInput
+  ) => BatchPayloadPromise;
   createSwitch: (data: SwitchCreateInput) => SwitchPromise;
   updateSwitch: (args: {
     data: SwitchUpdateInput;
@@ -206,6 +280,12 @@ export interface Subscription {
   figure: (
     where?: FigureSubscriptionWhereInput
   ) => FigureSubscriptionPayloadSubscription;
+  setting: (
+    where?: SettingSubscriptionWhereInput
+  ) => SettingSubscriptionPayloadSubscription;
+  settingRange: (
+    where?: SettingRangeSubscriptionWhereInput
+  ) => SettingRangeSubscriptionPayloadSubscription;
   switch: (
     where?: SwitchSubscriptionWhereInput
   ) => SwitchSubscriptionPayloadSubscription;
@@ -240,7 +320,7 @@ export type AuthPayloadOrderByInput =
   | "token_ASC"
   | "token_DESC";
 
-export type measurementFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
+export type MeasurementFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
 
 export type FigureOrderByInput =
   | "id_ASC"
@@ -251,6 +331,24 @@ export type FigureOrderByInput =
   | "value_DESC"
   | "measurement_ASC"
   | "measurement_DESC";
+
+export type SettingFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
+
+export type SettingRangeOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "measurement_ASC"
+  | "measurement_DESC"
+  | "start_ASC"
+  | "start_DESC"
+  | "end_ASC"
+  | "end_DESC";
+
+export type SettingOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -432,14 +530,94 @@ export interface FigureWhereInput {
   value_lte?: Maybe<Float>;
   value_gt?: Maybe<Float>;
   value_gte?: Maybe<Float>;
-  measurement?: Maybe<measurementFormat>;
-  measurement_not?: Maybe<measurementFormat>;
-  measurement_in?: Maybe<measurementFormat[] | measurementFormat>;
-  measurement_not_in?: Maybe<measurementFormat[] | measurementFormat>;
+  measurement?: Maybe<MeasurementFormat>;
+  measurement_not?: Maybe<MeasurementFormat>;
+  measurement_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
+  measurement_not_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
   AND?: Maybe<FigureWhereInput[] | FigureWhereInput>;
   OR?: Maybe<FigureWhereInput[] | FigureWhereInput>;
   NOT?: Maybe<FigureWhereInput[] | FigureWhereInput>;
 }
+
+export type SettingWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface SettingRangeWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  measurement?: Maybe<SettingFormat>;
+  measurement_not?: Maybe<SettingFormat>;
+  measurement_in?: Maybe<SettingFormat[] | SettingFormat>;
+  measurement_not_in?: Maybe<SettingFormat[] | SettingFormat>;
+  start?: Maybe<Float>;
+  start_not?: Maybe<Float>;
+  start_in?: Maybe<Float[] | Float>;
+  start_not_in?: Maybe<Float[] | Float>;
+  start_lt?: Maybe<Float>;
+  start_lte?: Maybe<Float>;
+  start_gt?: Maybe<Float>;
+  start_gte?: Maybe<Float>;
+  end?: Maybe<Float>;
+  end_not?: Maybe<Float>;
+  end_in?: Maybe<Float[] | Float>;
+  end_not_in?: Maybe<Float[] | Float>;
+  end_lt?: Maybe<Float>;
+  end_lte?: Maybe<Float>;
+  end_gt?: Maybe<Float>;
+  end_gte?: Maybe<Float>;
+  AND?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
+  OR?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
+  NOT?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
+}
+
+export interface SettingWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  subjects_every?: Maybe<SettingRangeWhereInput>;
+  subjects_some?: Maybe<SettingRangeWhereInput>;
+  subjects_none?: Maybe<SettingRangeWhereInput>;
+  appliedBy?: Maybe<UserWhereInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<SettingWhereInput[] | SettingWhereInput>;
+  OR?: Maybe<SettingWhereInput[] | SettingWhereInput>;
+  NOT?: Maybe<SettingWhereInput[] | SettingWhereInput>;
+}
+
+export type SettingRangeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export type SwitchWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -596,17 +774,156 @@ export interface AuthPayloadUpdateManyMutationInput {
 export interface FigureCreateInput {
   id?: Maybe<ID_Input>;
   value: Float;
-  measurement: measurementFormat;
+  measurement: MeasurementFormat;
 }
 
 export interface FigureUpdateInput {
   value?: Maybe<Float>;
-  measurement?: Maybe<measurementFormat>;
+  measurement?: Maybe<MeasurementFormat>;
 }
 
 export interface FigureUpdateManyMutationInput {
   value?: Maybe<Float>;
-  measurement?: Maybe<measurementFormat>;
+  measurement?: Maybe<MeasurementFormat>;
+}
+
+export interface SettingCreateInput {
+  id?: Maybe<ID_Input>;
+  subjects?: Maybe<SettingRangeCreateManyInput>;
+  appliedBy: UserCreateOneInput;
+}
+
+export interface SettingRangeCreateManyInput {
+  create?: Maybe<SettingRangeCreateInput[] | SettingRangeCreateInput>;
+  connect?: Maybe<
+    SettingRangeWhereUniqueInput[] | SettingRangeWhereUniqueInput
+  >;
+}
+
+export interface SettingRangeCreateInput {
+  id?: Maybe<ID_Input>;
+  measurement: SettingFormat;
+  start: Float;
+  end: Float;
+}
+
+export interface SettingUpdateInput {
+  subjects?: Maybe<SettingRangeUpdateManyInput>;
+  appliedBy?: Maybe<UserUpdateOneRequiredInput>;
+}
+
+export interface SettingRangeUpdateManyInput {
+  create?: Maybe<SettingRangeCreateInput[] | SettingRangeCreateInput>;
+  update?: Maybe<
+    | SettingRangeUpdateWithWhereUniqueNestedInput[]
+    | SettingRangeUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | SettingRangeUpsertWithWhereUniqueNestedInput[]
+    | SettingRangeUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<SettingRangeWhereUniqueInput[] | SettingRangeWhereUniqueInput>;
+  connect?: Maybe<
+    SettingRangeWhereUniqueInput[] | SettingRangeWhereUniqueInput
+  >;
+  set?: Maybe<SettingRangeWhereUniqueInput[] | SettingRangeWhereUniqueInput>;
+  disconnect?: Maybe<
+    SettingRangeWhereUniqueInput[] | SettingRangeWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | SettingRangeUpdateManyWithWhereNestedInput[]
+    | SettingRangeUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface SettingRangeUpdateWithWhereUniqueNestedInput {
+  where: SettingRangeWhereUniqueInput;
+  data: SettingRangeUpdateDataInput;
+}
+
+export interface SettingRangeUpdateDataInput {
+  measurement?: Maybe<SettingFormat>;
+  start?: Maybe<Float>;
+  end?: Maybe<Float>;
+}
+
+export interface SettingRangeUpsertWithWhereUniqueNestedInput {
+  where: SettingRangeWhereUniqueInput;
+  update: SettingRangeUpdateDataInput;
+  create: SettingRangeCreateInput;
+}
+
+export interface SettingRangeScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  measurement?: Maybe<SettingFormat>;
+  measurement_not?: Maybe<SettingFormat>;
+  measurement_in?: Maybe<SettingFormat[] | SettingFormat>;
+  measurement_not_in?: Maybe<SettingFormat[] | SettingFormat>;
+  start?: Maybe<Float>;
+  start_not?: Maybe<Float>;
+  start_in?: Maybe<Float[] | Float>;
+  start_not_in?: Maybe<Float[] | Float>;
+  start_lt?: Maybe<Float>;
+  start_lte?: Maybe<Float>;
+  start_gt?: Maybe<Float>;
+  start_gte?: Maybe<Float>;
+  end?: Maybe<Float>;
+  end_not?: Maybe<Float>;
+  end_in?: Maybe<Float[] | Float>;
+  end_not_in?: Maybe<Float[] | Float>;
+  end_lt?: Maybe<Float>;
+  end_lte?: Maybe<Float>;
+  end_gt?: Maybe<Float>;
+  end_gte?: Maybe<Float>;
+  AND?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
+  OR?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
+  NOT?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
+}
+
+export interface SettingRangeUpdateManyWithWhereNestedInput {
+  where: SettingRangeScalarWhereInput;
+  data: SettingRangeUpdateManyDataInput;
+}
+
+export interface SettingRangeUpdateManyDataInput {
+  measurement?: Maybe<SettingFormat>;
+  start?: Maybe<Float>;
+  end?: Maybe<Float>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface SettingRangeUpdateInput {
+  measurement?: Maybe<SettingFormat>;
+  start?: Maybe<Float>;
+  end?: Maybe<Float>;
+}
+
+export interface SettingRangeUpdateManyMutationInput {
+  measurement?: Maybe<SettingFormat>;
+  start?: Maybe<Float>;
+  end?: Maybe<Float>;
 }
 
 export interface SwitchCreateInput {
@@ -694,6 +1011,34 @@ export interface FigureSubscriptionWhereInput {
   AND?: Maybe<FigureSubscriptionWhereInput[] | FigureSubscriptionWhereInput>;
   OR?: Maybe<FigureSubscriptionWhereInput[] | FigureSubscriptionWhereInput>;
   NOT?: Maybe<FigureSubscriptionWhereInput[] | FigureSubscriptionWhereInput>;
+}
+
+export interface SettingSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SettingWhereInput>;
+  AND?: Maybe<SettingSubscriptionWhereInput[] | SettingSubscriptionWhereInput>;
+  OR?: Maybe<SettingSubscriptionWhereInput[] | SettingSubscriptionWhereInput>;
+  NOT?: Maybe<SettingSubscriptionWhereInput[] | SettingSubscriptionWhereInput>;
+}
+
+export interface SettingRangeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SettingRangeWhereInput>;
+  AND?: Maybe<
+    SettingRangeSubscriptionWhereInput[] | SettingRangeSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    SettingRangeSubscriptionWhereInput[] | SettingRangeSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    SettingRangeSubscriptionWhereInput[] | SettingRangeSubscriptionWhereInput
+  >;
 }
 
 export interface SwitchSubscriptionWhereInput {
@@ -926,14 +1271,14 @@ export interface Figure {
   id: ID_Output;
   updatedAt: DateTimeOutput;
   value: Float;
-  measurement: measurementFormat;
+  measurement: MeasurementFormat;
 }
 
 export interface FigurePromise extends Promise<Figure>, Fragmentable {
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  measurement: () => Promise<measurementFormat>;
+  measurement: () => Promise<MeasurementFormat>;
 }
 
 export interface FigureSubscription
@@ -942,7 +1287,7 @@ export interface FigureSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   value: () => Promise<AsyncIterator<Float>>;
-  measurement: () => Promise<AsyncIterator<measurementFormat>>;
+  measurement: () => Promise<AsyncIterator<MeasurementFormat>>;
 }
 
 export interface FigureNullablePromise
@@ -951,7 +1296,7 @@ export interface FigureNullablePromise
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  measurement: () => Promise<measurementFormat>;
+  measurement: () => Promise<MeasurementFormat>;
 }
 
 export interface FigureConnection {
@@ -1004,6 +1349,204 @@ export interface AggregateFigurePromise
 
 export interface AggregateFigureSubscription
   extends Promise<AsyncIterator<AggregateFigure>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Setting {
+  id: ID_Output;
+  updatedAt: DateTimeOutput;
+}
+
+export interface SettingPromise extends Promise<Setting>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  subjects: <T = FragmentableArray<SettingRange>>(args?: {
+    where?: SettingRangeWhereInput;
+    orderBy?: SettingRangeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  appliedBy: <T = UserPromise>() => T;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SettingSubscription
+  extends Promise<AsyncIterator<Setting>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  subjects: <T = Promise<AsyncIterator<SettingRangeSubscription>>>(args?: {
+    where?: SettingRangeWhereInput;
+    orderBy?: SettingRangeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  appliedBy: <T = UserSubscription>() => T;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface SettingNullablePromise
+  extends Promise<Setting | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  subjects: <T = FragmentableArray<SettingRange>>(args?: {
+    where?: SettingRangeWhereInput;
+    orderBy?: SettingRangeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  appliedBy: <T = UserPromise>() => T;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SettingRange {
+  id: ID_Output;
+  measurement: SettingFormat;
+  start: Float;
+  end: Float;
+}
+
+export interface SettingRangePromise
+  extends Promise<SettingRange>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  measurement: () => Promise<SettingFormat>;
+  start: () => Promise<Float>;
+  end: () => Promise<Float>;
+}
+
+export interface SettingRangeSubscription
+  extends Promise<AsyncIterator<SettingRange>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  measurement: () => Promise<AsyncIterator<SettingFormat>>;
+  start: () => Promise<AsyncIterator<Float>>;
+  end: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface SettingRangeNullablePromise
+  extends Promise<SettingRange | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  measurement: () => Promise<SettingFormat>;
+  start: () => Promise<Float>;
+  end: () => Promise<Float>;
+}
+
+export interface SettingConnection {
+  pageInfo: PageInfo;
+  edges: SettingEdge[];
+}
+
+export interface SettingConnectionPromise
+  extends Promise<SettingConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SettingEdge>>() => T;
+  aggregate: <T = AggregateSettingPromise>() => T;
+}
+
+export interface SettingConnectionSubscription
+  extends Promise<AsyncIterator<SettingConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SettingEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSettingSubscription>() => T;
+}
+
+export interface SettingEdge {
+  node: Setting;
+  cursor: String;
+}
+
+export interface SettingEdgePromise extends Promise<SettingEdge>, Fragmentable {
+  node: <T = SettingPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SettingEdgeSubscription
+  extends Promise<AsyncIterator<SettingEdge>>,
+    Fragmentable {
+  node: <T = SettingSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSetting {
+  count: Int;
+}
+
+export interface AggregateSettingPromise
+  extends Promise<AggregateSetting>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSettingSubscription
+  extends Promise<AsyncIterator<AggregateSetting>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SettingRangeConnection {
+  pageInfo: PageInfo;
+  edges: SettingRangeEdge[];
+}
+
+export interface SettingRangeConnectionPromise
+  extends Promise<SettingRangeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SettingRangeEdge>>() => T;
+  aggregate: <T = AggregateSettingRangePromise>() => T;
+}
+
+export interface SettingRangeConnectionSubscription
+  extends Promise<AsyncIterator<SettingRangeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SettingRangeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSettingRangeSubscription>() => T;
+}
+
+export interface SettingRangeEdge {
+  node: SettingRange;
+  cursor: String;
+}
+
+export interface SettingRangeEdgePromise
+  extends Promise<SettingRangeEdge>,
+    Fragmentable {
+  node: <T = SettingRangePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SettingRangeEdgeSubscription
+  extends Promise<AsyncIterator<SettingRangeEdge>>,
+    Fragmentable {
+  node: <T = SettingRangeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSettingRange {
+  count: Int;
+}
+
+export interface AggregateSettingRangePromise
+  extends Promise<AggregateSettingRange>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSettingRangeSubscription
+  extends Promise<AsyncIterator<AggregateSettingRange>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1205,7 +1748,7 @@ export interface FigurePreviousValues {
   id: ID_Output;
   updatedAt: DateTimeOutput;
   value: Float;
-  measurement: measurementFormat;
+  measurement: MeasurementFormat;
 }
 
 export interface FigurePreviousValuesPromise
@@ -1214,7 +1757,7 @@ export interface FigurePreviousValuesPromise
   id: () => Promise<ID_Output>;
   updatedAt: () => Promise<DateTimeOutput>;
   value: () => Promise<Float>;
-  measurement: () => Promise<measurementFormat>;
+  measurement: () => Promise<MeasurementFormat>;
 }
 
 export interface FigurePreviousValuesSubscription
@@ -1223,7 +1766,101 @@ export interface FigurePreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   value: () => Promise<AsyncIterator<Float>>;
-  measurement: () => Promise<AsyncIterator<measurementFormat>>;
+  measurement: () => Promise<AsyncIterator<MeasurementFormat>>;
+}
+
+export interface SettingSubscriptionPayload {
+  mutation: MutationType;
+  node: Setting;
+  updatedFields: String[];
+  previousValues: SettingPreviousValues;
+}
+
+export interface SettingSubscriptionPayloadPromise
+  extends Promise<SettingSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SettingPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SettingPreviousValuesPromise>() => T;
+}
+
+export interface SettingSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SettingSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SettingSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SettingPreviousValuesSubscription>() => T;
+}
+
+export interface SettingPreviousValues {
+  id: ID_Output;
+  updatedAt: DateTimeOutput;
+}
+
+export interface SettingPreviousValuesPromise
+  extends Promise<SettingPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface SettingPreviousValuesSubscription
+  extends Promise<AsyncIterator<SettingPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface SettingRangeSubscriptionPayload {
+  mutation: MutationType;
+  node: SettingRange;
+  updatedFields: String[];
+  previousValues: SettingRangePreviousValues;
+}
+
+export interface SettingRangeSubscriptionPayloadPromise
+  extends Promise<SettingRangeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SettingRangePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SettingRangePreviousValuesPromise>() => T;
+}
+
+export interface SettingRangeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SettingRangeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SettingRangeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SettingRangePreviousValuesSubscription>() => T;
+}
+
+export interface SettingRangePreviousValues {
+  id: ID_Output;
+  measurement: SettingFormat;
+  start: Float;
+  end: Float;
+}
+
+export interface SettingRangePreviousValuesPromise
+  extends Promise<SettingRangePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  measurement: () => Promise<SettingFormat>;
+  start: () => Promise<Float>;
+  end: () => Promise<Float>;
+}
+
+export interface SettingRangePreviousValuesSubscription
+  extends Promise<AsyncIterator<SettingRangePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  measurement: () => Promise<AsyncIterator<SettingFormat>>;
+  start: () => Promise<AsyncIterator<Float>>;
+  end: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface SwitchSubscriptionPayload {
@@ -1370,14 +2007,6 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "measurementFormat",
-    embedded: false
-  },
-  {
-    name: "SwitchFormat",
-    embedded: false
-  },
-  {
     name: "Figure",
     embedded: false
   },
@@ -1391,6 +2020,26 @@ export const models: Model[] = [
   },
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "SettingRange",
+    embedded: false
+  },
+  {
+    name: "Setting",
+    embedded: false
+  },
+  {
+    name: "MeasurementFormat",
+    embedded: false
+  },
+  {
+    name: "SettingFormat",
+    embedded: false
+  },
+  {
+    name: "SwitchFormat",
     embedded: false
   }
 ];

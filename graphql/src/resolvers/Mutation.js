@@ -47,9 +47,38 @@ async function measure(parent, args, context, info) {
   return newFigure;
 }
 
+async function setting(parent, args, context, info) {
+  console.log(args)
+  const userId = getUserId(context);
+  const newSetting = await context.prisma.createSetting({
+    appliedBy : { connect: { id: userId } },
+    subjects: { create: [{  measurement: args.measurement[0], 
+                            start: args.start[0], 
+                            end: args.end[0] },
+                          {  measurement: args.measurement[1], 
+                            start: args.start[1], 
+                            end: args.end[1] },
+                          {  measurement: args.measurement[2], 
+                            start: args.start[2], 
+                            end: args.end[2] },
+                          {  measurement: args.measurement[3], 
+                            start: args.start[3], 
+                            end: args.end[3] },
+                          {  measurement: args.measurement[4], 
+                            start: args.start[4], 
+                            end: args.end[4] },
+                          {  measurement: args.measurement[5], 
+                            start: args.start[5], 
+                            end: args.end[5] },
+                                    ]}
+  })
+  return newSetting;
+}
+
 module.exports = {
   signup,
   login,
   switchControl,
-  measure
+  measure,
+  setting
 }

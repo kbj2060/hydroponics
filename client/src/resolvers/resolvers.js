@@ -4,7 +4,6 @@ const SWITCH_FEED = gql`
   query switchFeedQuery($filter: String, $skip:Int, $first:Int, $orderBy: SwitchOrderByInput, $last: Int){
     switchFeed(filter: $filter, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         switches{
-          machine
           status
           updatedAt
         }
@@ -16,11 +15,9 @@ const FIGURE_FEED = gql`
   query figureFeedQuery($filter: String, $skip:Int, $first:Int, $orderBy: SwitchOrderByInput, $last: Int){
     figureFeed(filter: $filter, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         figures{
-          measurement
           value
           updatedAt
         }
-        count
     }
 }`;
 
@@ -30,6 +27,21 @@ const GET_CURRENT_USER = gql`
       name
     }
   }`;
+
+const GET_SETTING = gql`
+  query getSettingQuery( $last: Int){
+    getSetting(last: $last){
+      subjects{
+        measurement
+        start
+        end
+      }
+      appliedBy{
+        name
+      }
+    }
+  }
+`;
 
 const SWITCH_CONTROL = gql`
   mutation switchControlMutation( $machine: SwitchFormat!, $status:Boolean! ){
@@ -42,6 +54,23 @@ const SWITCH_CONTROL = gql`
       }
     }
 }`;
+
+
+const SETTING = gql`
+  mutation settingMutation ($measurement: [SettingFormat!]!, $start:[Float!]!, $end:[Float!]!) {
+      setting(measurement: $measurement, start: $start, end: $end){
+        id
+        subjects{
+          start
+          end
+          measurement
+        }
+        appliedBy{
+          name
+        }
+      }
+  }
+`;
 
 const NEW_SWITCH = gql`
   subscription newSwitchSubscription ($machine: SwitchFormat!) {
@@ -68,11 +97,14 @@ const NEW_FIGURE = gql`
 
 
 
+
 export{
     NEW_FIGURE,
     NEW_SWITCH,
     SWITCH_CONTROL,
+    SETTING,
     SWITCH_FEED,
     FIGURE_FEED,
     GET_CURRENT_USER,
+    GET_SETTING
 }

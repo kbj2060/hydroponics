@@ -38,13 +38,14 @@ export default function HistoryCard(props) {
     ]
   }
   useEffect(() => {
-    if (loading) { return }
+    if (loading || error) {return}
     console.log(data)
     try {
       data.figureFeed.figures.forEach((currentValue, index) => {
         state.datasets[0].data.push(currentValue.value);
         state.labels.push(index);
       })
+      console.log(data.figureFeed.figures)
     } catch (error) {
       console.log(error)
     }
@@ -76,7 +77,8 @@ export default function HistoryCard(props) {
                 gridLines: { color: "#405C5A"},
                 ticks: {fontColor: '#405C5A'}
               }]
-            }}}
+            },
+          }}
         />
       </div>
       <div className={classes.footer} >

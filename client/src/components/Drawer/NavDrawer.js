@@ -38,16 +38,19 @@ export const NavDrawer = (props) => {
   const [type, setType] = React.useState('');
 
   useEffect(() => {
-    if(loading) { return }
+    console.log(data)
+    if(loading || error) { return }
     try {
-      setstate(state);
       setName(data.getCurrentUser.name);
       setType(data.getCurrentUser.__typename.toUpperCase());
-      console.log(props, state, data)
     } catch (error) {
       console.log(error)
     }
-    }, [props, data])
+  }, [data])
+
+  useEffect(() => {
+    setstate(state);
+    }, [props])
 
   const leftDrawerItems = {
     Dashboard  : [<DashboardIcon />, '/dashboard'],
