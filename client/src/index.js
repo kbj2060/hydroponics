@@ -29,7 +29,7 @@ const httpLink = createHttpLink({
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/`,
+  uri: `ws://localhost:4000`,
   options: {
     reconnect: true
   }

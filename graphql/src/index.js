@@ -8,6 +8,7 @@ const Setting = require('./resolvers/Setting')
 const Switch = require('./resolvers/Switch')
 const Subscription = require('./resolvers/Subscription')
 
+
 const resolvers = {
   Query,
   Mutation,
@@ -20,7 +21,7 @@ const server = new GraphQLServer({
   typeDefs: 'graphql/src/schema.graphql',
   resolvers,
   context: async request => {
-    // console.log(request.request.headers.authorization)
+    //console.log(request.request.headers.authorization)
     return({
     ...request,
     prisma,
