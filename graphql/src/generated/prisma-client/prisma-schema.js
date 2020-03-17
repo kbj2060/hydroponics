@@ -360,15 +360,6 @@ type SettingEdge {
   cursor: String!
 }
 
-enum SettingFormat {
-  LUX
-  HUM
-  TEMP
-  CO2
-  PH
-  EC
-}
-
 enum SettingOrderByInput {
   id_ASC
   id_DESC
@@ -383,9 +374,9 @@ type SettingPreviousValues {
 
 type SettingRange {
   id: ID!
-  measurement: SettingFormat!
-  start: Float!
-  end: Float!
+  measurement: MeasurementFormat!
+  min: Float!
+  max: Float!
 }
 
 type SettingRangeConnection {
@@ -396,9 +387,9 @@ type SettingRangeConnection {
 
 input SettingRangeCreateInput {
   id: ID
-  measurement: SettingFormat!
-  start: Float!
-  end: Float!
+  measurement: MeasurementFormat!
+  min: Float!
+  max: Float!
 }
 
 input SettingRangeCreateManyInput {
@@ -416,17 +407,17 @@ enum SettingRangeOrderByInput {
   id_DESC
   measurement_ASC
   measurement_DESC
-  start_ASC
-  start_DESC
-  end_ASC
-  end_DESC
+  min_ASC
+  min_DESC
+  max_ASC
+  max_DESC
 }
 
 type SettingRangePreviousValues {
   id: ID!
-  measurement: SettingFormat!
-  start: Float!
-  end: Float!
+  measurement: MeasurementFormat!
+  min: Float!
+  max: Float!
 }
 
 input SettingRangeScalarWhereInput {
@@ -444,26 +435,26 @@ input SettingRangeScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  measurement: SettingFormat
-  measurement_not: SettingFormat
-  measurement_in: [SettingFormat!]
-  measurement_not_in: [SettingFormat!]
-  start: Float
-  start_not: Float
-  start_in: [Float!]
-  start_not_in: [Float!]
-  start_lt: Float
-  start_lte: Float
-  start_gt: Float
-  start_gte: Float
-  end: Float
-  end_not: Float
-  end_in: [Float!]
-  end_not_in: [Float!]
-  end_lt: Float
-  end_lte: Float
-  end_gt: Float
-  end_gte: Float
+  measurement: MeasurementFormat
+  measurement_not: MeasurementFormat
+  measurement_in: [MeasurementFormat!]
+  measurement_not_in: [MeasurementFormat!]
+  min: Float
+  min_not: Float
+  min_in: [Float!]
+  min_not_in: [Float!]
+  min_lt: Float
+  min_lte: Float
+  min_gt: Float
+  min_gte: Float
+  max: Float
+  max_not: Float
+  max_in: [Float!]
+  max_not_in: [Float!]
+  max_lt: Float
+  max_lte: Float
+  max_gt: Float
+  max_gte: Float
   AND: [SettingRangeScalarWhereInput!]
   OR: [SettingRangeScalarWhereInput!]
   NOT: [SettingRangeScalarWhereInput!]
@@ -488,21 +479,21 @@ input SettingRangeSubscriptionWhereInput {
 }
 
 input SettingRangeUpdateDataInput {
-  measurement: SettingFormat
-  start: Float
-  end: Float
+  measurement: MeasurementFormat
+  min: Float
+  max: Float
 }
 
 input SettingRangeUpdateInput {
-  measurement: SettingFormat
-  start: Float
-  end: Float
+  measurement: MeasurementFormat
+  min: Float
+  max: Float
 }
 
 input SettingRangeUpdateManyDataInput {
-  measurement: SettingFormat
-  start: Float
-  end: Float
+  measurement: MeasurementFormat
+  min: Float
+  max: Float
 }
 
 input SettingRangeUpdateManyInput {
@@ -518,9 +509,9 @@ input SettingRangeUpdateManyInput {
 }
 
 input SettingRangeUpdateManyMutationInput {
-  measurement: SettingFormat
-  start: Float
-  end: Float
+  measurement: MeasurementFormat
+  min: Float
+  max: Float
 }
 
 input SettingRangeUpdateManyWithWhereNestedInput {
@@ -554,26 +545,26 @@ input SettingRangeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  measurement: SettingFormat
-  measurement_not: SettingFormat
-  measurement_in: [SettingFormat!]
-  measurement_not_in: [SettingFormat!]
-  start: Float
-  start_not: Float
-  start_in: [Float!]
-  start_not_in: [Float!]
-  start_lt: Float
-  start_lte: Float
-  start_gt: Float
-  start_gte: Float
-  end: Float
-  end_not: Float
-  end_in: [Float!]
-  end_not_in: [Float!]
-  end_lt: Float
-  end_lte: Float
-  end_gt: Float
-  end_gte: Float
+  measurement: MeasurementFormat
+  measurement_not: MeasurementFormat
+  measurement_in: [MeasurementFormat!]
+  measurement_not_in: [MeasurementFormat!]
+  min: Float
+  min_not: Float
+  min_in: [Float!]
+  min_not_in: [Float!]
+  min_lt: Float
+  min_lte: Float
+  min_gt: Float
+  min_gte: Float
+  max: Float
+  max_not: Float
+  max_in: [Float!]
+  max_not_in: [Float!]
+  max_lt: Float
+  max_lte: Float
+  max_gt: Float
+  max_gte: Float
   AND: [SettingRangeWhereInput!]
   OR: [SettingRangeWhereInput!]
   NOT: [SettingRangeWhereInput!]
@@ -858,6 +849,7 @@ type User {
   password: String!
   createdAt: DateTime!
   switches(where: SwitchWhereInput, orderBy: SwitchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Switch!]
+  type: UserFormat!
 }
 
 type UserConnection {
@@ -871,6 +863,7 @@ input UserCreateInput {
   name: String!
   password: String!
   switches: SwitchCreateManyWithoutControledByInput
+  type: UserFormat!
 }
 
 input UserCreateOneInput {
@@ -887,11 +880,17 @@ input UserCreateWithoutSwitchesInput {
   id: ID
   name: String!
   password: String!
+  type: UserFormat!
 }
 
 type UserEdge {
   node: User!
   cursor: String!
+}
+
+enum UserFormat {
+  USER
+  ADMIN
 }
 
 enum UserOrderByInput {
@@ -903,6 +902,8 @@ enum UserOrderByInput {
   password_DESC
   createdAt_ASC
   createdAt_DESC
+  type_ASC
+  type_DESC
 }
 
 type UserPreviousValues {
@@ -910,6 +911,7 @@ type UserPreviousValues {
   name: String!
   password: String!
   createdAt: DateTime!
+  type: UserFormat!
 }
 
 type UserSubscriptionPayload {
@@ -934,17 +936,20 @@ input UserUpdateDataInput {
   name: String
   password: String
   switches: SwitchUpdateManyWithoutControledByInput
+  type: UserFormat
 }
 
 input UserUpdateInput {
   name: String
   password: String
   switches: SwitchUpdateManyWithoutControledByInput
+  type: UserFormat
 }
 
 input UserUpdateManyMutationInput {
   name: String
   password: String
+  type: UserFormat
 }
 
 input UserUpdateOneInput {
@@ -975,6 +980,7 @@ input UserUpdateOneWithoutSwitchesInput {
 input UserUpdateWithoutSwitchesDataInput {
   name: String
   password: String
+  type: UserFormat
 }
 
 input UserUpsertNestedInput {
@@ -1041,6 +1047,10 @@ input UserWhereInput {
   switches_every: SwitchWhereInput
   switches_some: SwitchWhereInput
   switches_none: SwitchWhereInput
+  type: UserFormat
+  type_not: UserFormat
+  type_in: [UserFormat!]
+  type_not_in: [UserFormat!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

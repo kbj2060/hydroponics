@@ -45,10 +45,9 @@ export default function RangeSlider(props) {
   useEffect(() => {
     if (loading || error) {return}
     if(Array.isArray(data.getSetting) && data.getSetting.length) {
-      console.log(data)
       const values = data.getSetting[0].subjects.find(element => 
         element.measurement === measurement )
-      setValue([values.start, values.end])
+      setValue([values.min, values.max])
     } else {
       setValue([0,0]);
     }
@@ -58,11 +57,9 @@ export default function RangeSlider(props) {
     if(isApplied){
       giveValue(index);
     }
-  }, [isApplied,data])
+  }, [isApplied])
 
   if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
-
-
 
   const giveValue = (idx) => {
     getValue(measurement, value, idx);

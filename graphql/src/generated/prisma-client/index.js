@@ -33,11 +33,11 @@ var models = [
     embedded: false
   },
   {
-    name: "SettingFormat",
+    name: "SwitchFormat",
     embedded: false
   },
   {
-    name: "SwitchFormat",
+    name: "UserFormat",
     embedded: false
   }
 ];

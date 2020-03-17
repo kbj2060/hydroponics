@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from 'assets/jss/settingsStyle';
 import AppBar from 'components/AppBar/AppBar';
@@ -8,10 +8,19 @@ import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { useMutation } from '@apollo/react-hooks';
 import { SETTING } from 'resolvers/resolvers'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_CURRENT_USER } from 'resolvers/resolvers';
+import { useHistory } from "react-router-dom";
+
+function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
+
 const CustomButton = withStyles({
   root : {
     backgroundColor: '#405C5A',
     color:'white',
+    fontSize : '14px',
     '&:hover' : {
       backgroundColor: '#405C5A',
     }
@@ -21,40 +30,45 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
+  const history = useHistory();
   const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
-  const [values, setValues] = useState({
-    "LUX": [0,0], 
-    "HUM": [0,0], 
-    "TEMP": [0,0], 
-    "CO2": [0,0], 
-    "PH": [0,0], 
-    "EC": [0,0]
-  })
+  const [values, setValues] = useState({"LUX": [0,0], 
+                                        "HUM": [0,0], 
+                                        "TEMP": [0,0], 
+                                        "CO2": [0,0], 
+                                        "PH": [0,0], 
+                                        "EC": [0,0]})
   const [isApplied, setIsApplied] = useState(false)
   const [ settingMutation ] = useMutation(SETTING);
-  
-  const handleOnClick = () => {
-    setIsApplied(true);
-  }
-  
+  const { loading, error, data  } = useQuery(GET_CURRENT_USER);
+  const [open, setOpen] = React.useState(false);
+  const [warning , setWarning] = React.useState(false);
+
+  useEffect(() => {
+    if (loading || error) { return }
+    if (data && data.getCurrentUser.type !== "ADMIN"){
+      history.push('/dashboard')
+    }
+  }, [data])
+
   const getValue = (measurement, value, idx) => {
     var _values = values
     _values[measurement] = value;
     setValues(_values);
     if(idx === Object.keys(values).length - 1){
       setIsApplied(false);
-      var start = []
-      var end = []
+      var min = []
+      var max = []
       var measurement = []
       Object.keys(values).map((key, i) => {
-        start.push(values[key][0])
-        end.push(values[key][1])
+        min.push(values[key][0])
+        max.push(values[key][1])
         measurement.push(key)
       })
       settingMutation({variables: {
         measurement: measurement,
-        start: start,
-        end: end,
+        min: min,
+        max: max,
       }})
       .then(res => {
         console.log(res)
@@ -64,8 +78,16 @@ export default function Settings() {
       })
     }
   }
+  
+  const handleOnClick = () => {
+    setOpen(true);
+    setIsApplied(true);
+  }
 
-console.log(isApplied)
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') { return; }
+    setOpen(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -83,7 +105,13 @@ console.log(isApplied)
             <CustomButton onClick={ handleOnClick } 
                           variant="contained" 
                           className={classes.applyButton} 
-                          size="medium"> APPLY </CustomButton>
+                          size="medium"> APPLY 
+            </CustomButton>
+            <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="success">
+                Settings applied!
+              </Alert>
+            </Snackbar>
           </Card>
         </Grid>
       </Grid>

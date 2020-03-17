@@ -25,6 +25,7 @@ const GET_CURRENT_USER = gql`
   query getCurrentUserQuery {
     getCurrentUser{
       name
+      type
     }
   }`;
 
@@ -33,8 +34,8 @@ const GET_SETTING = gql`
     getSetting(last: $last){
       subjects{
         measurement
-        start
-        end
+        min
+        max
       }
       appliedBy{
         name
@@ -57,12 +58,12 @@ const SWITCH_CONTROL = gql`
 
 
 const SETTING = gql`
-  mutation settingMutation ($measurement: [SettingFormat!]!, $start:[Float!]!, $end:[Float!]!) {
-      setting(measurement: $measurement, start: $start, end: $end){
+  mutation settingMutation ($measurement: [MeasurementFormat!]!, $min:[Float!]!, $max:[Float!]!) {
+      setting(measurement: $measurement, min: $min, max: $max){
         id
         subjects{
-          start
-          end
+          min
+          max
           measurement
         }
         appliedBy{
@@ -94,9 +95,6 @@ const NEW_FIGURE = gql`
       }
   }
 `;
-
-
-
 
 export{
     NEW_FIGURE,

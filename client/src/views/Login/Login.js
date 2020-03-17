@@ -14,18 +14,6 @@ mutation loginMutation($name: String!, $password: String!) {
 }
 `;
 
-// const FEED = gql`
-//     query feedQuery($filter: String, $skip:Int, $first:Int  ){
-//      feed(filter: $filter, skip: $skip, first: $first){
-//          switches{
-//             machine
-//             status
-//             updatedAt
-//          }
-//          count
-//      }
-// }`;
-
 export default function Login(props) {
     const history = useHistory();
     const isAuth = JSON.parse(localStorage.getItem("isAuth"));

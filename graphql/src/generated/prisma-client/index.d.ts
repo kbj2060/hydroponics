@@ -304,6 +304,8 @@ export interface ClientConstructor<T> {
 
 export type SwitchFormat = "FAN" | "HUMIDIFIER" | "LED";
 
+export type UserFormat = "USER" | "ADMIN";
+
 export type SwitchOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -332,17 +334,15 @@ export type FigureOrderByInput =
   | "measurement_ASC"
   | "measurement_DESC";
 
-export type SettingFormat = "LUX" | "HUM" | "TEMP" | "CO2" | "PH" | "EC";
-
 export type SettingRangeOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "measurement_ASC"
   | "measurement_DESC"
-  | "start_ASC"
-  | "start_DESC"
-  | "end_ASC"
-  | "end_DESC";
+  | "min_ASC"
+  | "min_DESC"
+  | "max_ASC"
+  | "max_DESC";
 
 export type SettingOrderByInput =
   | "id_ASC"
@@ -358,7 +358,9 @@ export type UserOrderByInput =
   | "password_ASC"
   | "password_DESC"
   | "createdAt_ASC"
-  | "createdAt_DESC";
+  | "createdAt_DESC"
+  | "type_ASC"
+  | "type_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -455,6 +457,10 @@ export interface UserWhereInput {
   switches_every?: Maybe<SwitchWhereInput>;
   switches_some?: Maybe<SwitchWhereInput>;
   switches_none?: Maybe<SwitchWhereInput>;
+  type?: Maybe<UserFormat>;
+  type_not?: Maybe<UserFormat>;
+  type_in?: Maybe<UserFormat[] | UserFormat>;
+  type_not_in?: Maybe<UserFormat[] | UserFormat>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -558,26 +564,26 @@ export interface SettingRangeWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  measurement?: Maybe<SettingFormat>;
-  measurement_not?: Maybe<SettingFormat>;
-  measurement_in?: Maybe<SettingFormat[] | SettingFormat>;
-  measurement_not_in?: Maybe<SettingFormat[] | SettingFormat>;
-  start?: Maybe<Float>;
-  start_not?: Maybe<Float>;
-  start_in?: Maybe<Float[] | Float>;
-  start_not_in?: Maybe<Float[] | Float>;
-  start_lt?: Maybe<Float>;
-  start_lte?: Maybe<Float>;
-  start_gt?: Maybe<Float>;
-  start_gte?: Maybe<Float>;
-  end?: Maybe<Float>;
-  end_not?: Maybe<Float>;
-  end_in?: Maybe<Float[] | Float>;
-  end_not_in?: Maybe<Float[] | Float>;
-  end_lt?: Maybe<Float>;
-  end_lte?: Maybe<Float>;
-  end_gt?: Maybe<Float>;
-  end_gte?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  measurement_not?: Maybe<MeasurementFormat>;
+  measurement_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
+  measurement_not_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
+  min?: Maybe<Float>;
+  min_not?: Maybe<Float>;
+  min_in?: Maybe<Float[] | Float>;
+  min_not_in?: Maybe<Float[] | Float>;
+  min_lt?: Maybe<Float>;
+  min_lte?: Maybe<Float>;
+  min_gt?: Maybe<Float>;
+  min_gte?: Maybe<Float>;
+  max?: Maybe<Float>;
+  max_not?: Maybe<Float>;
+  max_in?: Maybe<Float[] | Float>;
+  max_not_in?: Maybe<Float[] | Float>;
+  max_lt?: Maybe<Float>;
+  max_lte?: Maybe<Float>;
+  max_gt?: Maybe<Float>;
+  max_gte?: Maybe<Float>;
   AND?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
   OR?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
   NOT?: Maybe<SettingRangeWhereInput[] | SettingRangeWhereInput>;
@@ -644,6 +650,7 @@ export interface UserCreateInput {
   name: String;
   password: String;
   switches?: Maybe<SwitchCreateManyWithoutControledByInput>;
+  type: UserFormat;
 }
 
 export interface SwitchCreateManyWithoutControledByInput {
@@ -677,6 +684,7 @@ export interface UserUpdateDataInput {
   name?: Maybe<String>;
   password?: Maybe<String>;
   switches?: Maybe<SwitchUpdateManyWithoutControledByInput>;
+  type?: Maybe<UserFormat>;
 }
 
 export interface SwitchUpdateManyWithoutControledByInput {
@@ -802,9 +810,9 @@ export interface SettingRangeCreateManyInput {
 
 export interface SettingRangeCreateInput {
   id?: Maybe<ID_Input>;
-  measurement: SettingFormat;
-  start: Float;
-  end: Float;
+  measurement: MeasurementFormat;
+  min: Float;
+  max: Float;
 }
 
 export interface SettingUpdateInput {
@@ -845,9 +853,9 @@ export interface SettingRangeUpdateWithWhereUniqueNestedInput {
 }
 
 export interface SettingRangeUpdateDataInput {
-  measurement?: Maybe<SettingFormat>;
-  start?: Maybe<Float>;
-  end?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  min?: Maybe<Float>;
+  max?: Maybe<Float>;
 }
 
 export interface SettingRangeUpsertWithWhereUniqueNestedInput {
@@ -871,26 +879,26 @@ export interface SettingRangeScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  measurement?: Maybe<SettingFormat>;
-  measurement_not?: Maybe<SettingFormat>;
-  measurement_in?: Maybe<SettingFormat[] | SettingFormat>;
-  measurement_not_in?: Maybe<SettingFormat[] | SettingFormat>;
-  start?: Maybe<Float>;
-  start_not?: Maybe<Float>;
-  start_in?: Maybe<Float[] | Float>;
-  start_not_in?: Maybe<Float[] | Float>;
-  start_lt?: Maybe<Float>;
-  start_lte?: Maybe<Float>;
-  start_gt?: Maybe<Float>;
-  start_gte?: Maybe<Float>;
-  end?: Maybe<Float>;
-  end_not?: Maybe<Float>;
-  end_in?: Maybe<Float[] | Float>;
-  end_not_in?: Maybe<Float[] | Float>;
-  end_lt?: Maybe<Float>;
-  end_lte?: Maybe<Float>;
-  end_gt?: Maybe<Float>;
-  end_gte?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  measurement_not?: Maybe<MeasurementFormat>;
+  measurement_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
+  measurement_not_in?: Maybe<MeasurementFormat[] | MeasurementFormat>;
+  min?: Maybe<Float>;
+  min_not?: Maybe<Float>;
+  min_in?: Maybe<Float[] | Float>;
+  min_not_in?: Maybe<Float[] | Float>;
+  min_lt?: Maybe<Float>;
+  min_lte?: Maybe<Float>;
+  min_gt?: Maybe<Float>;
+  min_gte?: Maybe<Float>;
+  max?: Maybe<Float>;
+  max_not?: Maybe<Float>;
+  max_in?: Maybe<Float[] | Float>;
+  max_not_in?: Maybe<Float[] | Float>;
+  max_lt?: Maybe<Float>;
+  max_lte?: Maybe<Float>;
+  max_gt?: Maybe<Float>;
+  max_gte?: Maybe<Float>;
   AND?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
   OR?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
   NOT?: Maybe<SettingRangeScalarWhereInput[] | SettingRangeScalarWhereInput>;
@@ -902,9 +910,9 @@ export interface SettingRangeUpdateManyWithWhereNestedInput {
 }
 
 export interface SettingRangeUpdateManyDataInput {
-  measurement?: Maybe<SettingFormat>;
-  start?: Maybe<Float>;
-  end?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  min?: Maybe<Float>;
+  max?: Maybe<Float>;
 }
 
 export interface UserUpdateOneRequiredInput {
@@ -915,15 +923,15 @@ export interface UserUpdateOneRequiredInput {
 }
 
 export interface SettingRangeUpdateInput {
-  measurement?: Maybe<SettingFormat>;
-  start?: Maybe<Float>;
-  end?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  min?: Maybe<Float>;
+  max?: Maybe<Float>;
 }
 
 export interface SettingRangeUpdateManyMutationInput {
-  measurement?: Maybe<SettingFormat>;
-  start?: Maybe<Float>;
-  end?: Maybe<Float>;
+  measurement?: Maybe<MeasurementFormat>;
+  min?: Maybe<Float>;
+  max?: Maybe<Float>;
 }
 
 export interface SwitchCreateInput {
@@ -942,6 +950,7 @@ export interface UserCreateWithoutSwitchesInput {
   id?: Maybe<ID_Input>;
   name: String;
   password: String;
+  type: UserFormat;
 }
 
 export interface SwitchUpdateInput {
@@ -962,6 +971,7 @@ export interface UserUpdateOneWithoutSwitchesInput {
 export interface UserUpdateWithoutSwitchesDataInput {
   name?: Maybe<String>;
   password?: Maybe<String>;
+  type?: Maybe<UserFormat>;
 }
 
 export interface UserUpsertWithoutSwitchesInput {
@@ -978,11 +988,13 @@ export interface UserUpdateInput {
   name?: Maybe<String>;
   password?: Maybe<String>;
   switches?: Maybe<SwitchUpdateManyWithoutControledByInput>;
+  type?: Maybe<UserFormat>;
 }
 
 export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
   password?: Maybe<String>;
+  type?: Maybe<UserFormat>;
 }
 
 export interface AuthPayloadSubscriptionWhereInput {
@@ -1099,6 +1111,7 @@ export interface User {
   name: String;
   password: String;
   createdAt: DateTimeOutput;
+  type: UserFormat;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -1115,6 +1128,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  type: () => Promise<UserFormat>;
 }
 
 export interface UserSubscription
@@ -1133,6 +1147,7 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  type: () => Promise<AsyncIterator<UserFormat>>;
 }
 
 export interface UserNullablePromise
@@ -1151,6 +1166,7 @@ export interface UserNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  type: () => Promise<UserFormat>;
 }
 
 export interface Switch {
@@ -1409,36 +1425,36 @@ export interface SettingNullablePromise
 
 export interface SettingRange {
   id: ID_Output;
-  measurement: SettingFormat;
-  start: Float;
-  end: Float;
+  measurement: MeasurementFormat;
+  min: Float;
+  max: Float;
 }
 
 export interface SettingRangePromise
   extends Promise<SettingRange>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  measurement: () => Promise<SettingFormat>;
-  start: () => Promise<Float>;
-  end: () => Promise<Float>;
+  measurement: () => Promise<MeasurementFormat>;
+  min: () => Promise<Float>;
+  max: () => Promise<Float>;
 }
 
 export interface SettingRangeSubscription
   extends Promise<AsyncIterator<SettingRange>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  measurement: () => Promise<AsyncIterator<SettingFormat>>;
-  start: () => Promise<AsyncIterator<Float>>;
-  end: () => Promise<AsyncIterator<Float>>;
+  measurement: () => Promise<AsyncIterator<MeasurementFormat>>;
+  min: () => Promise<AsyncIterator<Float>>;
+  max: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface SettingRangeNullablePromise
   extends Promise<SettingRange | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  measurement: () => Promise<SettingFormat>;
-  start: () => Promise<Float>;
-  end: () => Promise<Float>;
+  measurement: () => Promise<MeasurementFormat>;
+  min: () => Promise<Float>;
+  max: () => Promise<Float>;
 }
 
 export interface SettingConnection {
@@ -1840,27 +1856,27 @@ export interface SettingRangeSubscriptionPayloadSubscription
 
 export interface SettingRangePreviousValues {
   id: ID_Output;
-  measurement: SettingFormat;
-  start: Float;
-  end: Float;
+  measurement: MeasurementFormat;
+  min: Float;
+  max: Float;
 }
 
 export interface SettingRangePreviousValuesPromise
   extends Promise<SettingRangePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  measurement: () => Promise<SettingFormat>;
-  start: () => Promise<Float>;
-  end: () => Promise<Float>;
+  measurement: () => Promise<MeasurementFormat>;
+  min: () => Promise<Float>;
+  max: () => Promise<Float>;
 }
 
 export interface SettingRangePreviousValuesSubscription
   extends Promise<AsyncIterator<SettingRangePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  measurement: () => Promise<AsyncIterator<SettingFormat>>;
-  start: () => Promise<AsyncIterator<Float>>;
-  end: () => Promise<AsyncIterator<Float>>;
+  measurement: () => Promise<AsyncIterator<MeasurementFormat>>;
+  min: () => Promise<AsyncIterator<Float>>;
+  max: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface SwitchSubscriptionPayload {
@@ -1943,6 +1959,7 @@ export interface UserPreviousValues {
   name: String;
   password: String;
   createdAt: DateTimeOutput;
+  type: UserFormat;
 }
 
 export interface UserPreviousValuesPromise
@@ -1952,6 +1969,7 @@ export interface UserPreviousValuesPromise
   name: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
+  type: () => Promise<UserFormat>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1961,6 +1979,7 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  type: () => Promise<AsyncIterator<UserFormat>>;
 }
 
 /*
@@ -2035,11 +2054,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "SettingFormat",
+    name: "SwitchFormat",
     embedded: false
   },
   {
-    name: "SwitchFormat",
+    name: "UserFormat",
     embedded: false
   }
 ];

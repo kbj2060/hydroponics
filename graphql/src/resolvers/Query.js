@@ -63,6 +63,7 @@ async function getSetting(parent, args, context) {
     last : args.last
   })
 }
+
 async function getCurrentUser(parent, args, context) {
   const userId = getUserId(context)
   const user = await context.prisma.user({ id : userId })
@@ -70,14 +71,7 @@ async function getCurrentUser(parent, args, context) {
   return user;
 }
 
-function allUsers(parent, args, context) {
-  const userId = getUserId(context)
-  console.log(userId)
-  return userId;
-}
-
   module.exports = {
-    allUsers,
     getCurrentUser,
     switchFeed,
     figureFeed,

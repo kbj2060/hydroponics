@@ -26,13 +26,14 @@ type User {
   password: String!
   createdAt : DateTime! @createdAt
   switches : [Switch!]!
+  type : UserFormat!
 }
 
 type SettingRange {
   id : ID! @id
-  measurement : SettingFormat!
-  start : Float!
-  end : Float!
+  measurement : MeasurementFormat!
+  min : Float!
+  max : Float!
 }
 
 type Setting {
@@ -51,17 +52,13 @@ enum MeasurementFormat {
   EC
 }
 
-enum SettingFormat {
-  LUX
-  HUM
-  TEMP
-  CO2
-  PH
-  EC
-}
-
 enum SwitchFormat {
   FAN
   HUMIDIFIER
   LED
+}
+
+enum UserFormat {
+    USER
+  ADMIN
 }

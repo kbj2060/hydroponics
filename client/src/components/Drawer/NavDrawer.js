@@ -38,11 +38,11 @@ export const NavDrawer = (props) => {
   const [type, setType] = React.useState('');
 
   useEffect(() => {
-    console.log(data)
     if(loading || error) { return }
     try {
+      console.log(data)
       setName(data.getCurrentUser.name);
-      setType(data.getCurrentUser.__typename.toUpperCase());
+      setType(data.getCurrentUser.type);
     } catch (error) {
       console.log(error)
     }
@@ -58,8 +58,8 @@ export const NavDrawer = (props) => {
     Settings  : [<SettingsIcon />, '/settings'],
   };
   const restDrawerItems = {
-    Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
-    Alarm: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
+    // Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    // Alarm: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
   };
   const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
   const footerDrawerItems = {

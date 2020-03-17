@@ -5,14 +5,13 @@ type Query {
   switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
   figureFeed(filter: String, skip: Int, first: Int, orderBy: FigureOrderByInput, last: Int) : FigureFeed!
   getCurrentUser: User
-  allUsers : String!
   getSetting(last: Int) : [Setting!]!
 }
 
 type Mutation {
   switchControl(machine: SwitchFormat!, status: Boolean!): Switch
   measure(value: Float!, measurement: MeasurementFormat!): Figure
-  setting(start: [Float!]!, end: [Float!]!, measurement: [SettingFormat!]!): Setting
+  setting(min: [Float!]!, max: [Float!]!, measurement: [MeasurementFormat!]!): Setting
   signup(name:String!, password:String!): AuthPayload
   login(name:String!, password:String!): AuthPayload
 }
@@ -59,19 +58,17 @@ enum FigureOrderByInput {
   controledBy_ASC
   controledBy_DESC
 }
-enum SettingFormat {
-  LUX
-  HUM
-  TEMP
-  CO2
-  PH
-  EC
+
+enum UserFormat {
+  USER
+  ADMIN
 }
+
 type SettingRange {
   id : ID!
-  measurement : SettingFormat!
-  start : Float!
-  end : Float!
+  measurement : MeasurementFormat!
+  min : Float!
+  max : Float!
 }
 
 type Setting {
@@ -106,6 +103,7 @@ type User {
   id: ID! 
   name: String! 
   password: String!
-  createdAt : DateTime! 
+  createdAt : DateTime!
   switches : [Switch!]!
+  type : UserFormat!
 }

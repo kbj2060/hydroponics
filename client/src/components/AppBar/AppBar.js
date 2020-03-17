@@ -41,12 +41,12 @@ export default function PermanentAppBar(props) {
       elevation={0}
       color='primary'
       >
-      <Toolbar >
+      <Toolbar>
         <Typography className={classes.title} variant="h6">
           Hydroponics Management System
         </Typography>
         <div className={classes.grow} />
-        <Hidden smDown>
+        {/* <Hidden smDown>
           <Link to="/notification">
             <IconButton aria-label="show 17 new notifications" 
                         color="inherit">            
@@ -65,7 +65,7 @@ export default function PermanentAppBar(props) {
               <AccountCircle style={{ heigth: '27px', width:'27px', color: '#405C5A' }}/>
             </IconButton>
           </Link>
-        </Hidden>
+        </Hidden> */}
         <Hidden mdUp>
           <div>
             <IconButton

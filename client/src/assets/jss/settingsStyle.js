@@ -27,8 +27,8 @@ const settingsStyle = makeStyles(theme =>({
     padding : '20px',
   },
   applyButton:{
-    backgroundColor:'#405C5A',
-    color:'white',
+    backgroundColor: '#405C5A',
+    fontColor:'white',
   }
 })
 )
