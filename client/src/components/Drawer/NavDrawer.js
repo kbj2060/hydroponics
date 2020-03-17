@@ -53,12 +53,13 @@ export const NavDrawer = (props) => {
     }, [props])
 
   const leftDrawerItems = {
+    Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
     Dashboard  : [<DashboardIcon />, '/dashboard'],
     History  : [<HistoryIcon />, '/history'],
     Settings  : [<SettingsIcon />, '/settings'],
   };
   const restDrawerItems = {
-    // Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    
     // Alarm: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
   };
   const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);

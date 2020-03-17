@@ -25,7 +25,6 @@ const CustomButton = withStyles({
       backgroundColor: '#405C5A',
     }
   },
-  
 })(Button);
 
 export default function Settings() {
@@ -42,7 +41,6 @@ export default function Settings() {
   const [ settingMutation ] = useMutation(SETTING);
   const { loading, error, data  } = useQuery(GET_CURRENT_USER);
   const [open, setOpen] = React.useState(false);
-  const [warning , setWarning] = React.useState(false);
 
   useEffect(() => {
     if (loading || error) { return }
@@ -104,7 +102,6 @@ export default function Settings() {
             </div>
             <CustomButton onClick={ handleOnClick } 
                           variant="contained" 
-                          className={classes.applyButton} 
                           size="medium"> APPLY 
             </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>

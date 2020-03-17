@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme =>({
     padding: theme.spacing(2),
     textAlign: 'center',
     margin : '0 10px 0 10px',
-    height : '20em',
+    height : '23em',
   },
 }))
 
