@@ -23,15 +23,22 @@ const useStyles = makeStyles(theme =>({
     margin : '0 10px 0 10px',
     height : '23em',
   },
+  noPaddingCard : {
+    position: 'relative',
+    zIndex : '1',
+    textAlign: 'center',
+    margin : '0 10px 0 10px',
+    height : '10em',
+  }
 }))
 
 export default function CustomGrid(props) {
   const classes = useStyles();
-  const { children, xs, sm, md } = props;
+  const { children, xs, sm, md, noPadding } = props;
 
   return(
   <Grid item xs={xs} sm={sm} md={md} style={{padding:'15px',}}>
-    <Card className={classes.card}>
+    <Card className={noPadding ? classes.noPaddingCard : classes.card}>
       <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
         {children}
       </div>
