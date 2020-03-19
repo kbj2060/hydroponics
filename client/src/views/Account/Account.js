@@ -50,7 +50,7 @@ export default function Account() {
                     <Typography>Sensor Broker IP    : </Typography>
                     <Typography>MySQL Server IP     : </Typography>
                     <Typography>Web Server IP       : </Typography>
-                    <Typography>Prisma Server IP    : </Typography>
+                    <Typography>Prisma Server IP    : </Typography>  
                     </Grid>
             </Grid>
         </CustomGrid>
