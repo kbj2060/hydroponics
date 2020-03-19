@@ -19,6 +19,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { useQuery } from 'react-apollo';
+import { FIGURE_FEED } from '../../resolvers/resolvers';
 
 
 const CustomButton = withStyles({
@@ -49,14 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 function renderRow(props) {
   const { index, style } = props;
-  // query{
-  //   figureFeed(filter:"CO2" from:"2020-03-10T23:52:05.568Z" to:"2020-03-20T23:52:05.568Z"){
-  //     figures{
-  //       measurement
-  //       value
-  //     }
-  //   }
-  // }
+
   return (
         <ListItem button style={style} key={index}>
           <ListItemText primary={`Item ${index + 1}`} />
@@ -71,7 +66,6 @@ export default function MaterialUIPickers() {
   const handleOnClick = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -88,6 +82,7 @@ export default function MaterialUIPickers() {
   const handleDateChange = (date, side) => {
     setSelectedDate({[side] : date});
   };
+
   console.log(selectedDate, figure, open)
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -175,7 +170,9 @@ export default function MaterialUIPickers() {
         >
         <DialogContent>
           <FixedSizeList height={400} width={300} itemSize={46} itemCount={200}>
-            {renderRow}
+            <ListItem button style={style} key={index}>
+              <ListItemText primary={`Item ${index + 1}`} />
+            </ListItem>
           </FixedSizeList>          
           <DialogActions>
             <Button onClick={handleClose} color="#405C5A" autoFocus>
