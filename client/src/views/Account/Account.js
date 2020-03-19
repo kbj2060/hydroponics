@@ -11,30 +11,14 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import backgroundImage from 'assets/img/background3.jpg'
-import Background from 'views/Background/Background';
 
-const CustomButton = withStyles({
-    root : {
-        backgroundColor: '#405C5A',
-        color:'white',
-        fontSize : '14px',
-        marginTop : '50px',
-        '&:hover' : {
-            backgroundColor: '#405C5A',
-        }
-    },
-})(Button);
+
+
 
 export default function Account() {
-    const classes = useStyles();
-    const [isApplied, setIsApplied] = useState(false)
+  const classes = useStyles();
 
-    const handleOnClick = () => {
-        setIsApplied(true);
-    }
-	// switch history / figures histroy / details(ip, type, name, server, ) / plant pictures history /  
-	return (
+  return (
     <div className={classes.root}>
         <AppBar />
         <CssBaseline />
@@ -54,18 +38,14 @@ export default function Account() {
                     </Grid>
             </Grid>
         </CustomGrid>
-        <CustomGrid xs={12} sm={12} md={6}>
+        <CustomGrid xs={12} sm={12} md={12}>
             <Typography>Switch History</Typography>
             <CustomTable />
         </CustomGrid>
-        <CustomGrid xs={12} sm={12} md={6}>
+        <CustomGrid xs={12} sm={12} md={12}>
             <Typography>Figure History</Typography>
             <CustomDatePicker />
-                <CustomButton   onClick={ handleOnClick } 
-                                variant="contained" 
-                                size="medium"> APPLY </CustomButton>
-                {/* dialog here */}
-                {/* <CustomList height={300} /> */}
+            {/* <CustomList height={300} /> */}
         </CustomGrid>
         <CustomGrid xs={12} sm={12} md={6}>
             <Typography>Camera History</Typography>

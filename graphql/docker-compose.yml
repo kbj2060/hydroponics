@@ -15,7 +15,7 @@ services:
             host: mysql-db
             port: 3306
             user: root
-            password: prisma
+            password: dnjfem2006
   mysql-db:
     image: mysql:5.7
     restart: always

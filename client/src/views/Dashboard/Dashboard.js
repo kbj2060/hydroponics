@@ -29,7 +29,6 @@ export default function Dashboard(props) {
           <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <WeatherCard />
           </Grid>
-
           <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
             <Card className={classes.controlCardButtons}>
             <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>

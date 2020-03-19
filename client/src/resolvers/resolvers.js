@@ -1,10 +1,15 @@
 import gql from 'graphql-tag';
 
+
 const SWITCH_FEED = gql`
   query switchFeedQuery($filter: String, $skip:Int, $first:Int, $orderBy: SwitchOrderByInput, $last: Int){
     switchFeed(filter: $filter, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         switches{
+          machine
           status
+          controledBy{
+            name
+          }
           updatedAt
         }
         count
