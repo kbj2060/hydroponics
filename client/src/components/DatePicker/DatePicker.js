@@ -170,8 +170,8 @@ export default function MaterialUIPickers() {
         >
         <DialogContent>
           <FixedSizeList height={400} width={300} itemSize={46} itemCount={200}>
-            <ListItem button style={style} key={index}>
-              <ListItemText primary={`Item ${index + 1}`} />
+            <ListItem button>
+              <ListItemText />
             </ListItem>
           </FixedSizeList>          
           <DialogActions>

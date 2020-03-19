@@ -17,7 +17,7 @@ const SWITCH_FEED = gql`
 }`;
 
 const FIGURE_FEED = gql`
-  query figureFeedQuery($filter: String, from: $DaateTime, to:$DateTIme, $skip:Int, $first:Int, $orderBy: FigureOrderByInput, $last: Int){
+  query figureFeedQuery($filter: String, $from: DateTime, $to:DateTime, $skip:Int, $first:Int, $orderBy: FigureOrderByInput, $last: Int){
     figureFeed(filter: $filter, from:$from, to:$to, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         figures{
           value
