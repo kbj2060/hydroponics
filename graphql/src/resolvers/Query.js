@@ -32,7 +32,11 @@ async function figureFeed(parent, args, context, info) {
   const where = args.filter ? {              
     OR: [                                    
       { measurement_in : args.filter },
-    ],                                       
+    ],
+    AND : [
+      {updatedAt_lte : args.to },
+      {updatedAt_gte : args.from}
+    ]                                       
   } : {}                                   
   const figures = await context.prisma.figures({ 
     where,

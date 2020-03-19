@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -14,12 +14,8 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-
-// const CustomPaper = withStyles({
-//     root : {
-//       height: 'auto',
-//     },
-//   })(Paper);
+import { useQuery } from '@apollo/react-hooks';
+import {SWITCH_FEED} from 'resolvers/resolvers';
 
 const useStyles1 = makeStyles({
   root: {
@@ -85,26 +81,6 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
-  return { name, calories, fat };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
 
 
 const useStyles2 = makeStyles({
@@ -117,7 +93,26 @@ export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { loading, error, data } = useQuery(SWITCH_FEED, { variables : { last : 60}});
+  const [ rows, setRows ] = React.useState([]);
 
+  useEffect(() => {
+    if(loading || error ) { return }
+    if(data) {
+      setRows(createData(data));
+    }}, [data]);
+
+  function createData(data) {  
+    var rows = data.switchFeed.switches.map((obj)=> {
+      console.log(obj)
+      var machine = obj.machine;
+      var status = obj.status.toString();
+      var name = obj.controledBy.name
+      var updatedAt = obj.updatedAt;
+      return {machine, status, name, updatedAt} 
+    })
+    return rows.sort((a, b) => (a.calories < b.calories ? -1 : 1));
+  }
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
@@ -136,13 +131,14 @@ export default function CustomPaginationActionsTable() {
 		  {(rowsPerPage > 0
 			? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 			: rows
-		  ).map(row => (
-			<TableRow key={row.name}>
+		  ).map((row, index) => (
+			<TableRow key={row.index}>
 			  <TableCell component="th" scope="row">
-				{row.name}
+				{row.machine}
 			  </TableCell>
-			  <TableCell align="right">{row.calories}</TableCell>
-			  <TableCell align="right">{row.fat}</TableCell>
+			  <TableCell align="right">{row.status}</TableCell>
+			  <TableCell align="right">{row.name}</TableCell>
+        <TableCell align="right">{row.updatedAt}</TableCell>
 			</TableRow>
 		  ))}
 

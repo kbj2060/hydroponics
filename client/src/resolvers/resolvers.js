@@ -1,10 +1,15 @@
 import gql from 'graphql-tag';
 
+
 const SWITCH_FEED = gql`
   query switchFeedQuery($filter: String, $skip:Int, $first:Int, $orderBy: SwitchOrderByInput, $last: Int){
     switchFeed(filter: $filter, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         switches{
+          machine
           status
+          controledBy{
+            name
+          }
           updatedAt
         }
         count
@@ -12,8 +17,8 @@ const SWITCH_FEED = gql`
 }`;
 
 const FIGURE_FEED = gql`
-  query figureFeedQuery($filter: String, $skip:Int, $first:Int, $orderBy: FigureOrderByInput, $last: Int){
-    figureFeed(filter: $filter, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
+  query figureFeedQuery($filter: String, from: $DaateTime, to:$DateTIme, $skip:Int, $first:Int, $orderBy: FigureOrderByInput, $last: Int){
+    figureFeed(filter: $filter, from:$from, to:$to, skip: $skip, first: $first, orderBy : $orderBy, last: $last){
         figures{
           value
           updatedAt

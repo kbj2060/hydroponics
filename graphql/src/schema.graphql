@@ -3,7 +3,7 @@ scalar DateTime
 type Query {
   info : String!
   switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
-  figureFeed(filter: String, skip: Int, first: Int, orderBy: FigureOrderByInput, last: Int) : FigureFeed!
+  figureFeed(filter: String, from: DateTime, to: DateTime, skip: Int, first: Int, orderBy: FigureOrderByInput, last: Int) : FigureFeed!
   getCurrentUser: User
   getSetting(last: Int) : [Setting!]!
 }
@@ -12,7 +12,7 @@ type Mutation {
   switchControl(machine: SwitchFormat!, status: Boolean!): Switch
   measure(value: Float!, measurement: MeasurementFormat!): Figure
   setting(min: [Float!]!, max: [Float!]!, measurement: [MeasurementFormat!]!): Setting
-  signup(name:String!, password:String!): AuthPayload
+  signup(name:String!, password:String!, type:UserFormat): AuthPayload
   login(name:String!, password:String!): AuthPayload
 }
 

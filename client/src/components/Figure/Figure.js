@@ -20,7 +20,7 @@ export default function Figure(props) {
             <Typography style={{padding : '5px 0 5px 0',
                                 color : '#405C5A',
                                 fontWeight : 'bold',}}>{measurement}</Typography>
-            <Circle progress={value} size={100} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            <Circle progress={value} size={90} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
         </div>
     );
 }
