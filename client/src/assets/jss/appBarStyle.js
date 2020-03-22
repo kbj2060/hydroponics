@@ -1,11 +1,11 @@
-import { fade, makeStyles } from '@material-ui/core/styles';
-import backgroundImage from 'assets/img/winter.jpg'
+import {  makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 
 const appBarStyle = makeStyles(theme => ({
   root: {
     display: 'flex',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   grow: {
     flexGrow: 1,
@@ -23,26 +23,27 @@ const appBarStyle = makeStyles(theme => ({
     },
   },
   appBar: {
-    backgroundColor : '#eee',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
     [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
       marginRight : -drawerWidth,
     },
   },
   drawer: {
     display : 'none',
     [theme.breakpoints.up('md')]: {
+      borderRadius: '0.5rem',
       display : 'contents',
       width: drawerWidth,
       flexShrink: 0,
+      overflow : 'hidden',
     },
   },
-  drawerPaper: {
+  paper: {
     width: drawerWidth,
-    overflow : 'hidden',
-    backgroundColor : '#eee',
-
+    background: "#405C5A",
+    borderTopRightRadius: '0.5rem',
+    borderBottomRightRadius: '0.5rem',
+    overflowX : 'hidden',
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -53,7 +54,6 @@ const appBarStyle = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     align: "center",
-    color : '#3c4858',
     display: 'flex',
   },
   notification: {

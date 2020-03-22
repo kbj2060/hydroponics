@@ -4,10 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   icon:{
-    height : '75px',
+    height : '37px',
     width : '50px',
     display : 'block',
     margin : 'auto',
+    fill : '#D7A310',
   }
 }));
 

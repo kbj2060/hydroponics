@@ -1,37 +1,33 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Card from '@material-ui/core/Card';
-import Box from '@material-ui/core/Box';
-
-import HistoryCard from 'components/Card/HistoryCard';
-import useStyles from 'assets/jss/dashboardStyle';
+import CustomGrid from 'components/Grid/Grid';
+import CustomTable from 'components/Table/Table';
+import CustomDatePicker from 'components/DatePicker/DatePicker';
+import useStyles from 'assets/jss/HistoryStyle';
+import AppBar from 'components/AppBar/AppBar';
+import Typography from '@material-ui/core/Typography';
 
 export default function History() {
   const classes = useStyles();
+  const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
 
   return (
       <div className={classes.root}>
+        <AppBar />
         <CssBaseline />
-        <Grid container style={{padding :'15px 30px 15px 30px'}}>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='온도' backgroundColor='#dadada'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='조명' backgroundColor='#dadada'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='CO2' backgroundColor='#dadada'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='습도' backgroundColor='#dadada'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='PH' backgroundColor='#dadada'/>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} style={{padding:'15px',}}>
-            <HistoryCard subject='EC' backgroundColor='#dadada'/>
-          </Grid>
+        <Grid container>
+        <CustomGrid xs={12} sm={12} md={12}>
+            <Typography>Switch History</Typography>
+            <CustomTable />
+        </CustomGrid>
+        <CustomGrid xs={12} sm={12} md={6}>
+            <Typography>Figure History</Typography>
+            <CustomDatePicker />
+        </CustomGrid>
+        <CustomGrid xs={12} sm={12} md={6}>
+            <Typography>Camera History</Typography>
+        </CustomGrid>
         </Grid>
       </div>
     )

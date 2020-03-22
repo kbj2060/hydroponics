@@ -8,11 +8,25 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <script type="text/javascript" src="canvasjs.min.js"></script>
+    <style>
+      .root {
+        width: auto;
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url("background3.jpg");
+        /* background-color: '#f1f3'; */
+        background-position: center center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
     <title>React App</title>
   </head>
-  <body style='width:100%; background-color : #eee;'>
+  <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div style='width:100%;' id="root"></div>
+    <div class="root" id="root"></div>
   </body>
 </html>

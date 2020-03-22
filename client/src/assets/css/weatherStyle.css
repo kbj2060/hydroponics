@@ -5,7 +5,7 @@
 html,
 body {
   align-items: center;
-  background-color: rgb(55, 56, 52) !important;
+  background-color: white !important;
   color: #333;
   display: flex;
   font-family: Arial, Helvetica, sans-serif;
@@ -21,11 +21,12 @@ body {
 }
 
 .widget {
+  margin-top : 3%;
   height : 100%;
   width : 100%;
   margin : 0;
-  padding : 5%;
-  background-color: #dadada !important;
+  padding : 20px;
+  background-color: white !important;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
   display : inline-block;
   border-radius: 0.5rem;
@@ -33,18 +34,18 @@ body {
 
 .inline-input {
   align-items: flex-start;
-  border-bottom: 1px dotted #fff;
+  border-bottom: 1px dotted #405C5A;
   display: flex;
   margin: 0.5rem 0 1.5rem 0;
 }
 
 .inline-input:focus-within {
-  border-bottom: 1px dotted #333;
+  border-bottom: 1px dotted #405C5A;
   transition: all 0.3s ease-in-out;
 }
 
 .inline-input .mdi-icon {
-  color: #fff;
+  color: #405C5A;
   padding: 0.2rem 0.5rem 0 0;
 }
 
@@ -53,7 +54,7 @@ body {
   align-items: flex-start;
   background-color: transparent;
   border: none;
-  color: #fff;
+  color: #405C5A;
   font-size: 1.5rem;
   max-width: 16rem;
   outline: none;
@@ -62,9 +63,8 @@ body {
 
 .main-display {
   align-items: flex-start;
-  display: flex;
-  flex-start: start;
-  margin: 0.5rem 0 0.5rem 0;
+  display: inline-flex;
+  margin: 2rem 0 2rem 0;
 }
 
 .main-info {
@@ -75,7 +75,7 @@ body {
 }
 
 .temp-measurement {
-  color: #333;
+  color: #405C5A;
   font-size: 5rem;
   font-weight: 500;
   line-height: 0.85;
@@ -93,15 +93,25 @@ body {
   order: 1;
 }
 
+.loading {
+  height : 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 35px;
+  align-items: center;
+  color: #405C5A;
+}
+
 .sub-info-title {
   font-size: 1.15rem;
   margin: 0 0 0.3rem 0;
   text-align: start;
+  color : #405C5A;
 }
 
 .sub-info-text {
   font-size: 0.7rem;
-  color: #333;
+  color: #405C5A;
   margin: 0 0 0.4rem 0;
   text-align: start;
 }
@@ -124,54 +134,58 @@ body {
 }
 
 .selection-days {
-  color: #333;
+  color: #405C5A;
   font-size: 0.7rem;
   font-weight: 700;
   width: 3.5rem;
 }
 
 .selection-weather {
-  color: #333;
+  color: #405C5A;
   font-size: 0.7rem;
   width: 3.5rem;
 }
 
 .selection-icons {
-  color: #333;
+  color: #405C5A;
   font-size: 1.7rem;
   width: 3.5rem;
 }
 
+.title-icon {
+  padding-bottom : '8%';
+}
+
 .selected {
-  color: #fff;
+  color: #D7A310;
   transition: all 0.3s ease-in-out;
 }
 
 .cloudy {
-  background-color: 'rgb(55, 56, 52)'
+  background-color: 'white'
   /* background-image: linear-gradient(0deg, #bbdefb, #2196f3); */
 }
 
 .clear {
-  background-color: 'rgb(55, 56, 52)'
+  background-color: 'white'
 
   /* background-image: linear-gradient(0deg, #b3e5fc, #29b6f6); */
 }
 
 .snow {
-  background-color: 'rgb(55, 56, 52)'
+  background-color: 'white'
 
   /* background-image: linear-gradient(0deg, #b2ebf2, #26c6da); */
 }
 
 .rain {
-  background-color: 'rgb(55, 56, 52)'
+  background-color: 'white'
 
   /* background-image: linear-gradient(0deg, #c5cae9, #5c6bc0); */
 }
 
 .thunderstorm {
-  background-color: 'rgb(55, 56, 52)'
+  background-color: 'white'
 
   /* background-image: linear-gradient(0deg, #e0e0e0, #757575); */
 }

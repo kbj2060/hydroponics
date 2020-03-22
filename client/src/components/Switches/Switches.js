@@ -1,8 +1,23 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, {useEffect} from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { SWITCH_CONTROL, SWITCH_FEED } from 'resolvers/resolvers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
+
+const style = makeStyles({
+  controlForm : {
+    margin : 'auto'
+  }
+});
 
 const IOSSwitch = withStyles(theme => ({
   root: {
@@ -18,13 +33,13 @@ const IOSSwitch = withStyles(theme => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#837e7d',
+        backgroundColor: '#405C5A',
         opacity: 1,
         border: 'none',
       },
     },
     '&$focusVisible $thumb': {
-      color: '#837e7d',
+      color: '#405C5A',
       border: '6px solid #fff',
     },
   },
@@ -58,14 +73,50 @@ const IOSSwitch = withStyles(theme => ({
   );
 });
 
-
-export default function CustomizedSwitches() {
+export default function CustomizedSwitches(props) {
+  const {machine} = props
+  const { loading, error, data } = useQuery(SWITCH_FEED, {fetchPolicy : 'network-only', variables : {
+    orderBy: "updatedAt_ASC",
+    filter : machine,
+    last: 1,
+  }})
+  const [switchControlMutation] = useMutation(SWITCH_CONTROL);
   const [state, setState] = React.useState({
-    checked: true,
+    prevStatus : null,
+    status: true, 
+    machine: machine
   });
+  const classes = style();
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+  useEffect(() => {
+    if(loading || error) { return }
+    try{
+      if(data){ 
+        const status = data.switchFeed.switches[0].status;
+        setState({...state, prevStatus : !status, status: status}) 
+    } }catch (error) 
+      { console.log("value is not defined") }
+  }, [loading, error, data])
+
+  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
+
+  const handleChange = event => {
+    const preStatus = state.status
+    const status = !preStatus
+
+    setState({ 
+      ...state, 
+      prevStatus : preStatus, 
+      status : status });
+
+    switchControlMutation({
+      variables : {
+        machine : state.machine,
+        status : status
+      } })
+    .catch((err)=>{
+      console.log(err);
+    })
   };
 
   return (
@@ -73,12 +124,12 @@ export default function CustomizedSwitches() {
       <FormControlLabel
         control={
           <IOSSwitch
-            checked={state.checked}
-            onChange={handleChange('checked')}
-            value="checked"
+            checked={state.status}
+            onChange={handleChange}
+            value="status"
           />
         }
-        style={{margin:'auto'}}
+        className={classes.controlForm}
       />
     </FormGroup>
   );

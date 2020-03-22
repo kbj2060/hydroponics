@@ -1,0 +1,109 @@
+scalar DateTime 
+
+type Query {
+  info : String!
+  switchFeed(filter: String, skip: Int, first: Int, orderBy: SwitchOrderByInput, last: Int) : SwitchFeed!
+  figureFeed(filter: String, from: DateTime, to: DateTime, skip: Int, first: Int, orderBy: FigureOrderByInput, last: Int) : FigureFeed!
+  getCurrentUser: User
+  getSetting(last: Int) : [Setting!]!
+}
+
+type Mutation {
+  switchControl(machine: SwitchFormat!, status: Boolean!): Switch
+  measure(value: Float!, measurement: MeasurementFormat!): Figure
+  setting(min: [Float!]!, max: [Float!]!, measurement: [MeasurementFormat!]!): Setting
+  signup(name:String!, password:String!, type:UserFormat): AuthPayload
+  login(name:String!, password:String!): AuthPayload
+}
+
+type Subscription {
+  newSwitch(machine: SwitchFormat): Switch
+  newFigure(measurement: MeasurementFormat): Figure
+}
+
+type SwitchFeed {        
+  switches: [Switch!]!  
+  count: Int!     
+}
+type FigureFeed {        
+  figures: [Figure!]! 
+  count: Int!     
+}
+
+enum MeasurementFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+
+enum SwitchFormat {
+  FAN
+  HUMIDIFIER
+  LED
+}
+
+enum SwitchOrderByInput {
+  updatedAt_ASC
+  updatedAt_DESC
+  controledBy_ASC
+  controledBy_DESC
+}
+
+enum FigureOrderByInput {
+  updatedAt_ASC
+  updatedAt_DESC
+  controledBy_ASC
+  controledBy_DESC
+}
+
+enum UserFormat {
+  USER
+  ADMIN
+}
+
+type SettingRange {
+  id : ID!
+  measurement : MeasurementFormat!
+  min : Float!
+  max : Float!
+}
+
+type Setting {
+  id : ID!
+  subjects : [SettingRange!]!
+  appliedBy : User!
+  updatedAt : DateTime!
+}
+
+type AuthPayload {
+  id : ID!
+  token : String
+  user : User
+}
+
+type Figure {
+  id : ID! 
+  updatedAt : DateTime! 
+  value : Float!
+  measurement : MeasurementFormat! 
+}
+
+type Switch {
+  id : ID! 
+  machine : SwitchFormat!
+  updatedAt : DateTime 
+  status : Boolean!
+  controledBy : User
+}
+
+type User {
+  id: ID! 
+  name: String! 
+  password: String!
+  createdAt : DateTime!
+  switches : [Switch!]!
+  type : UserFormat!
+}

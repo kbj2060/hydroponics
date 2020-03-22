@@ -1,0 +1,64 @@
+
+type Figure {
+  id : ID! @id
+  updatedAt : DateTime! @updatedAt
+  value : Float!
+  measurement : MeasurementFormat! 
+}
+
+type AuthPayload {
+  id : ID! @id
+  token : String
+  user : User
+}
+
+type Switch {
+  id : ID! @id
+  machine : SwitchFormat!
+  updatedAt : DateTime @updatedAt
+  status : Boolean!
+  controledBy : User
+}
+
+type User {
+  id: ID! @id
+  name: String! @unique
+  password: String!
+  createdAt : DateTime! @createdAt
+  switches : [Switch!]!
+  type : UserFormat!
+}
+
+type SettingRange {
+  id : ID! @id
+  measurement : MeasurementFormat!
+  min : Float!
+  max : Float!
+}
+
+type Setting {
+  id : ID! @id
+  subjects : [SettingRange!]!
+  appliedBy : User!
+  updatedAt : DateTime! @updatedAt
+}
+
+enum MeasurementFormat {
+  LUX
+  HUM
+  TEMP
+  CO2
+  PH
+  EC
+}
+
+enum SwitchFormat {
+  FAN
+  HUMIDIFIER
+  LED
+}
+
+enum UserFormat {
+    USER
+  ADMIN
+}

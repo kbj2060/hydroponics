@@ -1,59 +1,71 @@
-import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useMemo } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import LogInIcon from 'assets/icons/LogInIcon';
 import LogOutIcon from 'assets/icons/LogOutIcon';
 import DashboardIcon from 'assets/icons/DashboardIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
-import styles from "assets/jss/navDrawerStyle.js";
+import useStyles from "assets/jss/navDrawerStyle";
+import { useQuery } from '@apollo/react-hooks';
+import { GET_CURRENT_USER } from 'resolvers/resolvers';
 
-const useStyles = makeStyles(styles);
+const ColorAccountCircle = withStyles({
+    root: {
+      height: 'auto', 
+      width:'70px', 
+      color: 'white'
+    },
+  })(AccountCircle);
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
-
+  const { loading, error, data  } = useQuery(GET_CURRENT_USER);
   const [state, setstate] = React.useState(props);
+  var info = {name : '', type : ''};
 
   useEffect(() => {
-    setstate(props);
+    setstate(state);
     }, [props])
+  
+  const getNameAndType = (data) => {
+    console.log(data)
+    if (typeof data === "undefined" && loading || error){ return }
+    info.name = data.getCurrentUser.name;
+    info.type = data.getCurrentUser.type;
+  }
 
-  const leftDrawerItems = {
-    제어  : [<DashboardIcon />, '/'],
-    기록  : [<HistoryIcon />, '/history'],
-    설정  : [<SettingsIcon />, '/settings'],
+  const drawerItems = {
+    Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    Dashboard  : [<DashboardIcon />, '/dashboard'],
+    History  : [<HistoryIcon />, '/history'],
+    Settings  : [<SettingsIcon />, '/settings'],
   };
-  const restDrawerItems = {
-    프로필: [<AccountCircle />, '/account'],
-    알림: [<NotificationsIcon />, '/notification']
+  const footerItems = {
+    Logout : [<LogOutIcon />, '/'],
   };
-  const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
-  const footerDrawerItems = {
-    로그인: [<LogInIcon />, '/login'],
-    로그아웃 : [<LogOutIcon />, '/logout'],
-  };
-
+  const handleClick = (e) => {
+    if (e.target.textContent === "Logout") {
+      localStorage.clear();
+  }}
   const handleItems = (items) => (
     <div>
-      {Object.keys(items).map((text, index) => {
+      {Object.keys(items).map((text) => {
         let icon = items[text][0];
         let routes = items[text][1];
         return (
-        <MenuItem component={Link} to={routes} button key={text} >
+        <MenuItem className={classes.hoverItem}
+          component={Link} to={routes} button key={text}
+          onClick={handleClick}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={
-              <Typography style={{fontSize:'14px'}}>{text}</Typography>
+              <Typography className={classes.listText}>{text}</Typography>
             } />
         </MenuItem>
     )})}
@@ -62,33 +74,32 @@ export const NavDrawer = (props) => {
 
   const viewList = (side) => {
     return (
-     <div className={classes.fullList} role="presentation">
-      <MenuList>
-        {handleItems(side)}
-      </MenuList>
-      <Divider />
-      <MenuList>
-        {handleItems(footerDrawerItems)}
-      </MenuList>
-    </div>
+      <>
+        <MenuItem component={Link} to={'/account'} className={classes.menuItem}>
+          <ColorAccountCircle />
+          {getNameAndType(data)}
+          <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {info.name}</Typography>
+          <Typography style={{ color: 'white', fontSize : '10px' }}>{info.type}</Typography>
+        </MenuItem>
+        <div className={classes.drawerTitle}>
+        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
+        </div>
+        <div className={classes.fullList} role="presentation">
+          <MenuList>
+            {handleItems(side)}
+          </MenuList>
+          <Divider />
+          <MenuList>
+            {handleItems(footerItems)}
+          </MenuList>
+        </div>
+      </>
     )
   }
 
   return (
-    <div >
-      <div className={classes.drawerTitle}>
-        <p style={{marginBottom:'6px'}}>HYDROPONICS</p>
-      </div>
-      {state.right === true ?
-      <div>
-        <CssBaseline />
-        {viewList(rightDrawerItems)}
-      </div> :
-      <div>
-        <CssBaseline />
-        {viewList(leftDrawerItems)}
-      </div>
-      }
+    <div className={classes.background}>
+        {viewList(drawerItems)}
     </div>
   );
 }

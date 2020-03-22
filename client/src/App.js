@@ -1,27 +1,26 @@
 import React from 'react';
-import AppBar from './components/AppBar/AppBar';
 import Dashboard from './views/Dashboard/Dashboard';
 import History from './views/History/History';
-import { Router, Route } from "react-router";
+import Login from './views/Login/Login';
+import Settings from './views/Settings/Settings';
+import Account from './views/Account/Account';
+// import Account from './views/NotFound/NotFound';
+
+import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 
-//
-// const useStyles = makeStyles(theme => ({
-//     wrapper: {
-//       position: "relative",
-//       top: "0",
-//       height: "100vh"
-//     },
-// }));
-
-export default function App(props) {
+export default function App() {
     // const classes = useStyles();
+
     return (
       <BrowserRouter>
-        <div>
-          <AppBar />
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/history" component={History} />
+        <div style={{width: '100vw', height: '100vh',overflowX:'hidden'}}>
+          <Route exact path="/" component={() => <Login />} />
+          <Route path="/dashboard" component={() => <Dashboard />} />
+          <Route path="/history" component={() => <History /> } />
+          <Route path="/settings" component={() => <Settings /> } />
+          <Route path="/account" component={() => <Account /> } />
+          {/* <Route component={NotFound} /> */}
         </div>
       </BrowserRouter>
     )

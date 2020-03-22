@@ -1,20 +1,29 @@
 import React from "react";
 import axios from "axios";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ArrowDownIcon from "mdi-react/ArrowDownIcon";
 import ArrowUpIcon from "mdi-react/ArrowUpIcon";
 import CircleOutlineIcon from "mdi-react/CircleOutlineIcon";
-import MagnifyIcon from "mdi-react/MagnifyIcon";
 import WeatherCloudyIcon from "mdi-react/WeatherCloudyIcon";
 import WeatherLightningRainyIcon from "mdi-react/WeatherLightningRainyIcon";
 import WeatherPouringIcon from "mdi-react/WeatherPouringIcon";
 import WeatherSnowyIcon from "mdi-react/WeatherSnowyIcon";
+import { withStyles } from '@material-ui/core/styles';
 
 import "assets/css/weatherStyle.css";
+
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 class WeatherCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      progress: 0,
+      isLoading: false,
       data: {},
       location: "Seoul",
       days: [],
@@ -28,15 +37,19 @@ class WeatherCard extends React.Component {
     };
   }
 
-  fetchData = () => {
+  fetchData = async() => {
     const url = this.buildUrlApi();
     console.log("api", url);
+    
+    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+    let res = await axios.get(url);
+    this.setState({ data: res.data });
 
-    axios.get(url).then(response => {
+    if(typeof this.state.data.list === "undefined" || this.state.data.list.length === 0) {
       this.setState({
-        data: response.data
+        isLoading : true
       });
-
+    } else {
       const currentData = this.currentData();
       const dayOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const dayOfWeekFull = [
@@ -96,19 +109,20 @@ class WeatherCard extends React.Component {
         weather: [currentWeather, ...weather.slice(1)],
         icons: [currentIcon, ...icons.slice(1)]
       });
-    });
+
+      this.setState(prevState => ({ isLoading: !prevState.isLoading }));
+    }
   };
 
   buildUrlApi = () => {
     const location = encodeURIComponent(this.state.location);
     const urlPrefix = "https://api.openweathermap.org/data/2.5/forecast?q=";
-    const urlSuffix = "&APPID=fb1158dc7dfef5f0967ceac8f71ee3a6&units=metric";
-
+    const urlSuffix = "&APPID=f3674da53ca76d7eb82a831d19eab4f2&units=metric";
     return [urlPrefix, location, urlSuffix].join("");
   };
 
   currentData = () => {
-    const list = this.state.data.list
+    const list = this.state.data.list;
     const nearestHr = this.computeNearestHr();
     return list.find(e => new Date(e.dt_txt).getHours() === nearestHr);
   };
@@ -170,7 +184,7 @@ class WeatherCard extends React.Component {
 
   render() {
     const {
-      location,
+      // location,
       days,
       daysFull,
       temps,
@@ -207,19 +221,13 @@ class WeatherCard extends React.Component {
 
     return (
       <div className={"widget ".concat(...background)}>
-        <form onSubmit={this.changeLocation}>
-          <div className="inline-input">
-            <MagnifyIcon size={30} />
-            <input
-              className="location-input"
-              defaultValue={location}
-              type="text"
-              onFocus={this.handleFocus}
-              ref={input => (this.locationInput = input)}
-            />
-          </div>
-        </form>
-
+      {
+      this.state.isLoading === true ? 
+      <div className="loading">
+        <ColorCircularProgress size={40} thickness={4} /> 
+      </div>
+          : 
+      <div>
         <div className="main-display">
           <div className="main-info">
             <div className="temp-measurement">{temps[displayIndex]}</div>
@@ -299,8 +307,11 @@ class WeatherCard extends React.Component {
           </div>
         </div>
       </div>
+      }
+      </div>
     );
   }
 }
+
 
 export default WeatherCard

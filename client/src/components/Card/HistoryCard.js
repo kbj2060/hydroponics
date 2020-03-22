@@ -2,27 +2,54 @@ import React from 'react';
 import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
+import Typography from '@material-ui/core/Typography';
+import { FIGURE_FEED } from 'resolvers/resolvers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { withStyles } from '@material-ui/core/styles';
+import { useQuery } from '@apollo/react-hooks';
 
-const state = {
-  labels: ['January', 'February', 'March',
-           'April', 'May'],
-  datasets: [
-    {
-      label: 'Rainfall',
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: 'white',
-      borderColor: 'white',
-      borderWidth: 1,
-      data: [65, 59, 80, 81, 56]
-    }
-  ]
-}
+const ColorCircularProgress = withStyles({
+  root: {
+    color: '#405C5A',
+  },
+})(CircularProgress);
 
 export default function HistoryCard(props) {
-  const { backgroundColor, ...rest } = props;
-  const classes = useStyles({backgroundColor});
+  const { measurement } = props;
+  const classes = useStyles();
+  const { loading, error, data  } = useQuery(FIGURE_FEED, {fetchPolicy : 'cache-and-network', variables : {
+    orderBy: "updatedAt_ASC",
+    filter : measurement,
+    last: 60,
+  }})
 
+  if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
+
+  const state = {
+    labels: [],
+    datasets: [
+      {
+        label: measurement,
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: '#D7A310',
+        borderColor: '#D7A310',
+        borderWidth: 1,
+        data: []
+      }
+    ]
+  }
+  try {
+    if (loading || error) { throw "no value"; }
+    data.figureFeed.figures.forEach((currentValue, index) => {
+      state.datasets[0].data.push(currentValue.value);
+      state.labels.push(index);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+ 
+  console.log(state)
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
@@ -30,32 +57,28 @@ export default function HistoryCard(props) {
           className={classes.chart}
           data={state}
           options={{
-            title:{
-            },
-            legend: {
-              display: false
-            },
             responsive : true,
             maintainAspectRatio : false,
-            color : 'white',
+            color : '#405C5A',
             scales: {
               xAxes: [{
-                gridLines: {color: "white"},
-                ticks: {fontColor: 'white'}
+                gridLines: {color: "#405C5A"},
+                ticks: {fontColor: '#405C5A'}
               }],
               yAxes: [{
-                gridLines: { color: "white"},
-                ticks: {fontColor: 'white'} 
+                gridLines: { color: "#405C5A"},
+                ticks: {fontColor: '#405C5A'}
               }]
-            }}}
+            },
+          }}
         />
       </div>
       <div className={classes.footer} >
-        <h4>{props.subject}</h4>
-        <p>문제가 발견되지 않았습니다.</p>
+        <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>
+        <Typography variant="body2" className={classes.textColor}>No problem found</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <p className={classes.updateTime}>방금 갱신됨</p>
+          <Typography variant="inherit" className={classes.updateTime}>Just Updated</Typography>
         </div>
       </div>
     </div>
