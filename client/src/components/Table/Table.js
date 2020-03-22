@@ -93,7 +93,7 @@ export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { loading, error, data } = useQuery(SWITCH_FEED, { variables : { last : 60}});
+  const { loading, error, data } = useQuery(SWITCH_FEED, { fetchPolicy : 'cache-and-network', variables : { orderBy: 'updatedAt_DESC', first : 30}});
   const [ rows, setRows ] = React.useState([]);
 
   useEffect(() => {
@@ -104,7 +104,6 @@ export default function CustomPaginationActionsTable() {
 
   function createData(data) {  
     var rows = data.switchFeed.switches.map((obj)=> {
-      console.log(obj)
       var machine = obj.machine;
       var status = obj.status.toString();
       var name = obj.controledBy.name
@@ -132,7 +131,7 @@ export default function CustomPaginationActionsTable() {
 			? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 			: rows
 		  ).map((row, index) => (
-			<TableRow key={row.index}>
+			<TableRow key={index}>
 			  <TableCell component="th" scope="row">
 				{row.machine}
 			  </TableCell>

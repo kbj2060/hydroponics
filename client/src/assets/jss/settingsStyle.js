@@ -6,11 +6,17 @@ const settingsStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
-    backgroundColor: '#ABBFBE',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
       }
+  },
+  container : {
+    padding :'15px 30px 15px 30px'
+  },
+  item : {
+    padding:'15px',
   },
   background : {
     position : 'relative',
@@ -20,6 +26,11 @@ const settingsStyle = makeStyles(theme =>({
     flexDirection:'column',
     boxShadow : '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
     borderRadius : '6px',
+  },
+  sliderDiv : {
+    display:'grid', 
+    gridTemplateColumns: 'auto auto auto',
+    padding: '3% 0 3% 0'
   },
   parentItem : {
     backgroundColor : 'white',

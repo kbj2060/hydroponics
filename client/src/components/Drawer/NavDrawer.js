@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,13 +11,10 @@ import DashboardIcon from 'assets/icons/DashboardIcon';
 import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Link } from "react-router-dom";
 import useStyles from "assets/jss/navDrawerStyle";
-import image from "assets/img/navBackground2.jpg"
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CURRENT_USER } from 'resolvers/resolvers';
-import { useHistory } from "react-router-dom";
 
 const ColorAccountCircle = withStyles({
     root: {
@@ -29,59 +26,43 @@ const ColorAccountCircle = withStyles({
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
-  const history = useHistory();
   const { loading, error, data  } = useQuery(GET_CURRENT_USER);
-
-  const [menuClicked, setMenuClicked ] = React.useState('')
   const [state, setstate] = React.useState(props);
-  const [name, setName] = React.useState('');
-  const [type, setType] = React.useState('');
-
-  useEffect(() => {
-    if(loading || error) { return }
-    try {
-      console.log(data)
-      setName(data.getCurrentUser.name);
-      setType(data.getCurrentUser.type);
-    } catch (error) {
-      console.log(error)
-    }
-  }, [data])
+  var info = {name : '', type : ''};
 
   useEffect(() => {
     setstate(state);
     }, [props])
+  
+  const getNameAndType = (data) => {
+    console.log(data)
+    if (typeof data === "undefined" && loading || error){ return }
+    info.name = data.getCurrentUser.name;
+    info.type = data.getCurrentUser.type;
+  }
 
-  const leftDrawerItems = {
+  const drawerItems = {
     Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
     Dashboard  : [<DashboardIcon />, '/dashboard'],
     History  : [<HistoryIcon />, '/history'],
     Settings  : [<SettingsIcon />, '/settings'],
   };
-  const restDrawerItems = {
-    
-    // Alarm: [<NotificationsIcon style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/notification']
-  };
-  const rightDrawerItems = Object.assign({}, restDrawerItems , leftDrawerItems);
-  const footerDrawerItems = {
+  const footerItems = {
     Logout : [<LogOutIcon />, '/'],
   };
-
+  const handleClick = (e) => {
+    if (e.target.textContent === "Logout") {
+      localStorage.clear();
+  }}
   const handleItems = (items) => (
     <div>
-      {Object.keys(items).map((text, index) => {
+      {Object.keys(items).map((text) => {
         let icon = items[text][0];
         let routes = items[text][1];
         return (
-        <MenuItem className={menuClicked === text ? classes.clickedItem : classes.hoverItem}
+        <MenuItem className={classes.hoverItem}
           component={Link} to={routes} button key={text}
-          onClick={(e) => {
-            if (e.target.textContent === "Logout") {
-              localStorage.clear();
-            } else {
-              e.persist();
-              setMenuClicked(e.target.textContent);
-            }}}>
+          onClick={handleClick}>
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText primary={
               <Typography className={classes.listText}>{text}</Typography>
@@ -94,14 +75,14 @@ export const NavDrawer = (props) => {
   const viewList = (side) => {
     return (
       <>
-        <MenuItem component={Link} to={'/account'} 
-          style={{ textAlign:'center', display:'inline-block', position:'relative', height: "auto", paddingTop : '10px'}}>
+        <MenuItem component={Link} to={'/account'} className={classes.menuItem}>
           <ColorAccountCircle />
-          <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {name}</Typography>
-          <Typography style={{ color: 'white', fontSize : '10px' }}>{type}</Typography>
+          {getNameAndType(data)}
+          <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {info.name}</Typography>
+          <Typography style={{ color: 'white', fontSize : '10px' }}>{info.type}</Typography>
         </MenuItem>
         <div className={classes.drawerTitle}>
-          <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
+        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
         </div>
         <div className={classes.fullList} role="presentation">
           <MenuList>
@@ -109,7 +90,7 @@ export const NavDrawer = (props) => {
           </MenuList>
           <Divider />
           <MenuList>
-            {handleItems(footerDrawerItems)}
+            {handleItems(footerItems)}
           </MenuList>
         </div>
       </>
@@ -117,15 +98,8 @@ export const NavDrawer = (props) => {
   }
 
   return (
-    <div className={classes.background} style={{ backgroundImage: "url(" + image + ")" }}>
-      {state.right === true ?
-      <div>
-        {viewList(rightDrawerItems)}
-      </div> :
-      <div>
-        {viewList(leftDrawerItems)}
-      </div>
-      }
+    <div className={classes.background}>
+        {viewList(drawerItems)}
     </div>
   );
 }

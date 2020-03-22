@@ -2,17 +2,10 @@ import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
 import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
-import gql from 'graphql-tag';
 import { useHistory } from "react-router-dom";
 import { useMutation } from '@apollo/react-hooks';
+import { LOGIN } from 'resolvers/resolvers';
 
-const LOGIN = gql`
-mutation loginMutation($name: String!, $password: String!) {
-    login(name: $name, password: $password) {
-        token
-    }
-}
-`;
 
 export default function Login(props) {
     const history = useHistory();
@@ -40,27 +33,28 @@ export default function Login(props) {
     const handleChange = target => (e) => {
         setLogin({ ...login, [target]: e.target.value })
     }
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      loginMutation({
+          variables: {
+              name: login.name,
+              password: login.password
+          }
+      })
+      .then((res) => {
+          const _token = res.data.login.token;
+          setLogin({...login,token : _token, loginClicked : true})
+      })
+      .catch((err)=> {
+          alert('Your Account Is Not Valid!')
+          console.log(err)
+      })};
 
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
-            <form onSubmit={(event) => {
-                event.preventDefault();
-                loginMutation({
-                    variables: {
-                        name: login.name,
-                        password: login.password
-                    }
-                })
-                .then((res) => {
-                    const _token = res.data.login.token;
-                    setLogin({...login,token : _token, loginClicked : true})
-                })
-                .catch((err)=> {
-                    alert('Your Account Is Not Valid!')
-                    console.log(err)
-                })}}>
-                <p style={{color:'black',marginTop:'0px'}}>HYDROPONICS</p>
+            <form onSubmit={handleSubmit}>
+                <p className={classes.title}>HYDROPONICS</p>
                 <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
                 <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>
                 <div>

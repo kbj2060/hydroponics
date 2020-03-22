@@ -5,7 +5,7 @@ const HistoryStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
-    backgroundColor: '#ABBFBE',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
     [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,

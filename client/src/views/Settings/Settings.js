@@ -5,14 +5,13 @@ import AppBar from 'components/AppBar/AppBar';
 import SettingSlider from 'components/Slider/Slider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { useMutation } from '@apollo/react-hooks';
 import { SETTING } from 'resolvers/resolvers'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CURRENT_USER } from 'resolvers/resolvers';
-import { useHistory } from "react-router-dom";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -29,7 +28,6 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const history = useHistory();
   const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
   const [values, setValues] = useState({"LUX": [0,0], 
                                         "HUM": [0,0], 
@@ -44,9 +42,7 @@ export default function Settings() {
 
   useEffect(() => {
     if (loading || error) { return }
-    if (data && data.getCurrentUser.type !== "ADMIN"){
-      history.push('/dashboard')
-    }
+
   }, [data])
 
   const getValue = (measurement, value, idx) => {
@@ -90,10 +86,10 @@ export default function Settings() {
   return (
     <div className={classes.root}>
       <AppBar />
-      <Grid container style={{padding :'15px 30px 15px 30px'}}>
-        <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
+      <Grid container className={classes.container}>
+        <Grid item xs={12} sm={12} md={12} className={classes.item}>
           <Card className={classes.parentItem}>
-            <div style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 3% 0'}}>
+            <div className={classes.sliderDiv}>
             { measurementArr.map((measurement,index) => <SettingSlider  key={measurement.toString()} 
                                                                         measurement={measurement} 
                                                                         isApplied={isApplied}
@@ -102,8 +98,7 @@ export default function Settings() {
             </div>
             <CustomButton onClick={ handleOnClick } 
                           variant="contained" 
-                          size="medium"> APPLY 
-            </CustomButton>
+                          size="medium"> APPLY </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="success">
                 Settings applied!

@@ -40,7 +40,7 @@ export default function RangeSlider(props) {
   const { measurement, isApplied, getValue, index } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState([0, 0]);
-  const {loading, error, data} = useQuery(GET_SETTING, { variables: {filter: measurement, last:1}})
+  const {loading, error, data} = useQuery(GET_SETTING, { fetchPolicy : 'network-only', variables: {filter: measurement, last:1}})
 
   useEffect(() => {
     if (loading || error) {return}

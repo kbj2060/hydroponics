@@ -1,16 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const navDrawerStyle = makeStyles(theme =>({
-  list: {
-    margin : '10px 15px 0 15px',
-    width: 240,
-    overflowX : 'hidden',
-  },
+const navDrawerStyle = makeStyles({
   fullList: {
     margin : '10px 15px 0 15px',
     width: 240,
     overflowX : 'hidden',
-    borderColor : '#ABBFBE',
   },
   drawerTitle : {
     position : 'relative',
@@ -20,20 +14,12 @@ const navDrawerStyle = makeStyles(theme =>({
     padding:'10px',
     display:'inline-block',
   },
-  clickedItem : {
-    backgroundColor : '#ABBFBE',
-    borderRadius : '15px',
-  },
   listText : {
     fontSize:'14px',
     color:'white',
   },
   hoverItem : {
     borderRadius : '15px',
-    '&:hover': {
-      backgroundColor : "#ABBFBE",
-      borderRadius : '15px',
-    }
   },
   background: {
     position: "absolute",
@@ -45,17 +31,29 @@ const navDrawerStyle = makeStyles(theme =>({
     left: "0",
     backgroundSize: "cover",
     backgroundPosition: "center center",
-    "&:before": {
-      position: "absolute",
-      zIndex: "0",
-      width: "100%",
-      height: "100%",
-      content: '""',
-      display: "block",
-      background: '#283736',
-      opacity: ".8"
-    }
+    background: '#283736',
+    border: '#283736'  
   },
-}));
+  menuItem : {
+    textAlign:'center', 
+    display:'inline-block',
+     position:'relative', 
+     height: "auto", 
+     paddingTop : '10px'
+  },
+  text1 : {
+    color: 'white', 
+    fontSize : '13px'
+  },
+  text2 : {
+    color: 'white', 
+    fontSize : '10px'
+  },
+  text3 : {
+    position: 'relative', 
+    marginBottom:'6px', 
+    color:'white'
+  }
+});
 
 export default navDrawerStyle;

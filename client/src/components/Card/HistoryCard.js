@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
@@ -17,12 +17,14 @@ const ColorCircularProgress = withStyles({
 export default function HistoryCard(props) {
   const { measurement } = props;
   const classes = useStyles();
-  const { loading, error, data  } = useQuery(FIGURE_FEED, {variables : {
+  const { loading, error, data  } = useQuery(FIGURE_FEED, {fetchPolicy : 'cache-and-network', variables : {
     orderBy: "updatedAt_ASC",
     filter : measurement,
     last: 60,
   }})
-  
+
+  if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
+
   const state = {
     labels: [],
     datasets: [
@@ -37,22 +39,17 @@ export default function HistoryCard(props) {
       }
     ]
   }
-  useEffect(() => {
-    if (loading || error) {return}
-    console.log(data)
-    try {
-      data.figureFeed.figures.forEach((currentValue, index) => {
-        state.datasets[0].data.push(currentValue.value);
-        state.labels.push(index);
-      })
-      console.log(data.figureFeed.figures)
-    } catch (error) {
-      console.log(error)
-    }
-    }, [data])
-
-  if (loading || error) { return <ColorCircularProgress size={40} thickness={4} /> }
-
+  try {
+    if (loading || error) { throw "no value"; }
+    data.figureFeed.figures.forEach((currentValue, index) => {
+      state.datasets[0].data.push(currentValue.value);
+      state.labels.push(index);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+ 
+  console.log(state)
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
@@ -60,11 +57,6 @@ export default function HistoryCard(props) {
           className={classes.chart}
           data={state}
           options={{
-            title:{
-            },
-            legend: {
-              display: false
-            },
             responsive : true,
             maintainAspectRatio : false,
             color : '#405C5A',

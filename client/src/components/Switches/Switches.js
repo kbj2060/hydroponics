@@ -1,5 +1,5 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, {useEffect} from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -12,6 +12,12 @@ const ColorCircularProgress = withStyles({
     color: '#405C5A',
   },
 })(CircularProgress);
+
+const style = makeStyles({
+  controlForm : {
+    margin : 'auto'
+  }
+});
 
 const IOSSwitch = withStyles(theme => ({
   root: {
@@ -69,47 +75,45 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-
+  const { loading, error, data } = useQuery(SWITCH_FEED, {fetchPolicy : 'network-only', variables : {
+    orderBy: "updatedAt_ASC",
+    filter : machine,
+    last: 1,
+  }})
   const [switchControlMutation] = useMutation(SWITCH_CONTROL);
   const [state, setState] = React.useState({
     prevStatus : null,
     status: true, 
     machine: machine
   });
-    // let { loading, error, data } = useSubscription(NEW_SWITCH, { variables:  { machine }  });
-  const { loading, error, data  } = useQuery(SWITCH_FEED, {variables : {
-    orderBy: "updatedAt_ASC",
-    filter : machine,
-    last: 1,
-  }})
-  
-  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
+  const classes = style();
 
-  try{
-    if(state.prevStatus === null){ 
-      const status = data.switchFeed.switches[0].status;
-      setState({...state, prevStatus : !status, status: status}) 
-      console.log(machine, data.switchFeed.switches[0].status)}
-  } catch (error) 
-    { console.log("value is not defined") }
+  useEffect(() => {
+    if(loading || error) { return }
+    try{
+      if(data){ 
+        const status = data.switchFeed.switches[0].status;
+        setState({...state, prevStatus : !status, status: status}) 
+    } }catch (error) 
+      { console.log("value is not defined") }
+  }, [loading, error, data])
+
+  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
 
   const handleChange = event => {
     const preStatus = state.status
     const status = !preStatus
 
-    setState(prevState => ({ 
+    setState({ 
       ...state, 
       prevStatus : preStatus, 
-      status : status }));
+      status : status });
 
     switchControlMutation({
       variables : {
         machine : state.machine,
         status : status
       } })
-    .then((res) => {
-      console.log(res);
-    })
     .catch((err)=>{
       console.log(err);
     })
@@ -125,7 +129,7 @@ export default function CustomizedSwitches(props) {
             value="status"
           />
         }
-        style={{margin:'auto'}}
+        className={classes.controlForm}
       />
     </FormGroup>
   );

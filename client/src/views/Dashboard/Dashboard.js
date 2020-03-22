@@ -10,6 +10,7 @@ import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
 import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
+import HistoryCard from 'components/Card/HistoryCard';
 
 export default function Dashboard(props) {
   const history = useHistory();
@@ -24,17 +25,16 @@ export default function Dashboard(props) {
       <div className={classes.root}>
         <AppBar />
         <CssBaseline />
-        <Grid container style={{padding :'15px 30px 15px 30px'}}>
-
-          <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
+        <Grid container className={classes.container}>
+          <Grid item xs={12} sm={6} md={6} className={classes.item}>
             <WeatherCard />
           </Grid>
-          <Grid item xs={12} sm={6} md={6} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={6} md={6} className={classes.item}>
             <Card className={classes.controlCardButtons}>
-            <div style={{height:'100%', paddingBottom:'3% 0 3% 0'}}>
+            <div className={classes.controlCardDiv}>
                 { machineArr.map(machine => { 
                   return (
-                  <Box key={machine.toString()} style={{height:'calc(100% / 3)'}} display='flex'>
+                  <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
                     <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                       <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
                     </Box>
@@ -47,15 +47,20 @@ export default function Dashboard(props) {
             </div>
             </Card>
           </Grid>
-          
-          <Grid item xs={12} sm={12} md={12} style={{padding:'15px',}}>
+          <Grid item xs={12} sm={12} md={12} className={classes.item}>
             <Card className={classes.parentItem}>
-              <div  style={{display:'grid', gridTemplateColumns: 'auto auto auto',padding: '3% 0 0 0'}}>
+              <div className={classes.figureCardDiv}>
                 { measurementArr.map((measurement) => 
                         <Figure key={measurement.toString()} measurement={measurement} />) }
               </div>
             </Card>
           </Grid>
+          <Grid container className={classes.containerHistroy}>
+          { measurementArr.map(measurement => { return (
+                  <Grid key={measurement.toString()} item xs={12} sm={12} md={6} className={classes.item}>
+                    <HistoryCard measurement={measurement}/>
+                  </Grid>)}) }
+        </Grid>
         </Grid>
       </div>
       );

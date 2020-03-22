@@ -5,6 +5,7 @@ const drawerWidth = 240;
 const appBarStyle = makeStyles(theme => ({
   root: {
     display: 'flex',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   grow: {
     flexGrow: 1,
@@ -22,7 +23,7 @@ const appBarStyle = makeStyles(theme => ({
     },
   },
   appBar: {
-    backgroundColor : '#ABBFBE',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
     [theme.breakpoints.up('md')]: {
       marginRight : -drawerWidth,
     },
@@ -30,7 +31,6 @@ const appBarStyle = makeStyles(theme => ({
   drawer: {
     display : 'none',
     [theme.breakpoints.up('md')]: {
-      backgroundColor : '#ABBFBE',
       borderRadius: '0.5rem',
       display : 'contents',
       width: drawerWidth,
@@ -44,7 +44,6 @@ const appBarStyle = makeStyles(theme => ({
     borderTopRightRadius: '0.5rem',
     borderBottomRightRadius: '0.5rem',
     overflowX : 'hidden',
-    borderColor : '#ABBFBE',
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -55,7 +54,6 @@ const appBarStyle = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     align: "center",
-    color : '#405C5A',
     display: 'flex',
   },
   notification: {

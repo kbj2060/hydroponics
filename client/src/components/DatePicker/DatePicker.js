@@ -21,6 +21,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { useQuery } from 'react-apollo';
 import { FIGURE_FEED } from '../../resolvers/resolvers';
+import Typography from '@material-ui/core/Typography';
 
 
 const CustomButton = withStyles({
@@ -46,15 +47,21 @@ const useStyles = makeStyles(theme => ({
   datepicker:{
     width:'40%',
     padding : "0 2% 0 2%"
-  }
+  },
 }));
 
 function renderRow(props) {
-  const { index, style } = props;
+  const { index, style, data } = props;
 
+  console.log(props)
   return (
         <ListItem button style={style} key={index}>
-          <ListItemText primary={`Item ${index + 1}`} />
+          <ListItemText primary={
+          <Typography>{data[0].measurement}</Typography>}/>
+          <ListItemText primary={
+          <Typography>{data[0].value}</Typography>} />
+          <ListItemText primary={
+          <Typography>{data[0].updatedAt}</Typography>} />
         </ListItem>
   );
 }
@@ -62,6 +69,18 @@ function renderRow(props) {
 export default function MaterialUIPickers() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState({
+    from : Date.now(),
+    to : Date.now(),
+  });
+  const [figure, setFigure] = React.useState('');
+
+  const { loading, error, data } = useQuery(FIGURE_FEED, {variables: {
+    from: selectedDate.from,
+    to:selectedDate.to,
+    filter: figure,
+    last: 60,
+  }})
 
   const handleOnClick = () => {
     setOpen(true);
@@ -70,12 +89,6 @@ export default function MaterialUIPickers() {
     setOpen(false);
   };
 
-  const [selectedDate, setSelectedDate] = React.useState({
-    from : new Date('2014-08-18T21:11:54'),
-    to : new Date('2014-08-18T21:11:54'),
-  });
-  const [figure, setFigure] = React.useState('');
-
   const handleChange = event => {
     setFigure(event.target.value);
   };
@@ -83,16 +96,15 @@ export default function MaterialUIPickers() {
     setSelectedDate({[side] : date});
   };
 
-  console.log(selectedDate, figure, open)
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <div style={{width : "-webkit-fill-available"}}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-label">Figure</InputLabel>
+            <InputLabel id="figure input">Figure</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="figure"
+              id="figure select"
               value={figure}
               onChange={handleChange}
               autoWidth
@@ -108,12 +120,12 @@ export default function MaterialUIPickers() {
         </div>
         <div>
           <KeyboardDatePicker
-          className={classes.datepicker}
+            className={classes.datepicker}
             disableToolbar
             variant="inline"
             format="MM/dd/yyyy"
             margin="normal"
-            id="date-picker-inline"
+            id="date-picker-from"
             label="FROM"
             value={selectedDate.from}
             onChange={(e) => handleDateChange(e, 'from')}
@@ -122,9 +134,10 @@ export default function MaterialUIPickers() {
             }}
           />
           <KeyboardTimePicker
+            className={classes.datepicker}
             margin="normal" 
-            id="time-picker"
-            label="Time picker"
+            id="time-picker-from"
+            label="Time picker1"
             value={selectedDate.from}
             onChange={(e) => handleDateChange(e, 'from')}
             KeyboardButtonProps={{
@@ -139,7 +152,7 @@ export default function MaterialUIPickers() {
           variant="inline"
           format="MM/dd/yyyy"
           margin="normal"
-          id="date-picker-inline"
+          id="date-picker-to"
           label="TO"
           value={selectedDate.to}
           onChange={(e) => handleDateChange(e, 'to')}
@@ -148,9 +161,10 @@ export default function MaterialUIPickers() {
           }}
         />
         <KeyboardTimePicker
+          className={classes.datepicker}
           margin="normal"
-          id="time-picker"
-          label="Time picker"
+          id="time-picker2"
+          label="Time picker2"
           value={selectedDate.to}
           onChange={(e) => handleDateChange(e, 'to')}
           KeyboardButtonProps={{
@@ -169,10 +183,8 @@ export default function MaterialUIPickers() {
         aria-describedby="alert-dialog-description"
         >
         <DialogContent>
-          <FixedSizeList height={400} width={300} itemSize={46} itemCount={200}>
-            <ListItem button>
-              <ListItemText />
-            </ListItem>
+          <FixedSizeList itemData={data ? data.figureFeed.figures : {}} height={400} width={550} itemSize={46} itemCount={data ? data.figureFeed.count : 0}>
+            {renderRow}
           </FixedSizeList>          
           <DialogActions>
             <Button onClick={handleClose} color="#405C5A" autoFocus>

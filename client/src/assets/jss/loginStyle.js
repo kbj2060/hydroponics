@@ -36,6 +36,10 @@ const loginStyle = makeStyles(theme => ({
         border:  'none',
         transition:  'all .3s ease', 
         outline: '0', 
+    },
+    title : {
+      color:'black',
+      marginTop:'0px'
     }
 
 })

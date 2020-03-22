@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { useSubscription } from '@apollo/react-hooks';
 import Circle from 'react-circle';
 import Typography from '@material-ui/core/Typography';

@@ -22,7 +22,9 @@ const FIGURE_FEED = gql`
         figures{
           value
           updatedAt
+          measurement
         }
+        count
     }
 }`;
 
@@ -78,6 +80,14 @@ const SETTING = gql`
   }
 `;
 
+const LOGIN = gql`
+mutation loginMutation($name: String!, $password: String!) {
+    login(name: $name, password: $password) {
+        token
+    }
+}
+`;
+
 const NEW_SWITCH = gql`
   subscription newSwitchSubscription ($machine: SwitchFormat!) {
       newSwitch(machine: $machine){
@@ -106,6 +116,7 @@ export{
     NEW_SWITCH,
     SWITCH_CONTROL,
     SETTING,
+    LOGIN,
     SWITCH_FEED,
     FIGURE_FEED,
     GET_CURRENT_USER,

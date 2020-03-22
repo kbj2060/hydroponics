@@ -5,20 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "firefox",
-            "request": "launch",
-            "reAttach": true,
-            "name": "Launch localhost",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/client/",
-            "pathMappings": [
-                {
-                    "url": "file:///home/llewyn/hydroponics/client/src",
-                    "path": "${workspaceFolder}/client/src"
-                }
-            ]
-        },
-        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
