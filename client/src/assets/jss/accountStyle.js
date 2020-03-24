@@ -7,26 +7,24 @@ const accountStyle = makeStyles(theme =>({
     overflow: 'hidden',
     flexGrow: 1,
     backgroundColor : 'rgba(255, 255, 255, 0)',
-    [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        }
     },
     container : {
       padding :'15px 30px 15px 30px'
     },
     secondContainer : {
       height:'100%', 
-      marginTop:'0px'
+      marginTop:'0px',
+
     },
     item : {
       adding:'5px',
       alignSelf: 'center',
+      backgroundColor : 'rgba(255, 255, 255, 0)',
     },
     accountCircle : {
       width: 'auto', 
       height: '90px', 
-      color: 'black',
+      color: 'white',
     },
     item2 : {
       padding:'5px', 
@@ -34,9 +32,11 @@ const accountStyle = makeStyles(theme =>({
       alignSelf:'center',
     },
     text : {
-      fontSize : '16px'
+      fontSize : '16px',
+      color:'white',
     },
     img : {
+      paddingTop : "10px",
       width: '97%',
       height: '85%',
       backgroundposition: 'center',

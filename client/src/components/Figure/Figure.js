@@ -18,9 +18,9 @@ export default function Figure(props) {
     return (
         <div>
             <Typography style={{padding : '5px 0 5px 0',
-                                color : '#405C5A',
+                                color : 'white',
                                 fontWeight : 'bold',}}>{measurement}</Typography>
-            <Circle progress={value} size={90} textColor="#405C5A" progressColor="#405C5A" bgColor="#ABBFBE" roundedStroke={true} lineWidth={24}/>
+            <Circle progress={value} size={90} textColor="white" progressColor="#ffcd12" bgColor="white" roundedStroke={true} lineWidth={24}/>
         </div>
     );
 }

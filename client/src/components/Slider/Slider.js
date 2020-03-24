@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const ColorCircularProgress = withStyles({
   root: {
-    color: '#405C5A',
+    color: '#003458',
   },
 })(CircularProgress);
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
   title : {
     marginBottom : '40px',
-    color:'#405C5A'
+    color:'white'
   }
 });
 

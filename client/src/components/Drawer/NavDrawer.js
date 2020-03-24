@@ -13,7 +13,7 @@ import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
 import useStyles from "assets/jss/navDrawerStyle";
-import { useQuery } from '@apollo/react-hooks';
+import { Query } from 'react-apollo';
 import { GET_CURRENT_USER } from 'resolvers/resolvers';
 
 const ColorAccountCircle = withStyles({
@@ -26,23 +26,14 @@ const ColorAccountCircle = withStyles({
 
 export const NavDrawer = (props) => {
   const classes = useStyles();
-  const { loading, error, data  } = useQuery(GET_CURRENT_USER);
   const [state, setstate] = React.useState(props);
-  var info = {name : '', type : ''};
 
   useEffect(() => {
     setstate(state);
     }, [props])
-  
-  const getNameAndType = (data) => {
-    console.log(data)
-    if (typeof data === "undefined" && loading || error){ return }
-    info.name = data.getCurrentUser.name;
-    info.type = data.getCurrentUser.type;
-  }
 
   const drawerItems = {
-    Account : [<AccountCircle style={{fill: "#D7A310", height: '27px', width: '27px',}} />, '/account'],
+    Account : [<AccountCircle style={{fill: "#ffcd12", height: '27px', width: '27px',}} />, '/account'],
     Dashboard  : [<DashboardIcon />, '/dashboard'],
     History  : [<HistoryIcon />, '/history'],
     Settings  : [<SettingsIcon />, '/settings'],
@@ -77,9 +68,19 @@ export const NavDrawer = (props) => {
       <>
         <MenuItem component={Link} to={'/account'} className={classes.menuItem}>
           <ColorAccountCircle />
-          {getNameAndType(data)}
-          <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {info.name}</Typography>
-          <Typography style={{ color: 'white', fontSize : '10px' }}>{info.type}</Typography>
+          <Query query={GET_CURRENT_USER}>
+          {({ loading, error, data }) => {
+            if (loading) return '';
+            if (error) return '';
+            return (
+              <>
+                <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {data.getCurrentUser.name}</Typography>
+                <Typography style={{ color: 'white', fontSize : '10px' }}>{data.getCurrentUser.type}</Typography>
+              </>
+            );
+          }}
+        </Query>
+          
         </MenuItem>
         <div className={classes.drawerTitle}>
         <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>

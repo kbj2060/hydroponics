@@ -11,6 +11,7 @@ import AppBar from 'components/AppBar/AppBar';
 import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
 import HistoryCard from 'components/Card/HistoryCard';
+import "assets/css/hydroponics.css";
 
 export default function Dashboard(props) {
   const history = useHistory();
@@ -57,7 +58,7 @@ export default function Dashboard(props) {
           </Grid>
           <Grid container className={classes.containerHistroy}>
           { measurementArr.map(measurement => { return (
-                  <Grid key={measurement.toString()} item xs={12} sm={12} md={6} className={classes.item}>
+                  <Grid key={measurement.toString()} item xs={12} sm={12} md={4} className={classes.item}>
                     <HistoryCard measurement={measurement}/>
                   </Grid>)}) }
         </Grid>

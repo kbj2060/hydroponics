@@ -16,10 +16,21 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { useQuery } from '@apollo/react-hooks';
 import {SWITCH_FEED} from 'resolvers/resolvers';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiTableCell : {
+      root : {
+        borderBottom : 'none',
+      }
+    }
+  },
+});
 
 const useStyles1 = makeStyles({
   root: {
-	flexShrink: 0,
+  flexShrink: 0,
   },
 });
 
@@ -47,16 +58,18 @@ function TablePaginationActions(props) {
   return (
 	<div className={classes.root}>
 	  <IconButton
+    style={{color:'white'}}
 		onClick={handleFirstPageButtonClick}
 		disabled={page === 0}
 		aria-label="first page"
 	  >
 		{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
 	  </IconButton>
-	  <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+	  <IconButton style={{color:'white'}} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
 		{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
 	  </IconButton>
 	  <IconButton
+    style={{color:'white'}}
 		onClick={handleNextButtonClick}
 		disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 		aria-label="next page"
@@ -64,6 +77,7 @@ function TablePaginationActions(props) {
 		{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 	  </IconButton>
 	  <IconButton
+    style={{color:'white'}}
 		onClick={handleLastPageButtonClick}
 		disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 		aria-label="last page"
@@ -81,12 +95,13 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-
-
 const useStyles2 = makeStyles({
   table: {
-	height:'300px'
+    height:'300px',
   },
+  text : {
+    color : 'white'
+  }
 });
 
 export default function CustomPaginationActionsTable() {
@@ -98,9 +113,8 @@ export default function CustomPaginationActionsTable() {
 
   useEffect(() => {
     if(loading || error ) { return }
-    if(data) {
-      setRows(createData(data));
-    }}, [data]);
+    if(data) { setRows(createData(data));}
+  }, [data]);
 
   function createData(data) {  
     var rows = data.switchFeed.switches.map((obj)=> {
@@ -124,7 +138,8 @@ export default function CustomPaginationActionsTable() {
   };
 
   return (
-	<TableContainer component={Paper}>
+    <MuiThemeProvider theme={theme}>
+	  <TableContainer component={Paper} style={{backgroundColor : 'rgba(255, 255, 255, 0)'}}>
 	  <Table className={classes.table} aria-label="custom pagination table">
 		<TableBody>
 		  {(rowsPerPage > 0
@@ -132,12 +147,12 @@ export default function CustomPaginationActionsTable() {
 			: rows
 		  ).map((row, index) => (
 			<TableRow key={index}>
-			  <TableCell component="th" scope="row">
+			  <TableCell className={classes.text} component="th" scope="row">
 				{row.machine}
 			  </TableCell>
-			  <TableCell align="right">{row.status}</TableCell>
-			  <TableCell align="right">{row.name}</TableCell>
-        <TableCell align="right">{row.updatedAt}</TableCell>
+			  <TableCell className={classes.text} align="right">{row.status}</TableCell>
+			  <TableCell className={classes.text} align="right">{row.name}</TableCell>
+        <TableCell className={classes.text} align="right">{row.updatedAt}</TableCell>
 			</TableRow>
 		  ))}
 
@@ -150,6 +165,7 @@ export default function CustomPaginationActionsTable() {
 		<TableFooter>
 		  <TableRow>
 			<TablePagination
+        className={classes.text}
 			  rowsPerPageOptions={[5]}
 			  colSpan={3}
 			  count={rows.length}
@@ -167,5 +183,6 @@ export default function CustomPaginationActionsTable() {
 		</TableFooter>
 	  </Table>
 	</TableContainer>
+  </MuiThemeProvider>
   );
 }

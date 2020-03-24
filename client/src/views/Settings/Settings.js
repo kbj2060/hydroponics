@@ -17,11 +17,11 @@ function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...prop
 
 const CustomButton = withStyles({
   root : {
-    backgroundColor: '#405C5A',
+    backgroundColor: '#91a4a9',
     color:'white',
     fontSize : '14px',
     '&:hover' : {
-      backgroundColor: '#405C5A',
+      backgroundColor: '#91a4a9',
     }
   },
 })(Button);

@@ -33,7 +33,7 @@ const IOSSwitch = withStyles(theme => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#405C5A',
+        backgroundColor: '#ffcd12',
         opacity: 1,
         border: 'none',
       },
@@ -75,17 +75,13 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-  const { loading, error, data } = useQuery(SWITCH_FEED, {fetchPolicy : 'network-only', variables : {
-    orderBy: "updatedAt_ASC",
-    filter : machine,
-    last: 1,
-  }})
+  const { loading, error, data } = useQuery(SWITCH_FEED, {fetchPolicy : 'network-only', variables : { orderBy: "updatedAt_ASC",
+                                                                                                      filter : machine,
+                                                                                                      last: 1 }})
   const [switchControlMutation] = useMutation(SWITCH_CONTROL);
-  const [state, setState] = React.useState({
-    prevStatus : null,
-    status: true, 
-    machine: machine
-  });
+  const [state, setState] = React.useState({  prevStatus : null,
+                                              status: true, 
+                                              machine: machine});
   const classes = style();
 
   useEffect(() => {

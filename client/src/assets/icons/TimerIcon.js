@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     height : '12px',
     width : '12px',
     verticalAlign : 'middle',
-    fill : '#405C5A',
+    fill : '#ffcd12',
   }
 }));
 

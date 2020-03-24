@@ -53,8 +53,8 @@ const client = new ApolloClient({
 
 const theme = createMuiTheme({
   Typography: {
-    fontFamily : '"Noto Sans KR", serif'
-  }
+    fontFamily : '"Noto Sans KR", serif',
+    },
 })
 
 ReactDOM.render(

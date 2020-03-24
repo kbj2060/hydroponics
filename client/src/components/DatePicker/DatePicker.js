@@ -19,19 +19,36 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { useQuery } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { FIGURE_FEED } from '../../resolvers/resolvers';
 import Typography from '@material-ui/core/Typography';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 
+const theme = createMuiTheme({
+  overrides: {
+    MuiFormLabel: {
+      root: {
+        color: 'white',
+      },
+    },
+    MuiIconButton : {
+      label : {
+        color : 'white'
+      }
+    },
+  },
+});
+
+const MAX_ITEMS_VIEW = 60;
 
 const CustomButton = withStyles({
   root : {
-      backgroundColor: '#405C5A',
+      backgroundColor: '#91a4a9',
       color:'white',
       fontSize : '14px',
       marginTop : '50px',
       '&:hover' : {
-          backgroundColor: '#405C5A',
+          backgroundColor: '#91a4a9',
       }
   },
 })(Button);
@@ -39,29 +56,31 @@ const CustomButton = withStyles({
 const useStyles = makeStyles(theme => ({
   formControl: {
     width: '20%',
-    marginTop : '17px'
+    marginTop : '17px',
+    color : 'white',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
   datepicker:{
     width:'40%',
-    padding : "0 2% 0 2%"
+    padding : "0 2% 0 2%",
   },
+  text : {
+    color : 'white',
+  }
 }));
 
 function renderRow(props) {
   const { index, style, data } = props;
-
-  console.log(props)
   return (
         <ListItem button style={style} key={index}>
           <ListItemText primary={
-          <Typography>{data[0].measurement}</Typography>}/>
+          <Typography>{data[index].measurement}</Typography>}/>
           <ListItemText primary={
-          <Typography>{data[0].value}</Typography>} />
+          <Typography>{data[index].value}</Typography>} />
           <ListItemText primary={
-          <Typography>{data[0].updatedAt}</Typography>} />
+          <Typography>{data[index].updatedAt}</Typography>} />
         </ListItem>
   );
 }
@@ -74,13 +93,6 @@ export default function MaterialUIPickers() {
     to : Date.now(),
   });
   const [figure, setFigure] = React.useState('');
-
-  const { loading, error, data } = useQuery(FIGURE_FEED, {variables: {
-    from: selectedDate.from,
-    to:selectedDate.to,
-    filter: figure,
-    last: 60,
-  }})
 
   const handleOnClick = () => {
     setOpen(true);
@@ -97,11 +109,12 @@ export default function MaterialUIPickers() {
   };
 
   return (
+    <MuiThemeProvider theme={theme}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
-        <div style={{width : "-webkit-fill-available"}}>
+        <div style={{ width : "-webkit-fill-available"}}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="figure input">Figure</InputLabel>
+            <InputLabel style={{color:'white'}} id="figure input">Figure</InputLabel>
             <Select
               labelId="figure"
               id="figure select"
@@ -118,9 +131,9 @@ export default function MaterialUIPickers() {
             </Select>
           </FormControl>
         </div>
-        <div>
+        <div style={{marginTop : '30px'}}>
           <KeyboardDatePicker
-            className={classes.datepicker}
+            InputProps={{ className: classes.text }}
             disableToolbar
             variant="inline"
             format="MM/dd/yyyy"
@@ -134,7 +147,7 @@ export default function MaterialUIPickers() {
             }}
           />
           <KeyboardTimePicker
-            className={classes.datepicker}
+          InputProps={{ className: classes.text }}
             margin="normal" 
             id="time-picker-from"
             label="Time picker1"
@@ -147,7 +160,7 @@ export default function MaterialUIPickers() {
         </div>
         <div>
         <KeyboardDatePicker
-        className={classes.datepicker}
+          InputProps={{ className: classes.text }}
           disableToolbar
           variant="inline"
           format="MM/dd/yyyy"
@@ -161,7 +174,7 @@ export default function MaterialUIPickers() {
           }}
         />
         <KeyboardTimePicker
-          className={classes.datepicker}
+          InputProps={{ className: classes.text }}
           margin="normal"
           id="time-picker2"
           label="Time picker2"
@@ -183,16 +196,29 @@ export default function MaterialUIPickers() {
         aria-describedby="alert-dialog-description"
         >
         <DialogContent>
-          <FixedSizeList itemData={data ? data.figureFeed.figures : {}} height={400} width={550} itemSize={46} itemCount={data ? data.figureFeed.count : 0}>
-            {renderRow}
-          </FixedSizeList>          
+          <Query query={FIGURE_FEED} variables={{
+            from: selectedDate.from,
+            to:selectedDate.to,
+            filter: figure,
+            last: MAX_ITEMS_VIEW,}}>
+            {({ loading, error, data }) => {
+                if (loading) return null;
+                if (error) return `Error! ${error}`;
+                return (
+                  <FixedSizeList itemData={data ? data.figureFeed.figures : {}} height={400} width={550} itemSize={46} itemCount={MAX_ITEMS_VIEW}>
+                    {renderRow}
+                  </FixedSizeList>
+                )
+            }}
+          </Query>         
           <DialogActions>
-            <Button onClick={handleClose} color="#405C5A" autoFocus>
+            <Button onClick={handleClose} autoFocus>
                 OK
             </Button>
           </DialogActions>
         </DialogContent>
       </Dialog>
     </MuiPickersUtilsProvider>
+    </MuiThemeProvider>
   )
 }

@@ -31,8 +31,8 @@ const navDrawerStyle = makeStyles({
     left: "0",
     backgroundSize: "cover",
     backgroundPosition: "center center",
-    background: '#283736',
-    border: '#283736'  
+    background: '#91a4a9',
+    border: '#91a4a9'  
   },
   menuItem : {
     textAlign:'center', 

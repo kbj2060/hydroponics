@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme =>({
     textAlign: 'center',
     margin : '0 10px 0 10px',
     height : '23em',
+    backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
   noPaddingCard : {
     position: 'relative',
@@ -18,13 +19,15 @@ const useStyles = makeStyles(theme =>({
     textAlign: 'center',
     margin : '0 10px 0 10px',
     height : '10em',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   cardDiv : {
     height:'100%', 
     paddingBottom:'3% 0 3% 0'
   },
   item : {
-    padding:'15px'
+    padding:'15px',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
   }
 }))
 
