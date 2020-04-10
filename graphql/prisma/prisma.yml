@@ -1,11 +1,6 @@
 # The HTTP endpoint for your Prisma API
 #endpoint: ''
-#endpoint: https://eu1.prisma.sh/kbj2060-ae9a0a/graphql/dev
-#endpoint: http://192.168.99.100:4466/graphql/dev
 endpoint: http://localhost:4466/graphql/dev
-# secret: GraphQL-is-aw3some
-
-
 
 # Points to the file that contains your datamodel
 datamodel: datamodel.prisma

@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN } from 'resolvers/resolvers';
 
-
 export default function Login(props) {
     const history = useHistory();
     const isAuth = JSON.parse(localStorage.getItem("isAuth"));

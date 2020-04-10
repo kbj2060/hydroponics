@@ -11,7 +11,6 @@ import AppBar from 'components/AppBar/AppBar';
 import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
 import HistoryCard from 'components/Card/HistoryCard';
-import "assets/css/hydroponics.css";
 
 export default function Dashboard(props) {
   const history = useHistory();
