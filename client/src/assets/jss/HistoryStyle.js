@@ -6,10 +6,6 @@ const HistoryStyle = makeStyles(theme =>({
     overflow: 'hidden',
     flexGrow: 1,
     backgroundColor : 'rgba(255, 255, 255, 0)',
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-      }
   },
   foreground : (props) => ({
     margin : '-30px 15px 0px 15px',
@@ -17,14 +13,14 @@ const HistoryStyle = makeStyles(theme =>({
     height : 'auto',
     width : 'auto',
     padding : '15px',
+    backgroundColor : 'rgba(255, 255, 255, 0.1)',
     boxShadow : '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
-    backgroundColor : 'white',
     borderRadius : '6px',
   }),
   background : {
+    backgroundColor : 'rgba(255, 255, 255, 0.1)',
     position : 'relative',
     display : 'flex',
-    backgroundColor:'white',
     margin : '30px 0px 30px 0px',
     flexDirection:'column',
     boxShadow : '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
@@ -47,6 +43,8 @@ const HistoryStyle = makeStyles(theme =>({
     display : 'inline',
     verticalAlign : 'middle',
     fontSize : '10px',
+    fontWeight : 'bold',
+    color : 'white',
   },
   updateInfo : {
     margin : 0,
@@ -54,12 +52,13 @@ const HistoryStyle = makeStyles(theme =>({
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : '#405C5A',
+    borderTopColor : 'white',
     textAlign : 'left',
     verticalAlign : 'middle',
   },
   textColor : {
-    color : '#405C5A',
+    color : 'white',
+    fontWeight : 'bold',
   }
 }));
 

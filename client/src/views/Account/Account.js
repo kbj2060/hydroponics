@@ -28,23 +28,22 @@ export default function Account() {
         <AppBar />
         <CssBaseline />
         <Grid container className={classes.container}>
-        <CustomGrid xs={12} sm={12} md={12} noPadding={true}>
-            <Grid container spacing={2} className={classes.secondContainer}>
-                <Grid item xs={4} sm={4} md={4} className={classes.item}>
-                        <AccountCircle className={classes.accountCircle}/>
-                        <Typography>{data.getCurrentUser.name}</Typography>
-                    <Typography>{data.getCurrentUser.type}</Typography>
-                </Grid>
-                <Grid item xs={8} sm={8} md={8} className={classes.item2}>
-                    <Typography className={classes.text}>Sensor Broker IP    : </Typography>
-                    <Typography className={classes.text}>MySQL Server IP     : </Typography>
-                    <Typography className={classes.text}>Web Server IP       : </Typography>
-                    <Typography className={classes.text}>Prisma Server IP    : </Typography>  
-                    </Grid>
-            </Grid>
-        </CustomGrid>
+          <CustomGrid xs={12} sm={12} md={6} noPadding={true}>
+              <Grid container spacing={2} className={classes.secondContainer}>
+                  <Grid item xs={4} sm={4} md={4} className={classes.item}>
+                          <AccountCircle className={classes.accountCircle}/>
+                          <Typography className={classes.text}>{data.getCurrentUser.name}</Typography>
+                      <Typography className={classes.text}>{data.getCurrentUser.type}</Typography>
+                  </Grid>
+                  <Grid item xs={8} sm={8} md={8} className={classes.item2}>
+                      <Typography className={classes.text}>Sensor Broker IP    : </Typography>
+                      <Typography className={classes.text}>MySQL Server IP     : </Typography>
+                      <Typography className={classes.text}>Web Server IP       : </Typography>
+                      <Typography className={classes.text}>Prisma Server IP    : </Typography>  
+                      </Grid>
+              </Grid>
+          </CustomGrid>
         <CustomGrid xs={12} sm={12} md={6}>
-            <Typography>Location</Typography>
             <Typography className={classes.text}>경기도 광주시 초월읍 대쌍령리 253-52</Typography>
             <img src={locationImage} className={classes.img} />
         </CustomGrid>

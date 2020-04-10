@@ -40,9 +40,8 @@ const appBarStyle = makeStyles(theme => ({
   },
   paper: {
     width: drawerWidth,
-    background: "#405C5A",
-    borderTopRightRadius: '0.5rem',
-    borderBottomRightRadius: '0.5rem',
+    borderTopLeftRadius: '0.5rem',
+    borderBottomLeftRadius: '0.5rem',
     overflowX : 'hidden',
   },
   toolbar: theme.mixins.toolbar,
@@ -55,9 +54,10 @@ const appBarStyle = makeStyles(theme => ({
     flexGrow: 1,
     align: "center",
     display: 'flex',
+    color : "white"
   },
   notification: {
-    color : 'black',
+    color : 'white',
   }
 }));
 

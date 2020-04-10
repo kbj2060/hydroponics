@@ -18,11 +18,9 @@ export default function History() {
         <CssBaseline />
         <Grid container>
         <CustomGrid xs={12} sm={12} md={12}>
-            <Typography>Switch History</Typography>
             <CustomTable />
         </CustomGrid>
         <CustomGrid xs={12} sm={12} md={6}>
-            <Typography>Figure History</Typography>
             <CustomDatePicker />
         </CustomGrid>
         <CustomGrid xs={12} sm={12} md={6}>

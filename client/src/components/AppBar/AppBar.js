@@ -25,16 +25,14 @@ export default function PermanentAppBar(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="sticky"
-      className={classes.appBar}
-      elevation={0}
-      color='primary'
-      >
+              className={classes.appBar}
+              elevation={0}
+              color='primary'>
       <Toolbar>
         <Typography className={classes.title} variant="h6">
           Hydroponics Management System
         </Typography>
         <div className={classes.grow} />
-        <Hidden mdUp>
           <div>
             <IconButton
               aria-label="show more"
@@ -42,7 +40,7 @@ export default function PermanentAppBar(props) {
               onClick={toggleDrawer('right', true)}
               >
               <MenuIcon
-                style={{ color: '#405C5A' }}
+                style={{ color: 'white' }}
               />
             </IconButton>
             <SwipeableDrawer
@@ -55,12 +53,10 @@ export default function PermanentAppBar(props) {
                 <NavDrawer {...state}/>
               </div>
             </SwipeableDrawer>
-            
           </div>
-        </Hidden>
       </Toolbar>
       </AppBar>
-      <Hidden smDown>
+      {/* <Hidden smDown>
         <Drawer
           variant="permanent"
           classes={{
@@ -70,7 +66,7 @@ export default function PermanentAppBar(props) {
         >
           <NavDrawer />
         </Drawer>
-      </Hidden>
+      </Hidden> */}
     </div>
   );
 }
