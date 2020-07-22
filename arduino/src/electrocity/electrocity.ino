@@ -1,21 +1,70 @@
+#include <ESP8266WiFi.h>
+
 const int currentSensorPin = A0; //define sensor pin
 const int mVperAmp = 100; // use 185 for 5A Module, and 66 for 30A Module
 float Vref  = 0; //read your Vcc voltage,typical voltage should be 5000mV(5.0V)
- 
-void setup()
-{
-    Serial.begin(115200);
-    Vref = readVref(); //read the reference votage(default:VCC)
+int relay = D5; 
+
+const char* ssid = "ssomecafe";
+const char* password = "ssomecafe1";
+WiFiServer server(8190);
+
+void setup() {
+  Serial.begin(115200);
+  Vref = readVref(); //read the reference votage(default:VCC)
+  pinMode(relay, OUTPUT);
+  
+  delay(10);
+
+  IPAddress ip(192, 168, 0, 190); // where xx is the desired IP Address
+  IPAddress gateway(192, 168, 0, 1); // set gateway to match your network
+  IPAddress subnet(255, 255, 255, 0); // set subnet mask to match your network
+  IPAddress dns1(8, 8, 8, 8);
+  IPAddress dns2(168, 126, 63, 1);
+  
+  WiFi.config(ip, gateway, subnet, dns1, dns2);
+  WiFi.begin(ssid, password);
+
+  // Connect to WiFi network
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  
+  server.begin(); 
+  Serial.println("Server started");
+
+  Serial.print("Use this URL : ");
+  Serial.print("http://");
+  Serial.print(WiFi.localIP());
+  Serial.println("/");
 }
  
 void loop()
 {
     /*If you are reading DC current, use this function to read DC current*/
-    float CurrentValue =  readDCCurrent(currentSensorPin);  
+    //float CurrentValue =  readDCCurrent(currentSensorPin);  
     /*If you are reading AC current, use this function to read AC current*/
-    //float CurrentValue =  readACCurrent(currentSensorPin); 
-  Serial.println(CurrentValue);
-    delay(500);
+    float CurrentValue =  readACCurrent(currentSensorPin);
+    Serial.println(CurrentValue);
+    delay(500);    
+    
+    digitalWrite(relay, LOW);
+    Serial.println("Current Flowing");
+    delay(5000); 
+    
+    // Normally Open configuration, send HIGH signal stop current flow
+    // (if you're usong Normally Closed configuration send LOW signal)
+    digitalWrite(relay, HIGH);
+    Serial.println("Current not Flowing");
+    delay(5000); 
 }
  
 /*read DC Current Value function*/
