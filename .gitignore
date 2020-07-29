@@ -6,6 +6,7 @@
 
 # vscode file
 .vscode
+server/db_conf.json
 
 # dependencies
 /node_modules
