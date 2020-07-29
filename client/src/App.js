@@ -16,14 +16,24 @@ const useStyles = makeStyles(theme =>({
   minWidth: '100%',
   minHeight: '100%',
   overflow:'none'
-}}));
+  },
+  parent : {
+    backgroundColor:"#1E2425",
+    position: 'fixed',
+    right: 0,
+    bottom: 0,
+    width: '100vw',
+    height: '100vh',
+    overflowX:'hidden'
+  }
+}));
 
 export default function App() {
     const classes = useStyles();
 
     return (
       <BrowserRouter>
-      <div style={{backgroundColor:"#1E2425",position: 'fixed',  right: 0, bottom: 0, width: '100vw', height: '100vh',overflowX:'hidden'}}>
+      <div className={classes.parent}>
           <Route exact path="/" component={() => <Login />} />
           <Route path="/dashboard" component={() => <Dashboard />} />
           <Route path="/history" component={() => <History /> } />
