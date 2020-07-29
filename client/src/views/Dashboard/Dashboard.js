@@ -9,11 +9,18 @@ import Figure from 'components/Figure/Figure';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
 import useStyles from 'assets/jss/DashboardStyle';
+import axios from "axios";
 
 export default function Dashboard() {
   const machineArr = ["LED", "AirConditioner"]
   const measurementArr = ["HUM", "TEMP", "CO2"]
   const classes = useStyles();
+
+  axios.get(`/api/temperature`)
+    .then(res => {
+        const data = res.data;
+        console.log(data);
+    })
 
   return (
       <div className={classes.root}>
