@@ -19,8 +19,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Query } from 'react-apollo';
-import { FIGURE_FEED } from '../../resolvers/resolvers';
 import Typography from '@material-ui/core/Typography';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 
@@ -43,12 +41,12 @@ const MAX_ITEMS_VIEW = 60;
 
 const CustomButton = withStyles({
   root : {
-      backgroundColor: '#91a4a9',
+      backgroundColor: '#343B3C',
       color:'white',
       fontSize : '14px',
       marginTop : '50px',
       '&:hover' : {
-          backgroundColor: '#91a4a9',
+          backgroundColor: '#343B3C',
       }
   },
 })(Button);
@@ -196,21 +194,6 @@ export default function MaterialUIPickers() {
         aria-describedby="alert-dialog-description"
         >
         <DialogContent>
-          <Query query={FIGURE_FEED} variables={{
-            from: selectedDate.from,
-            to:selectedDate.to,
-            filter: figure,
-            last: MAX_ITEMS_VIEW,}}>
-            {({ loading, error, data }) => {
-                if (loading) return null;
-                if (error) return `Error! ${error}`;
-                return (
-                  <FixedSizeList itemData={data ? data.figureFeed.figures : {}} height={400} width={550} itemSize={46} itemCount={MAX_ITEMS_VIEW}>
-                    {renderRow}
-                  </FixedSizeList>
-                )
-            }}
-          </Query>         
           <DialogActions>
             <Button onClick={handleClose} autoFocus>
                 OK

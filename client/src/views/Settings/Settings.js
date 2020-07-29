@@ -6,22 +6,18 @@ import SettingSlider from 'components/Slider/Slider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import { useMutation } from '@apollo/react-hooks';
-import { SETTING } from 'resolvers/resolvers'
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_CURRENT_USER } from 'resolvers/resolvers';
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const CustomButton = withStyles({
   root : {
-    backgroundColor: '#91a4a9',
+    backgroundColor: '#343B3C',
     color:'white',
     fontSize : '14px',
     '&:hover' : {
-      backgroundColor: '#91a4a9',
+      backgroundColor: '#343B3C',
     }
   },
 })(Button);
@@ -36,24 +32,17 @@ export default function Settings() {
                                         "PH": [0,0], 
                                         "EC": [0,0]})
   const [isApplied, setIsApplied] = useState(false)
-  const [ settingMutation ] = useMutation(SETTING);
-  const { loading, error, data  } = useQuery(GET_CURRENT_USER);
   const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
-    if (loading || error) { return }
-
-  }, [data])
-
   const getValue = (measurement, value, idx) => {
-    var _values = values
+    let _values = values
     _values[measurement] = value;
     setValues(_values);
     if(idx === Object.keys(values).length - 1){
       setIsApplied(false);
-      var min = []
-      var max = []
-      var measurement = []
+      let min = []
+      let max = []
+      let measurement = []
       Object.keys(values).map((key, i) => {
         min.push(values[key][0])
         max.push(values[key][1])

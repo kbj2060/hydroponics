@@ -3,10 +3,8 @@ import {Line} from 'react-chartjs-2';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
-import { FIGURE_FEED } from 'resolvers/resolvers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
-import { Query } from 'react-apollo';
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -24,8 +22,8 @@ export default function HistoryCard(props) {
         label: measurement,
         fill: false,
         lineTension: 0.5,
-        backgroundColor: '#ffcd12',
-        borderColor: '#ffcd12',
+        backgroundColor: '#FFCB3A',
+        borderColor: '#FFCB3A',
         borderWidth: 1,
         data: []
       }
@@ -33,47 +31,10 @@ export default function HistoryCard(props) {
   }
  
   console.log(state)
+    /* 기록하는 앞부분 데이터 끌고 와서 표시 */
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-      <Query query={FIGURE_FEED} fetchPolicy={'cache-and-network'} variables={{
-              orderBy: "updatedAt_ASC",
-              filter : measurement,
-              last: 60,
-            }}>
-            {({ loading, error, data }) => {
-                if (loading) return <ColorCircularProgress size={40} thickness={4} />;
-                if (error) return `Error! ${error}`;
-                try {
-                  data.figureFeed.figures.forEach((currentValue, index) => {
-                    state.datasets[0].data.push(currentValue.value);
-                    state.labels.push(index);
-                  })
-                } catch (error) {
-                  console.log(error)
-                }
-                return (
-                  <Line
-                    className={classes.chart}
-                    data={state}
-                    options={{
-                      responsive : true,
-                      maintainAspectRatio : false,
-                      color : 'white',
-                      scales: {
-                        xAxes: [{
-                          gridLines: {color: "white"},
-                          ticks: {fontColor: 'white'}
-                        }],
-                        yAxes: [{
-                          gridLines: { color: "white"},
-                          ticks: {fontColor: 'white'}
-                        }]
-                      },
-                      }}
-                  />)
-            }}
-          </Query>         
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>

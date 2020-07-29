@@ -15,7 +15,6 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { useQuery } from '@apollo/react-hooks';
-import {SWITCH_FEED} from 'resolvers/resolvers';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 
 const theme = createMuiTheme({
@@ -108,20 +107,14 @@ export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { loading, error, data } = useQuery(SWITCH_FEED, { fetchPolicy : 'cache-and-network', variables : { orderBy: 'updatedAt_DESC', first : 30}});
   const [ rows, setRows ] = React.useState([]);
 
-  useEffect(() => {
-    if(loading || error ) { return }
-    if(data) { setRows(createData(data));}
-  }, [data]);
-
   function createData(data) {  
-    var rows = data.switchFeed.switches.map((obj)=> {
-      var machine = obj.machine;
-      var status = obj.status.toString();
-      var name = obj.controledBy.name
-      var updatedAt = obj.updatedAt;
+    let rows = data.switchFeed.switches.map((obj)=> {
+      let machine = obj.machine;
+      let status = obj.status.toString();
+      let name = obj.controledBy.name
+      let updatedAt = obj.updatedAt;
       return {machine, status, name, updatedAt} 
     })
     return rows.sort((a, b) => (a.calories < b.calories ? -1 : 1));

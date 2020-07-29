@@ -4,7 +4,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { SWITCH_CONTROL, SWITCH_FEED } from 'resolvers/resolvers';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const ColorCircularProgress = withStyles({
@@ -33,7 +32,7 @@ const IOSSwitch = withStyles(theme => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#ffcd12',
+        backgroundColor: '#FFCB3A',
         opacity: 1,
         border: 'none',
       },
@@ -75,26 +74,10 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-  const { loading, error, data } = useQuery(SWITCH_FEED, {fetchPolicy : 'network-only', variables : { orderBy: "updatedAt_ASC",
-                                                                                                      filter : machine,
-                                                                                                      last: 1 }})
-  const [switchControlMutation] = useMutation(SWITCH_CONTROL);
   const [state, setState] = React.useState({  prevStatus : null,
                                               status: true, 
                                               machine: machine});
   const classes = style();
-
-  useEffect(() => {
-    if(loading || error) { return }
-    try{
-      if(data){ 
-        const status = data.switchFeed.switches[0].status;
-        setState({...state, prevStatus : !status, status: status}) 
-    } }catch (error) 
-      { console.log("value is not defined") }
-  }, [loading, error, data])
-
-  if (loading || error) {return <ColorCircularProgress size={40} thickness={4} />}
 
   const handleChange = event => {
     const preStatus = state.status
@@ -104,15 +87,6 @@ export default function CustomizedSwitches(props) {
       ...state, 
       prevStatus : preStatus, 
       status : status });
-
-    switchControlMutation({
-      variables : {
-        machine : state.machine,
-        status : status
-      } })
-    .catch((err)=>{
-      console.log(err);
-    })
   };
 
   return (

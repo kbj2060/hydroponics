@@ -7,20 +7,14 @@ const dashboardStyle = makeStyles(theme =>({
     overflow: 'hidden',
     flexGrow: 1,
     backgroundColor : 'rgba(255, 255, 255, 0)',
-    // [theme.breakpoints.up('md')]: {
-    //   width: `calc(100% - ${drawerWidth}px)`,
-    //   marginLeft: drawerWidth,
-    //   }
   },
   parentItem : {
-    backgroundColor: 'rgba( 255, 255, 255, 0 )',
     borderRadius : '15px',
-    padding : '20px',
+    padding : '0px 0px 20px 0px',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
   controlCardButtons : {
-    backgroundColor: 'rgba( 255, 255, 255, 0 )',
     height : '22em',
     position: 'relative',
     borderRadius: '0.5rem',
@@ -63,10 +57,10 @@ const dashboardStyle = makeStyles(theme =>({
     height:'calc(100% / 3)'
   },
   figureCardDiv : {
-    display:'grid', 
+    display:'grid',
     gridTemplateColumns: 'auto auto auto',
   },
-  containerHistroy : {
+  containerHistory : {
     padding :'15px 0px 15px 0px',
   }
 }));

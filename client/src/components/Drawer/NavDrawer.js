@@ -13,8 +13,6 @@ import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
 import useStyles from "assets/jss/navDrawerStyle";
-import { Query } from 'react-apollo';
-import { GET_CURRENT_USER } from 'resolvers/resolvers';
 
 const ColorAccountCircle = withStyles({
     root: {
@@ -33,7 +31,6 @@ export const NavDrawer = (props) => {
     }, [props])
 
   const drawerItems = {
-    Account : [<AccountCircle style={{fill: "#ffcd12", height: '27px', width: '27px',}} />, '/account'],
     Dashboard  : [<DashboardIcon />, '/dashboard'],
     History  : [<HistoryIcon />, '/history'],
     Settings  : [<SettingsIcon />, '/settings'],
@@ -68,19 +65,6 @@ export const NavDrawer = (props) => {
       <>
         <MenuItem component={Link} to={'/account'} className={classes.menuItem}>
           <ColorAccountCircle />
-          <Query query={GET_CURRENT_USER}>
-          {({ loading, error, data }) => {
-            if (loading) return '';
-            if (error) return '';
-            return (
-              <>
-                <Typography style={{ color: 'white', fontSize : '13px' }}>Welcome, {data.getCurrentUser.name}</Typography>
-                <Typography style={{ color: 'white', fontSize : '10px' }}>{data.getCurrentUser.type}</Typography>
-              </>
-            );
-          }}
-        </Query>
-          
         </MenuItem>
         <div className={classes.drawerTitle}>
         <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>

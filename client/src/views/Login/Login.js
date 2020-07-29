@@ -2,24 +2,18 @@ import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
 import useStyles from 'assets/jss/loginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
-import { useHistory } from "react-router-dom";
-import { useMutation } from '@apollo/react-hooks';
-import { LOGIN } from 'resolvers/resolvers';
+import {useHistory} from "react-router";
 
 export default function Login(props) {
     const history = useHistory();
-    const isAuth = JSON.parse(localStorage.getItem("isAuth"));
-    if (isAuth === null) { localStorage.setItem("isAuth", JSON.stringify(false)) }
-    else if (isAuth) { history.push('/dashboard') }
-
     const classes = useStyles();
+
     const [login, setLogin] = React.useState({
         name: '',
         password: '',
         token: '',
         loginClicked : false,
     });
-    const [loginMutation ] = useMutation(LOGIN);
 
     useEffect(() => {
         if(login.loginClicked){
@@ -32,6 +26,8 @@ export default function Login(props) {
     const handleChange = target => (e) => {
         setLogin({ ...login, [target]: e.target.value })
     }
+
+/*
     const handleSubmit = (event) => {
       event.preventDefault();
       loginMutation({
@@ -48,11 +44,12 @@ export default function Login(props) {
           alert('Your Account Is Not Valid!')
           console.log(err)
       })};
+*/
 
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <p className={classes.title}>HYDROPONICS</p>
                 <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
                 <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>

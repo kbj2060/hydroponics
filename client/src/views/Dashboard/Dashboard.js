@@ -8,17 +8,11 @@ import Switch from 'components/Switches/Switches';
 import Figure from 'components/Figure/Figure';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
-import { useHistory } from "react-router-dom";
 import useStyles from 'assets/jss/dashboardStyle';
-import HistoryCard from 'components/Card/HistoryCard';
 
-export default function Dashboard(props) {
-  const history = useHistory();
-  const isAuth = JSON.parse(localStorage.getItem("isAuth"));
-  if(!isAuth){ history.push('/'); }
-  
-  const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
-  const machineArr = [ "LED" , "HUMIDIFIER", "FAN" ]                        
+export default function Dashboard() {
+  const machineArr = ["LED", "AirConditioner"]
+  const measurementArr = ["HUM", "TEMP", "CO2"]
   const classes = useStyles();
 
   return (
@@ -47,20 +41,33 @@ export default function Dashboard(props) {
             </div>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12} md={12} className={classes.item}>
+            <Grid item xs={4} sm={4} md={4} className={classes.item}>
             <Card className={classes.parentItem}>
-              <div className={classes.figureCardDiv}>
-                { measurementArr.map((measurement) => 
+                <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 1</Typography>
+                <div className={classes.figureCardDiv}>
+                { measurementArr.map((measurement) =>
                         <Figure key={measurement.toString()} measurement={measurement} />) }
               </div>
             </Card>
-          </Grid>
-          <Grid container className={classes.containerHistroy}>
-          { measurementArr.map(measurement => { return (
-                  <Grid key={measurement.toString()} item xs={12} sm={12} md={4} className={classes.item}>
-                    <HistoryCard measurement={measurement}/>
-                  </Grid>)}) }
-        </Grid>
+            </Grid>
+            <Grid item xs={4} sm={4} md={4} className={classes.item}>
+                <Card className={classes.parentItem}>
+                    <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 2</Typography>
+                    <div className={classes.figureCardDiv}>
+                        { measurementArr.map((measurement) =>
+                            <Figure key={measurement.toString()} measurement={measurement} />) }
+                    </div>
+                </Card>
+            </Grid>
+            <Grid item xs={4} sm={4} md={4} className={classes.item}>
+                <Card className={classes.parentItem}>
+                    <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 3</Typography>
+                    <div className={classes.figureCardDiv}>
+                        { measurementArr.map((measurement) =>
+                            <Figure key={measurement.toString()} measurement={measurement} />) }
+                    </div>
+                </Card>
+            </Grid>
         </Grid>
       </div>
       );
