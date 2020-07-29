@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
-import useStyles from 'assets/jss/settingsStyle';
+import useStyles from 'assets/jss/SettingsStyle';
 import AppBar from 'components/AppBar/AppBar';
 import SettingSlider from 'components/Slider/Slider';
 import Card from '@material-ui/core/Card';
@@ -24,13 +24,12 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const measurementArr = [ "LUX", "HUM", "TEMP", "CO2", "PH", "EC" ]
-  const [values, setValues] = useState({"LUX": [0,0], 
+  const measurementArr = ["HUM", "TEMP", "CO2"]
+  const [values, setValues] = useState({
                                         "HUM": [0,0], 
                                         "TEMP": [0,0], 
-                                        "CO2": [0,0], 
-                                        "PH": [0,0], 
-                                        "EC": [0,0]})
+                                        "CO2": [0,0],
+                                        })
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
 

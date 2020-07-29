@@ -7,9 +7,8 @@
   "license": "MIT",
   "scripts": {
     "client": "cd client && npm start",
-    "server": "nodemon graphql/src/index.js",
-    "prisma": "cd graphql/ && prisma deploy",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"nodemon server/server.js\" \"yarn client\"",
     "ready": "concurrently --kill-others-on-fail \"npm install\" \"cd client && npm install\""
   },
   "dependencies": {

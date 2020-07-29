@@ -8,7 +8,7 @@ import Switch from 'components/Switches/Switches';
 import Figure from 'components/Figure/Figure';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
-import useStyles from 'assets/jss/dashboardStyle';
+import useStyles from 'assets/jss/DashboardStyle';
 
 export default function Dashboard() {
   const machineArr = ["LED", "AirConditioner"]

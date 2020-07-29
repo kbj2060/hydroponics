@@ -12,6 +12,7 @@ const useStyles = makeStyles(theme =>({
     margin : '0 10px 0 10px',
     height : '23em',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
+    borderRadius : '6px',
   },
   noPaddingCard : {
     position: 'relative',

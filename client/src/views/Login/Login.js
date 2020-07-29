@@ -1,6 +1,6 @@
 import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
-import useStyles from 'assets/jss/loginStyle';
+import useStyles from 'assets/jss/LoginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import {useHistory} from "react-router";
 

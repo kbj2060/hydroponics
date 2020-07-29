@@ -12,7 +12,7 @@ import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
-import useStyles from "assets/jss/navDrawerStyle";
+import useStyles from "assets/jss/NavDrawerStyle";
 
 const ColorAccountCircle = withStyles({
     root: {

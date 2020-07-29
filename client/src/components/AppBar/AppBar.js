@@ -7,7 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { NavDrawer } from 'components/Drawer/NavDrawer';
-import useStyles from 'assets/jss/appBarStyle.js'
+import useStyles from 'assets/jss/AppBarStyle.js'
 
 export default function PermanentAppBar(props) {
   const classes = useStyles();
