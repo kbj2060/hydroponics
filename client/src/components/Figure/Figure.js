@@ -1,8 +1,6 @@
 import React from 'react';
-import Circle from 'react-circle';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/paper';
-import blue from '@material-ui/core/colors/blue';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -16,11 +14,23 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent:'center'
+  },
+  title : {
+    padding : '5px 0 5px 0',
+    color : 'white',
+    fontWeight : 'bold'
+  },
+  environmentValues: {
+    padding : '5px 0 5px 0',
+    color : 'white',
+    textAlign : 'center',
+    fontSize : '0.8rem',
+    fontWeight : 'bold',
   }
 });
 
 export default function Figure(props) {
-  const { measurement, dimensions, progress } = props;
+  const { measurement, dimensions, values } = props;
   const n_measurements = 3
   const classes = useStyles({
     dimensions: dimensions,
@@ -31,22 +41,20 @@ export default function Figure(props) {
     'co2': 'ppm',
     'temperature': '°C'
   }
+  const measurementWordTable = {
+    'humidity' : 'HUM',
+    'temperature': 'TEMP',
+    'co2': 'CO2'
+  }
+
   return (
       <div >
-          <Typography style={{padding : '5px 0 5px 0',
-                              color : 'white',
-                              fontWeight : 'bold',}}>{measurement}</Typography>
+          <Typography className={classes.title}>{measurementWordTable[measurement]}</Typography>
           <Paper className={classes.root}>
             <div>
-              <span style={{padding : '5px 0 5px 0',
-                color : 'white',
-                textAlign : 'center',
-                fontSize : '0.8rem',
-                fontWeight : 'bold',}}>{progress}{unitsTable[measurement]}</span>
+              <span className={classes.environmentValues}>{values}{unitsTable[measurement]}</span>
             </div>
           </Paper>
       </div>
   );
 }
-
-//<Circle progress={progress} size={dimensions.width / n_measurements} textColor="white" progressColor="#FFCB3A" bgColor="white" showPercentageSymbol={false} roundedStroke={true} lineWidth={24}/>

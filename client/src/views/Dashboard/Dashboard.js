@@ -37,7 +37,7 @@ export default function Dashboard() {
           </Grid>
           {
             measurementsArr.map(measurement => { return (
-            <Grid key={measurement.toString()} item xs={12} sm={12} md={12} className={classes.item}>
+            <Grid key={measurement.toString()} item xs={12} sm={12} md={12} lg={12} xl={4}  className={classes.item}>
               <HistoryCard measurement={measurement}/>
             </Grid>)
             })

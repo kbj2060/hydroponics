@@ -19,13 +19,31 @@ export default function HistoryCard(props) {
     labels: [],
     datasets: [
       {
-        label: measurement,
+        label: 'PLANT1',
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: '#efcf76',
+        borderColor: '#FF925D',
+        borderWidth: 2,
+        data: [1, 2, 3]
+      },
+      {
+        label: 'PLANT2',
         fill: false,
         lineTension: 0.5,
         backgroundColor: '#efcf76',
         borderColor: '#FFCB3A',
-        borderWidth: 1,
-        data: []
+        borderWidth: 2,
+        data: [4, 5, 6]
+      },
+      {
+        label: 'PLANT3',
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: '#efcf76',
+        borderColor: '#FF4F61',
+        borderWidth: 2,
+        data: [1,4, 6]
       }
     ]
   }
@@ -34,6 +52,7 @@ export default function HistoryCard(props) {
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
+        <Line data={state} width={3} height={1}/>
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>

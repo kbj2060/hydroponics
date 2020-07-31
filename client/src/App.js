@@ -1,14 +1,12 @@
 import React from 'react';
 import Dashboard from './views/Dashboard/Dashboard';
-import History from './views/History/History';
 import Login from './views/Login/Login';
 import Settings from './views/Settings/Settings';
-import video from 'assets/img/drone.mp4';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme =>({
+const useStyles = makeStyles(() =>({
   video : {
   position: 'fixed',
   right: '0',
@@ -33,19 +31,21 @@ export default function App() {
 
     return (
       <BrowserRouter>
-      <div className={classes.parent}>
+        <div className={classes.parent}>
           <Route exact path="/" component={() => <Login />} />
           <Route path="/dashboard" component={() => <Dashboard />} />
-          <Route path="/history" component={() => <History /> } />
           <Route path="/settings" component={() => <Settings /> } />
-          {/* <Route path="/account" component={() => <Account /> } />
-          <Route component={NotFound} /> */}
-          </div>
+        </div>
       </BrowserRouter>
     )
 }
 /*
+import video from 'assets/img/drone.mp4';
+
 <video autoPlay muted loop className={classes.video}>
         <source src={video} type="video/mp4" />
       </video>
  */
+{/* <Route path="/account" component={() => <Account /> } />
+          <Route path="/history" component={() => <History /> } />
+          <Route component={NotFound} /> */}

@@ -44,12 +44,16 @@ app.get('/api/plant3', (req, res) => {
     connection.query(
       'SELECT co2, humidity, temperature FROM iot.plant3 ORDER BY id DESC LIMIT 1;',
       (err, rows, fields) => {
-          console.log(err);
           res.send(rows);
       }
     )
 });
 
+app.get('/api/hum', (req, res) => {
+  connection.query(
+
+  )
+})
 app.listen(PORT, () => {
     console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
 })

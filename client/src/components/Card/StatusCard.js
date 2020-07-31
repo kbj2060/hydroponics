@@ -5,38 +5,34 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "../Figure/Figure";
 import axios from "axios";
 
+const INTERVAL_TIME = 5000
+
 export default function StatusCard(props) {
   const {plant} = props;
-  const measurementArr = ["humidity", "temperature", "co2"]
   const classes = useStyles();
   const cardGridRef = useRef();
   const [width, setWidth] = React.useState(window.innerWidth);
   const [dimensions, setDimensions] = useState({width: 0, height: 0});
-  const INTERVALTIME = 10000
-
-  //const {data} = await axios.get('/api/temperature');
-  //console.log(data);
-
-  let progresses = {
+  const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,
     "temperature": 0
-  }
+  });
 
-  const fetchData = async () => {
+
+  const fetchStatus = async () => {
     try {
       const {data} = await axios.get(`/api/${plant}`);
-      progresses = data[0]
-      console.log(progresses)
+      setRecentStatus(data[0]);
     } catch (e) {
-      console.log('err')
+      console.log('FETCH STATUS ERROR.');
     }
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchData()
-    }, INTERVALTIME);
+      fetchStatus();
+    }, INTERVAL_TIME);
     return () => clearInterval(interval);
   }, []);
 
@@ -47,10 +43,9 @@ export default function StatusCard(props) {
         height: cardGridRef.current.offsetHeight
       });
     }
-    const listener = () => {
+    window.addEventListener('resize', () => {
       setWidth(window.innerWidth)
-    }
-    window.addEventListener('resize', listener);
+    });
   }, [width]);
 
   return (
@@ -58,11 +53,11 @@ export default function StatusCard(props) {
       <Typography style={{color: "white", padding: "5px 0px 5px 0px"}}>{plant.toUpperCase()}</Typography>
       <div className={classes.figureCardDiv}>
         {
-          measurementArr.map((measurement) =>
+          ["humidity", "temperature", "co2"].map((measurement) =>
             <Figure key={measurement.toString()}
                     measurement={measurement}
                     dimensions={dimensions}
-                    progress={progresses[measurement]}/>)
+                    values={recentStatus[measurement]}/>)
         }
       </div>
     </Card>
