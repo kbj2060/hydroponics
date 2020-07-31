@@ -22,12 +22,31 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-app.get('/api/temperature', (req, res) => {
+app.get('/api/plant1', (req, res) => {
     connection.query(
-        'SELECT * FROM iot.temperature',
+        'SELECT co2, humidity, temperature FROM iot.plant1 ORDER BY id DESC LIMIT 1;',
         (err, rows, fields) => {
             res.send(rows);
         }
+    )
+});
+
+app.get('/api/plant2', (req, res) => {
+    connection.query(
+      'SELECT co2, humidity, temperature FROM iot.plant2 ORDER BY id DESC LIMIT 1;',
+      (err, rows, fields) => {
+          res.send(rows);
+      }
+    )
+});
+
+app.get('/api/plant3', (req, res) => {
+    connection.query(
+      'SELECT co2, humidity, temperature FROM iot.plant3 ORDER BY id DESC LIMIT 1;',
+      (err, rows, fields) => {
+          console.log(err);
+          res.send(rows);
+      }
     )
 });
 

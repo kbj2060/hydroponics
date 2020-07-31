@@ -58,7 +58,7 @@ const dashboardStyle = makeStyles(theme =>({
   },
   figureCardDiv : {
     display:'grid',
-    gridTemplateColumns: 'auto auto auto',
+    gridTemplateColumns: '33.3% 33.3% 33.3%',
   },
   containerHistory : {
     padding :'15px 0px 15px 0px',

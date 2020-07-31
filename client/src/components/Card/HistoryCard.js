@@ -22,15 +22,14 @@ export default function HistoryCard(props) {
         label: measurement,
         fill: false,
         lineTension: 0.5,
-        backgroundColor: '#FFCB3A',
+        backgroundColor: '#efcf76',
         borderColor: '#FFCB3A',
         borderWidth: 1,
         data: []
       }
     ]
   }
- 
-  console.log(state)
+
     /* 기록하는 앞부분 데이터 끌고 와서 표시 */
   return (
     <div className={classes.background}>

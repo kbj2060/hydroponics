@@ -1,26 +1,18 @@
-import React from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Switch from 'components/Switches/Switches';
-import Figure from 'components/Figure/Figure';
 import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
+import ControlCard from 'components/Card/ControlCard';
+import StatusCard from "components/Card/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
-import axios from "axios";
+import CustomTable from "../../components/Table/Table";
+import HistoryCard from "../../components/Card/HistoryCard";
 
 export default function Dashboard() {
-  const machineArr = ["LED", "AirConditioner"]
-  const measurementArr = ["HUM", "TEMP", "CO2"]
   const classes = useStyles();
-
-  axios.get(`/api/temperature`)
-    .then(res => {
-        const data = res.data;
-        console.log(data);
-    })
+  const measurementsArr = ["HUM", "TEMP", "CO2"]
+  const plantNamesArr = ['plant1', 'plant2', 'plant3']
 
   return (
       <div className={classes.root}>
@@ -31,50 +23,25 @@ export default function Dashboard() {
             <WeatherCard />
           </Grid>
           <Grid item xs={12} sm={6} md={6} className={classes.item}>
-            <Card className={classes.controlCardButtons}>
-            <div className={classes.controlCardDiv}>
-                { machineArr.map(machine => { 
-                  return (
-                  <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
-                    <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                      <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
-                    </Box>
-                    <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                      <Switch machine={machine} />
-                    </Box>
-                  </Box>
-                  )
-                }) }
-            </div>
-            </Card>
+            <ControlCard />
           </Grid>
-            <Grid item xs={4} sm={4} md={4} className={classes.item}>
-            <Card className={classes.parentItem}>
-                <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 1</Typography>
-                <div className={classes.figureCardDiv}>
-                { measurementArr.map((measurement) =>
-                        <Figure key={measurement.toString()} measurement={measurement} />) }
-              </div>
-            </Card>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4} className={classes.item}>
-                <Card className={classes.parentItem}>
-                    <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 2</Typography>
-                    <div className={classes.figureCardDiv}>
-                        { measurementArr.map((measurement) =>
-                            <Figure key={measurement.toString()} measurement={measurement} />) }
-                    </div>
-                </Card>
-            </Grid>
-            <Grid item xs={4} sm={4} md={4} className={classes.item}>
-                <Card className={classes.parentItem}>
-                    <Typography style={{color:"white", padding:"5px 0px 5px 0px"}}>PLANT 3</Typography>
-                    <div className={classes.figureCardDiv}>
-                        { measurementArr.map((measurement) =>
-                            <Figure key={measurement.toString()} measurement={measurement} />) }
-                    </div>
-                </Card>
-            </Grid>
+          {
+            plantNamesArr.map(plantName => { return(
+               <Grid item xs={12} sm={4} md={4} className={classes.item} >
+                <StatusCard plant={plantName} />
+               </Grid>)
+            })
+          }
+          <Grid item xs={12} sm={12} md={12} className={classes.item}>
+            <CustomTable />
+          </Grid>
+          {
+            measurementsArr.map(measurement => { return (
+            <Grid key={measurement.toString()} item xs={12} sm={12} md={12} className={classes.item}>
+              <HistoryCard measurement={measurement}/>
+            </Grid>)
+            })
+          }
         </Grid>
       </div>
       );
