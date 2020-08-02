@@ -5,7 +5,7 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "../Figure/Figure";
 import axios from "axios";
 
-const INTERVAL_TIME = 5000
+const INTERVAL_TIME = 10000;
 
 export default function StatusCard(props) {
   const {plant} = props;
@@ -60,6 +60,7 @@ export default function StatusCard(props) {
                     values={recentStatus[measurement]}/>)
         }
       </div>
+
     </Card>
   );
 }

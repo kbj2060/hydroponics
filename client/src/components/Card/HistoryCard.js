@@ -1,58 +1,44 @@
-import React from 'react';
-import {Line} from 'react-chartjs-2';
+import React, {useEffect} from 'react';
+import CustomLine from '../Line/CustomLine';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { withStyles } from '@material-ui/core/styles';
+import axios from "axios";
 
-const ColorCircularProgress = withStyles({
-  root: {
-    color: 'white',
-  },
-})(CircularProgress);
+
+const INTERVAL_TIME = 3000;
 
 export default function HistoryCard(props) {
   const { measurement } = props;
   const classes = useStyles();
-  const state = {
-    labels: [],
-    datasets: [
-      {
-        label: 'PLANT1',
-        fill: false,
-        lineTension: 0.5,
-        backgroundColor: '#efcf76',
-        borderColor: '#FF925D',
-        borderWidth: 2,
-        data: [1, 2, 3]
-      },
-      {
-        label: 'PLANT2',
-        fill: false,
-        lineTension: 0.5,
-        backgroundColor: '#efcf76',
-        borderColor: '#FFCB3A',
-        borderWidth: 2,
-        data: [4, 5, 6]
-      },
-      {
-        label: 'PLANT3',
-        fill: false,
-        lineTension: 0.5,
-        backgroundColor: '#efcf76',
-        borderColor: '#FF4F61',
-        borderWidth: 2,
-        data: [1,4, 6]
-      }
-    ]
+  const [environments, setEnvironments] = React.useState([]);
+
+  const fetchHistory = async () => {
+    try {
+      let {data:environmentFromPlant} = await axios.get('/api/environmentFromPlant', {
+        params: {
+          measurement: measurement,
+          plants: ['plant1', 'plant2', 'plant3']
+        }
+      });
+      setEnvironments(environmentFromPlant);
+    } catch (e) {
+      console.log('FETCH HISTORY ERROR.');
+    }
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchHistory();
+    }, INTERVAL_TIME);
+    return () => clearInterval(interval);
+  }, []);
 
     /* 기록하는 앞부분 데이터 끌고 와서 표시 */
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <Line data={state} width={3} height={1}/>
+        <CustomLine values={environments} width={3} height={1}/>
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>

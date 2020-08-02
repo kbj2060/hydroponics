@@ -11,8 +11,8 @@ import HistoryCard from "../../components/Card/HistoryCard";
 
 export default function Dashboard() {
   const classes = useStyles();
-  const measurementsArr = ["HUM", "TEMP", "CO2"]
-  const plantNamesArr = ['plant1', 'plant2', 'plant3']
+  const measurementsArr = ["humidity", "temperature", "co2"];
+  const plantNamesArr = ['plant1', 'plant2', 'plant3'];
 
   return (
       <div className={classes.root}>

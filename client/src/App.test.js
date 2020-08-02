@@ -1,9 +1,5 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+const a = ['1', '2', '3'].map((value, index, arr) => {
+  return value + 'a'
+})
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+console.log(a)
