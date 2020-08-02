@@ -6,19 +6,20 @@ import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
 
-const INTERVAL_TIME = 3000;
+const INTERVAL_TIME = 2000;
 
 export default function HistoryCard(props) {
   const { measurement } = props;
   const classes = useStyles();
   const [environments, setEnvironments] = React.useState([]);
+  const [date, setDate] = React.useState([]);
 
   const fetchHistory = async () => {
     try {
-      let {data:environmentFromPlant} = await axios.get('/api/environmentFromPlant', {
+      let {data:environmentFromPlant} = await axios.get('/api/getHistory', {
         params: {
-          measurement: measurement,
-          plants: ['plant1', 'plant2', 'plant3']
+          selects: measurement,
+          table: ['plant1', 'plant2', 'plant3']
         }
       });
       setEnvironments(environmentFromPlant);
@@ -27,9 +28,24 @@ export default function HistoryCard(props) {
     }
   }
 
+  const fetchDates = async () => {
+    try {
+      let {data} = await axios.get('/api/getDate', {
+        params: {
+          table: 'plant1',
+          num: 100
+        }
+      });
+      setDate(data);
+    } catch (e) {
+      console.log('FETCH HISTORY ERROR.');
+    }
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       fetchHistory();
+      fetchDates();
     }, INTERVAL_TIME);
     return () => clearInterval(interval);
   }, []);
@@ -38,7 +54,7 @@ export default function HistoryCard(props) {
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine values={environments} width={3} height={1}/>
+        <CustomLine values={environments} date={date} width={3} height={1}/>
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>

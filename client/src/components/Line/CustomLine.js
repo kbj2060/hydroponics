@@ -1,11 +1,20 @@
 import {Line} from 'react-chartjs-2';
-import React from "react";
+import React, {useEffect} from "react";
+
+const check_empty = (value) => {
+    if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
+        return true;
+    }
+}
 
 export default function CustomLine(props) {
-    const { values, width, height } = props;
+    const { values, width, height, date } = props;
+    if (check_empty(values) || check_empty(date)){
+        return <Line width={width} height={height}/>;
+    }
 
     let state = {
-        labels: [],
+        labels: date,
         datasets: [
             {
                 label: 'PLANT1',
@@ -40,8 +49,7 @@ export default function CustomLine(props) {
     state.datasets.forEach((dataset, index, arr) => {
         state.datasets[index].data = values[index];
     });
-    console.log(state);
-
+    console.log(state)
     return(
         <Line data={state} width={width} height={height}/>
     )

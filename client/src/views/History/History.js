@@ -11,22 +11,22 @@ import HistoryCard from "../../components/Card/HistoryCard";
 
 export default function History() {
   const classes = useStyles();
-  const measurementArr = ["HUM", "TEMP", "CO2"]
 
   return (
       <div className={classes.root}>
         <AppBar />
         <CssBaseline />
-
         <Grid container>
             <CustomGrid xs={12} sm={12} md={12}>
                 <CustomTable />
             </CustomGrid>
             <Grid container style={{padding:"25px"}}>
-                { measurementArr.map(measurement => { return (
+                {
+                  ["HUM", "TEMP", "CO2"].map(measurement => { return (
                     <Grid key={measurement.toString()} item xs={12} sm={12} md={12} className={classes.item}>
                         <HistoryCard measurement={measurement}/>
-                    </Grid>)}) }
+                    </Grid>)})
+                }
             </Grid>
         </Grid>
 

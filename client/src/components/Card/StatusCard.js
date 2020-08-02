@@ -5,12 +5,13 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "../Figure/Figure";
 import axios from "axios";
 
-const INTERVAL_TIME = 10000;
+const INTERVAL_TIME = 2 * 1000;
 
 export default function StatusCard(props) {
   const {plant} = props;
   const classes = useStyles();
   const cardGridRef = useRef();
+  const measurements = ['humidity', 'co2', 'temperature'];
   const [width, setWidth] = React.useState(window.innerWidth);
   const [dimensions, setDimensions] = useState({width: 0, height: 0});
   const [recentStatus, setRecentStatus] = useState({
@@ -22,8 +23,14 @@ export default function StatusCard(props) {
 
   const fetchStatus = async () => {
     try {
-      const {data} = await axios.get(`/api/${plant}`);
-      setRecentStatus(data[0]);
+      const {data: recentStatus } = await axios.get('/api/getStatus', {
+        params: {
+          table: plant,
+          selects: measurements,
+          num: 1
+        }
+      });
+      setRecentStatus(recentStatus[0]);
     } catch (e) {
       console.log('FETCH STATUS ERROR.');
     }

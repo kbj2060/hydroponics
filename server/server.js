@@ -24,35 +24,37 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-app.get('/api/plant1', (req, res) => {
-    connection.query(
-        'SELECT co2 FROM iot.plant1 ORDER BY id DESC LIMIT 1;',
-        (err, rows, fields) => {
-            res.send(rows);
-        }
-    )
-});
 
-app.get('/api/plant2', (req, res) => {
+app.get('/api/getStatus', (req, res) => {
+    const table = req.query['table'];
+    const selects = req.query['selects'].join(",");
+    const num = req.query['num'];
+
     connection.query(
-      'SELECT co2, humidity, temperature FROM iot.plant2 ORDER BY id DESC LIMIT 1;',
+      `SELECT ${selects} FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
       (err, rows, fields) => {
           res.send(rows);
       }
     )
 });
 
-app.get('/api/plant3', (req, res) => {
-    connection.query(
-      'SELECT co2, humidity, temperature FROM iot.plant3 ORDER BY id DESC LIMIT 1;',
-      (err, rows, fields) => {
-          res.send(rows);
-      }
-    )
+app.get('/api/getDate', (req, res) => {
+  const table = req.query['table'];
+  const num = req.query['num'];
+
+  connection.query(
+    `SELECT created FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
+    (err, rows, fields) => {
+      let result = rows.map((row, index, arr) => {
+        return Object.values(row);
+      })
+      res.send(result);
+    }
+  )
 });
 
-app.get('/api/environmentFromPlant', (req, res) => {
-    const measurement = req.query['measurement'];
+app.get('/api/getHistory', (req, res) => {
+    const measurement = req.query['selects'];
     const sql = req2query(req.query);
     let data = new Array();
 
@@ -61,7 +63,7 @@ app.get('/api/environmentFromPlant', (req, res) => {
             let results = Object.values(JSON.parse(JSON.stringify(rows)));
             results.forEach((result, index= null, arr = null) => {
                 let row = result.map((v, idx = null, arr = null) => {
-                    return v[measurement];
+                  return v[measurement];
                 });
                 data.push(row);
             });
@@ -70,17 +72,17 @@ app.get('/api/environmentFromPlant', (req, res) => {
 });
 
 function req2query(req_params){
-    const measurement =req_params['measurement'];
-    const plants = req_params['plants'];
+    const selects = req_params['selects'];
+    const tables = req_params['table'];
 
-    if (plants.length > 1){
-        let sqls = plants.map((plant, index, arr) => {
-            return `SELECT ${measurement} FROM iot.${plant} ORDER BY id DESC LIMIT 100;`;
+    if (tables.length > 1){
+        let sqls = tables.map((table, index, arr) => {
+            return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
         });
         return sqls.join(" ");
     }
 
-    return `SELECT ${measurement} FROM iot.${plants} ORDER BY id DESC LIMIT 100;`;
+    return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
 }
 
 app.listen(PORT, () => {
