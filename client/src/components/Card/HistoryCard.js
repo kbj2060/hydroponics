@@ -54,7 +54,7 @@ export default function HistoryCard(props) {
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine history={history} date={date} width={3} height={1} />
+        <CustomLine history={history} date={date} width={4} height={1} />
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{environment}</Typography>

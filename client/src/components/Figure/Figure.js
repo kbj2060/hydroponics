@@ -8,7 +8,7 @@ const useStyles = makeStyles({
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius: '50%',
-    border: '3px solid #FFCB3A',
+    border: props => '3px solid ' + props.plantColor,
     height: props => props.dimensions.width / props.n_environment,
     margin: '5%',
     display: 'flex',
@@ -29,24 +29,32 @@ const useStyles = makeStyles({
   }
 });
 
+const circleColorTable = {
+  'plant1' : "#FF925D",
+  'plant2' : "#FFCB3A",
+  'plant3' : "#FF4F61"
+}
+const unitsTable = {
+  'humidity': '%',
+  'co2': 'ppm',
+  'temperature': '°C'
+}
+const measurementWordTable = {
+  'humidity' : 'HUM',
+  'temperature': 'TEMP',
+  'co2': 'CO2'
+}
+
 export default function Figure(props) {
-  const { environment, dimensions, values } = props;
+  const { environment, dimensions, values, plant } = props;
   const { environments } = require('../../properties');
   const n_environment = environments.length;
   const classes = useStyles({
     dimensions: dimensions,
-    n_environment : n_environment
+    n_environment : n_environment,
+    plantColor : circleColorTable[plant],
   });
-  const unitsTable = {
-    'humidity': '%',
-    'co2': 'ppm',
-    'temperature': '°C'
-  }
-  const measurementWordTable = {
-    'humidity' : 'HUM',
-    'temperature': 'TEMP',
-    'co2': 'CO2'
-  }
+
 
   return (
       <div >

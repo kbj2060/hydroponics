@@ -5,6 +5,12 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "../Figure/Figure";
 import axios from "axios";
 
+const circleColorTable = {
+  'plant1' : "#FF925D",
+  'plant2' : "#FFCB3A",
+  'plant3' : "#FF4F61"
+}
+
 export default function StatusCard(props) {
   const {statusUpdateTime, environments} = require('../../properties');
   const {plant} = props;
@@ -57,14 +63,15 @@ export default function StatusCard(props) {
 
   return (
     <Card className={classes.parentItem} ref={cardGridRef}>
-      <Typography style={{color: "white", padding: "5px 0px 5px 0px"}}>{plant.toUpperCase()}</Typography>
+      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{plant.toUpperCase()}</Typography>
       <div className={classes.figureCardDiv}>
         {
           environments.map((env) =>
             <Figure key={env.toString()}
                     environment={env}
                     dimensions={dimensions}
-                    values={recentStatus[env]}/>)
+                    values={recentStatus[env]}
+                    plant={plant}/>)
         }
       </div>
 
