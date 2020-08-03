@@ -5,13 +5,11 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "../Figure/Figure";
 import axios from "axios";
 
-const INTERVAL_TIME = 2 * 1000;
-
 export default function StatusCard(props) {
+  const {statusUpdateTime, environments} = require('../../properties');
   const {plant} = props;
   const classes = useStyles();
   const cardGridRef = useRef();
-  const measurements = ['humidity', 'co2', 'temperature'];
   const [width, setWidth] = React.useState(window.innerWidth);
   const [dimensions, setDimensions] = useState({width: 0, height: 0});
   const [recentStatus, setRecentStatus] = useState({
@@ -23,23 +21,25 @@ export default function StatusCard(props) {
 
   const fetchStatus = async () => {
     try {
+      const recentIndex = 0;
       const {data: recentStatus } = await axios.get('/api/getStatus', {
         params: {
           table: plant,
-          selects: measurements,
+          selects: environments,
           num: 1
         }
       });
-      setRecentStatus(recentStatus[0]);
+      setRecentStatus(recentStatus[recentIndex]);
     } catch (e) {
       console.log('FETCH STATUS ERROR.');
     }
   };
 
+
   useEffect(() => {
     const interval = setInterval(() => {
       fetchStatus();
-    }, INTERVAL_TIME);
+    }, statusUpdateTime);
     return () => clearInterval(interval);
   }, []);
 
@@ -60,11 +60,11 @@ export default function StatusCard(props) {
       <Typography style={{color: "white", padding: "5px 0px 5px 0px"}}>{plant.toUpperCase()}</Typography>
       <div className={classes.figureCardDiv}>
         {
-          ["humidity", "temperature", "co2"].map((measurement) =>
-            <Figure key={measurement.toString()}
-                    measurement={measurement}
+          environments.map((env) =>
+            <Figure key={env.toString()}
+                    environment={env}
                     dimensions={dimensions}
-                    values={recentStatus[measurement]}/>)
+                    values={recentStatus[env]}/>)
         }
       </div>
 

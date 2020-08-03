@@ -8,8 +8,8 @@ const check_empty = (value) => {
 }
 
 export default function CustomLine(props) {
-    const { values, width, height, date } = props;
-    if (check_empty(values) || check_empty(date)){
+    const { history, width, height, date } = props;
+    if (check_empty(history) || check_empty(date)){
         return <Line width={width} height={height}/>;
     }
 
@@ -47,9 +47,9 @@ export default function CustomLine(props) {
     }
 
     state.datasets.forEach((dataset, index, arr) => {
-        state.datasets[index].data = values[index];
+        state.datasets[index].data = history[index];
     });
-    console.log(state)
+
     return(
         <Line data={state} width={width} height={height}/>
     )

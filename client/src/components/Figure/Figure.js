@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius: '50%',
     border: '3px solid #FFCB3A',
-    height: props => props.dimensions.width / props.n_measurements,
+    height: props => props.dimensions.width / props.n_environment,
     margin: '5%',
     display: 'flex',
     flexDirection: 'column',
@@ -30,11 +30,12 @@ const useStyles = makeStyles({
 });
 
 export default function Figure(props) {
-  const { measurement, dimensions, values } = props;
-  const n_measurements = 3
+  const { environment, dimensions, values } = props;
+  const { environments } = require('../../properties');
+  const n_environment = environments.length;
   const classes = useStyles({
     dimensions: dimensions,
-    n_measurements : n_measurements
+    n_environment : n_environment
   });
   const unitsTable = {
     'humidity': '%',
@@ -49,10 +50,10 @@ export default function Figure(props) {
 
   return (
       <div >
-          <Typography className={classes.title}>{measurementWordTable[measurement]}</Typography>
+          <Typography className={classes.title}>{measurementWordTable[environment]}</Typography>
           <Paper className={classes.root}>
             <div>
-              <span className={classes.environmentValues}>{values}{unitsTable[measurement]}</span>
+              <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
             </div>
           </Paper>
       </div>

@@ -54,7 +54,7 @@ app.get('/api/getDate', (req, res) => {
 });
 
 app.get('/api/getHistory', (req, res) => {
-    const measurement = req.query['selects'];
+    const environment = req.query['selects'];
     const sql = req2query(req.query);
     let data = new Array();
 
@@ -63,7 +63,7 @@ app.get('/api/getHistory', (req, res) => {
             let results = Object.values(JSON.parse(JSON.stringify(rows)));
             results.forEach((result, index= null, arr = null) => {
                 let row = result.map((v, idx = null, arr = null) => {
-                  return v[measurement];
+                  return v[environment];
                 });
                 data.push(row);
             });

@@ -6,23 +6,22 @@ import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
 
-const INTERVAL_TIME = 2000;
-
 export default function HistoryCard(props) {
-  const { measurement } = props;
+  const { historyUpdateTime } = require('../../properties');
+  const { environment } = props;
   const classes = useStyles();
-  const [environments, setEnvironments] = React.useState([]);
+  const [history, setHistory] = React.useState([]);
   const [date, setDate] = React.useState([]);
 
   const fetchHistory = async () => {
     try {
       let {data:environmentFromPlant} = await axios.get('/api/getHistory', {
         params: {
-          selects: measurement,
+          selects: environment,
           table: ['plant1', 'plant2', 'plant3']
         }
       });
-      setEnvironments(environmentFromPlant);
+      setHistory(environmentFromPlant);
     } catch (e) {
       console.log('FETCH HISTORY ERROR.');
     }
@@ -46,22 +45,23 @@ export default function HistoryCard(props) {
     const interval = setInterval(() => {
       fetchHistory();
       fetchDates();
-    }, INTERVAL_TIME);
+    }, historyUpdateTime);
     return () => clearInterval(interval);
   }, []);
 
-    /* 기록하는 앞부분 데이터 끌고 와서 표시 */
+  console.log(date);
+
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine values={environments} date={date} width={3} height={1}/>
+        <CustomLine history={history} date={date} width={3} height={1} />
       </div>
       <div className={classes.footer} >
-        <Typography variant="body1" className={classes.textColor}>{measurement}</Typography>
+        <Typography variant="body1" className={classes.textColor}>{environment}</Typography>
         <Typography variant="body2" className={classes.textColor}>No problem found</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <Typography variant="inherit" className={classes.updateTime}>Just Updated</Typography>
+          <Typography variant="inherit" className={classes.updateTime}> Last Update : {date[date.length-1]}</Typography>
         </div>
       </div>
     </div>
