@@ -12,7 +12,23 @@ export default function CustomLine(props) {
     if (check_empty(history) || check_empty(date)){
         return <Line width={width} height={height}/>;
     }
-
+    let options =  {
+        responsive: true,
+          legend: {
+            display: false
+        },
+        scales: {
+              xAxes: [{
+                  type: 'time',
+                  time: {
+                      displayFormats: {
+                          minute: 'h:mm a'
+                      },
+                      parser: 'YYYY/MM/DD HH:mm:ss',
+                  }
+            }]
+        }
+    }
     let state = {
         labels: date,
         datasets: [
@@ -51,7 +67,7 @@ export default function CustomLine(props) {
     });
 
     return(
-        <Line data={state} width={width} height={height}/>
+        <Line options={options} data={state} width={width} height={height}/>
     )
 }
 

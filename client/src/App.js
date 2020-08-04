@@ -5,6 +5,8 @@ import Settings from './views/Settings/Settings';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { Provider } from 'react-redux'
+import { store } from "./store";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -28,15 +30,18 @@ const useStyles = makeStyles(() =>({
 
 export default function App() {
     const classes = useStyles();
+    const _store = store;
 
     return (
-      <BrowserRouter>
-        <div className={classes.parent}>
-          <Route exact path="/" component={() => <Login />} />
-          <Route path="/dashboard" component={() => <Dashboard />} />
-          <Route path="/settings" component={() => <Settings /> } />
-        </div>
-      </BrowserRouter>
+      <Provider store={_store}>
+        <BrowserRouter>
+          <div className={classes.parent}>
+            <Route exact path="/" component={() => <Login />} />
+            <Route path="/dashboard" component={() => <Dashboard />} />
+            <Route path="/settings" component={() => <Settings /> } />
+          </div>
+        </BrowserRouter>
+      </Provider>
     )
 }
 /*

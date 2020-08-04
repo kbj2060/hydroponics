@@ -8,7 +8,7 @@ import StatusCard from "components/Card/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
 import CustomTable from "../../components/Table/Table";
 import HistoryCard from "../../components/Card/HistoryCard";
-
+import logo from "../../logo.jpg";
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -19,25 +19,29 @@ export default function Dashboard() {
         <AppBar />
         <CssBaseline />
         <Grid container className={classes.container}>
-          <Grid item xs={12} sm={6} md={6} className={classes.item}>
-            <WeatherCard />
+         {/* <Grid item xs={12} sm={6} md={6} className={classes.item}>
+            <img src={logo} style={{width:'100%', height:'100%', borderRadius:'15px'}}/>
           </Grid>
           <Grid item xs={12} sm={6} md={6} className={classes.item}>
+            <WeatherCard />
+          </Grid>*/}
+
+          <Grid item xs={12} sm={12} md={6} className={classes.item}>
             <ControlCard />
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} className={classes.item}>
+            <CustomTable />
           </Grid>
           {
             plants.map(plant => { return(
-               <Grid item xs={12} sm={4} md={4} className={classes.item} >
+               <Grid item xs={12} sm={12} md={4} className={classes.item} >
                 <StatusCard plant={plant} />
                </Grid>)
             })
           }
-          <Grid item xs={12} sm={12} md={12} className={classes.item}>
-            <CustomTable />
-          </Grid>
           {
             environments.map(env => { return (
-            <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={12} xl={4}  className={classes.item}>
+            <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={4} xl={4}  className={classes.item}>
               <HistoryCard environment={env}/>
             </Grid>)
             })

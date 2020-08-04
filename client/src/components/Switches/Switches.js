@@ -3,8 +3,10 @@ import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {useDispatch} from "react-redux";
+import {controlSwitch} from "../../actions";
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -56,6 +58,8 @@ const IOSSwitch = withStyles(theme => ({
   checked: {},
   focusVisible: {},
 }))(({ classes, ...props }) => {
+  //const {value, checked} = props;
+
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
@@ -68,26 +72,54 @@ const IOSSwitch = withStyles(theme => ({
         checked: classes.checked,
       }}
       {...props}
-    />
+    >
+    </Switch>
+
   );
 });
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-  const [state, setState] = React.useState({  prevStatus : null,
+  const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
   const classes = style();
+  const dispatch = useDispatch()
 
-  const handleChange = event => {
-    const preStatus = state.status
-    const status = !preStatus
+  const fetchSwitch = async () => {
+    await axios.get('/api/getSwitch', {
+      params: {
+        table : 'switch',
+        selects : ['status'],
+        machine : machine,
+        num : 1
+      }
+    }).then(async (res) => {
+      setState({
+        status: res.data[0]['status'],
+        machine: machine
+      })
+    })
+  }
 
-    setState({ 
-      ...state, 
-      prevStatus : preStatus, 
+  const handleChange = async (event) => {
+    const status = !state.status
+    dispatch(controlSwitch());
+    await axios.post('/api/switchMachine',{
+      params: {
+        machine : machine,
+        status : status
+      }
+    })
+
+    setState({
+      machine : machine,
       status : status });
   };
+
+  useEffect(() => {
+    fetchSwitch();
+  }, [])
 
   return (
     <FormGroup>
@@ -96,7 +128,7 @@ export default function CustomizedSwitches(props) {
           <IOSSwitch
             checked={state.status}
             onChange={handleChange}
-            value="status"
+            value={machine}
           />
         }
         className={classes.controlForm}

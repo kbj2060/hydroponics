@@ -5,7 +5,6 @@ import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
-
 export default function HistoryCard(props) {
   const { historyUpdateTime } = require('../../properties');
   const { environment } = props;
@@ -15,7 +14,7 @@ export default function HistoryCard(props) {
 
   const fetchHistory = async () => {
     try {
-      let {data:environmentFromPlant} = await axios.get('/api/getHistory', {
+      let {data:environmentFromPlant} = await axios.get('/api/getEnvironmentHistory', {
         params: {
           selects: environment,
           table: ['plant1', 'plant2', 'plant3']
@@ -49,12 +48,11 @@ export default function HistoryCard(props) {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(date);
 
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine history={history} date={date} width={4} height={1} />
+        <CustomLine history={history} date={date} width={3} height={1} />
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{environment}</Typography>

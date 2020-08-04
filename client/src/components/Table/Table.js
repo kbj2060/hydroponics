@@ -14,8 +14,13 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { useQuery } from '@apollo/react-hooks';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
+import axios from "axios";
+import ControlSwitch from "../../reducer/ControlSwitch";
+import {createStore} from "redux";
+import {useDispatch} from "react-redux";
+import {controlSwitch} from "../../actions";
+import {store} from "../../store";
 
 const theme = createMuiTheme({
   overrides: {
@@ -29,7 +34,7 @@ const theme = createMuiTheme({
 
 const useStyles1 = makeStyles({
   root: {
-  flexShrink: 0,
+    flexShrink: 0,
   },
 });
 
@@ -95,62 +100,81 @@ TablePaginationActions.propTypes = {
 };
 
 const useStyles2 = makeStyles({
-  table: {
-    height:'300px',
-  },
+	container : {
+		boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+		backgroundColor : 'rgba(255, 255, 255, 0.1)',
+		borderRadius: '0.5rem',
+		height: '100%'},
   text : {
     color : 'white'
-  }
+  },
+	table : {
+		height: '100%'
+	}
 });
+
+
 
 export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isLoading, setIsLoading] = React.useState(Boolean);
   const [ rows, setRows ] = React.useState([]);
-
-  function createData(data) {  
-    let rows = data.switchFeed.switches.map((obj)=> {
-      let machine = obj.machine;
-      let status = obj.status.toString();
-      let name = obj.controledBy.name
-      let updatedAt = obj.updatedAt;
-      return {machine, status, name, updatedAt} 
-    })
-    return rows.sort((a, b) => (a.calories < b.calories ? -1 : 1));
-  }
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+	const [refresh , setRefresh] = React.useState();
   const handleChangePage = (event, newPage) => {
-	setPage(newPage);
+		setPage(newPage);
   };
+
+	store.subscribe(() => {
+		setRefresh(store.getState()['controlSwitch']);
+	})
 
   const handleChangeRowsPerPage = event => {
-	setRowsPerPage(parseInt(event.target.value, 10));
-	setPage(0);
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
   };
+
+	const fetchSwitchHistory = async () => {
+		let {data:switchHistory} = await axios.get('/api/getSwitchHistory', {
+			params: {
+				selects: ['machine', 'status', 'date'],
+				num: 20
+			}})
+		const isLoading = (switchHistory == null);
+		setIsLoading(isLoading);
+		let rows = switchHistory.map((history) => {
+			return {
+				status: history['status'],
+				machine: history['machine'],
+				date: history['date']
+			}})
+		setRows(rows);
+	}
+
+	useEffect(() => {
+		fetchSwitchHistory();
+	}, [refresh]);
 
   return (
     <MuiThemeProvider theme={theme}>
-		  <TableContainer component={Paper} style={{
-		    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
-			  backgroundColor : 'rgba(255, 255, 255, 0.1)',
-			  borderRadius: '0.5rem',}}>
+		  <TableContainer component={Paper} className={classes.container}>
 			  <Table className={classes.table} aria-label="custom pagination table">
 					<TableBody>
-					  {(rowsPerPage > 0
+					  {
+					  	(rowsPerPage > 0
 						? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						: rows
-					  ).map((row, index) => (
-						<TableRow key={index}>
-						  <TableCell className={classes.text} component="th" scope="row">
-							{row.machine}
-						  </TableCell>
-						  <TableCell className={classes.text} align="right">{row.status}</TableCell>
-						  <TableCell className={classes.text} align="right">{row.name}</TableCell>
-			        <TableCell className={classes.text} align="right">{row.updatedAt}</TableCell>
-						</TableRow>
-					  ))}
+					  ).map((row, index, arr) => {
+							  return (<TableRow key={index}>
+								  <TableCell className={classes.text} align="center" component="th" scope="row">
+									  {row.machine}
+								  </TableCell>
+								  <TableCell className={classes.text} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
+								  <TableCell className={classes.text} align="center">{row.date}</TableCell>
+							  </TableRow>)
+						  })}
 
 					  {emptyRows > 0 && (
 						<TableRow style={{ height: 53 * emptyRows }}>
