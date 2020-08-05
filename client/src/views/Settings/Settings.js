@@ -32,7 +32,7 @@ export default function Settings() {
                                         })
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
-
+/*
   const getValue = (measurement, value, idx) => {
     let _values = values
     _values[measurement] = value;
@@ -60,7 +60,7 @@ export default function Settings() {
       })
     }
   }
-  
+ */ 
   const handleOnClick = () => {
     setOpen(true);
     setIsApplied(true);
@@ -81,7 +81,6 @@ export default function Settings() {
             { measurementArr.map((measurement,index) => <SettingSlider  key={measurement.toString()} 
                                                                         measurement={measurement} 
                                                                         isApplied={isApplied}
-                                                                        getValue={getValue} 
                                                                         index={index} /> )}
             </div>
             <CustomButton onClick={ handleOnClick } 
