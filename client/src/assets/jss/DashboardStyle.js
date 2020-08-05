@@ -15,7 +15,7 @@ const dashboardStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
   controlCardButtons : {
-    height : '22em',
+    height : '100%',
     position: 'relative',
     borderRadius: '0.5rem',
     padding: '20px',
@@ -36,6 +36,24 @@ const dashboardStyle = makeStyles(theme =>({
     display:'inline',
     alignItems:'center',
     width:'calc(100%/3)',
+  },
+  brightRedDot : {
+    backgroundColor : '#FF4F61',
+    borderRadius: '50%',
+    height : '8px',
+    width : '8px',
+    display: 'table',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    },
+  brightGreenDot : {
+    backgroundColor : '#A9ED74',
+    borderRadius: '50%',
+    height : '8px',
+    width : '8px',
+    display: 'table',
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   textColor : {
     padding : '5px 0 5px 0',

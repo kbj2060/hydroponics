@@ -16,9 +16,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import ControlSwitch from "../../reducer/ControlSwitch";
-import {createStore} from "redux";
-import {useDispatch} from "react-redux";
 import {controlSwitch} from "../../actions";
 import {store} from "../../store";
 
@@ -108,12 +105,16 @@ const useStyles2 = makeStyles({
   text : {
     color : 'white'
   },
+	statusOn : {
+		color : '#A9ED74'
+	},
+	statusOff : {
+		color : '#FF4F61'
+	},
 	table : {
 		height: '100%'
 	}
 });
-
-
 
 export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
@@ -123,6 +124,8 @@ export default function CustomPaginationActionsTable() {
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
+	const {showHistoryNumber} = require('../../properties');
+
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
   };
@@ -140,7 +143,7 @@ export default function CustomPaginationActionsTable() {
 		let {data:switchHistory} = await axios.get('/api/getSwitchHistory', {
 			params: {
 				selects: ['machine', 'status', 'date'],
-				num: 20
+				num: showHistoryNumber
 			}})
 		const isLoading = (switchHistory == null);
 		setIsLoading(isLoading);
@@ -171,7 +174,7 @@ export default function CustomPaginationActionsTable() {
 								  <TableCell className={classes.text} align="center" component="th" scope="row">
 									  {row.machine}
 								  </TableCell>
-								  <TableCell className={classes.text} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
+								  <TableCell className={row.status === 1? classes.statusOn: classes.statusOff} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
 								  <TableCell className={classes.text} align="center">{row.date}</TableCell>
 							  </TableRow>)
 						  })}

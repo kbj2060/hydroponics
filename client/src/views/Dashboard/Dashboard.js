@@ -8,7 +8,6 @@ import StatusCard from "components/Card/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
 import CustomTable from "../../components/Table/Table";
 import HistoryCard from "../../components/Card/HistoryCard";
-import logo from "../../logo.jpg";
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -35,7 +34,7 @@ export default function Dashboard() {
           {
             plants.map(plant => { return(
                <Grid item xs={12} sm={12} md={4} className={classes.item} >
-                <StatusCard plant={plant} />
+                 <StatusCard plant={plant} />
                </Grid>)
             })
           }
