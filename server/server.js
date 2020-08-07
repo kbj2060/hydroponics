@@ -24,6 +24,16 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
+const mqtt = require('mqtt');
+const client = mqtt.connect('mqtt://127.0.0.1',{clientId: "webClient"});
+
+client.subscribe(['Temperature', 'Humidity', 'CO2']);
+
+client.on('message', (topic, message) => {
+    console.log(topic, message.toString());
+    console.log('message accepted!');
+})
+
 connection.connect();
 
 function req2query(req_params){

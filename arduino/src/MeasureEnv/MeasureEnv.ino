@@ -1,15 +1,13 @@
-#include <WEMOS_SHT3X.h>
 #include "SCD30.h"
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-
 int TIMER = 60000;
-SHT3X sht35(0x45);
 
-const char* ssid = "ssomecafe";
-const char* password = "ssomecafe1";
-const char* mqtt_server = "192.168.0.2";
+const char* ssid = "nicesesang";
+const char* password = "01055646565";
+const char* mqtt_server = "192.168.0.21";
+
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -67,19 +65,12 @@ unsigned long prev_time = 0;
 
 void loop() {
   float result[3] = {0};
-  if (sht35.get() == 0 || scd30.isAvailable()) {
+  if (scd30.isAvailable()) {
     scd30.getCarbonDioxideConcentration(result);
-    Serial.print("SHT35 Temperature : ");
-    Serial.print(sht35.cTemp);
-    Serial.print("℃");
-    Serial.print("    SHT35 Humidity : ");
-    Serial.print(sht35.humidity);
-    Serial.println("%");
     Serial.print("SCD30 Temperature : ");
     Serial.print(result[1]);
     Serial.print("℃");
-
-    Serial.print("    SCD30 Humidity : ");
+    Serial.print("SCD30 Humidity : ");
     Serial.print(result[2]);
     Serial.println("%");
     Serial.print("SCD30 CO2 : ");
@@ -107,18 +98,6 @@ void loop() {
 }
 
 void time_Pub(float co2) {
-  float sht35TEMP =  sht35.cTemp;
-  String sht1114_str = String(sht35TEMP);
-  char sht1114[20];
-  sht1114_str.toCharArray(sht1114, sht1114_str.length() + 1);
-  client.publish("Temperature", sht1114);
-
-  float sht35HUMI =  sht35.humidity;
-  String sht1115_str = String(sht35HUMI);
-  char sht1115[20];
-  sht1115_str.toCharArray(sht1115, sht1115_str.length() + 1);
-  client.publish("Humidity", sht1115);
-
   String sht1116_str = String(co2);
   char sht1116[20];
   sht1116_str.toCharArray(sht1116, sht1116_str.length() + 1);
