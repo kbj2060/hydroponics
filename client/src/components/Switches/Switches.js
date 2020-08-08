@@ -7,6 +7,7 @@ import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {useDispatch} from "react-redux";
 import {controlSwitch} from "../../actions";
+import io from 'socket.io-client';
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -33,6 +34,7 @@ const IOSSwitch = withStyles(theme => ({
     '&$checked': {
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
+      backgroundColor: '#FFCB3A',
       '& + $track': {
         backgroundColor: '#FFCB3A',
         opacity: 1,
@@ -85,6 +87,10 @@ export default function CustomizedSwitches(props) {
                                               machine: machine});
   const classes = style();
   const dispatch = useDispatch()
+  const socketIoPort = 9000;
+  /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
+  const socket = io.connect(`http://192.168.1.61:${socketIoPort}`);
+  const firstIndex = 0;
 
   const fetchSwitch = async () => {
     await axios.get('/api/getSwitch', {
@@ -96,7 +102,7 @@ export default function CustomizedSwitches(props) {
       }
     }).then(async (res) => {
       setState({
-        status: res.data[0]['status'],
+        status: res.data[firstIndex]['status'] === 1,
         machine: machine
       })
     })
@@ -104,22 +110,38 @@ export default function CustomizedSwitches(props) {
 
   const handleChange = async (event) => {
     const status = !state.status
+
+    setState({
+      machine : machine,
+      status : status
+    });
+
     dispatch(controlSwitch());
+
+    socket.emit('sendSwitchControl', {
+      machine : machine,
+      status : status
+    })
+
     await axios.post('/api/switchMachine',{
       params: {
         machine : machine,
         status : status
       }
     })
-
-    setState({
-      machine : machine,
-      status : status });
   };
 
   useEffect(() => {
     fetchSwitch();
-  }, [])
+  }, []);
+
+  useEffect(()=>{
+    socket.on('receiveSwitchControl', (switchStatus) => {
+      if (machine === switchStatus.machine){
+        setState(switchStatus);
+      }
+    })
+  }, []);
 
   return (
     <FormGroup>

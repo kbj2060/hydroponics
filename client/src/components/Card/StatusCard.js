@@ -74,7 +74,6 @@ export default function StatusCard(props) {
                     plant={plant}/>)
         }
       </div>
-
     </Card>
   );
 }

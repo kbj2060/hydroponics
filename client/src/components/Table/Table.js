@@ -106,7 +106,7 @@ const useStyles2 = makeStyles({
     color : 'white'
   },
 	statusOn : {
-		color : '#A9ED74'
+		color : '#FFCB3A'
 	},
 	statusOff : {
 		color : '#FF4F61'

@@ -11,22 +11,22 @@ export default function ControlCard() {
     const classes = useStyles();
 
     return (
-        <Card className={classes.controlCardButtons}>
-            <div className={classes.controlCardDiv}>
-                { machines.map(machine => {
-                    return (
-                        <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
-                            <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                                <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
-                            </Box>
-                            <CurrentDot></CurrentDot>
-                            <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                                <Switch machine={machine} />
-                            </Box>
-                        </Box>
-                    )
-                }) }
-            </div>
-        </Card>
+      <Card className={classes.controlCardButtons}>
+          <div className={classes.controlCardDiv}>
+              { machines.map(machine => {
+                  return (
+                      <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
+                          <Box className={classes.alignNameBox} flexGrow={1} p={1} >
+                              <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
+                          </Box>
+                          <CurrentDot machine={machine}/>
+                          <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
+                              <Switch machine={machine} />
+                          </Box>
+                      </Box>
+                  )
+              }) }
+          </div>
+      </Card>
     );
 }

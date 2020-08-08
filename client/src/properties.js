@@ -12,9 +12,9 @@ module.exports = {
 	plants: [
 		'plant1', 'plant2', 'plant3',
 	],
-	statusUpdateTime : 5 * 1000,
-	historyUpdateTime : 5 * 1000,
-	currentUpdateTime : 5 * 1000,
+	statusUpdateTime : 10 * 1000,
+	historyUpdateTime : 10 * 1000,
+	currentUpdateTime : 10 * 1000,
 	showHistoryNumber : 20,
 
 };

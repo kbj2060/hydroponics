@@ -37,25 +37,8 @@ const dashboardStyle = makeStyles(theme =>({
     alignItems:'center',
     width:'calc(100%/3)',
   },
-  brightRedDot : {
-    backgroundColor : '#FF4F61',
-    borderRadius: '50%',
-    height : '8px',
-    width : '8px',
-    display: 'table',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    },
-  brightGreenDot : {
-    backgroundColor : '#A9ED74',
-    borderRadius: '50%',
-    height : '8px',
-    width : '8px',
-    display: 'table',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
   textColor : {
+    fontSize : '0.8em',
     padding : '5px 0 5px 0',
     color : 'white !important',
     fontWeight : 'bold',
@@ -65,7 +48,7 @@ const dashboardStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   item : {
-    padding:'15px'
+    padding:'15px',
   },
   controlCardDiv : {
     height:'100%', 

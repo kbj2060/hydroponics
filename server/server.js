@@ -1,5 +1,7 @@
 'use strict'
 
+const PORT = 9000;
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const moment = require('moment');
@@ -7,7 +9,9 @@ const fs = require('fs');
 const mysql = require('mysql');
 
 const app = express();
-const PORT = 9000;
+const server = app.listen(PORT, () => {
+  console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
+})
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,31 +28,41 @@ const connection = mysql.createConnection({
     multipleStatements: true
 });
 
+connection.connect();
+const io = require('socket.io').listen(server);
+
+io.on("connection", function (socket) {
+  console.log("Made socket connection");
+
+  socket.on('sendSwitchControl', (switchStatus) => {
+    console.log('switch socket has been sent.');
+    console.log(switchStatus);
+    io.emit('receiveSwitchControl', switchStatus);
+  })
+});
+
+
 const mqtt = require('mqtt');
 const client = mqtt.connect('mqtt://127.0.0.1',{clientId: "webClient"});
 
-client.subscribe(['Temperature', 'Humidity', 'CO2']);
+
+client.subscribe(['Temperature', 'Humidity', 'CO2', 'Current']);
+
+client.on('connect', (packet) => {
+  console.log(packet)
+})
+
+client.handleMessage = function(packet, done) {
+  const {topic, payload} = packet;
+  console.log(topic, payload.toString());
+  done();
+}
 
 client.on('message', (topic, message) => {
     console.log(topic, message.toString());
     console.log('message accepted!');
 })
 
-connection.connect();
-
-function req2query(req_params){
-  const selects = req_params['selects'];
-  const tables = req_params['table'];
-
-  if (tables.length > 1){
-    let sqls = tables.map((table, index, arr) => {
-      return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
-    });
-    return sqls.join(" ");
-  }
-
-  return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
-}
 
 app.get('/api/getStatus', (req, res) => {
     const table = req.query['table'];
@@ -136,8 +150,17 @@ app.post('/api/switchMachine', (req, res) => {
   )
 });
 
+function req2query(req_params){
+  const selects = req_params['selects'];
+  const tables = req_params['table'];
 
+  if (tables.length > 1){
+    let sqls = tables.map((table, index, arr) => {
+      return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
+    });
+    return sqls.join(" ");
+  }
 
-app.listen(PORT, () => {
-    console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
-})
+  return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
+}
+
