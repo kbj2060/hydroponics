@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import axios from "axios";
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -12,8 +13,8 @@ const ColorCircularProgress = withStyles({
 
 const CustomSlider = withStyles({
     valueLabel: {
-      fontSize: '10px',
-    },
+      fontSize: '13px'
+    }
   })(Slider);
 
 const useStyles = makeStyles({
@@ -27,40 +28,63 @@ const useStyles = makeStyles({
   title : {
     marginBottom : '40px',
     color:'white'
-  }
+  },
+
 });
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function RangeSlider(props) {
-  const { measurement, isApplied, getValue, index } = props;
+export default function SettingSlider(props) {
+  const { environment, isApplied, getSettingFromSlider } = props;
   const classes = useStyles();
-  const [value, setValue] = React.useState([0, 0]);
+  const [setting, setSetting] = React.useState([0, 0]);
+
+  const giveSetting = () => {
+    getSettingFromSlider({[environment]: setting});
+  }
+
+  const handleMinMaxSetting = (environment) => {
+    let names = [];
+    ['min', 'max'].forEach((MinMax) => {
+      names.push(`${environment}_${MinMax}`);
+    })
+    return names
+  }
+
+  const getSettings = async () => {
+    await axios.get('api/getStatus', {
+      params : {
+        table : 'setting',
+        selects : handleMinMaxSetting(environment),
+        num : 1
+      }
+    }).then(({data}) => {
+      setSetting([data[0][`${environment}_min`], data[0][`${environment}_max`]])
+    })
+  }
 
   useEffect(() => {
-    if(isApplied){
-      giveValue(index);
-    }
+    if(isApplied){ giveSetting(); }
   }, [isApplied])
 
-  const giveValue = (idx) => {
-    getValue(measurement, value, idx);
-    console.log(measurement, value, idx)
-  }
+  useEffect(() => {
+    getSettings();
+  }, [])
+
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setSetting(newValue);
   };
 
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>
-        {measurement}
+        {environment}
       </Typography>
       <CustomSlider
         className={classes.sldier}
-        value={value}
+        value={setting}
         onChange={handleChange}
         valueLabelDisplay="on"
         aria-labelledby="range-slider"

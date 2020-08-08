@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from "axios";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -24,43 +25,34 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const measurementArr = ["HUM", "TEMP", "CO2"]
-  const [values, setValues] = useState({
-                                        "HUM": [0,0], 
-                                        "TEMP": [0,0], 
-                                        "CO2": [0,0],
+  const { environments } = require('../../properties');
+  const [settings, setSettings] = useState({
+                                        "co2": [0,0],
+                                        "humidity": [0,0],
+                                        "temperature": [0,0],
                                         })
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
-/*
-  const getValue = (measurement, value, idx) => {
-    let _values = values
-    _values[measurement] = value;
-    setValues(_values);
-    if(idx === Object.keys(values).length - 1){
-      setIsApplied(false);
-      let min = []
-      let max = []
-      let measurement = []
-      Object.keys(values).map((key, i) => {
-        min.push(values[key][0])
-        max.push(values[key][1])
-        measurement.push(key)
+
+  const applySettings = async () => {
+    await axios.post('/api/applySettings',{
+      params: { settings : settings }
       })
-      settingMutation({variables: {
-        measurement: measurement,
-        min: min,
-        max: max,
-      }})
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    }
   }
- */ 
+
+  useEffect(() => {
+    if(isApplied) { applySettings(); }
+    return () => {
+      setIsApplied(false)
+    }
+  }, [isApplied]);
+
+  const getSettingFromSlider = (value) => {
+    const temp = settings;
+    temp[Object.keys(value)[0]] = Object.values(value)[0];
+    setSettings(temp);
+  }
+
   const handleOnClick = () => {
     setOpen(true);
     setIsApplied(true);
@@ -78,10 +70,9 @@ export default function Settings() {
         <Grid item xs={12} sm={12} md={12} className={classes.item}>
           <Card className={classes.parentItem}>
             <div className={classes.sliderDiv}>
-            { measurementArr.map((measurement,index) => <SettingSlider  key={measurement.toString()} 
-                                                                        measurement={measurement} 
-                                                                        isApplied={isApplied}
-                                                                        index={index} /> )}
+            { environments.map((environment,index) =>
+              <SettingSlider key={environment.toString()} environment={environment}
+                             getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/> )}
             </div>
             <CustomButton onClick={ handleOnClick } 
                           variant="contained" 

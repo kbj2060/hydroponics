@@ -150,6 +150,19 @@ app.post('/api/switchMachine', (req, res) => {
   )
 });
 
+app.post('/api/applySettings', (req, res) => {
+  const sql = 'INSERT INTO iot.setting (id, humidity_min, humidity_max, temperature_min, temperature_max, co2_min, co2_max,  created, isDeleted) VALUES (null, ?, ?, ?, ?, ?, ?, now(), 0)';
+  const settings = req.body.params['settings'];
+  const params = [settings['humidity'][0], settings['humidity'][1], settings['temperature'][0], settings['temperature'][1],
+    settings['co2'][0],settings['co2'][1]]
+  connection.query(sql, params,
+    (err, rows, fields) => {
+    console.log(rows)
+      res.send(rows);
+    }
+  )
+});
+
 function req2query(req_params){
   const selects = req_params['selects'];
   const tables = req_params['table'];
