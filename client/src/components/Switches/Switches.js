@@ -82,7 +82,7 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-  const {ip, socketIoPort} = require('../../properties');
+  const {ip, socketIoPort} = require('../../PROPERTIES');
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
@@ -90,7 +90,7 @@ export default function CustomizedSwitches(props) {
   const dispatch = useDispatch()
   /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
   const socket = io.connect(`${ip}:${socketIoPort}`);
-  const firstIndex = 0;
+  const recentIndex = 0;
 
   const fetchSwitch = async () => {
     await axios.get('/api/getSwitch', {
@@ -102,7 +102,7 @@ export default function CustomizedSwitches(props) {
       }
     }).then(async (res) => {
       setState({
-        status: res.data[firstIndex]['status'] === 1,
+        status: res.data[recentIndex]['status'] === 1,
         machine: machine
       })
     })

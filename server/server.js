@@ -1,6 +1,6 @@
 'use strict'
 
-const PORT = 9000;
+const {socketIoPort:PORT} = require('../PROPERTIES');
 
 const express = require('express');
 const bodyParser = require('body-parser');

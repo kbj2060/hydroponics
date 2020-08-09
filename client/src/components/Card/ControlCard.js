@@ -7,7 +7,7 @@ import useStyles from 'assets/jss/DashboardStyle';
 import CurrentDot from '../CurrentDot/CurrentDot';
 
 export default function ControlCard() {
-    const {machines, currentUpdateTime} = require('../../properties');
+    const {machines, currentUpdateTime} = require("../../PROPERTIES")
     const classes = useStyles();
 
     return (

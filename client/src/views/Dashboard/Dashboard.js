@@ -11,7 +11,7 @@ import HistoryCard from "../../components/Card/HistoryCard";
 
 export default function Dashboard() {
   const classes = useStyles();
-  const {environments, plants} = require('../../properties');
+  const {environments, plants} = require('../../PROPERTIES');
 
   return (
       <div className={classes.root}>

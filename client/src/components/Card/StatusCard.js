@@ -12,7 +12,7 @@ const circleColorTable = {
 }
 
 export default function StatusCard(props) {
-  const {statusUpdateTime, environments} = require('../../properties');
+  const {statusUpdateTime, environments} = require('../../PROPERTIES');
   const {plant} = props;
   const classes = useStyles();
   const cardGridRef = useRef();

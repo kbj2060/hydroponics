@@ -1,2 +1,2 @@
-const date = new Date();
-console.log(date);
+const {machines} = require("PROPERTIES");
+console.log(machines)

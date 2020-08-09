@@ -25,7 +25,7 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { environments } = require('../../properties');
+  const { environments } = require('../../PROPERTIES');
   const [settings, setSettings] = useState({
                                         "co2": [0,0],
                                         "humidity": [0,0],

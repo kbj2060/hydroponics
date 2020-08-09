@@ -122,9 +122,9 @@ export default function CustomPaginationActionsTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(Boolean);
   const [ rows, setRows ] = React.useState([]);
-	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const [refresh , setRefresh] = React.useState();
-	const {showHistoryNumber} = require('../../properties');
+const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+const [refresh , setRefresh] = React.useState();
+const {showHistoryNumber} = require('../../PROPERTIES');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);

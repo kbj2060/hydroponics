@@ -47,7 +47,7 @@ const measurementWordTable = {
 
 export default function Figure(props) {
   const { environment, dimensions, values, plant } = props;
-  const { environments } = require('../../properties');
+  const { environments } = require('../../PROPERTIES');
   const n_environment = environments.length;
   const classes = useStyles({
     dimensions: dimensions,

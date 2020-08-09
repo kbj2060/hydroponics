@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
 export default function HistoryCard(props) {
-  const { historyUpdateTime } = require('../../properties');
+  const { historyUpdateTime } = require('../../PROPERTIES');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
