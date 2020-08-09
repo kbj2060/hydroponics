@@ -39,6 +39,12 @@ io.on("connection", function (socket) {
     console.log(switchStatus);
     io.emit('receiveSwitchControl', switchStatus);
   })
+
+  socket.on('sendUpdateHistory', (updateHistory) => {
+    console.log('update history socket has been sent.');
+    console.log(updateHistory);
+    io.emit('receiveUpdateHistory', updateHistory);
+  })
 });
 
 

@@ -18,6 +18,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
 import {controlSwitch} from "../../actions";
 import {store} from "../../store";
+import io from "socket.io-client";
 
 const theme = createMuiTheme({
   overrides: {
@@ -122,9 +123,9 @@ export default function CustomPaginationActionsTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(Boolean);
   const [ rows, setRows ] = React.useState([]);
-const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-const [refresh , setRefresh] = React.useState();
-const {showHistoryNumber} = require('../../PROPERTIES');
+	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+	const [refresh , setRefresh] = React.useState();
+	const {showHistoryNumber} = require('../../PROPERTIES');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -162,7 +163,7 @@ const {showHistoryNumber} = require('../../PROPERTIES');
 
   return (
     <MuiThemeProvider theme={theme}>
-		  <TableContainer component={Paper} className={classes.container}>
+		<TableContainer component={Paper} className={classes.container}>
 			  <Table className={classes.table} aria-label="custom pagination table">
 					<TableBody>
 					  {

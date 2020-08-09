@@ -83,13 +83,14 @@ const IOSSwitch = withStyles(theme => ({
 export default function CustomizedSwitches(props) {
   const {machine} = props
   const {ip, socketIoPort} = require('../../PROPERTIES');
+  const socket = io.connect(`${ip}:${socketIoPort}`);
+
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
   const classes = style();
   const dispatch = useDispatch()
   /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
-  const socket = io.connect(`${ip}:${socketIoPort}`);
   const recentIndex = 0;
 
   const fetchSwitch = async () => {
@@ -111,24 +112,24 @@ export default function CustomizedSwitches(props) {
   const handleChange = async (event) => {
     const status = !state.status
 
-    setState({
-      machine : machine,
-      status : status
-    });
-
-    dispatch(controlSwitch());
-
-    socket.emit('sendSwitchControl', {
-      machine : machine,
-      status : status
-    })
-
     await axios.post('/api/switchMachine',{
       params: {
         machine : machine,
         status : status
       }
     })
+
+    setState({
+      machine : machine,
+      status : status
+    });
+
+    socket.emit('sendSwitchControl', {
+      machine : machine,
+      status : status
+    })
+
+    dispatch(controlSwitch());
   };
 
   useEffect(() => {
@@ -138,6 +139,7 @@ export default function CustomizedSwitches(props) {
   useEffect(()=>{
     socket.on('receiveSwitchControl', (switchStatus) => {
       if (machine === switchStatus.machine){
+        dispatch(controlSwitch());
         setState(switchStatus);
       }
     })
