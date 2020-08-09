@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import CustomLine from '../Line/CustomLine';
+import CustomLine from './CustomLine';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 
-export default function HistoryCard(props) {
+export default function EnvironmentsHistoryCard(props) {
   const { historyUpdateTime } = require('../../PROPERTIES');
   const { environment } = props;
   const classes = useStyles();

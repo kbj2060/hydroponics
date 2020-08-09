@@ -1,14 +1,13 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 240;
-
-const dashboardStyle = makeStyles(theme =>({
+const dashboardStyle = makeStyles(() =>({
   root: {
     overflow: 'hidden',
     flexGrow: 1,
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   parentItem : {
+    textAlign : 'center',
     borderRadius : '15px',
     padding : '0px 0px 20px 0px',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
@@ -38,24 +37,23 @@ const dashboardStyle = makeStyles(theme =>({
     width:'calc(100%/3)',
   },
   textColor : {
-    fontSize : '0.8em',
     padding : '5px 0 5px 0',
     color : 'white !important',
     fontWeight : 'bold',
   },
   container : {
-    padding :'15px 30px 15px 30px', 
+    //padding :'15px 30px 15px 30px',
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   item : {
-    padding:'15px',
+    padding:'8px',
   },
   controlCardDiv : {
-    height:'100%', 
-    paddingBottom:'3% 0 3% 0'
+    paddingBottom:'3% 0 3% 0',
+    height:'100%'
   },
   controlCardBox : {
-    height:'calc(100% / 3)'
+    height:'50%'
   },
   figureCardDiv : {
     display:'grid',

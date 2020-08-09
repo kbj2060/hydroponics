@@ -2,8 +2,9 @@ import React, {useLayoutEffect, useRef, useState, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
 import useStyles from 'assets/jss/DashboardStyle';
-import Figure from "../Figure/Figure";
+import Figure from "./Figure";
 import axios from "axios";
+import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const circleColorTable = {
   'plant1' : "#FF925D",
@@ -28,7 +29,7 @@ export default function StatusCard(props) {
   const fetchStatus = async () => {
     try {
       const recentIndex = 0;
-      const {data: recentStatus } = await axios.get('/api/getStatus', {
+      const { data: recentStatus } = await axios.get('/api/getStatus', {
         params: {
           table: plant,
           selects: environments,

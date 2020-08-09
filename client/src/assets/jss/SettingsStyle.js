@@ -27,6 +27,7 @@ const settingsStyle = makeStyles(theme =>({
     padding: '3% 0 3% 0'
   },
   parentItem : {
+    textAlign: 'center',
     backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius : '15px',
     padding : '20px',

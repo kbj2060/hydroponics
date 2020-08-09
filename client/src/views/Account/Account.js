@@ -1,9 +1,9 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import useStyles from 'assets/jss/accountStyle';
+import useStyles from '../../assets/jss/accountStyle';
 import AppBar from 'components/AppBar/AppBar';
-import CustomGrid from 'components/Grid/Grid';
+import CustomGrid from '../../components/utils/CustomGrid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -18,7 +18,6 @@ const ColorCircularProgress = withStyles({
 
 export default function Account() {
   const classes = useStyles();
-  // const { loading, error, data } = useQuery(GET_CURRENT_USER);
 
   return (
     <div className={classes.root}>

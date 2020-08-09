@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from "@material-ui/core/Box";
-import Switch from "../Switches/Switches";
+import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
 import useStyles from 'assets/jss/DashboardStyle';
-import CurrentDot from '../CurrentDot/CurrentDot';
+import CurrentChecker from './CurrentChecker';
 
 export default function ControlCard() {
     const {machines, currentUpdateTime} = require("../../PROPERTIES")
@@ -19,7 +19,7 @@ export default function ControlCard() {
                           <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                               <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
                           </Box>
-                          <CurrentDot machine={machine}/>
+                          <CurrentChecker machine={machine}/>
                           <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                               <Switch machine={machine} />
                           </Box>

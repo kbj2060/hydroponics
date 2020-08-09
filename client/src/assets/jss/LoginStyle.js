@@ -1,6 +1,6 @@
 import {  makeStyles } from '@material-ui/core/styles'
 
-const loginStyle = makeStyles(theme => ({
+const loginStyle = makeStyles(()=>({
     loginForm : {
         borderRadius : '10px',
         backgroundColor: 'white',
@@ -9,9 +9,10 @@ const loginStyle = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign : 'center',
     },
     login : {
-        border:  'none', 
+        border:  'none',
         borderBottom:  'solid 1px rgba(0,0,0,.1)',
         margin: '5px 0 5px 0',
         '&:focus' : {
@@ -24,25 +25,23 @@ const loginStyle = makeStyles(theme => ({
         backgroundColor: 'black',
         width:  'auto',
         minWidth:  '100px',
-        borderRadius:  '24px', 
-        textAlign:  'center', 
+        borderRadius:  '24px',
+        textAlign:  'center',
         padding:  '15px 40px',
-        marginTop:  '25px', 
-        color:  '#fff', 
+        marginTop:  '25px',
+        color:  '#fff',
         fontSize:  '14px',
-        marginLeft:  'auto', 
-        fontWeight:  '500', 
-        boxShadow:  '0px 2px 6px -1px rgba(0,0,0,.13)', 
+        marginLeft:  'auto',
+        fontWeight:  '500',
+        boxShadow:  '0px 2px 6px -1px rgba(0,0,0,.13)',
         border:  'none',
-        transition:  'all .3s ease', 
-        outline: '0', 
+        transition:  'all .3s ease',
+        outline: '0',
     },
     title : {
       color:'black',
       marginTop:'0px'
     }
-
-})
-)
+}));
 
 export default loginStyle

@@ -1,14 +1,16 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import WeatherCard from 'components/Card/WeatherCard';
+//import WeatherCard from 'components/Card/WeatherCard';
 import AppBar from 'components/AppBar/AppBar';
-import ControlCard from 'components/Card/ControlCard';
-import StatusCard from "components/Card/StatusCard";
+import ControlCard from '../../components/Controller/ControlCard';
+import StatusCard from "../../components/Status/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
-import CustomTable from "../../components/Table/Table";
-import HistoryCard from "../../components/Card/HistoryCard";
+import MachinesHistoryCard from "../../components/MachinesHistory/MachinesHistoryCard";
+import EnvironmentsHistoryCard from "../../components/EnvironmentsHistroy/EnvironmentsHistoryCard";
+import Menu from "../../components/AppBar/Menu";
 
+// TODO : Menu Pop up 만들기.
 export default function Dashboard() {
   const classes = useStyles();
   const {environments, plants} = require('../../PROPERTIES');
@@ -29,7 +31,7 @@ export default function Dashboard() {
             <ControlCard />
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.item}>
-            <CustomTable />
+            <MachinesHistoryCard />
           </Grid>
           {
             plants.map(plant => { return(
@@ -41,7 +43,7 @@ export default function Dashboard() {
           {
             environments.map(env => { return (
             <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={4} xl={4}  className={classes.item}>
-              <HistoryCard environment={env}/>
+              <EnvironmentsHistoryCard environment={env}/>
             </Grid>)
             })
           }

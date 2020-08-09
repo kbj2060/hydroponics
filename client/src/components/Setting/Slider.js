@@ -2,14 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from "axios";
-
-const ColorCircularProgress = withStyles({
-  root: {
-    color: '#003458',
-  },
-})(CircularProgress);
+import {ColorCircularProgress} from "../utils/ColorCircularProgress"
 
 const CustomSlider = withStyles({
     valueLabel: {
@@ -40,6 +34,7 @@ export default function SettingSlider(props) {
   const { environment, isApplied, getSettingFromSlider } = props;
   const classes = useStyles();
   const [setting, setSetting] = React.useState([0, 0]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const giveSetting = () => {
     getSettingFromSlider({[environment]: setting});
@@ -62,6 +57,7 @@ export default function SettingSlider(props) {
       }
     }).then(({data}) => {
       setSetting([data[0][`${environment}_min`], data[0][`${environment}_max`]])
+      setIsLoading(false);
     })
   }
 
@@ -76,6 +72,10 @@ export default function SettingSlider(props) {
   const handleChange = (event, newValue) => {
     setSetting(newValue);
   };
+
+  if(isLoading){
+    return <ColorCircularProgress></ColorCircularProgress>
+  }
 
   return (
     <div className={classes.root}>

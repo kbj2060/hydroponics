@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius: '50%',
     border: props => '3px solid ' + props.plantColor,
-    height: props => props.dimensions.width / props.n_environment,
+    height: props => props.dimensions.width / (props.n_environment + 1),
     margin: '5%',
     display: 'flex',
     flexDirection: 'column',
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     padding : '5px 0 5px 0',
     color : 'white',
     textAlign : 'center',
-    fontSize : '0.8rem',
+    fontSize : '1rem',
     fontWeight : 'bold',
   }
 });

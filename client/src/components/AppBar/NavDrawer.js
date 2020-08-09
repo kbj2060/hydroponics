@@ -8,7 +8,6 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import LogOutIcon from 'assets/icons/LogOutIcon';
 import DashboardIcon from 'assets/icons/DashboardIcon';
-import HistoryIcon from 'assets/icons/HistoryIcon';
 import SettingsIcon from 'assets/icons/SettingsIcon';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from "react-router-dom";
@@ -22,7 +21,7 @@ const ColorAccountCircle = withStyles({
     },
   })(AccountCircle);
 
-export const NavDrawer = (props) => {
+export default function NavDrawer (props) {
   const classes = useStyles();
   const [state, setstate] = React.useState(props);
 
@@ -32,16 +31,18 @@ export const NavDrawer = (props) => {
 
   const drawerItems = {
     Dashboard  : [<DashboardIcon />, '/dashboard'],
-    History  : [<HistoryIcon />, '/history'],
     Settings  : [<SettingsIcon />, '/settings'],
   };
+
   const footerItems = {
     Logout : [<LogOutIcon />, '/'],
   };
+
   const handleClick = (e) => {
     if (e.target.textContent === "Logout") {
       localStorage.clear();
   }}
+
   const handleItems = (items) => (
     <div>
       {Object.keys(items).map((text) => {
@@ -67,7 +68,7 @@ export const NavDrawer = (props) => {
           <ColorAccountCircle />
         </MenuItem>
         <div className={classes.drawerTitle}>
-        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>HYDROPONICS</p>
+        <p style={{position: 'relative', marginBottom:'6px', color:'white',}}>SMART FARM</p>
         </div>
         <div className={classes.fullList} role="presentation">
           <MenuList>

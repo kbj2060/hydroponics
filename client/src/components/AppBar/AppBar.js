@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import { NavDrawer } from 'components/Drawer/NavDrawer';
+import NavDrawer from './NavDrawer';
 import useStyles from 'assets/jss/AppBarStyle.js'
 
 export default function PermanentAppBar(props) {
@@ -27,7 +27,7 @@ export default function PermanentAppBar(props) {
               color='primary'>
       <Toolbar>
         <Typography className={classes.title} variant="h6">
-          Hydroponics Management System
+          Smart Farm Management System
         </Typography>
         <div className={classes.grow} />
           <div>

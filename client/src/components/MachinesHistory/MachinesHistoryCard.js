@@ -18,7 +18,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
 import {controlSwitch} from "../../actions";
 import {store} from "../../store";
-import io from "socket.io-client";
+import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const theme = createMuiTheme({
   overrides: {
@@ -121,7 +121,7 @@ export default function CustomPaginationActionsTable() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [isLoading, setIsLoading] = React.useState(Boolean);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
@@ -141,25 +141,30 @@ export default function CustomPaginationActionsTable() {
   };
 
 	const fetchSwitchHistory = async () => {
-		let {data:switchHistory} = await axios.get('/api/getSwitchHistory', {
+		await axios.get('/api/getSwitchHistory', {
 			params: {
 				selects: ['machine', 'status', 'date'],
 				num: showHistoryNumber
-			}})
-		const isLoading = (switchHistory == null);
-		setIsLoading(isLoading);
-		let rows = switchHistory.map((history) => {
-			return {
-				status: history['status'],
-				machine: history['machine'],
-				date: history['date']
-			}})
-		setRows(rows);
+			}}).then((res) => {
+				const switchHistory = res.data;
+				let rows = switchHistory.map((history) => {
+					return {
+						status: history['status'],
+						machine: history['machine'],
+						date: history['date']
+					}})
+				setRows(rows);
+				setIsLoading(false);
+		})
 	}
 
 	useEffect(() => {
 		fetchSwitchHistory();
 	}, [refresh]);
+
+	if(isLoading){
+		return <ColorCircularProgress></ColorCircularProgress>
+	}
 
   return (
     <MuiThemeProvider theme={theme}>

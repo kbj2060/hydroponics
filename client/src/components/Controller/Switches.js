@@ -88,6 +88,8 @@ export default function CustomizedSwitches(props) {
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const classes = style();
   const dispatch = useDispatch()
   /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
@@ -106,6 +108,7 @@ export default function CustomizedSwitches(props) {
         status: res.data[recentIndex]['status'] === 1,
         machine: machine
       })
+      setIsLoading(false);
     })
   }
 
@@ -144,6 +147,10 @@ export default function CustomizedSwitches(props) {
       }
     })
   }, []);
+
+  if(isLoading){
+    return <ColorCircularProgress></ColorCircularProgress>
+  }
 
   return (
     <FormGroup>

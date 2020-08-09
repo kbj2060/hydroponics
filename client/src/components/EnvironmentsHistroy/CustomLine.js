@@ -18,6 +18,7 @@ export default function CustomLine(props) {
             display: false
         },
         scales: {
+
               xAxes: [{
                   type: 'time',
                   time: {

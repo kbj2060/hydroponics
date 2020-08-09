@@ -3,6 +3,7 @@ import Box from "@material-ui/core/Box";
 import useStyles from 'assets/jss/DashboardStyle';
 import axios from "axios";
 import {withStyles} from "@material-ui/core/styles";
+import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
@@ -21,11 +22,13 @@ const CurrentFlowing = withStyles((theme) => ({
 })
 
 // TODO: UpdateTime의 2배 시간동안 current와 switch가 안맞을 시 알림!
-export default function CurrentDot({machine}) {
+export default function CurrentChecker({machine}) {
 	const {currentUpdateTime, n_machines } = require('../../PROPERTIES');
 	const [currents, setCurrents] = React.useState({});
 	const [checklist, setChecklist] = React.useState([]);
 	const classes = useStyles();
+	const [isLoading, setIsLoading] = React.useState(true);
+
 	// TODO: Settings 페이지에서 설정값 불러오기.
 	const min = 1.2
 	const max = 3
@@ -41,6 +44,7 @@ export default function CurrentDot({machine}) {
 			}}).then(( {data:queriedCurrent} ) => {
 			const recentIndex = 0;
 			setCurrents(queriedCurrent[recentIndex]);
+			setIsLoading(false)
 		})
 	}
 
@@ -83,6 +87,10 @@ export default function CurrentDot({machine}) {
 			setChecklist([]);
 		}
 	}, [currents])
+
+	if(isLoading){
+		return <ColorCircularProgress></ColorCircularProgress>
+	}
 
 	return (
 		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from 'assets/jss/SettingsStyle';
 import AppBar from 'components/AppBar/AppBar';
-import SettingSlider from 'components/Slider/Slider';
+import SettingSlider from '../../components/Setting/Slider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -14,6 +14,7 @@ function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...prop
 
 const CustomButton = withStyles({
   root : {
+    textAlign: 'center',
     backgroundColor: '#343B3C',
     color:'white',
     fontSize : '14px',
@@ -27,9 +28,9 @@ export default function Settings() {
   const classes = useStyles();
   const { environments } = require('../../PROPERTIES');
   const [settings, setSettings] = useState({
-                                        "co2": [0,0],
-                                        "humidity": [0,0],
-                                        "temperature": [0,0],
+                                        "co2": [],
+                                        "humidity": [],
+                                        "temperature": [],
                                         })
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
@@ -37,7 +38,7 @@ export default function Settings() {
   const applySettings = async () => {
     await axios.post('/api/applySettings',{
       params: { settings : settings }
-      })
+    })
   }
 
   useEffect(() => {

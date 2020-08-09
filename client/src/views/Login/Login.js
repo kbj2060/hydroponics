@@ -1,6 +1,6 @@
 import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
-import useStyles from 'assets/jss/LoginStyle';
+import useStyles from '../../assets/jss/LoginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
 import {useHistory} from "react-router";
 
@@ -49,8 +49,8 @@ export default function Login(props) {
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
-            <form>
-                <p className={classes.title}>HYDROPONICS</p>
+            <form >
+                <p className={classes.title}>SMART FARM</p>
                 <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
                 <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>
                 <div>
