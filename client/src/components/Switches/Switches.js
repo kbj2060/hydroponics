@@ -82,14 +82,14 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
+  const {ip, socketIoPort} = require('../../properties');
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
   const classes = style();
   const dispatch = useDispatch()
-  const socketIoPort = 9000;
   /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
-  const socket = io.connect(`http://192.168.1.61:${socketIoPort}`);
+  const socket = io.connect(`${ip}:${socketIoPort}`);
   const firstIndex = 0;
 
   const fetchSwitch = async () => {
