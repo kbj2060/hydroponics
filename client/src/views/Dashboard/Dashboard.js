@@ -8,7 +8,7 @@ import StatusCard from "../../components/Status/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
 import MachinesHistoryCard from "../../components/MachinesHistory/MachinesHistoryCard";
 import EnvironmentsHistoryCard from "../../components/EnvironmentsHistroy/EnvironmentsHistoryCard";
-import Menu from "../../components/AppBar/Menu";
+import {Link} from "react-router-dom";
 
 // TODO : Menu Pop up 만들기.
 export default function Dashboard() {

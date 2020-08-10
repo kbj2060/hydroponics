@@ -7,6 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import useStyles from 'assets/jss/AppBarStyle.js'
 import Menu from './Menu';
+import {Link} from "react-router-dom";
 
 
 const MenuButton = () => {
@@ -35,7 +36,14 @@ export default function PermanentAppBar(props) {
           </Typography>
           <div className={classes.grow} />
             <div>
-              <Menu MenuButton={MenuButton} />
+              <Menu MenuButton={MenuButton}>
+                <div className={classes.popupWrapper}>
+                  <h1 className={classes.header}>SMART FARM</h1>
+                  <Link  to="/dashboard"><h2>DASHBOARD</h2> </Link>
+                  <Link  to="/settings"><h2>SETTING</h2></Link>
+                  <Link to="/">LOGOUT</Link>
+                </div>
+              </Menu>
             </div>
         </Toolbar>
       </AppBar>
