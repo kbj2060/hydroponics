@@ -29,25 +29,11 @@ const useStyles = makeStyles({
   }
 });
 
-const circleColorTable = {
-  'plant1' : "#FF925D",
-  'plant2' : "#FFCB3A",
-  'plant3' : "#FF4F61"
-}
-const unitsTable = {
-  'humidity': '%',
-  'co2': 'ppm',
-  'temperature': '°C'
-}
-const measurementWordTable = {
-  'humidity' : 'HUM',
-  'temperature': 'TEMP',
-  'co2': 'CO2'
-}
+
 
 export default function Figure(props) {
   const { environment, dimensions, values, plant } = props;
-  const { environments } = require('../../PROPERTIES');
+  const { environments, circleColorTable, unitsTable, environmentsWordTable } = require('../../PROPERTIES');
   const n_environment = environments.length;
   const classes = useStyles({
     dimensions: dimensions,
@@ -58,7 +44,7 @@ export default function Figure(props) {
 
   return (
       <div >
-          <Typography className={classes.title}>{measurementWordTable[environment]}</Typography>
+          <Typography className={classes.title}>{environmentsWordTable[environment]}</Typography>
           <Paper className={classes.root}>
             <div>
               <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>

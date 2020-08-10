@@ -4,19 +4,27 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import axios from "axios";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress"
+import ValueLabel from "@material-ui/core/Slider/ValueLabel";
 
-const CustomSlider = withStyles({
-    valueLabel: {
-      fontSize: '13px'
-    }
-  })(Slider);
+const StyledValueLabel = withStyles({
+  label: {
+    color : '#1E2425'
+  }
+})(ValueLabel);
+
+const CustomSlider = withStyles((theme ) => ({
+  valueLabel: {
+      fontSize: '15px',
+    fontWeight : '500'
+    },
+  }))(Slider);
 
 const useStyles = makeStyles({
   root: {
     width: 'auto',
     padding: '0 5% 0 5%'
   },
-  sldier :{
+  slider :{
     color : "#FFCB3A",
   },
   title : {
@@ -35,6 +43,7 @@ export default function SettingSlider(props) {
   const classes = useStyles();
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const {setRange, environmentsWordTable } = require('../../PROPERTIES');
 
   const giveSetting = () => {
     getSettingFromSlider({[environment]: setting});
@@ -78,18 +87,21 @@ export default function SettingSlider(props) {
   }
 
   return (
-    <div className={classes.root}>
+    <grid className={classes.root}>
       <Typography className={classes.title}>
-        {environment}
+        {environmentsWordTable[environment]}
       </Typography>
       <CustomSlider
-        className={classes.sldier}
+        className={classes.slider}
+        min={setRange[environment][0]}
+        max={setRange[environment][1]}
         value={setting}
         onChange={handleChange}
+        ValueLabelComponent={StyledValueLabel}
         valueLabelDisplay="on"
         aria-labelledby="range-slider"
         getAriaValueText={valuetext}
       />
-    </div>
+    </grid>
   );
 }

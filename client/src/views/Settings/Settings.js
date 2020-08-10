@@ -9,17 +9,18 @@ import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
+import Typography from '@material-ui/core/Typography';
+
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const CustomButton = withStyles({
   root : {
-    textAlign: 'center',
-    backgroundColor: '#343B3C',
-    color:'white',
-    fontSize : '14px',
+    background: "rgba(255, 255, 255, 0)",
+    color: "#FFF",
     '&:hover' : {
-      backgroundColor: '#343B3C',
+      background : "#FFCB3A",
+      color : 'white'
     }
   },
 })(Button);
@@ -70,14 +71,18 @@ export default function Settings() {
       <Grid container className={classes.container}>
         <Grid item xs={12} sm={12} md={12} className={classes.item}>
           <Card className={classes.parentItem}>
-            <div className={classes.sliderDiv}>
-            { environments.map((environment,index) =>
-              <SettingSlider key={environment.toString()} environment={environment}
-                             getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/> )}
-            </div>
-            <CustomButton onClick={ handleOnClick } 
-                          variant="contained" 
-                          size="medium"> APPLY </CustomButton>
+            <Grid container style={{marginBottom: '20px'}}>
+            { environments.map((environment,index) =>(
+              <Grid item xs={12} sm={4} md={4} className={classes.slider}>
+                <SettingSlider key={environment.toString()} environment={environment}
+                             getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/>
+              </Grid>)
+
+            )}
+            </Grid>
+            <CustomButton onClick={ handleOnClick }
+                          size="medium">
+              <Typography>APPLY</Typography> </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="success">
                 Settings applied!

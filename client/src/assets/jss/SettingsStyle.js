@@ -7,10 +7,10 @@ const settingsStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   container : {
-    padding :'15px 30px 15px 30px'
+
   },
   item : {
-    padding:'15px',
+    padding:'8px',
   },
   background : {
     position : 'relative',
@@ -21,21 +21,15 @@ const settingsStyle = makeStyles(theme =>({
     boxShadow : '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
     borderRadius : '6px',
   },
-  sliderDiv : {
-    display:'grid', 
-    gridTemplateColumns: 'auto auto auto',
-    padding: '3% 0 3% 0'
+  slider : {
+    padding: '0% 1% 0% 1%'
   },
   parentItem : {
     textAlign: 'center',
-    backgroundColor : 'rgba(255, 255, 255, 0)',
-    borderRadius : '15px',
+    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+    backgroundColor : 'rgba(255, 255, 255, 0.1)',    borderRadius : '15px',
     padding : '20px',
   },
-  applyButton:{
-    backgroundColor: '#c96b8b',
-    fontColor:'white',
-  }
 })
 )
 

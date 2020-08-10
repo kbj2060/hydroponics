@@ -6,17 +6,12 @@ import Figure from "./Figure";
 import axios from "axios";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
-const circleColorTable = {
-  'plant1' : "#FF925D",
-  'plant2' : "#FFCB3A",
-  'plant3' : "#FF4F61"
-}
-
 export default function StatusCard(props) {
   const {statusUpdateTime, environments} = require('../../PROPERTIES');
   const {plant} = props;
   const classes = useStyles();
   const cardGridRef = useRef();
+  const {circleColorTable} = require('../../PROPERTIES');
   const [width, setWidth] = React.useState(window.innerWidth);
   const [dimensions, setDimensions] = useState({width: 0, height: 0});
   const [recentStatus, setRecentStatus] = useState({
