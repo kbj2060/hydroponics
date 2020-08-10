@@ -49,7 +49,7 @@ export default function Login(props) {
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
-            <form >
+            <form>
                 <p className={classes.title}>SMART FARM</p>
                 <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
                 <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>

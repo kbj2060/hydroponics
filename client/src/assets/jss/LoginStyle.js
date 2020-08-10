@@ -12,6 +12,7 @@ const loginStyle = makeStyles(()=>({
         textAlign : 'center',
     },
     login : {
+        display : 'block',
         border:  'none',
         borderBottom:  'solid 1px rgba(0,0,0,.1)',
         margin: '5px 0 5px 0',
@@ -28,7 +29,7 @@ const loginStyle = makeStyles(()=>({
         borderRadius:  '24px',
         textAlign:  'center',
         padding:  '15px 40px',
-        marginTop:  '25px',
+        marginTop:  '20px',
         color:  '#fff',
         fontSize:  '14px',
         marginLeft:  'auto',

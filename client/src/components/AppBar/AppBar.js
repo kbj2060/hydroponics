@@ -8,6 +8,18 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import NavDrawer from './NavDrawer';
 import useStyles from 'assets/jss/AppBarStyle.js'
+import Menu from './Menu';
+
+
+const MenuButton = () => {
+  return (
+      <IconButton
+          aria-label="show more"
+          aria-haspopup="true">
+        <MenuIcon style={{ color: 'white' }} />
+      </IconButton>
+  )
+}
 
 export default function PermanentAppBar(props) {
   const classes = useStyles();
@@ -31,25 +43,16 @@ export default function PermanentAppBar(props) {
         </Typography>
         <div className={classes.grow} />
           <div>
-            <IconButton
-              aria-label="show more"
-              aria-haspopup="true"
-              onClick={toggleDrawer('right', true)}
-              >
-              <MenuIcon
-                style={{ color: 'white' }}
-              />
-            </IconButton>
-            <SwipeableDrawer
+            <Menu MenuButton={MenuButton} />
+{/*            <SwipeableDrawer
               anchor="right"
               open={state.right}
               onClose={toggleDrawer('right', false)}
               onOpen={toggleDrawer('right', true)}
-              classes={{ paper: classes.paper }} >
-              <div>
-                <NavDrawer {...state}/>
-              </div>
+              classes={{ paper: classes.paper }} >*/}
+{/*
             </SwipeableDrawer>
+*/}
           </div>
       </Toolbar>
       </AppBar>

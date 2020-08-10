@@ -16,7 +16,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 10 * 1000,
 	showHistoryNumber : 20,
-	ip : "http://125.130.139.190",
+	ip : "http://172.30.1.36",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

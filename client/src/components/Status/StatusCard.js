@@ -25,7 +25,6 @@ export default function StatusCard(props) {
     "temperature": 0
   });
 
-
   const fetchStatus = async () => {
     try {
       const recentIndex = 0;
@@ -41,7 +40,6 @@ export default function StatusCard(props) {
       console.log('FETCH STATUS ERROR.');
     }
   };
-
 
   useEffect(() => {
     const interval = setInterval(() => {
