@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+const mqtt = require('mqtt');
 
 const useStyles = makeStyles({
   root: {
@@ -29,8 +30,6 @@ const useStyles = makeStyles({
   }
 });
 
-
-
 export default function Figure(props) {
   const { environment, dimensions, values, plant } = props;
   const { environments, circleColorTable, unitsTable, environmentsWordTable } = require('../../PROPERTIES');
@@ -41,6 +40,23 @@ export default function Figure(props) {
     plantColor : circleColorTable[plant],
   });
 
+
+  const client = mqtt.connect('mqtt://127.0.0.1',{clientId: "webClient"});
+
+  useEffect(() => {
+    client.on('message', (topic, message) => {
+      console.log(topic, message.toString());
+    })
+
+    client.on('connect', (packet) => {
+      client.subscribe(['Temperature_1', 'Humidity_1', 'CO2_1', 'Current_1'],  function (err) {
+        if (!err) { client.publish('presence', 'Hello mqtt') }
+      });
+    })
+    client.on("error", (error) => {
+      console.log("Can't connect" + error);
+    })
+  })
 
   return (
       <div >

@@ -7,7 +7,7 @@ import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {useDispatch} from "react-redux";
 import {controlSwitch} from "../../actions";
-import io from 'socket.io-client';
+import socket from '../../socket';
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -82,9 +82,6 @@ const IOSSwitch = withStyles(theme => ({
 
 export default function CustomizedSwitches(props) {
   const {machine} = props
-  const {ip, socketIoPort} = require('../../PROPERTIES');
-  const socket = io.connect(`${ip}:${socketIoPort}`);
-
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});

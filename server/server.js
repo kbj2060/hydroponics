@@ -31,6 +31,7 @@ const connection = mysql.createConnection({
 connection.connect();
 const io = require('socket.io').listen(server);
 
+
 io.on("connection", function (socket) {
   console.log("Made socket connection");
 
@@ -40,35 +41,12 @@ io.on("connection", function (socket) {
     io.emit('receiveSwitchControl', switchStatus);
   })
 
-  socket.on('sendUpdateHistory', (updateHistory) => {
-    console.log('update history socket has been sent.');
-    console.log(updateHistory);
-    io.emit('receiveUpdateHistory', updateHistory);
+  socket.on('sendEnvironmentFromMqtt', (mqttData) => {
+    console.log('mqtt data socket has been sent.');
+    console.log(mqttData);
+    io.emit('receiveEnvironmentFromMqtt', mqttData);
   })
 });
-
-
-const mqtt = require('mqtt');
-const client = mqtt.connect('mqtt://127.0.0.1',{clientId: "webClient"});
-
-
-client.subscribe(['Temperature', 'Humidity', 'CO2', 'Current']);
-
-client.on('connect', (packet) => {
-  console.log(packet)
-})
-
-client.handleMessage = function(packet, done) {
-  const {topic, payload} = packet;
-  console.log(topic, payload.toString());
-  done();
-}
-
-client.on('message', (topic, message) => {
-    console.log(topic, message.toString());
-    console.log('message accepted!');
-})
-
 
 app.get('/api/getStatus', (req, res) => {
     const table = req.query['table'];

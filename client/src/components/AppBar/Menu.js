@@ -7,6 +7,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 
 const LinkButton = (props) => {
@@ -19,6 +20,11 @@ const LinkButton = (props) => {
 	)
 }
 
+const customBackdrop = withStyles(() => ({
+	root : {
+		backgroundColor : "rgba(0, 0, 0, 0.9)"
+	}
+}))(Backdrop)
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -33,7 +39,11 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		backgroundColor : 'rgba(255, 255, 255, 0)',
 		borderRadius : '10px',
+		border : '1px solid',
 		color: 'white',
+		'&:focus': {
+			outline: '0',
+		}
 	},
 	menuButton : {
 		backgroundColor : 'rgba(255, 255, 255, 0)',
@@ -78,21 +88,21 @@ export default function TransitionsModal() {
 				<MenuIcon style={{ color: 'white' }} />
 			</IconButton>
 			<Modal
+				disableAutoFocus={true}
 				className={classes.modal}
 				open={open}
-				BackdropComponent={Backdrop}
+				onClose={handleClose}
+				BackdropComponent={customBackdrop}
 				BackdropProps={{
 					timeout: 500,
 				}}
 			>
-				<Fade in={open}>
-					<div className={classes.paper}>
-						<h1 className={classes.header}>SMART FARM</h1>
-						<LinkButton onClick={handleClose} page={"dashboard"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} page={"settings"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} page={"logout"} buttonDesign={classes.menuButton} />
-					</div>
-				</Fade>
+				<div className={classes.paper}>
+					<h1 className={classes.header}>SMART FARM</h1>
+					<LinkButton onClick={handleClose} page={"dashboard"} buttonDesign={classes.menuButton} />
+					<LinkButton onClick={handleClose} page={"settings"} buttonDesign={classes.menuButton} />
+					<LinkButton onClick={handleClose} page={"logout"} buttonDesign={classes.menuButton} />
+				</div>
 			</Modal>
 		</div>
 		</ClickAwayListener>
