@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from 'assets/jss/SettingsStyle';
 import AppBar from 'components/AppBar/AppBar';
-import SettingSlider from '../../components/Setting/Slider';
+import SettingSlider from '../../components/Setting/Setting';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -77,12 +77,12 @@ export default function Settings() {
                 <SettingSlider key={environment.toString()} environment={environment}
                              getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/>
               </Grid>)
-
             )}
             </Grid>
             <CustomButton onClick={ handleOnClick }
                           size="medium">
-              <Typography>APPLY</Typography> </CustomButton>
+              <Typography>APPLY</Typography>
+            </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="success">
                 Settings applied!

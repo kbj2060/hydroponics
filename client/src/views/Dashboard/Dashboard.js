@@ -8,9 +8,7 @@ import StatusCard from "../../components/Status/StatusCard";
 import useStyles from 'assets/jss/DashboardStyle';
 import MachinesHistoryCard from "../../components/MachinesHistory/MachinesHistoryCard";
 import EnvironmentsHistoryCard from "../../components/EnvironmentsHistroy/EnvironmentsHistoryCard";
-import {Link} from "react-router-dom";
 
-// TODO : Menu Pop up 만들기.
 export default function Dashboard() {
   const classes = useStyles();
   const {environments, plants} = require('../../PROPERTIES');
@@ -43,7 +41,7 @@ export default function Dashboard() {
           {
             environments.map(env => { return (
             <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={4} xl={4}  className={classes.item}>
-              <EnvironmentsHistoryCard environment={env}/>
+              <EnvironmentsHistoryCard environment={env} />
             </Grid>)
             })
           }

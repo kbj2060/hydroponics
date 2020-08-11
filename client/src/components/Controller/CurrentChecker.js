@@ -7,8 +7,8 @@ import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
-		height : '1.1em',
-		width : '1.1em',
+		height : '1.3em',
+		width : '1.3em',
 		margin : 'auto',
 		verticalAlign: 'middle',
 		textAlign:'center',
@@ -96,7 +96,7 @@ export default function CurrentChecker({machine}) {
 		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >
 			{
 				currentNotFlowing(checklist) ?
-				<CurrentFlowing fillColor={'black'}/> : <CurrentFlowing fillColor={'#FFCB3A'}/>}
+				<CurrentFlowing fillColor={'#1E2425'}/> : <CurrentFlowing fillColor={'#FFCB3A'}/>}
 		</Box>
 	);
 }

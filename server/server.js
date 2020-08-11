@@ -7,18 +7,18 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const fs = require('fs');
 const mysql = require('mysql');
-
+const mqtt = require('mqtt');
 const app = express();
 const server = app.listen(PORT, () => {
   console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
 })
+const io = require('socket.io').listen(server);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const data = fs.readFileSync('./server/db_conf.json');
 const conf = JSON.parse(data);
-
 const connection = mysql.createConnection({
     host: conf.host,
     user: conf.user,
@@ -27,9 +27,7 @@ const connection = mysql.createConnection({
     database: conf.database,
     multipleStatements: true
 });
-
 connection.connect();
-const io = require('socket.io').listen(server);
 
 
 io.on("connection", function (socket) {
@@ -40,13 +38,78 @@ io.on("connection", function (socket) {
     console.log(switchStatus);
     io.emit('receiveSwitchControl', switchStatus);
   })
-
-  socket.on('sendEnvironmentFromMqtt', (mqttData) => {
-    console.log('mqtt data socket has been sent.');
-    console.log(mqttData);
-    io.emit('receiveEnvironmentFromMqtt', mqttData);
-  })
 });
+
+const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: "webClient"});
+
+/*
+mqtt data send example
+topic : current
+data : {
+  "led_current_1":"213",
+  "led_current_2" : "1212",
+  "led_current_3":"123",
+  "led_current_4" : "1212",
+  "airconditioner_current_1" : "1212",
+  "airconditioner_current_2" : "1212"
+}
+ */
+const handleCurrentsMQTT = (topic, message) => {
+  const jsonMessage = JSON.parse(message.toString());
+  const sql = `INSERT INTO iot.${topic} VALUES 
+  (null, ${jsonMessage['led_current_1']}, 
+   ${jsonMessage['led_current_2']}, ${jsonMessage['led_current_3']},
+    ${jsonMessage['led_current_4']}, ${jsonMessage['airconditioner_current_1']},
+    ${jsonMessage['airconditioner_current_2']}, now(), 0);`;
+  connection.query(sql,
+    (err, rows, fields) => {
+      console.log(rows);
+    }
+  )
+}
+
+/*
+mqtt data send example
+topic : plant1
+data : {
+  "temperature":"213",
+  "humidity" : "1212",
+  "co2":"123"
+}
+ */
+const handlePlantEnvironmentsMQTT = (topic, message) => {
+  const jsonMessage = JSON.parse(message.toString());
+  const sql = `INSERT INTO iot.${topic} VALUES (null, now(), ${jsonMessage['co2']}, 
+  ${jsonMessage['humidity']}, ${jsonMessage['temperature']}, 0);`;
+  connection.query(sql,
+    (err, rows, fields) => {
+      console.log(rows);
+    }
+  )
+}
+
+client.on('message', (topic, message) => {
+  if(topic.includes("plant")){
+    handlePlantEnvironmentsMQTT(topic, message);
+  }
+  else if (topic === 'current'){
+    handleCurrentsMQTT(topic, message);
+  }
+  else{
+    console.log('topic error occurred.')
+  }
+})
+
+client.on('connect', (packet) => {
+  client.subscribe(["plant1", "plant2", "plant3", "current"],  function (err) {
+    if (!err) { client.publish('presence', 'subscribe error occurred') }
+  });
+})
+
+client.on("error", (error) => {
+  console.log("Can't connect" + error);
+})
+
 
 app.get('/api/getStatus', (req, res) => {
     const table = req.query['table'];
@@ -54,7 +117,7 @@ app.get('/api/getStatus', (req, res) => {
     const num = req.query['num'];
     connection.query(
       `SELECT ${selects} FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
-      (err, rows, fields) => {
+      (err, rows) => {
           res.send(rows);
       }
     )
@@ -67,7 +130,7 @@ app.get('/api/getSwitch', (req, res) => {
   const machine = req.query['machine'];
   connection.query(
     `SELECT ${selects} FROM iot.${table} WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
-    (err, rows, fields) => {
+    (err, rows) => {
       res.send(rows);
     }
   )
@@ -79,9 +142,10 @@ app.get('/api/getDate', (req, res) => {
   const num = req.query['num'];
 
   connection.query(
-    `SELECT created FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
-    (err, rows, fields) => {
-      let result = rows.map((row, index, arr) => {
+    `SELECT created 
+    FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
+    (err, rows) => {
+      let result = rows.map((row) => {
         const date = Object.values(row)[0]
         return moment.utc(date).format('YYYY/MM/DD HH:mm:ss');
       })
@@ -90,23 +154,23 @@ app.get('/api/getDate', (req, res) => {
   )
 });
 
-
-
 app.get('/api/getEnvironmentHistory', (req, res) => {
-    const environment = req.query['selects'];
-    const sql = req2query(req.query);
-    let data = new Array();
-
+    const [environment, created] = req.query['selects'];
+    const tables = req.query['table'];
+    const sql = envHistoryReq2query(req.query);
+    let data = new Object({});
+    let arr = new Array();
     connection.query(
-        sql, (err, rows, fields) => {
-            let results = Object.values(JSON.parse(JSON.stringify(rows)));
-            results.forEach((result, index= null, arr = null) => {
-                let row = result.map((v, idx = null, arr = null) => {
-                  return v[environment];
-                });
-                data.push(row);
-            });
-            res.send(data);
+        sql, (err, rows) => {
+          let results = Object.values(JSON.parse(JSON.stringify(rows)));
+          results.forEach((result) => {
+              result.forEach((dictRow) => {
+                data[dictRow['created']] = dictRow[environment];
+              });
+              arr.push(data);
+              data = new Object({});
+          });
+          res.send(arr);
         });
 });
 
@@ -115,7 +179,7 @@ app.get('/api/getSwitchHistory', (req, res) => {
   const num = req.query['num'];
   connection.query(
     `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
-    (err, rows, fields) => {
+    (err, rows) => {
       res.send(rows);
     }
   )
@@ -128,8 +192,9 @@ app.post('/api/switchMachine', (req, res) => {
   let status = req.body.params['status'];
   let params = [machine, status];
   connection.query(sql, params,
-    (err, rows, fields) => {
+    (err, rows) => {
       res.send(rows);
+      client.publish(machine, status?'1':'0');
     }
   )
 });
@@ -140,24 +205,29 @@ app.post('/api/applySettings', (req, res) => {
   const params = [settings['humidity'][0], settings['humidity'][1], settings['temperature'][0], settings['temperature'][1],
     settings['co2'][0],settings['co2'][1]]
   connection.query(sql, params,
-    (err, rows, fields) => {
+    (err, rows) => {
     console.log(rows)
       res.send(rows);
     }
   )
 });
 
-function req2query(req_params){
-  const selects = req_params['selects'];
+function envHistoryReq2query(req_params){
+  const [environment] = req_params['selects'];
   const tables = req_params['table'];
 
   if (tables.length > 1){
-    let sqls = tables.map((table, index, arr) => {
-      return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
+    let sqls = tables.map((table) => {
+      return `SELECT ${environment}, created
+      FROM iot.${table} 
+      WHERE DATE_FORMAT(iot.${table}.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+      ORDER BY id DESC ;`;
     });
     return sqls.join(" ");
   }
-
-  return `SELECT ${selects}, created FROM iot.${table} ORDER BY id DESC LIMIT 100;`;
+  return `SELECT ${environment} 
+  FROM iot.${table} 
+  WHERE DATE_FORMAT(iot.${table}.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+  ORDER BY id DESC ;`;
 }
 

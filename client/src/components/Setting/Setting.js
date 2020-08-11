@@ -12,10 +12,10 @@ const StyledValueLabel = withStyles({
   }
 })(ValueLabel);
 
-const CustomSlider = withStyles((theme ) => ({
+const CustomSlider = withStyles(() => ({
   valueLabel: {
       fontSize: '15px',
-    fontWeight : '500'
+      fontWeight : '500'
     },
   }))(Slider);
 
@@ -38,12 +38,12 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function SettingSlider(props) {
+export default function Setting(props) {
   const { environment, isApplied, getSettingFromSlider } = props;
   const classes = useStyles();
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const {setRange, environmentsWordTable } = require('../../PROPERTIES');
+  const {settingRange, environmentsWordTable } = require('../../PROPERTIES');
 
   const giveSetting = () => {
     getSettingFromSlider({[environment]: setting});
@@ -93,8 +93,8 @@ export default function SettingSlider(props) {
       </Typography>
       <CustomSlider
         className={classes.slider}
-        min={setRange[environment][0]}
-        max={setRange[environment][1]}
+        min={settingRange[environment][0]}
+        max={settingRange[environment][1]}
         value={setting}
         onChange={handleChange}
         ValueLabelComponent={StyledValueLabel}

@@ -4,37 +4,37 @@ import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
+import {ColorCircularProgress} from '../utils/ColorCircularProgress';
+import {LineSetting} from "./LineSetting";
 
 export default function EnvironmentsHistoryCard(props) {
   const { historyUpdateTime } = require('../../PROPERTIES');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
-  const [date, setDate] = React.useState([]);
+  const [lastUpdate, setLastUpdate] = React.useState('');
+
+  const checkEmpty = (value) => {
+    if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
+      return true;
+    }
+  }
+
+  const getLastUpdate = (history) => {
+    if (checkEmpty(history)){ return ''; }
+    else{ return Object.keys(history[0])[0]; }
+  }
 
   const fetchHistory = async () => {
     try {
       let {data:environmentFromPlant} = await axios.get('/api/getEnvironmentHistory', {
         params: {
-          selects: environment,
+          selects: [environment, 'created'],
           table: ['plant1', 'plant2', 'plant3']
         }
       });
       setHistory(environmentFromPlant);
-    } catch (e) {
-      console.log('FETCH HISTORY ERROR.');
-    }
-  }
-
-  const fetchDates = async () => {
-    try {
-      let {data} = await axios.get('/api/getDate', {
-        params: {
-          table: 'plant1',
-          num: 100
-        }
-      });
-      setDate(data);
+      setLastUpdate(getLastUpdate(history));
     } catch (e) {
       console.log('FETCH HISTORY ERROR.');
     }
@@ -43,23 +43,25 @@ export default function EnvironmentsHistoryCard(props) {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchHistory();
-      fetchDates();
     }, historyUpdateTime);
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    setLastUpdate(getLastUpdate(history));
+  }, [history])
 
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine history={history} date={date} width={3} height={1} />
+        <CustomLine history={history} width={3} height={1} />
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{environment}</Typography>
         <Typography variant="body2" className={classes.textColor}>No problem found</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <Typography variant="inherit" className={classes.updateTime}> Last Update : {date[date.length-1]}</Typography>
+          <Typography variant="inherit" className={classes.updateTime}> Last Update : {lastUpdate}</Typography>
         </div>
       </div>
     </div>

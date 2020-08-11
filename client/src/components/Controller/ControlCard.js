@@ -7,7 +7,7 @@ import useStyles from 'assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 
 export default function ControlCard() {
-    const {machines, currentUpdateTime} = require("../../PROPERTIES")
+    const {machines} = require("../../PROPERTIES")
     const classes = useStyles();
 
     return (

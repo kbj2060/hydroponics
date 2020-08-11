@@ -8,6 +8,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {useDispatch} from "react-redux";
 import {controlSwitch} from "../../actions";
 import socket from '../../socket';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const ColorCircularProgress = withStyles({
   root: {
@@ -80,16 +84,15 @@ const IOSSwitch = withStyles(theme => ({
   );
 });
 
-export default function CustomizedSwitches(props) {
+export default function Switches(props) {
   const {machine} = props
   const [state, setState] = React.useState({
                                               status: true, 
                                               machine: machine});
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-
   const classes = style();
   const dispatch = useDispatch()
-  /// !!!다른 단말기의 접속 ip 와 개발 중인 컴퓨터의 접속 ip 가 같아야 통신됨.!!!
   const recentIndex = 0;
 
   const fetchSwitch = async () => {
@@ -123,6 +126,7 @@ export default function CustomizedSwitches(props) {
       machine : machine,
       status : status
     });
+    setSnackbarOpen(true);
 
     socket.emit('sendSwitchControl', {
       machine : machine,
@@ -150,17 +154,24 @@ export default function CustomizedSwitches(props) {
   }
 
   return (
-    <FormGroup>
-      <FormControlLabel
-        control={
-          <IOSSwitch
-            checked={state.status}
-            onChange={handleChange}
-            value={machine}
-          />
-        }
-        className={classes.controlForm}
-      />
-    </FormGroup>
+    <>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <IOSSwitch
+              checked={state.status}
+              onChange={handleChange}
+              value={machine}
+            />
+          }
+          className={classes.controlForm}
+        />
+      </FormGroup>
+      <Snackbar open={snackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={1000}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity="info">
+          {`${machine} is switched manually!`}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
