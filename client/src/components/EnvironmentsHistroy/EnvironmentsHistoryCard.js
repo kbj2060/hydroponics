@@ -4,8 +4,7 @@ import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
-import {ColorCircularProgress} from '../utils/ColorCircularProgress';
-import {LineSetting} from "./LineSetting";
+
 
 export default function EnvironmentsHistoryCard(props) {
   const { historyUpdateTime } = require('../../PROPERTIES');
@@ -46,10 +45,6 @@ export default function EnvironmentsHistoryCard(props) {
     }, historyUpdateTime);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    setLastUpdate(getLastUpdate(history));
-  }, [history])
 
   return (
     <div className={classes.background}>

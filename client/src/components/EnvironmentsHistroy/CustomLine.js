@@ -10,10 +10,11 @@ const checkEmpty = (value) => {
 
 export default function CustomLine(props) {
     const { history, width, height } = props;
+    console.log(history)
     const {state, options} = LineSetting(history);
 
     if (checkEmpty(history)){
-        return <Line width={width} height={height}/>
+        return <Line data={state} width={width} height={height}/>
     }
 
     return(

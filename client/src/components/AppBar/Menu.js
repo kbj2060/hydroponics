@@ -4,7 +4,6 @@ import { Link,  useHistory  } from 'react-router-dom';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -41,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius : '10px',
 		border : '1px solid',
 		color: 'white',
+		height : '100%',
+		padding : '10px',
 		'&:focus': {
 			outline: '0',
 		}
@@ -61,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
 		paddingBottom : '18.7px',
 		marginLeft : '30px',
 		marginRight : '30px',
-		marginBottom : '7px',
 		textAlign : 'center'
 	},
 }));

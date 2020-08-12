@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import axios from "axios";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress"
 import ValueLabel from "@material-ui/core/Slider/ValueLabel";
+
 
 const StyledValueLabel = withStyles({
   label: {
@@ -12,12 +14,13 @@ const StyledValueLabel = withStyles({
   }
 })(ValueLabel);
 
-const CustomSlider = withStyles(() => ({
+const CustomSlider = withStyles({
   valueLabel: {
-      fontSize: '15px',
-      fontWeight : '500'
-    },
-  }))(Slider);
+    fontSize: '15px',
+    fontWeight : '500'
+  },
+})(Slider);
+
 
 const useStyles = makeStyles({
   root: {
@@ -87,21 +90,23 @@ export default function Setting(props) {
   }
 
   return (
-    <grid className={classes.root}>
-      <Typography className={classes.title}>
-        {environmentsWordTable[environment]}
-      </Typography>
-      <CustomSlider
-        className={classes.slider}
-        min={settingRange[environment][0]}
-        max={settingRange[environment][1]}
-        value={setting}
-        onChange={handleChange}
-        ValueLabelComponent={StyledValueLabel}
-        valueLabelDisplay="on"
-        aria-labelledby="range-slider"
-        getAriaValueText={valuetext}
-      />
-    </grid>
+    <div className={classes.margin}>
+      <Grid className={classes.root}>
+        <Typography className={classes.title}>
+          {environmentsWordTable[environment]}
+        </Typography>
+        <CustomSlider
+          className={classes.slider}
+          min={settingRange[environment][0]}
+          max={settingRange[environment][1]}
+          value={setting}
+          onChange={handleChange}
+          ValueLabelComponent={StyledValueLabel}
+          valueLabelDisplay="on"
+          aria-labelledby="range-slider"
+          getAriaValueText={valuetext}
+        />
+      </Grid>
+    </div>
   );
 }

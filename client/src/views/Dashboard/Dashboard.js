@@ -33,7 +33,7 @@ export default function Dashboard() {
           </Grid>
           {
             plants.map(plant => { return(
-               <Grid item xs={12} sm={12} md={4} className={classes.item} >
+               <Grid key={plant.toString()} item xs={12} sm={12} md={4} className={classes.item} >
                  <StatusCard plant={plant} />
                </Grid>)
             })

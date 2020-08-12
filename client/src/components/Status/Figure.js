@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius: '50%',
     border: props => '3px solid ' + props.plantColor,
-    height: props => props.dimensions.width / (props.n_environment + 1),
+    height: props => props.dimensions.width,
     margin: '5%',
     display: 'flex',
     flexDirection: 'column',
@@ -30,19 +30,35 @@ const useStyles = makeStyles({
 });
 
 export default function Figure(props) {
-  const { environment, dimensions, values, plant } = props;
+  const { environment, values, plant } = props;
   const { environments, circleColorTable, unitsTable, environmentsWordTable } = require('../../PROPERTIES');
   const n_environment = environments.length;
+  const roundFigureRef = useRef();
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const [dimensions, setDimensions] = useState({width: 0, height: 0});
+
   const classes = useStyles({
     dimensions: dimensions,
     n_environment : n_environment,
     plantColor : circleColorTable[plant],
   });
 
+  useLayoutEffect(() => {
+    if (roundFigureRef.current) {
+      setDimensions({
+        width: roundFigureRef.current.offsetWidth,
+        height: roundFigureRef.current.offsetHeight
+      });
+    }
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth)
+    });
+  }, [width]);
+
   return (
       <div >
           <Typography className={classes.title}>{environmentsWordTable[environment]}</Typography>
-          <Paper className={classes.root}>
+          <Paper className={classes.root} ref={roundFigureRef}>
             <div>
               <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
             </div>

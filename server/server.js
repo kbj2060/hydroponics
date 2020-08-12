@@ -62,7 +62,7 @@ const handleCurrentsMQTT = (topic, message) => {
     ${jsonMessage['led_current_4']}, ${jsonMessage['airconditioner_current_1']},
     ${jsonMessage['airconditioner_current_2']}, now(), 0);`;
   connection.query(sql,
-    (err, rows, fields) => {
+    (err, rows) => {
       console.log(rows);
     }
   )
@@ -82,7 +82,7 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   const sql = `INSERT INTO iot.${topic} VALUES (null, now(), ${jsonMessage['co2']}, 
   ${jsonMessage['humidity']}, ${jsonMessage['temperature']}, 0);`;
   connection.query(sql,
-    (err, rows, fields) => {
+    (err, rows) => {
       console.log(rows);
     }
   )
@@ -147,7 +147,7 @@ app.get('/api/getDate', (req, res) => {
     (err, rows) => {
       let result = rows.map((row) => {
         const date = Object.values(row)[0]
-        return moment.utc(date).format('YYYY/MM/DD HH:mm:ss');
+        return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
       })
       res.send(result);
     }
@@ -155,8 +155,7 @@ app.get('/api/getDate', (req, res) => {
 });
 
 app.get('/api/getEnvironmentHistory', (req, res) => {
-    const [environment, created] = req.query['selects'];
-    const tables = req.query['table'];
+    const [environment] = req.query['selects'];
     const sql = envHistoryReq2query(req.query);
     let data = new Object({});
     let arr = new Array();
@@ -165,7 +164,8 @@ app.get('/api/getEnvironmentHistory', (req, res) => {
           let results = Object.values(JSON.parse(JSON.stringify(rows)));
           results.forEach((result) => {
               result.forEach((dictRow) => {
-                data[dictRow['created']] = dictRow[environment];
+                const date = getLocaleMoment(dictRow['created']);
+                data[date] = dictRow[environment];
               });
               arr.push(data);
               data = new Object({});
@@ -211,6 +211,10 @@ app.post('/api/applySettings', (req, res) => {
     }
   )
 });
+
+function getLocaleMoment(date) {
+  return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
+}
 
 function envHistoryReq2query(req_params){
   const [environment] = req_params['selects'];

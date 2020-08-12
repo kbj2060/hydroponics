@@ -11,7 +11,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
 import Typography from '@material-ui/core/Typography';
 
-
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const CustomButton = withStyles({
@@ -43,7 +42,9 @@ export default function Settings() {
   }
 
   useEffect(() => {
-    if(isApplied) { applySettings(); }
+    if(isApplied) {
+      applySettings();
+    }
     return () => {
       setIsApplied(false)
     }
@@ -73,7 +74,7 @@ export default function Settings() {
           <Card className={classes.parentItem}>
             <Grid container style={{marginBottom: '20px'}}>
             { environments.map((environment,index) =>(
-              <Grid item xs={12} sm={4} md={4} className={classes.slider}>
+              <Grid key={environment.toString()} item xs={12} sm={4} md={4} className={classes.slider}>
                 <SettingSlider key={environment.toString()} environment={environment}
                              getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/>
               </Grid>)
