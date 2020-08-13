@@ -1,5 +1,8 @@
+import React, {useEffect} from 'react';
+import axios from "axios";
+import 'chartjs-plugin-annotation';
+
 let options =  {
-	responsive: true,
 	legend: {
 		display: false
 	},
@@ -12,7 +15,37 @@ let options =  {
 				},
 				parser: 'YYYY/MM/DD HH:mm:ss',
 			}
-		}]
+		}],
+	},
+	annotation: {
+		annotations: [
+			{
+				type: "line",
+				mode: "horizontal",
+				scaleID: "y-axis-0",
+				value: 129,
+				borderColor: "black",
+				borderWidth: 10,
+				label: {
+					backgroundColor: "red",
+					content: "Test Label",
+					enabled: true
+				}
+			},
+			{
+				type: "line",
+				mode: "horizontal",
+				scaleID: "y-axis-0",
+				value: 30,
+				borderColor: "RED",
+				borderWidth: 10,
+				label: {
+					backgroundColor: "red",
+					content: "Test Label",
+					enabled: true
+				}
+			}
+		]
 	}
 }
 
@@ -45,22 +78,66 @@ let state = {
 			borderColor: '#FF4F61',
 			borderWidth: 2,
 			data: []
-		}
+		},
+		{
+			label: 'MIN',
+			fill: false,
+			lineTension: 0.5,
+			backgroundColor: '#efcf76',
+			borderColor: '#FF4F61',
+			borderWidth: 2,
+			data: []
+		},
+		{
+			label: 'MAX',
+			fill: false,
+			lineTension: 0.5,
+			backgroundColor: '#efcf76',
+			borderColor: '#FF4F61',
+			borderWidth: 2,
+			data: []
+		},
 	]
 }
 
-export const LineSetting = (history) => {
-	state.datasets.forEach((dataset, index) => {
-		try{
-			state.datasets[index].data = Object.values(history[index]);
-		} catch (error){
-			state.datasets[index].data = [];
-		}
-	});
-	try{
-		state.labels = Object.keys(history[0])
-	} catch (error) {
-		state.labels = '';
+const checkEmpty = (value) => {
+	if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
+		return true;
 	}
+}
+
+export default function LineSetting (history, environment) {
+	const [range, setRange] = React.useState({});
+
+	const fetchSetting = async () => {
+		try {
+			await axios.get('/api/getStatus', {
+				params: {
+					selects: [`${environment}_min`, `${environment}_max`],
+					table: ['setting'],
+					num: 1
+				}
+			}).then(({data}) => {
+
+			})
+		} catch (e) {
+			console.log('FETCH SETTING ERROR.');
+		}
+	}
+
+	useEffect(() => {
+		fetchSetting();
+	}, [])
+
+	if(checkEmpty(history)){
+		return {state, options}
+	}
+
+	history.forEach((dataset, index) => {
+			state.datasets[index].data = Object.values(history[index]);
+	});
+
+	state.labels = Object.keys(history[0])
+
 	return {state, options};
 }

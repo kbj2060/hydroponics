@@ -21,19 +21,20 @@ export default function EnvironmentsHistoryCard(props) {
 
   const getLastUpdate = (history) => {
     if (checkEmpty(history)){ return ''; }
-    else{ return Object.keys(history[0])[0]; }
+    else{ setLastUpdate(Object.keys(history[0])[0]); }
   }
 
   const fetchHistory = async () => {
     try {
-      let {data:environmentFromPlant} = await axios.get('/api/getEnvironmentHistory', {
+      await axios.get('/api/getEnvironmentHistory', {
         params: {
           selects: [environment, 'created'],
           table: ['plant1', 'plant2', 'plant3']
         }
+      }).then(({data:environmentFromPlant})=> {
+        setHistory(environmentFromPlant);
+        getLastUpdate(environmentFromPlant);
       });
-      setHistory(environmentFromPlant);
-      setLastUpdate(getLastUpdate(history));
     } catch (e) {
       console.log('FETCH HISTORY ERROR.');
     }
@@ -49,7 +50,7 @@ export default function EnvironmentsHistoryCard(props) {
   return (
     <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine history={history} width={3} height={1} />
+        <CustomLine environment={environment} history={history} width={3} height={1} />
       </div>
       <div className={classes.footer} >
         <Typography variant="body1" className={classes.textColor}>{environment}</Typography>
