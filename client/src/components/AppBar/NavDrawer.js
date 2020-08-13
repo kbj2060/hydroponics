@@ -26,7 +26,9 @@ export default function NavDrawer (props) {
   const [state, setstate] = React.useState(props);
 
   useEffect(() => {
+    let unmounted = false;
     setstate(state);
+    return () => { unmounted = true; }
     }, [props])
 
   const drawerItems = {

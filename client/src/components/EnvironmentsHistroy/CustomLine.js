@@ -9,7 +9,6 @@ const checkEmpty = (value) => {
     }
 }
 
-// TODO : 2번 render 되는 이유 알아서 수정
 export default function CustomLine(props) {
     const { history, width, height, environment } = props;
     const { state, options } = LineSetting(history, environment);

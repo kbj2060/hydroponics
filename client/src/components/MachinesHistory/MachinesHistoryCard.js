@@ -18,6 +18,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
 import {store} from "../../store";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme({
   overrides: {
@@ -102,9 +103,11 @@ const useStyles2 = makeStyles({
 		backgroundColor : 'rgba(255, 255, 255, 0.1)',
 		borderRadius: '0.5rem',
 		height: '100%'},
-  text : {
-    color : 'white'
-  },
+	text : {
+		padding : '5px 0 5px 0',
+		color : 'white !important',
+		fontWeight : 'bold',
+	},
 	statusOn : {
 		color : '#FFCB3A'
 	},
@@ -158,7 +161,15 @@ export default function CustomPaginationActionsTable() {
 	}
 
 	useEffect(() => {
-		fetchSwitchHistory();
+		let unmounted = false;
+		fetchSwitchHistory().then(() => {
+			if (!unmounted) {
+				setIsLoading(false);
+			}
+		})
+		return () => {
+			unmounted = true;
+		}
 	}, [refresh]);
 
 	if(isLoading){

@@ -29,7 +29,7 @@ export default function CurrentChecker({machine}) {
 	const classes = useStyles();
 	const [isLoading, setIsLoading] = React.useState(true);
 
-	// TODO: Settings 페이지에서 설정값 불러오기.
+	// TODO: 각 machine의 허용 전류 값을 측정 후, 데이터베이스에 추가.
 	const min = 1.2
 	const max = 3
 
@@ -64,12 +64,6 @@ export default function CurrentChecker({machine}) {
 
 	const currentNotFlowing = (checks) => {
 		return checks.some((element) => element === false)
-	}
-
-	const checkChecklist = () => {
-		if ( typeof checklist === 'undefined'){
-			setIsLoading(true);
-		} else { return setIsLoading(false); }
 	}
 
 	useEffect(() => {

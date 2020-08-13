@@ -1,32 +1,31 @@
 'use strict'
 
-const {socketIoPort:PORT} = require('../PROPERTIES');
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const moment = require('moment');
-const fs = require('fs');
-const mysql = require('mysql');
-const mqtt = require('mqtt');
-const app = express();
-const server = app.listen(PORT, () => {
-  console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
-})
-const io = require('socket.io').listen(server);
+const {socketIoPort:PORT} = require('../PROPERTIES'),
+       express = require('express'),
+       bodyParser = require('body-parser'),
+       moment = require('moment'),
+       fs = require('fs'),
+       mysql = require('mysql'),
+       mqtt = require('mqtt'),
+       app = express(),
+       server = app.listen(PORT, () => {
+          console.log(`${PORT}번 port에 http server를 띄웠습니다.`)
+        }),
+       io = require('socket.io').listen(server),
+       data = fs.readFileSync('./server/db_conf.json'),
+       conf = JSON.parse(data),
+       connection = mysql.createConnection({
+          host: conf.host,
+          user: conf.user,
+          password: conf.password,
+          port: conf.port,
+          database: conf.database,
+          multipleStatements: true
+       });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const data = fs.readFileSync('./server/db_conf.json');
-const conf = JSON.parse(data);
-const connection = mysql.createConnection({
-    host: conf.host,
-    user: conf.user,
-    password: conf.password,
-    port: conf.port,
-    database: conf.database,
-    multipleStatements: true
-});
 connection.connect();
 
 

@@ -12,17 +12,18 @@ const checkEmpty = (value) => {
   }
 }
 
+const getLastUpdateData = (history) => {
+  if (checkEmpty(history)){ return ''; }
+  return Object.keys(history[0])[0]
+}
+
 export default function EnvironmentsHistoryCard(props) {
-  const { historyUpdateTime } = require('../../PROPERTIES');
+  const { historyUpdateTime, environmentsWordTable } = require('../../PROPERTIES');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
 
-  const getLastUpdate = (history) => {
-    if (checkEmpty(history)){ return ''; }
-    else{ setLastUpdate(Object.keys(history[0])[0]); }
-  }
 
   const fetchHistory = async () => {
     try {
@@ -32,8 +33,9 @@ export default function EnvironmentsHistoryCard(props) {
           table: ['plant1', 'plant2', 'plant3']
         }
       }).then(({data:environmentFromPlant})=> {
+        const lastUpdateData = getLastUpdateData(environmentFromPlant)
         setHistory(environmentFromPlant);
-        getLastUpdate(environmentFromPlant);
+        setLastUpdate(lastUpdateData);
       });
     } catch (e) {
       console.log('FETCH HISTORY ERROR.');
@@ -42,7 +44,7 @@ export default function EnvironmentsHistoryCard(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchHistory();
+      fetchHistory()
     }, historyUpdateTime);
     return () => clearInterval(interval);
   }, []);
@@ -53,7 +55,7 @@ export default function EnvironmentsHistoryCard(props) {
         <CustomLine environment={environment} history={history} width={3} height={1} />
       </div>
       <div className={classes.footer} >
-        <Typography variant="body1" className={classes.textColor}>{environment}</Typography>
+        <Typography variant="body1" className={classes.textColor}>{environmentsWordTable[environment]}</Typography>
         <Typography variant="body2" className={classes.textColor}>No problem found</Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />

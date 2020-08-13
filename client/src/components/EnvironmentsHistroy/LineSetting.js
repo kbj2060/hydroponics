@@ -3,8 +3,9 @@ import axios from "axios";
 import 'chartjs-plugin-annotation';
 
 let getOptions = (data, environment) => {
-	const min = data[0][`${environment}_min`]
-	const max = data[0][`${environment}_max`]
+	const min = data[0][`${environment}_min`];
+	const max = data[0][`${environment}_max`];
+
 	return ({
 		legend: {
 			display: false
@@ -86,7 +87,7 @@ let state = {
 }
 
 const checkEmpty = (value) => {
-	if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
+	if (value === "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
 		return true;
 	}
 }
@@ -111,7 +112,9 @@ export default function LineSetting (history, environment) {
 	}
 
 	useEffect(() => {
+		let unmounted = false;
 		fetchSetting();
+		return () => { unmounted = true };
 	}, [])
 
 	if(checkEmpty(history)){

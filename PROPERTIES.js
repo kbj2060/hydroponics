@@ -1,6 +1,6 @@
 module.exports = {
 	machines: [
-	'AirConditioner', 'LED'
+		'AirConditioner', 'LED', 'FAN'
 	],
 	n_machines: {
 		'AirConditioner': 2,
@@ -16,7 +16,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 10 * 1000,
 	showHistoryNumber : 20,
-	ip : "http://192.168.1.61",
+	ip : "http://125.130.139.190/",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

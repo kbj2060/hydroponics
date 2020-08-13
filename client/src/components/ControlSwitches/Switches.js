@@ -116,6 +116,11 @@ export default function Switches(props) {
 
   const handleChange = async (event) => {
     const status = !state.status
+    setState({
+      machine : machine,
+      status : status
+    });
+    setSnackbarOpen(true);
 
     await axios.post('/api/switchMachine',{
       params: {
@@ -123,12 +128,6 @@ export default function Switches(props) {
         status : status
       }
     })
-
-    setState({
-      machine : machine,
-      status : status
-    });
-    setSnackbarOpen(true);
 
     socket.emit('sendSwitchControl', {
       machine : machine,
@@ -139,13 +138,22 @@ export default function Switches(props) {
   };
 
   useEffect(() => {
-    fetchSwitch();
+    let unmounted = false;
+    fetchSwitch().then(() => {
+        if (!unmounted) {
+          setIsLoading(false);
+        }
+      })
+    return () => {
+      unmounted = true;
+    }
   }, []);
 
   useEffect(()=>{
     socket.on('receiveSwitchControl', (switchStatus) => {
       if (machine === switchStatus.machine){
         dispatch(controlSwitch());
+        console.log('dd');
         setState(switchStatus);
       }
     })
