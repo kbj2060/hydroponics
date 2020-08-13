@@ -53,7 +53,7 @@ const dashboardStyle = makeStyles(() =>({
     height:'100%'
   },
   controlCardBox : {
-    height:'50%'
+    height:'33.3%'
   },
   figureCardDiv : {
     display:'grid',

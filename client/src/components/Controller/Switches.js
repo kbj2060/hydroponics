@@ -103,12 +103,14 @@ export default function Switches(props) {
         machine : machine,
         num : 1
       }
-    }).then(async (res) => {
+    }).then(({data}) => {
       setState({
-        status: res.data[recentIndex]['status'] === 1,
+        status: data[recentIndex]['status'] === 1,
         machine: machine
       })
       setIsLoading(false);
+    }).catch((err) => {
+      setIsLoading(true);
     })
   }
 

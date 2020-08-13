@@ -14,12 +14,8 @@ export default function CustomLine(props) {
     const { history, width, height, environment } = props;
     const { state, options } = LineSetting(history, environment);
 
-    if (checkEmpty(history)){
-        return <Line options={options} data={state} width={width} height={height}/>
-    }
+    if (checkEmpty(history)){ return <Line options={options} data={state} width={width} height={height}/> }
 
-    return(
-      <Line  options={options} data={state} width={width} height={height}/>
-    )
+    return( <Line  options={options} data={state} width={width} height={height}/> )
 }
 

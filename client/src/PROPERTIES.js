@@ -1,6 +1,6 @@
 module.exports = {
 	machines: [
-	'AirConditioner', 'LED'
+	'AirConditioner', 'LED', 'FAN'
 	],
 	n_machines: {
 		'AirConditioner': 2,

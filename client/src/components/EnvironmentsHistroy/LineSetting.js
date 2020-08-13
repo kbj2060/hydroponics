@@ -2,52 +2,55 @@ import React, {useEffect} from 'react';
 import axios from "axios";
 import 'chartjs-plugin-annotation';
 
-let options =  {
-	legend: {
-		display: false
-	},
-	scales: {
-		xAxes: [{
-			type: 'time',
-			time: {
-				displayFormats: {
-					minute: 'h:mm a'
+let getOptions = (data, environment) => {
+	const min = data[0][`${environment}_min`]
+	const max = data[0][`${environment}_max`]
+	return ({
+		legend: {
+			display: false
+		},
+		scales: {
+			xAxes: [{
+				type: 'time',
+				time: {
+					displayFormats: {
+						minute: 'h:mm a'
+					},
+					parser: 'YYYY/MM/DD HH:mm:ss',
+				}
+			}],
+		},
+		annotation: {
+			annotations: [
+				{
+					type: "line",
+					mode: "horizontal",
+					scaleID: "y-axis-0",
+					value: max,
+					borderColor: "red",
+					borderWidth: '0.5',
+					label: {
+						backgroundColor: "#FF4F61",
+						content: "MAX",
+						enabled: false
+					}
 				},
-				parser: 'YYYY/MM/DD HH:mm:ss',
-			}
-		}],
-	},
-	annotation: {
-		annotations: [
-			{
-				type: "line",
-				mode: "horizontal",
-				scaleID: "y-axis-0",
-				value: 129,
-				borderColor: "black",
-				borderWidth: 10,
-				label: {
-					backgroundColor: "red",
-					content: "Test Label",
-					enabled: true
+				{
+					type: "line",
+					mode: "horizontal",
+					scaleID: "y-axis-0",
+					value: min,
+					borderColor: "red",
+					borderWidth: '0.5',
+					label: {
+						backgroundColor: "#FF4F61",
+						content: "MIN",
+						enabled: false
+					}
 				}
-			},
-			{
-				type: "line",
-				mode: "horizontal",
-				scaleID: "y-axis-0",
-				value: 30,
-				borderColor: "RED",
-				borderWidth: 10,
-				label: {
-					backgroundColor: "red",
-					content: "Test Label",
-					enabled: true
-				}
-			}
-		]
-	}
-}
+			]
+		}
+})}
 
 let state = {
 	labels: '',
@@ -79,24 +82,6 @@ let state = {
 			borderWidth: 2,
 			data: []
 		},
-		{
-			label: 'MIN',
-			fill: false,
-			lineTension: 0.5,
-			backgroundColor: '#efcf76',
-			borderColor: '#FF4F61',
-			borderWidth: 2,
-			data: []
-		},
-		{
-			label: 'MAX',
-			fill: false,
-			lineTension: 0.5,
-			backgroundColor: '#efcf76',
-			borderColor: '#FF4F61',
-			borderWidth: 2,
-			data: []
-		},
 	]
 }
 
@@ -107,7 +92,7 @@ const checkEmpty = (value) => {
 }
 
 export default function LineSetting (history, environment) {
-	const [range, setRange] = React.useState({});
+	const [options, setOptions] = React.useState({});
 
 	const fetchSetting = async () => {
 		try {
@@ -118,7 +103,7 @@ export default function LineSetting (history, environment) {
 					num: 1
 				}
 			}).then(({data}) => {
-
+				setOptions(getOptions(data, environment));
 			})
 		} catch (e) {
 			console.log('FETCH SETTING ERROR.');
@@ -139,5 +124,5 @@ export default function LineSetting (history, environment) {
 
 	state.labels = Object.keys(history[0])
 
-	return {state, options};
+	return { state, options };
 }
