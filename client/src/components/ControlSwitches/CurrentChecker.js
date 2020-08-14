@@ -5,6 +5,13 @@ import axios from "axios";
 import {withStyles} from "@material-ui/core/styles";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
+
+const checkEmpty = (value) => {
+	if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
+		return true;
+	}
+}
+
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
 		height : '1.3em',
@@ -54,6 +61,10 @@ export default function CurrentChecker({machine}) {
 	}
 
 	const handleChecklist = () => {
+		if(checkEmpty(currents)){
+			setChecklist([]);
+			return;
+		}
 		Object.values(currents).forEach((value) => {
 			let checkCurrent = checkCurrentRange(value, min, max)
 			setChecklist(
