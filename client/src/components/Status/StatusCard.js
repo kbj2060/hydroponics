@@ -5,6 +5,8 @@ import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "./Figure";
 import axios from "axios";
 
+
+
 export default function StatusCard(props) {
   const {statusUpdateTime, environments} = require('../../PROPERTIES');
   const {plant} = props;
@@ -16,19 +18,27 @@ export default function StatusCard(props) {
     "temperature": 0
   });
 
+  function statusReset() {
+    setRecentStatus({
+      "humidity": 0,
+      "co2": 0,
+      "temperature": 0
+    })
+  }
   const fetchStatus = async () => {
     try {
       const recentIndex = 0;
-      const { data: recentStatus } = await axios.get('/api/getStatus', {
+      const { data: status } = await axios.get('/api/getStatus', {
         params: {
           table: plant,
           selects: environments,
           num: 1
         }
       });
-      setRecentStatus(recentStatus[recentIndex]);
+      setRecentStatus(status[recentIndex]);
     } catch (e) {
       console.log('FETCH STATUS ERROR.');
+      statusReset();
     }
   };
 
