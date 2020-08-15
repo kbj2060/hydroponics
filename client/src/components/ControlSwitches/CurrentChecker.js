@@ -49,8 +49,7 @@ export default function CurrentChecker({machine}) {
 				table: 'current',
 				num : 1
 			}}).then(( {data:queriedCurrent} ) => {
-			const recentIndex = 0;
-			setCurrents(queriedCurrent[recentIndex]);
+			setCurrents(queriedCurrent);
 			setIsLoading(false)
 		})
 	}
@@ -78,6 +77,7 @@ export default function CurrentChecker({machine}) {
 	}
 
 	useEffect(() => {
+		fetchCurrent();
 		const interval = setInterval(() => {
 			fetchCurrent();
 		}, currentUpdateTime);

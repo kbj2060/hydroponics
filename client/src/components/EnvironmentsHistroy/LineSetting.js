@@ -3,8 +3,8 @@ import axios from "axios";
 import 'chartjs-plugin-annotation';
 
 let getOptions = (data, environment) => {
-	const min = data[0][`${environment}_min`];
-	const max = data[0][`${environment}_max`];
+	const min = data[`${environment}_min`];
+	const max = data[`${environment}_max`];
 
 	return ({
 		legend: {
@@ -14,6 +14,7 @@ let getOptions = (data, environment) => {
 			xAxes: [{
 				type: 'time',
 				time: {
+					unit: "minute",
 					displayFormats: {
 						minute: 'h:mm a'
 					},
@@ -63,6 +64,7 @@ let state = {
 			backgroundColor: '#efcf76',
 			borderColor: '#FF925D',
 			borderWidth: 2,
+			pointRadius: 0,
 			data: []
 		},
 		{
@@ -72,6 +74,7 @@ let state = {
 			backgroundColor: '#efcf76',
 			borderColor: '#FFCB3A',
 			borderWidth: 2,
+			pointRadius: 0,
 			data: []
 		},
 		{
@@ -81,6 +84,7 @@ let state = {
 			backgroundColor: '#efcf76',
 			borderColor: '#FF4F61',
 			borderWidth: 2,
+			pointRadius: 0,
 			data: []
 		},
 	]
@@ -95,7 +99,7 @@ const checkEmpty = (value) => {
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState({});
 
-	const fetchSetting = async () => {
+	const fetchLineSetting = async () => {
 		try {
 			await axios.get('/api/getStatus', {
 				params: {
@@ -105,15 +109,14 @@ export default function LineSetting (history, environment) {
 				}
 			}).then(({data}) => {
 				setOptions(getOptions(data, environment));
-			})
-		} catch (e) {
+			})} catch (e) {
 			console.log('FETCH SETTING ERROR.');
 		}
 	}
 
 	useEffect(() => {
 		let unmounted = false;
-		fetchSetting();
+		fetchLineSetting();
 		return () => { unmounted = true };
 	}, [])
 
@@ -126,6 +129,6 @@ export default function LineSetting (history, environment) {
 	});
 
 	state.labels = Object.keys(history[0])
-
+	console.log(state, options);
 	return { state, options };
 }

@@ -31,20 +31,16 @@ export default function Dashboard() {
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
             <MachinesHistoryCard />
           </Grid>
-          {
-            plants.map(plant => { return(
+          {plants.map(plant => { return(
                <Grid key={plant.toString()} item xs={12} sm={12} md={4} className={classes.item} >
                  <StatusCard plant={plant} />
                </Grid>)
-            })
-          }
-          {
-            environments.map(env => { return (
+            })}
+          {environments.map(env => { return (
             <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={4} xl={4}  className={classes.item}>
               <EnvironmentsHistoryCard environment={env} />
             </Grid>)
-            })
-          }
+            })}
         </Grid>
       </div>
       );

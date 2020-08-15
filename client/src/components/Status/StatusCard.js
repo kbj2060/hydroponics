@@ -27,7 +27,6 @@ export default function StatusCard(props) {
   }
   const fetchStatus = async () => {
     try {
-      const recentIndex = 0;
       const { data: status } = await axios.get('/api/getStatus', {
         params: {
           table: plant,
@@ -35,7 +34,7 @@ export default function StatusCard(props) {
           num: 1
         }
       });
-      setRecentStatus(status[recentIndex]);
+      setRecentStatus(status);
     } catch (e) {
       console.log('FETCH STATUS ERROR.');
       statusReset();
@@ -43,6 +42,7 @@ export default function StatusCard(props) {
   };
 
   useEffect(() => {
+    fetchStatus();
     const interval = setInterval(() => {
       fetchStatus();
     }, statusUpdateTime);

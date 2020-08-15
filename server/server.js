@@ -1,5 +1,4 @@
 'use strict'
-
 const {socketIoPort:PORT} = require('../PROPERTIES'),
        express = require('express'),
        bodyParser = require('body-parser'),
@@ -22,6 +21,7 @@ const {socketIoPort:PORT} = require('../PROPERTIES'),
           database: conf.database,
           multipleStatements: true
        });
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,7 +50,11 @@ data : {
   "led_current_3":"123",
   "led_current_4" : "1212",
   "airconditioner_current_1" : "1212",
-  "airconditioner_current_2" : "1212"
+  "airconditioner_current_2" : "1212",
+  "fan_current_1" : "123",
+  "fan_current_2" : "12",
+  "fan_current_3" : "1",
+  "fan_current_4" : "15"
 }
  */
 const handleCurrentsMQTT = (topic, message) => {
@@ -59,7 +63,9 @@ const handleCurrentsMQTT = (topic, message) => {
   (null, ${jsonMessage['led_current_1']}, 
    ${jsonMessage['led_current_2']}, ${jsonMessage['led_current_3']},
     ${jsonMessage['led_current_4']}, ${jsonMessage['airconditioner_current_1']},
-    ${jsonMessage['airconditioner_current_2']}, now(), 0);`;
+    ${jsonMessage['airconditioner_current_2']},${jsonMessage['fan_current_1']},
+     ${jsonMessage['fan_current_2']}, ${jsonMessage['fan_current_3']},
+     ${jsonMessage['fan_current_4']},now(), 0);`;
   connection.query(sql,
     (err, rows) => {
       console.log(rows);
@@ -117,7 +123,8 @@ app.get('/api/getStatus', (req, res) => {
     connection.query(
       `SELECT ${selects} FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
-          res.send(rows);
+        const jsonRows = nullToZeroFilter(rows);
+        res.send(jsonRows);
       }
     )
 });
@@ -135,7 +142,7 @@ app.get('/api/getSwitch', (req, res) => {
   )
 });
 
-
+/*
 app.get('/api/getDate', (req, res) => {
   const table = req.query['table'];
   const num = req.query['num'];
@@ -151,7 +158,7 @@ app.get('/api/getDate', (req, res) => {
       res.send(result);
     }
   )
-});
+});*/
 
 app.get('/api/getEnvironmentHistory', (req, res) => {
     const [environment] = req.query['selects'];
@@ -190,6 +197,7 @@ app.post('/api/switchMachine', (req, res) => {
   let machine = req.body.params['machine'];
   let status = req.body.params['status'];
   let params = [machine, status];
+
   connection.query(sql, params,
     (err, rows) => {
       res.send(rows);
@@ -199,13 +207,13 @@ app.post('/api/switchMachine', (req, res) => {
 });
 
 app.post('/api/applySettings', (req, res) => {
-  const sql = 'INSERT INTO iot.setting (id, humidity_min, humidity_max, temperature_min, temperature_max, co2_min, co2_max,  created, isDeleted) VALUES (null, ?, ?, ?, ?, ?, ?, now(), 0)';
+  const sql = 'INSERT INTO iot.setting (id, humidity_min, humidity_max, temperature_min, temperature_max, co2_min, co2_max, led_min, led_max, created, isDeleted) ' +
+    'VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, now(), 0)';
   const settings = req.body.params['settings'];
   const params = [settings['humidity'][0], settings['humidity'][1], settings['temperature'][0], settings['temperature'][1],
-    settings['co2'][0],settings['co2'][1]]
-  connection.query(sql, params,
-    (err, rows) => {
-    console.log(rows)
+    settings['co2'][0],settings['co2'][1], settings['led'][0], settings['led'][1]]
+  connection.query(sql, params, (err, rows) => {
+      console.log("Settings are applied.")
       res.send(rows);
     }
   )
@@ -228,9 +236,19 @@ function envHistoryReq2query(req_params){
     });
     return sqls.join(" ");
   }
+
   return `SELECT ${environment} 
   FROM iot.${table} 
   WHERE DATE_FORMAT(iot.${table}.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
   ORDER BY id DESC ;`;
 }
 
+function nullToZeroFilter(rows){
+  const jsonRows = JSON.parse(JSON.stringify(rows))[0]
+  for( let key in jsonRows ){
+    if(jsonRows[key] === null){
+      jsonRows[key] = 0;
+    }
+    return jsonRows
+  }
+}

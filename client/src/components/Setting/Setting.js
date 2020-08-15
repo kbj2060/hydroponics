@@ -42,33 +42,34 @@ function valuetext(value) {
 }
 
 export default function Setting(props) {
-  const { environment, isApplied, getSettingFromSlider } = props;
+  const { settingKey, isApplied, getSettingFromSlider } = props;
   const classes = useStyles();
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const {settingRange, environmentsWordTable } = require('../../PROPERTIES');
+  const {settingMinMax, environmentsWordTable } = require('../../PROPERTIES');
 
-  const giveSetting = () => {
-    getSettingFromSlider({[environment]: setting});
-  }
 
-  const handleMinMaxSetting = (environment) => {
+  const handleMinMaxSetting = (settingKey) => {
     let names = [];
     ['min', 'max'].forEach((MinMax) => {
-      names.push(`${environment}_${MinMax}`);
+      names.push(`${settingKey}_${MinMax}`);
     })
     return names
   }
 
-  const getSettings = async () => {
+  const giveSetting = () => {
+    getSettingFromSlider({[settingKey]: setting});
+  }
+
+  const fetchSettings = async () => {
     await axios.get('api/getStatus', {
       params : {
         table : 'setting',
-        selects : handleMinMaxSetting(environment),
+        selects : handleMinMaxSetting(settingKey),
         num : 1
       }
     }).then(({data}) => {
-      setSetting([data[0][`${environment}_min`], data[0][`${environment}_max`]])
+      setSetting([data[`${settingKey}_min`], data[`${settingKey}_max`]])
       setIsLoading(false);
     })
   }
@@ -78,7 +79,7 @@ export default function Setting(props) {
   }, [isApplied])
 
   useEffect(() => {
-    getSettings();
+    fetchSettings();
   }, [])
 
   const handleChange = (event, newValue) => {
@@ -93,12 +94,12 @@ export default function Setting(props) {
     <div className={classes.margin}>
       <Grid className={classes.root}>
         <Typography className={classes.title}>
-          {environmentsWordTable[environment]}
+          {environmentsWordTable[settingKey]}
         </Typography>
         <CustomSlider
           className={classes.slider}
-          min={settingRange[environment][0]}
-          max={settingRange[environment][1]}
+          min={settingMinMax[settingKey][0]}
+          max={settingMinMax[settingKey][1]}
           value={setting}
           onChange={handleChange}
           ValueLabelComponent={StyledValueLabel}

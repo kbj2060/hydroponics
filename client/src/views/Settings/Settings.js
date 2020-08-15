@@ -26,11 +26,12 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { environments } = require('../../PROPERTIES');
+  const { settings:settingKeys } = require('../../PROPERTIES');
   const [settings, setSettings] = useState({
                                         "co2": [],
                                         "humidity": [],
                                         "temperature": [],
+                                        "led" : []
                                         })
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
@@ -42,12 +43,8 @@ export default function Settings() {
   }
 
   useEffect(() => {
-    if(isApplied) {
-      applySettings();
-    }
-    return () => {
-      setIsApplied(false)
-    }
+    if(isApplied) { applySettings(); }
+    return () => { setIsApplied(false) }
   }, [isApplied]);
 
   const getSettingFromSlider = (value) => {
@@ -73,15 +70,14 @@ export default function Settings() {
         <Grid item xs={12} sm={12} md={12} className={classes.item}>
           <Card className={classes.parentItem}>
             <Grid container style={{marginBottom: '20px'}}>
-            { environments.map((environment,index) =>(
-              <Grid key={environment.toString()} item xs={12} sm={4} md={4} className={classes.slider}>
-                <SettingSlider key={environment.toString()} environment={environment}
+            { settingKeys.map((settingKey) =>(
+              <Grid key={settingKey.toString()} item xs={12} sm={6} md={6} className={classes.slider}>
+                <SettingSlider key={settingKey.toString()} settingKey={settingKey}
                              getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/>
               </Grid>)
             )}
             </Grid>
-            <CustomButton onClick={ handleOnClick }
-                          size="medium">
+            <CustomButton onClick={ handleOnClick } size="medium">
               <Typography>APPLY</Typography>
             </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>

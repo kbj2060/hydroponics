@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 		'&:active' : { transform : 'translateY(2px)'}
 	},
 	header : {
+		fontSize : '1.2rem',
 		borderBottom : '1px solid',
 		paddingBottom : '18.7px',
 		marginLeft : '30px',

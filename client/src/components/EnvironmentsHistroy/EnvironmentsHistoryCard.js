@@ -33,6 +33,7 @@ export default function EnvironmentsHistoryCard(props) {
           table: ['plant1', 'plant2', 'plant3']
         }
       }).then(({data:environmentFromPlant})=> {
+        console.log(environmentFromPlant)
         const lastUpdateData = getLastUpdateData(environmentFromPlant)
         setHistory(environmentFromPlant);
         setLastUpdate(lastUpdateData);
@@ -43,6 +44,7 @@ export default function EnvironmentsHistoryCard(props) {
   }
 
   useEffect(() => {
+    fetchHistory();
     const interval = setInterval(() => {
       fetchHistory()
     }, historyUpdateTime);

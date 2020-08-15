@@ -12,10 +12,14 @@ module.exports = {
 	plants: [
 		'plant1', 'plant2', 'plant3',
 	],
-	settingRange : {
+	settings: [
+		'co2', 'humidity', 'temperature', 'led'
+	],
+	settingMinMax : {
 		'co2' : [500, 1500],
 		'humidity' : [0, 100],
-		'temperature' : [20, 30]
+		'temperature' : [20, 30],
+		'led' : [0, 24]
 	},
 	circleColorTable : {
 		'plant1' : "#FF925D",
@@ -30,7 +34,8 @@ module.exports = {
 	environmentsWordTable : {
 		'humidity' : 'HUM',
 		'temperature': 'TEMP',
-		'co2': 'CO2'
+		'co2': 'CO2',
+		'led' : 'LED',
 	},
 	statusUpdateTime : 10 * 1000,
 	historyUpdateTime : 10 * 1000,
