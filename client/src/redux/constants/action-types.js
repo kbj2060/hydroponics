@@ -1,2 +1,0 @@
-export const CONTROL_SWITCH = "CONTROL_SWITCH";
-export const CONTROL_SETTING = "CONTROL_SETTING";

@@ -58,9 +58,10 @@ const useStyles = makeStyles((theme) => ({
 		'&:active' : { transform : 'translateY(2px)'}
 	},
 	header : {
-		fontSize : '1.2rem',
+		fontSize : '2em',
 		borderBottom : '1px solid',
 		paddingBottom : '18.7px',
+		marginBottom : '0px',
 		marginLeft : '30px',
 		marginRight : '30px',
 		textAlign : 'center'
@@ -100,10 +101,15 @@ export default function Menu() {
 				}}
 			>
 				<div className={classes.paper}>
-					<h1 className={classes.header}>SMART FARM</h1>
-					<LinkButton onClick={handleClose} page={"dashboard"} buttonDesign={classes.menuButton} />
-					<LinkButton onClick={handleClose} page={"settings"} buttonDesign={classes.menuButton} />
-					<LinkButton onClick={handleClose} page={"logout"} buttonDesign={classes.menuButton} />
+					<div style={{height: "30%"}}>
+						<h1 className={classes.header}>SMART FARM</h1>
+					</div>
+					<div style={{height: "70%"}}>
+						<LinkButton onClick={handleClose} page={"dashboard"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={handleClose} page={"settings"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={handleClose} page={"logout"} buttonDesign={classes.menuButton} />
+					</div>
+
 				</div>
 			</Modal>
 		</div>
