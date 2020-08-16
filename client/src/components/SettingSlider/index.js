@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -6,6 +6,8 @@ import Slider from '@material-ui/core/Slider';
 import axios from "axios";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress"
 import ValueLabel from "@material-ui/core/Slider/ValueLabel";
+import {useDispatch} from "react-redux";
+import {controlSetting} from "../../redux/modules/ControlSetting";
 
 
 const StyledValueLabel = withStyles({
@@ -34,60 +36,66 @@ const useStyles = makeStyles({
     marginBottom : '40px',
     color:'white'
   },
-
 });
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function Setting(props) {
-  const { settingKey, isApplied, getSettingFromSlider } = props;
+export default function SettingSlider(props) {
+  const { settingKey, isApplied } = props;
   const classes = useStyles();
+  const {settingMinMax, environmentsWordTable } = require('../../PROPERTIES');
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const {settingMinMax, environmentsWordTable } = require('../../PROPERTIES');
+  const dispatch = useDispatch()
 
-
-  const handleMinMaxSetting = (settingKey) => {
+  const handleNames = (key) => {
     let names = [];
     ['min', 'max'].forEach((MinMax) => {
-      names.push(`${settingKey}_${MinMax}`);
+      names.push(`${key}_${MinMax}`);
     })
     return names
   }
-
-  const giveSetting = () => {
-    getSettingFromSlider({[settingKey]: setting});
-  }
-
-  const fetchSettings = async () => {
-    await axios.get('api/getStatus', {
-      params : {
-        table : 'setting',
-        selects : handleMinMaxSetting(settingKey),
-        num : 1
-      }
-    }).then(({data}) => {
-      setSetting([data[`${settingKey}_min`], data[`${settingKey}_max`]])
-      setIsLoading(false);
-    })
-  }
-
-  useEffect(() => {
-    if(isApplied){ giveSetting(); }
-  }, [isApplied])
-
-  useEffect(() => {
-    fetchSettings();
-  }, [])
 
   const handleChange = (event, newValue) => {
     setSetting(newValue);
   };
 
+
+
+  const fetchSettings = useCallback(async () => {
+    await axios.get('api/getStatus', {
+      params : {
+        table : 'setting',
+        selects : handleNames(settingKey),
+        num : 1
+      }
+    }).then(({data}) => {
+      !data ? setSetting([0, 0]) : setSetting([data[`${settingKey}_min`], data[`${settingKey}_max`]])
+      setIsLoading(false);
+    }).catch((err) => {
+      console.log(err);
+      console.log("SLIDER FETCH ERROR");
+      setSetting([0, 0]);
+    })
+  }, [settingKey])
+
+
+  useEffect(() => {
+    if(isApplied){
+      dispatch(controlSetting({[settingKey] :setting}));
+    }
+  }, [isApplied])
+
+
+  useEffect(() => {
+    fetchSettings();
+    }, [])
+
+
   if(isLoading){
-    return <ColorCircularProgress></ColorCircularProgress>
+    return <ColorCircularProgress />
   }
 
   return (

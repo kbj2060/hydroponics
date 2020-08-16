@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { Link,  useHistory  } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function TransitionsModal() {
+export default function Menu() {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 

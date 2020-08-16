@@ -1,55 +1,58 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import CustomLine from './CustomLine';
 import useStyles from 'assets/jss/HistoryStyle';
 import TimerIcon from 'assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
+import {checkEmpty} from "../utils";
 
 
-const checkEmpty = (value) => {
-  if (value == "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
-    return true;
-  }
-}
 
-const getLastUpdateData = (history) => {
-  if (checkEmpty(history)){ return ''; }
-  return Object.keys(history[0])[0]
-}
 
-export default function EnvironmentsHistoryCard(props) {
-  const { historyUpdateTime, environmentsWordTable } = require('../../PROPERTIES');
+export default function Index(props) {
+  const { environmentsWordTable } = require('../../PROPERTIES');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
 
 
-  const fetchHistory = async () => {
-    try {
-      await axios.get('/api/getEnvironmentHistory', {
-        params: {
-          selects: [environment, 'created'],
-          table: ['plant1', 'plant2', 'plant3']
-        }
-      }).then(({data:environmentFromPlant})=> {
-        console.log(environmentFromPlant)
-        const lastUpdateData = getLastUpdateData(environmentFromPlant)
-        setHistory(environmentFromPlant);
-        setLastUpdate(lastUpdateData);
-      });
-    } catch (e) {
-      console.log('FETCH HISTORY ERROR.');
+  const fetchHistory = useCallback(async () => {
+    const getLastUpdateData = (history) => {
+      if (checkEmpty(history)){ return ''; }
+      return Object.keys(history[0])[0]
     }
-  }
+
+    const setLastUpdateFromFiltered = (environmentFromPlant) => {
+      const lastUpdateData = getLastUpdateData(environmentFromPlant)
+      setLastUpdate(lastUpdateData);
+    }
+
+    await axios.get('/api/getEnvironmentHistory', {
+      params: {
+        selects: [environment, 'created'],
+        table: ['plant1', 'plant2', 'plant3']
+      }
+    }).then(({data:environmentFromPlant})=> {
+      setHistory(environmentFromPlant);
+      setLastUpdateFromFiltered(environmentFromPlant);
+    }).catch((err) => {
+      console.log("HISTORY FETCH ERROR!");
+      console.log(err);
+    })
+  }, [environment])
+
 
   useEffect(() => {
+    const {historyUpdateTime} = require('../../PROPERTIES');
+
     fetchHistory();
     const interval = setInterval(() => {
-      fetchHistory()
+      fetchHistory();
     }, historyUpdateTime);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchHistory]);
 
   return (
     <div className={classes.background}>

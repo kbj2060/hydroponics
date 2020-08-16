@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from 'assets/jss/SettingsStyle';
-import AppBar from 'components/AppBar/AppBar';
-import SettingSlider from '../../components/Setting/Setting';
+import AppBar from 'components/AppBar';
+import SettingSlider from 'components/SettingSlider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
 import Typography from '@material-ui/core/Typography';
+import {store} from "../../redux/store";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -26,7 +27,7 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { settings:settingKeys } = require('../../PROPERTIES');
+  const { settings:settingKeys } = require('PROPERTIES');
   const [settings, setSettings] = useState({
                                         "co2": [],
                                         "humidity": [],
@@ -36,24 +37,30 @@ export default function Settings() {
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
 
-  const applySettings = async () => {
+  const handleNull = (obj) => {
+    const IndexOfNull = 1
+    Object.keys(obj).forEach(function(key) {
+      if(obj[key][IndexOfNull] === null) { obj[key][IndexOfNull] = 0; }
+    })
+    return obj
+  }
+
+  const applySettings = async (settings) => {
     await axios.post('/api/applySettings',{
       params: { settings : settings }
     })
   }
 
+
   useEffect(() => {
-    if(isApplied) { applySettings(); }
-    return () => { setIsApplied(false) }
-  }, [isApplied]);
+    if(isApplied) {
+      const SettingsFromStore = handleNull(store.getState()['controlSetting']);
+      applySettings(SettingsFromStore);
+    }
+  }, [isApplied])
 
-  const getSettingFromSlider = (value) => {
-    const temp = settings;
-    temp[Object.keys(value)[0]] = Object.values(value)[0];
-    setSettings(temp);
-  }
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     setOpen(true);
     setIsApplied(true);
   }
@@ -72,8 +79,7 @@ export default function Settings() {
             <Grid container style={{marginBottom: '20px'}}>
             { settingKeys.map((settingKey) =>(
               <Grid key={settingKey.toString()} item xs={12} sm={6} md={6} className={classes.slider}>
-                <SettingSlider key={settingKey.toString()} settingKey={settingKey}
-                             getSettingFromSlider={getSettingFromSlider} isApplied={isApplied}/>
+                <SettingSlider isApplied={isApplied} key={settingKey.toString()} settingKey={settingKey}/>
               </Grid>)
             )}
             </Grid>

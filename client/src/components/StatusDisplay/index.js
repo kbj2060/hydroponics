@@ -1,13 +1,11 @@
-import React, {useLayoutEffect, useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
 import useStyles from 'assets/jss/DashboardStyle';
 import Figure from "./Figure";
 import axios from "axios";
 
-
-
-export default function StatusCard(props) {
+export default function StatusDisplay(props) {
   const {statusUpdateTime, environments} = require('../../PROPERTIES');
   const {plant} = props;
   const classes = useStyles();
@@ -18,27 +16,32 @@ export default function StatusCard(props) {
     "temperature": 0
   });
 
-  function statusReset() {
+/*  function statusReset() {
     setRecentStatus({
       "humidity": 0,
       "co2": 0,
       "temperature": 0
     })
+  }*/
+
+  const convertFixedFloat = (x) => {
+      return Number.parseFloat(x).toFixed(1);
   }
+
   const fetchStatus = async () => {
-    try {
-      const { data: status } = await axios.get('/api/getStatus', {
-        params: {
-          table: plant,
-          selects: environments,
-          num: 1
-        }
-      });
+    await axios.get('/api/getStatus', {
+      params: {
+        table: plant,
+        selects: environments,
+        num: 1
+      }
+    }).then(({data:status}) => {
+      for (const [key, value] of Object.entries(status)) { status[key] = convertFixedFloat(value); }
       setRecentStatus(status);
-    } catch (e) {
-      console.log('FETCH STATUS ERROR.');
-      statusReset();
-    }
+    }).catch((err) => {
+      console.log('FETCH STATUS ERROR!');
+      console.log(err);
+    });
   };
 
   useEffect(() => {

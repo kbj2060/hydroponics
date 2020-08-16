@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
+import {checkEmpty} from "../utils";
 import axios from "axios";
 import 'chartjs-plugin-annotation';
 
@@ -90,16 +91,10 @@ let state = {
 	]
 }
 
-const checkEmpty = (value) => {
-	if (value === "" || value == null || (typeof value == "object" && !Object.keys(value).length)){
-		return true;
-	}
-}
-
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState({});
 
-	const fetchLineSetting = async () => {
+	const fetchLineSetting = useCallback(async () => {
 		try {
 			await axios.get('/api/getStatus', {
 				params: {
@@ -112,13 +107,11 @@ export default function LineSetting (history, environment) {
 			})} catch (e) {
 			console.log('FETCH SETTING ERROR.');
 		}
-	}
+	}, [environment])
 
 	useEffect(() => {
-		let unmounted = false;
 		fetchLineSetting();
-		return () => { unmounted = true };
-	}, [])
+	}, [fetchLineSetting])
 
 	if(checkEmpty(history)){
 		return {state, options}
@@ -129,6 +122,6 @@ export default function LineSetting (history, environment) {
 	});
 
 	state.labels = Object.keys(history[0])
-	console.log(state, options);
+
 	return { state, options };
 }

@@ -6,7 +6,7 @@ import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux'
-import { store } from "./store";
+import { store } from "./redux/store";
 
 const useStyles = makeStyles(() =>({
   video : {

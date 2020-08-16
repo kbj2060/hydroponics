@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import useStyles from 'assets/jss/AppBarStyle.js'
-import Menu from './Menu';
+import Menu from '../Menu';
 import {Link} from "react-router-dom";
 
 

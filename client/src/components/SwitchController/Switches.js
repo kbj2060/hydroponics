@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -6,7 +6,7 @@ import Switch from '@material-ui/core/Switch';
 import axios from "axios";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {useDispatch} from "react-redux";
-import {controlSwitch} from "../../actions";
+import {controlSwitch} from "../../redux/modules/ControlSwitch";
 import socket from '../../socket';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
@@ -64,8 +64,6 @@ const IOSSwitch = withStyles(theme => ({
   checked: {},
   focusVisible: {},
 }))(({ classes, ...props }) => {
-  //const {value, checked} = props;
-
   return (
     <Switch
       focusVisibleClassName={classes.focusVisible}
@@ -95,7 +93,7 @@ export default function Switches(props) {
   const dispatch = useDispatch()
   const recentIndex = 0;
 
-  const fetchSwitch = async () => {
+  const fetchSwitch = useCallback(async () => {
     await axios.get('/api/getSwitch', {
       params: {
         table : 'switch',
@@ -112,9 +110,9 @@ export default function Switches(props) {
     }).catch((err) => {
       setIsLoading(true);
     })
-  }
+  }, [machine])
 
-  const handleChange = async (event) => {
+  const handleChange = async () => {
     const status = !state.status
     setState({
       machine : machine,
@@ -138,29 +136,20 @@ export default function Switches(props) {
   };
 
   useEffect(() => {
-    let unmounted = false;
-    fetchSwitch().then(() => {
-        if (!unmounted) {
-          setIsLoading(false);
-        }
-      })
-    return () => {
-      unmounted = true;
-    }
-  }, []);
+    fetchSwitch();
+  }, [fetchSwitch]);
 
   useEffect(()=>{
     socket.on('receiveSwitchControl', (switchStatus) => {
       if (machine === switchStatus.machine){
         dispatch(controlSwitch());
-        console.log('dd');
         setState(switchStatus);
       }
     })
-  }, []);
+  }, [dispatch, machine]);
 
   if(isLoading){
-    return <ColorCircularProgress></ColorCircularProgress>
+    return <ColorCircularProgress />
   }
 
   return (

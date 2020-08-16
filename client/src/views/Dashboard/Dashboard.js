@@ -1,14 +1,14 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import CCTV from "../../components/CCTV";
-import WeatherCard from '../../components/WeatherCard';
-import AppBar from 'components/AppBar/AppBar';
-import ControlCard from '../../components/ControlSwitches/ControlCard';
-import StatusCard from "../../components/Status/StatusCard";
+import CCTV from "components/CCTV";
+//import WeatherCard from 'components/WeatherCard';
+import AppBar from 'components/AppBar';
+import SwitchController from 'components/SwitchController';
+import StatusDisplay from "components/StatusDisplay";
 import useStyles from 'assets/jss/DashboardStyle';
-import MachinesHistoryCard from "../../components/MachinesHistory/MachinesHistoryCard";
-import EnvironmentsHistoryCard from "../../components/EnvironmentsHistroy/EnvironmentsHistoryCard";
+import MachinesHistoryCard from "components/MachinesHistory";
+import EnvironmentsHistroy from "components/EnvironmentsHistroy";
 
 export default function Dashboard() {
   const classes = useStyles();
@@ -23,7 +23,7 @@ export default function Dashboard() {
             <img src={logo} style={{width:'100%', height:'100%', borderRadius:'15px'}}/>
           </Grid>*/}
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
-            <ControlCard />
+            <SwitchController />
           </Grid>
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
             <CCTV />
@@ -33,12 +33,12 @@ export default function Dashboard() {
           </Grid>
           {plants.map(plant => { return(
                <Grid key={plant.toString()} item xs={12} sm={12} md={4} className={classes.item} >
-                 <StatusCard plant={plant} />
+                 <StatusDisplay plant={plant} />
                </Grid>)
             })}
           {environments.map(env => { return (
             <Grid key={env.toString()} item xs={12} sm={12} md={12} lg={4} xl={4}  className={classes.item}>
-              <EnvironmentsHistoryCard environment={env} />
+              <EnvironmentsHistroy environment={env} />
             </Grid>)
             })}
         </Grid>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Box from "@material-ui/core/Box";
 import Switch from "./Switches";
@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import useStyles from 'assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 
-export default function ControlCard() {
+export default function Index() {
     const {machines} = require("../../PROPERTIES")
     const classes = useStyles();
 

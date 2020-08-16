@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -16,9 +16,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import {store} from "../../store";
+import {store} from "../../redux/store";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
-import Typography from "@material-ui/core/Typography";
 
 const theme = createMuiTheme({
   overrides: {
@@ -127,7 +126,6 @@ export default function CustomPaginationActionsTable() {
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
-	const {showHistoryNumber} = require('../../PROPERTIES');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -142,38 +140,31 @@ export default function CustomPaginationActionsTable() {
 		setPage(0);
   };
 
-	const fetchSwitchHistory = async () => {
+	const fetchSwitchHistory = useCallback(async () => {
+		const {showHistoryNumber} = require('../../PROPERTIES');
+
 		await axios.get('/api/getSwitchHistory', {
 			params: {
 				selects: ['machine', 'status', 'date'],
 				num: showHistoryNumber
-			}}).then((res) => {
-				const switchHistory = res.data;
-				let rows = switchHistory.map((history) => {
-					return {
-						status: history['status'],
-						machine: history['machine'],
-						date: history['date']
-					}})
-				setRows(rows);
-				setIsLoading(false);
+			}}).then(({data: switchHistory}) => {
+			const rows = switchHistory.map((history) => {
+				return {
+					status: history['status'],
+					machine: history['machine'],
+					date: history['date']
+				}})
+			setRows(rows);
+			setIsLoading(false);
 		})
-	}
+	}, [])
 
 	useEffect(() => {
-		let unmounted = false;
-		fetchSwitchHistory().then(() => {
-			if (!unmounted) {
-				setIsLoading(false);
-			}
-		})
-		return () => {
-			unmounted = true;
-		}
-	}, [refresh]);
+		fetchSwitchHistory();
+	}, [fetchSwitchHistory, refresh]);
 
 	if(isLoading){
-		return <ColorCircularProgress></ColorCircularProgress>
+		return <ColorCircularProgress />
 	}
 
   return (
