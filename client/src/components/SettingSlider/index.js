@@ -45,7 +45,7 @@ function valuetext(value) {
 export default function SettingSlider(props) {
   const { settingKey, isApplied } = props;
   const classes = useStyles();
-  const {settingMinMax, environmentsWordTable } = require('../../PROPERTIES');
+  const {settingMinMax, WordsTable } = require('../../PROPERTIES');
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch()
@@ -102,7 +102,7 @@ export default function SettingSlider(props) {
     <div className={classes.margin}>
       <Grid className={classes.root}>
         <Typography className={classes.title}>
-          {environmentsWordTable[settingKey]}
+          {WordsTable[settingKey]}
         </Typography>
         <CustomSlider
           className={classes.slider}

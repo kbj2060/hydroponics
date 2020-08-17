@@ -1,6 +1,6 @@
 module.exports = {
 	machines: [
-	'AirConditioner', 'LED', 'FAN'
+	'AirConditioner', 'led', 'fan'
 	],
 	n_machines: {
 		'AirConditioner': 2,
@@ -31,17 +31,25 @@ module.exports = {
 		'co2': 'ppm',
 		'temperature': '°C'
 	},
-	environmentsWordTable : {
-		'humidity' : 'HUM',
-		'temperature': 'TEMP',
-		'co2': 'CO2',
-		'led' : 'LED',
+	WordsTable : {
+		'humidity' : '습도',
+		'temperature': '온도',
+		'co2': '이산화탄소',
+		'led' : '조명',
+		'fan' : '환풍기',
+		'airconditioner' : '에어컨',
+		"dashboard" : '홈',
+		"settings" : '설정',
+		"logout" : '로그아웃',
+		'plant1' : '1 지점',
+		'plant2' : '2 지점',
+		'plant3' : '3 지점'
 	},
 	statusUpdateTime : 10 * 1000,
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 10 * 1000,
 	showHistoryNumber : 20,
-	ip : "http://192.168.0.21",
+	ip : "localhost",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };
