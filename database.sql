@@ -13,7 +13,6 @@
 
 
 -- iot 데이터베이스 구조 내보내기
-CREATE DATABASE IF NOT EXISTS `iot` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `iot`;
 
 -- 테이블 iot.current 구조 내보내기
@@ -33,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `current` (
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 default character set utf8;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `plant1` (
   `temperature` float DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -59,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `plant2` (
   `temperature` float DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -72,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `plant3` (
   `temperature` float DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -89,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `setting` (
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COMMENT='	';
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 
@@ -101,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `switch` (
   `date` varchar(45) DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1878 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1878 DEFAULT CHARSET=utf8mb4setting;
 
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 

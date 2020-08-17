@@ -1,6 +1,6 @@
 {
   "host": "localhost",
-  "user": "root",
+  "user": "SMARTFARM",
   "password": "dnjfem2006",
   "port": "3306",
   "database": "iot"

@@ -3,8 +3,8 @@ import React from "react";
 
 export default function CCTV () {
 	return (
-			<ReactPlayer style={{margin:'auto', minHeight: '300px'}}
-			             url="https://www.youtube.com/watch?v=geZXCYNRvy4"
-			             width='100%' height='100%' muted playing />
+			<img style={{margin:'auto', minHeight: '300px'}}
+			             src="http://192.168.0.11:8081/"
+			             width='100%' height='100%' muted autoPlay={true} />
 	)
 }
