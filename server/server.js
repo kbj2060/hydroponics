@@ -201,6 +201,7 @@ app.post('/api/switchMachine', (req, res) => {
   connection.query(sql, params,
     (err, rows) => {
       res.send(rows);
+	    console.log(`${machine} power has been changed through mqtt.`);
       client.publish(machine, status?'1':'0');
     }
   )
