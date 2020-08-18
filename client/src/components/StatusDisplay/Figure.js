@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 export default function Figure(props) {
   const { environment, values, plant } = props;
-  const { environments, circleColorTable, unitsTable, environmentsWordTable } = require('../../PROPERTIES');
+  const { environments, circleColorTable, unitsTable, WordsTable } = require('../../PROPERTIES');
   const n_environment = environments.length;
   const roundFigureRef = useRef();
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -57,7 +57,7 @@ export default function Figure(props) {
 
   return (
       <div >
-          <Typography className={classes.title}>{environmentsWordTable[environment]}</Typography>
+          <Typography className={classes.title}>{WordsTable[environment]}</Typography>
           <Paper className={classes.root} ref={roundFigureRef}>
             <div>
               <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>

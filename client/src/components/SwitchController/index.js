@@ -7,9 +7,9 @@ import useStyles from 'assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 
 export default function Index() {
-    const {machines} = require("../../PROPERTIES")
+    const {machines, WordsTable} = require("PROPERTIES")
     const classes = useStyles();
-
+	console.log(machines);
     return (
       <Card className={classes.controlCardButtons}>
           <div className={classes.controlCardDiv}>
@@ -17,7 +17,7 @@ export default function Index() {
                   return (
                       <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
                           <Box className={classes.alignNameBox} flexGrow={1} p={1} >
-                              <Typography className={classes.textColor} variant="subtitle2">{machine}</Typography>
+                              <Typography className={classes.textColor} variant="subtitle2">{WordsTable[machine.toLowerCase()]}</Typography>
                           </Box>
                           <CurrentChecker machine={machine}/>
                           <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>

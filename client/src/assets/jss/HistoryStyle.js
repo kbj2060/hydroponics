@@ -12,7 +12,7 @@ const HistoryStyle = makeStyles(theme =>({
     position : 'relative',
     height : 'auto',
     width : 'auto',
-    padding : '10px',
+    padding : '3px',
     backgroundColor : '#353A3B',
     boxShadow : '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     borderRadius : '6px',

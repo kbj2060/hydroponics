@@ -126,6 +126,7 @@ export default function CustomPaginationActionsTable() {
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
+	const {WordsTable} = require('PROPERTIES');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -179,7 +180,7 @@ export default function CustomPaginationActionsTable() {
 					  ).map((row, index, arr) => {
 							  return (<TableRow key={index}>
 								  <TableCell className={classes.text} align="center" component="th" scope="row">
-									  {row.machine}
+									  {WordsTable[row.machine.toLowerCase()]}
 								  </TableCell>
 								  <TableCell className={row.status === 1? classes.statusOn: classes.statusOff} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
 								  <TableCell className={classes.text} align="center">{row.date}</TableCell>

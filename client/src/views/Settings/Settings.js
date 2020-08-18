@@ -84,11 +84,11 @@ export default function Settings() {
             )}
             </Grid>
             <CustomButton onClick={ handleOnClick } size="medium">
-              <Typography>APPLY</Typography>
+              <Typography>적용</Typography>
             </CustomButton>
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
               <Alert onClose={handleClose} severity="success">
-                Settings applied!
+                설정 완료!
               </Alert>
             </Snackbar>
           </Card>

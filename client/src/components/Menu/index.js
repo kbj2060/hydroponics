@@ -13,7 +13,7 @@ const LinkButton = (props) => {
 	return (
 		<Link to={`/${props.page === 'logout'?'':props.page}`}>
 			<button onClick={props.onClick} className={props.buttonDesign} type="button">
-				<h2>{props.page.toUpperCase()}</h2>
+				<h2>{props.value}</h2>
 			</button>
 		</Link>
 	)
@@ -31,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		margin : 'auto',
-		width : '300px',
-		height : '300px',
 		borderBottom : '1px',
 	},
 	paper: {
@@ -40,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius : '10px',
 		border : '1px solid',
 		color: 'white',
-		height : '100%',
+		width : '300px',
+		height : '300px',
 		padding : '10px',
 		'&:focus': {
 			outline: '0',
@@ -101,15 +100,14 @@ export default function Menu() {
 				}}
 			>
 				<div className={classes.paper}>
-					<div style={{height: "30%"}}>
-						<h1 className={classes.header}>SMART FARM</h1>
+					<div>
+						<h1 className={classes.header}>WJ</h1>
 					</div>
 					<div style={{height: "70%"}}>
-						<LinkButton onClick={handleClose} page={"dashboard"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} page={"settings"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} page={"logout"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={handleClose} value={"홈"} page={"dashboard"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={handleClose} value={"설정"} page={"settings"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={handleClose} value={"로그아웃"} page={"logout"} buttonDesign={classes.menuButton} />
 					</div>
-
 				</div>
 			</Modal>
 		</div>

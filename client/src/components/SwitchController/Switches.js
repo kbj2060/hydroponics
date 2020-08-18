@@ -91,7 +91,7 @@ export default function Switches(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
   const dispatch = useDispatch()
-  const recentIndex = 0;
+  const {WordsTable} = require('PROPERTIES')
 
   const fetchSwitch = useCallback(async () => {
     await axios.get('/api/getSwitch', {
@@ -103,7 +103,7 @@ export default function Switches(props) {
       }
     }).then(({data}) => {
       setState({
-        status: data[recentIndex]['status'] === 1,
+        status: data[0]['status'] === 1,
         machine: machine
       })
       setIsLoading(false);
@@ -166,9 +166,9 @@ export default function Switches(props) {
           className={classes.controlForm}
         />
       </FormGroup>
-      <Snackbar open={snackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={1000}>
+      <Snackbar open={snackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={1500}>
         <Alert onClose={() => setSnackbarOpen(false)} severity="info">
-          {`${machine} is switched manually!`}
+          {`${WordsTable[machine.toLowerCase()]} 전원 전환 완료!`}
         </Alert>
       </Snackbar>
     </>

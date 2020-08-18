@@ -9,6 +9,6 @@ export default function CustomLine(props) {
 
     if (checkEmpty(history)){ return <Line options={options} data={state} width={width} height={height}/> }
 
-    return( <Line  options={options} data={state} width={width} height={height}/> )
+    return( <Line options={options} data={state} width={width} height={height}/> )
 }
 

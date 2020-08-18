@@ -9,7 +9,7 @@ export default function StatusDisplay(props) {
   const {statusUpdateTime, environments} = require('../../PROPERTIES');
   const {plant} = props;
   const classes = useStyles();
-  const {circleColorTable} = require('../../PROPERTIES');
+  const {circleColorTable, WordsTable} = require('../../PROPERTIES');
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,
@@ -55,7 +55,7 @@ export default function StatusDisplay(props) {
 
   return (
     <Card className={classes.parentItem}>
-      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{plant.toUpperCase()}</Typography>
+      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[plant]}</Typography>
       <div className={classes.figureCardDiv}>
         {
           environments.map((env) =>
