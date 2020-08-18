@@ -1,7 +1,0 @@
-{
-  "host": "localhost",
-  "user": "SMARTFARM",
-  "password": "1234",
-  "port": "3306",
-  "database": "iot"
-}
