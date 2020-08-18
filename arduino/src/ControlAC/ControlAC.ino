@@ -4,16 +4,15 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-const char* ssid = "ssomecafe";
-const char* password = "ssomecafe1";
-//const char* mqtt_server = "192.168.0.2";
+const char* ssid = "nicesesang";
+const char* password = "01055646565";
+const char* mqtt_server = "192.168.0.3";
 
 WiFiClient espClient;
-//PubSubClient client(espClient);
+PubSubClient client(espClient);
 int cnt;
 void setup_wifi() {
   delay(10);
-  // We start by connecting to a WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -88,7 +87,6 @@ void Ac_Activate(unsigned int temperature, unsigned int air_flow,
     else
       ac_msbits6 = kAc_Flow_Wall[air_flow];
   }
-  // calculating using other values
   unsigned int ac_msbits7 = (ac_msbits3 + ac_msbits4 + ac_msbits5 +
                              ac_msbits6) & B00001111;
   ac_code_to_sent = ac_msbits1 << 4;
@@ -171,20 +169,24 @@ void callback(char* topic, byte* payload, unsigned int length) {
       Ac_Activate((ac_temperature + 1), ac_flow, ac_heat);
   }
   if ((char)payload[0] == '4') { // FLOW 1
-    Ac_Activate(ac_temperature, 1, ac_heat);
-  }
-  if ((char)payload[0] == '5') { // FLOW 2
-    Ac_Activate(ac_temperature, 2, ac_heat);
-  }
-  if ((char)payload[0] == '6') { // FLOW 3
     Ac_Activate(ac_temperature, 3, ac_heat);
   }
-  if ((char)payload[0] == '7') { // COOLING
+  if ((char)payload[0] == '5') { // FLOW 2
+    Ac_Activate(ac_temperature, 1, ac_heat);
+  }
+  if ((char)payload[0] == '6') { // FLOW 3
+    Ac_Activate(ac_temperature, 2, ac_heat);
+  }
+  if ((char)payload[0] == '7') { // COOLING + 18도 + 바람세기 3
     ac_heat = 0;
+    ac_temperature = 18;
+    ac_flow = 2;
     Ac_Activate(ac_temperature, ac_flow, ac_heat);
   }
   if ((char)payload[0] == '8') { // HEATING
     ac_heat = 1;
+    ac_temperature = 30;
+    ac_flow = 2;
     Ac_Activate(ac_temperature, ac_flow, ac_heat);
   }
   if ((char)payload[0] == '9') { // SWING
@@ -201,9 +203,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 void setup() {
   Serial.begin(115200);
-  //setup_wifi();
-  //client.setServer(mqtt_server, 1883);
-  //client.setCallback(callback);
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
   irsend.begin();
 }
 
