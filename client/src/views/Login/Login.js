@@ -7,6 +7,8 @@ import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
 import {checkEmpty} from "../../components/utils";
+import TextField from '@material-ui/core/TextField';
+import AlertDialog from "../../components/LoginAlert";
 
 export default function Login() {
     const classes = useStyles();
@@ -15,6 +17,12 @@ export default function Login() {
         name: "",
         pw: ""
     });
+    const [auth, setAuth] = React.useState({});
+    const [dialogOpen, setDialogOpen] = React.useState(false);
+
+    store.subscribe(() => {
+        //const auth = store.getState()['authentication'];
+    })
 
     const dispatchLoginSuccess = (username) => {
         return dispatch(loginSuccess(username))
@@ -51,7 +59,13 @@ export default function Login() {
     const handleSubmit = (event) => {
       event.preventDefault();
       loginRequest(login.name, login.pw).then((res) => {
-        console.log(store.getState()['authentication']);
+        setAuth(store.getState()['authentication']);
+        if (auth.login === "SUCCESS"){
+
+        } else {
+
+        }
+        setDialogOpen(true);
       })
     };
 
@@ -60,11 +74,12 @@ export default function Login() {
         <div className={classes.loginForm}>
             <form>
                 <p className={classes.title}>W J</p>
-                <input className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
-                <input className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
+                <TextField id="name" className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
+                <TextField id="pw" className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
                 <div>
                     <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>
                 </div>
+                <AlertDialog result={auth.login} open={dialogOpen} />
             </form>
         </div>
     </Background>    
