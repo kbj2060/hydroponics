@@ -9,7 +9,7 @@ import CurrentChecker from './CurrentChecker';
 export default function Index() {
     const {machines, WordsTable} = require('../../client_property');
     const classes = useStyles();
-	console.log(machines);
+
     return (
       <Card className={classes.controlCardButtons}>
           <div className={classes.controlCardDiv}>

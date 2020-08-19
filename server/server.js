@@ -21,7 +21,9 @@ const {socketIoPort:PORT} = require("./server_property"),
           port: conf.port,
           database: conf.database,
           multipleStatements: true
-       });
+       }),
+       bcrypt = require('bcrypt');
+
 
 
 app.use(bodyParser.json());
@@ -205,13 +207,30 @@ app.post('/api/applySettings', (req, res) => {
 
 app.post('/api/signin', (req, res) => {
   const {username, password} = req.body.params;
-  const sql = `SELECT * FROM iot.users WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
+  const sql = `SELECT name, pw FROM iot.users WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
   const params = [username, password];
   connection.query(sql, params, (err, rows) => {
-    res.send(rows);
+    let login = JSON.parse(JSON.stringify(rows))[0];
+    console.log(login)
+
+    if(!checkEmpty(login)){
+      login.pw = hashPassword(login.pw);
+    }
+    res.send(login);
   })
 })
 
+const checkEmpty = (value) => {
+  if (value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
+    return true;
+  }
+}
+
+function hashPassword(password) {
+  const salt = bcrypt.genSalt(10)
+  const hash = bcrypt.hash(password, salt)
+  return hash
+}
 
 function getLocaleMoment(date) {
   return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');

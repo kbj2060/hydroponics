@@ -5,47 +5,62 @@ import backgroundImage from 'assets/img/background2.jpg'
 import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
+import {store} from "../../redux/store";
+import {checkEmpty} from "../../components/utils";
 
-export default function Login(props) {
+export default function Login() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [state, setState] = React.useState({
-        username: "",
-        password: ""
+    const [login, setLogin] = React.useState({
+        name: "",
+        pw: ""
     });
 
+    const dispatchLoginSuccess = (username) => {
+        return dispatch(loginSuccess(username))
+    }
+
+    const dispatchLoginFailure = () => {
+        return dispatch(loginFailure())
+    }
+
+    const resetLogin = () => {
+        setLogin({
+            name: "",
+            pw: ""
+        })
+    }
     const loginRequest = (username, password) => {
         return axios.post('/api/signin', {
             params: {
                 username: username,
                 password: password
             }})
-          .then((response) => {
-              console.log(dispatch(loginSuccess(username)));
+          .then(({data}) => {
+              checkEmpty(data)?
+                dispatchLoginFailure() : dispatchLoginSuccess(username)
           }).catch((error) => {
-              dispatch(loginFailure());
+              dispatchLoginFailure()
           });}
 
-
-
     const handleChange = target => (e) => {
-        setState({ ...state, [target]: e.target.value })
+        setLogin({ ...login, [target]: e.target.value })
     }
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      loginRequest(state.username, state.password).then(r =>
-      console.log(r));
+      loginRequest(login.name, login.pw).then((res) => {
+        console.log(store.getState()['authentication']);
+      })
     };
-
 
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
             <form>
-                <p className={classes.title}>SMART FARM</p>
-                <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('username')}/>
-                <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>
+                <p className={classes.title}>W J</p>
+                <input className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
+                <input className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
                 <div>
                     <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>
                 </div>

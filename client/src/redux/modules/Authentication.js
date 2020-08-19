@@ -45,6 +45,7 @@ function Authentication(state, action) {
         }
       });
     case AUTH_LOGIN_SUCCESS:
+      console.log('login success');
       return update(state, {
         login: {
           status: { $set: 'SUCCESS' }
@@ -55,6 +56,7 @@ function Authentication(state, action) {
         }
       });
     case AUTH_LOGIN_FAILURE:
+      console.log('login failed');
       return update(state, {
         login: {
           status: { $set: 'FAILURE' }

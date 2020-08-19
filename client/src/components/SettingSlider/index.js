@@ -62,8 +62,6 @@ export default function SettingSlider(props) {
     setSetting(newValue);
   };
 
-
-
   const fetchSettings = useCallback(async () => {
     await axios.get('api/getStatus', {
       params : {
