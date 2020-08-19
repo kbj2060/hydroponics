@@ -30,13 +30,14 @@ export default function Login() {
             pw: ""
         })
     }
-    const loginRequest = (username, password) => {
-        return axios.post('/api/signin', {
+    const loginRequest = async (username, password) => {
+        await axios.post('/api/signin', {
             params: {
                 username: username,
                 password: password
             }})
           .then(({data}) => {
+              console.log(data)
               checkEmpty(data)?
                 dispatchLoginFailure() : dispatchLoginSuccess(username)
           }).catch((error) => {

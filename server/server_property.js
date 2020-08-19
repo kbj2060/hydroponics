@@ -12,7 +12,7 @@ module.exports = {
 	plants: [
 		'plant1', 'plant2', 'plant3',
 	],
-	ip : "localhost",
+	ip : "http://127.0.0.1",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

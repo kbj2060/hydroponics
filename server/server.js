@@ -1,5 +1,6 @@
 'use strict'
 
+
 const {socketIoPort:PORT} = require("./server_property"),
        express = require('express'),
        bodyParser = require('body-parser'),
@@ -23,7 +24,6 @@ const {socketIoPort:PORT} = require("./server_property"),
           multipleStatements: true
        }),
        bcrypt = require('bcrypt');
-
 
 
 app.use(bodyParser.json());
@@ -211,32 +211,21 @@ app.post('/api/signin', (req, res) => {
   const params = [username, password];
   connection.query(sql, params, (err, rows) => {
     let login = JSON.parse(JSON.stringify(rows))[0];
-    console.log(login)
-
-    if(!checkEmpty(login)){
-      login.pw = hashPassword(login.pw);
-    }
     res.send(login);
   })
 })
 
-const checkEmpty = (value) => {
-  if (value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
+ const checkEmpty = (value) => {
+  if ( value === undefined || value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
     return true;
   }
 }
 
-function hashPassword(password) {
-  const salt = bcrypt.genSalt(10)
-  const hash = bcrypt.hash(password, salt)
-  return hash
-}
-
-function getLocaleMoment(date) {
+ function getLocaleMoment(date) {
   return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
 }
 
-function envHistoryReq2query(req_params){
+ function envHistoryReq2query(req_params){
   const [environment] = req_params['selects'];
   const tables = req_params['table'];
 
@@ -256,7 +245,7 @@ function envHistoryReq2query(req_params){
   ORDER BY id DESC ;`;
 }
 
-function nullToZeroFilter(rows){
+ function nullToZeroFilter(rows){
   const jsonRows = JSON.parse(JSON.stringify(rows))[0]
   for( let key in jsonRows ){
     if(jsonRows[key] === null){
