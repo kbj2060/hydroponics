@@ -2,59 +2,52 @@ import React,{ useEffect } from 'react';
 import Background from 'views/Background/Background';
 import useStyles from '../../assets/jss/LoginStyle';
 import backgroundImage from 'assets/img/background2.jpg'
-import {useHistory} from "react-router";
+import axios from "axios";
+import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
+import {useDispatch} from "react-redux";
 
 export default function Login(props) {
-    const history = useHistory();
     const classes = useStyles();
-
-    const [login, setLogin] = React.useState({
-        name: '',
-        password: '',
-        token: '',
-        loginClicked : false,
+    const dispatch = useDispatch();
+    const [state, setState] = React.useState({
+        username: "",
+        password: ""
     });
 
-    useEffect(() => {
-        if(login.loginClicked){
-            localStorage.setItem("token", login.token)
-            localStorage.setItem("isAuth", JSON.stringify(true));
-            history.push("/dashboard")
-        }
-    }, [login.loginClicked]);
+    const loginRequest = (username, password) => {
+        return axios.post('/api/signin', {
+            params: {
+                username: username,
+                password: password
+            }})
+          .then((response) => {
+              console.log(dispatch(loginSuccess(username)));
+          }).catch((error) => {
+              dispatch(loginFailure());
+          });}
+
+
 
     const handleChange = target => (e) => {
-        setLogin({ ...login, [target]: e.target.value })
+        setState({ ...state, [target]: e.target.value })
     }
 
-/*
     const handleSubmit = (event) => {
       event.preventDefault();
-      loginMutation({
-          variables: {
-              name: login.name,
-              password: login.password
-          }
-      })
-      .then((res) => {
-          const _token = res.data.login.token;
-          setLogin({...login,token : _token, loginClicked : true})
-      })
-      .catch((err)=> {
-          alert('Your Account Is Not Valid!')
-          console.log(err)
-      })};
-*/
+      loginRequest(state.username, state.password).then(r =>
+      console.log(r));
+    };
+
 
     return(
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
             <form>
                 <p className={classes.title}>SMART FARM</p>
-                <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('name')}/>
+                <input className={classes.login} placeholder="Name"  type="text" onChange={handleChange('username')}/>
                 <input className={classes.login} placeholder="Password" type="password" onChange={handleChange('password')}/>
                 <div>
-                    <button className={classes.loginButton} type="submit" >Log in</button>
+                    <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>
                 </div>
             </form>
         </div>

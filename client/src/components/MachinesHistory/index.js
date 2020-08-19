@@ -126,7 +126,7 @@ export default function CustomPaginationActionsTable() {
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
-	const {WordsTable} = require('PROPERTIES');
+	const {WordsTable} = require('../../client_property');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -142,7 +142,7 @@ export default function CustomPaginationActionsTable() {
   };
 
 	const fetchSwitchHistory = useCallback(async () => {
-		const {showHistoryNumber} = require('../../PROPERTIES');
+		const {showHistoryNumber} = require('../../client_property');
 
 		await axios.get('/api/getSwitchHistory', {
 			params: {

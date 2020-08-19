@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 240
 const HistoryStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',

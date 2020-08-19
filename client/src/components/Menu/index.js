@@ -60,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
 		fontSize : '2em',
 		borderBottom : '1px solid',
 		paddingBottom : '18.7px',
-		marginBottom : '0px',
-		marginLeft : '30px',
-		marginRight : '30px',
 		textAlign : 'center'
 	},
 }));

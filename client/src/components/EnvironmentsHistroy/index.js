@@ -7,7 +7,7 @@ import axios from "axios";
 import {checkEmpty} from "../utils";
 
 export default function Index(props) {
-  const { WordsTable } = require('../../PROPERTIES');
+  const { WordsTable } = require('../../client_property');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
@@ -39,7 +39,7 @@ export default function Index(props) {
   }, [environment])
 
   useEffect(() => {
-    const {historyUpdateTime} = require('../../PROPERTIES');
+    const {historyUpdateTime} = require('../../client_property');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();

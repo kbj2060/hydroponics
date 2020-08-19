@@ -26,6 +26,7 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
+    "react-addons-update": "^15.6.2",
     "react-dom": "^16.13.1",
     "socket.io-client": "^2.3.0",
     "socketio": "^1.0.0",
@@ -35,5 +36,11 @@
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "socket.io": "^2.3.0"
+  },
+  "@std/esm": "cjs",
+  "_moduleAliases": {
+    "@root": "./",
+    "@property": "server_property.js",
+    "@db_configure": "server/db_conf.json"
   }
 }

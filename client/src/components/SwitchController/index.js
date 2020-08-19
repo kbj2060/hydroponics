@@ -7,7 +7,7 @@ import useStyles from 'assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 
 export default function Index() {
-    const {machines, WordsTable} = require("PROPERTIES")
+    const {machines, WordsTable} = require('../../client_property');
     const classes = useStyles();
 	console.log(machines);
     return (

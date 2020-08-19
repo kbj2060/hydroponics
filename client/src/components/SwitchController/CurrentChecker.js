@@ -30,7 +30,7 @@ const CurrentFlowing = withStyles((theme) => ({
 
 // TODO: UpdateTime의 2배 시간동안 current와 switch가 안맞을 시 알림!
 export default function CurrentChecker({machine}) {
-	const {currentUpdateTime, n_machines } = require('../../PROPERTIES');
+	const {currentUpdateTime, n_machines } = require('../../client_property');
 	const [currents, setCurrents] = React.useState({});
 	const [checklist, setChecklist] = React.useState([]);
 	const classes = useStyles();

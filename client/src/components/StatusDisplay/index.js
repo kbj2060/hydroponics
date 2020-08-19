@@ -6,10 +6,10 @@ import Figure from "./Figure";
 import axios from "axios";
 
 export default function StatusDisplay(props) {
-  const {statusUpdateTime, environments} = require('../../PROPERTIES');
+  const {statusUpdateTime, environments} = require('../../client_property');
   const {plant} = props;
   const classes = useStyles();
-  const {circleColorTable, WordsTable} = require('../../PROPERTIES');
+  const {circleColorTable, WordsTable} = require('../../client_property');
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,

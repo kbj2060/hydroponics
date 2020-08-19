@@ -51,6 +51,6 @@ import video from 'assets/img/drone.mp4';
         <source src={video} type="video/mp4" />
       </video>
  */
-{/* <Route path="/account" component={() => <Account /> } />
+/* <Route path="/account" component={() => <Account /> } />
           <Route path="/history" component={() => <History /> } />
-          <Route component={NotFound} /> */}
+          <Route component={NotFound} /> */

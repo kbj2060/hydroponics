@@ -1,14 +1,10 @@
 const CONTROL_SETTING = "ControlSetting/CONTROL_SETTING";
+const {settingMinMax} = require('../../client_property');
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
 }
 
-const {settingMinMax} = require('PROPERTIES')
-const co2Min = settingMinMax['co2'][0],
-      tempMin = settingMinMax['temperature'][0],
-      humMin = settingMinMax['humidity'][0],
-      ledMin = settingMinMax['led'][0]
 
 const initialState = {
   co2 : [settingMinMax['co2'][0], 0],

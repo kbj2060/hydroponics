@@ -91,7 +91,7 @@ export default function Switches(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
   const dispatch = useDispatch()
-  const {WordsTable} = require('PROPERTIES')
+  const {WordsTable} = require('../../client_property');
 
   const fetchSwitch = useCallback(async () => {
     await axios.get('/api/getSwitch', {

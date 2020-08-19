@@ -4,7 +4,7 @@ const plugins = [
         {
             root: ["./"],
             alias: {
-                "PROPERTIES" : "./PROPERTIES"
+                "server_property" : "./server_property"
             }
         }
     ]

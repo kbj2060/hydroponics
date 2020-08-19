@@ -1,5 +1,6 @@
 'use strict'
-const {socketIoPort:PORT} = require('../PROPERTIES'),
+
+const {socketIoPort:PORT} = require("./server_property"),
        express = require('express'),
        bodyParser = require('body-parser'),
        moment = require('moment'),
@@ -142,24 +143,6 @@ app.get('/api/getSwitch', (req, res) => {
   )
 });
 
-/*
-app.get('/api/getDate', (req, res) => {
-  const table = req.query['table'];
-  const num = req.query['num'];
-
-  connection.query(
-    `SELECT created 
-    FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
-    (err, rows) => {
-      let result = rows.map((row) => {
-        const date = Object.values(row)[0]
-        return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
-      })
-      res.send(result);
-    }
-  )
-});*/
-
 app.get('/api/getEnvironmentHistory', (req, res) => {
     const [environment] = req.query['selects'];
     const sql = envHistoryReq2query(req.query);
@@ -219,6 +202,16 @@ app.post('/api/applySettings', (req, res) => {
     }
   )
 });
+
+app.post('/api/signin', (req, res) => {
+  const {username, password} = req.body.params;
+  const sql = `SELECT * FROM iot.users WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
+  const params = [username, password];
+  connection.query(sql, params, (err, rows) => {
+    res.send(rows);
+  })
+})
+
 
 function getLocaleMoment(date) {
   return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');

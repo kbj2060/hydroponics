@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from 'assets/jss/SettingsStyle';
 import AppBar from 'components/AppBar';
@@ -27,13 +27,7 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { settings:settingKeys } = require('PROPERTIES');
-  const [settings, setSettings] = useState({
-                                        "co2": [],
-                                        "humidity": [],
-                                        "temperature": [],
-                                        "led" : []
-                                        })
+  const { settings:settingKeys } = require('../../client_property');
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
 

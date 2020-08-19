@@ -12,7 +12,7 @@ import EnvironmentsHistroy from "components/EnvironmentsHistroy";
 
 export default function Dashboard() {
   const classes = useStyles();
-  const {environments, plants} = require('../../PROPERTIES');
+  const {environments, plants} = require('../../client_property');
 
   return (
       <div className={classes.root}>

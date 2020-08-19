@@ -9,7 +9,7 @@ module.exports = function(app){
     );
     app.use(
       createProxyMiddleware('/stream', {
-        target: `http://localhost:8081/`,
+        target: `http://121.157.207.47:9999/`,
         changeOrigin: true
       })
     )
