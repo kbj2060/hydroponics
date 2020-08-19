@@ -49,7 +49,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 10 * 1000,
 	showHistoryNumber : 20,
-	ip : "127.0.0.1",
+	ip : "http://127.0.0.1",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

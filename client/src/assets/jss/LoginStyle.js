@@ -23,6 +23,7 @@ const loginStyle = makeStyles(()=>({
         },
     },
     loginButton : {
+        cursor: 'pointer',
         backgroundColor: 'black',
         width:  'auto',
         minWidth:  '100px',

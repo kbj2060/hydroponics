@@ -35,8 +35,7 @@ export default function PermanentAppBar(props) {
           </Typography>
           <div className={classes.grow} />
             <div>
-              <Menu MenuButton={MenuButton}>
-              </Menu>
+              <Menu MenuButton={MenuButton} />
             </div>
         </Toolbar>
       </AppBar>
