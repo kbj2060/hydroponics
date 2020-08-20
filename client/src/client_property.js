@@ -1,6 +1,6 @@
 module.exports = {
 	machines: [
-	'AirConditioner', 'LED', 'FAN'
+	'AirConditioner', 'LED', 'FAN', 'WaterPump'
 	],
 	n_machines: {
 		'AirConditioner': 2,
@@ -38,6 +38,7 @@ module.exports = {
 		'led' : '조명',
 		'fan' : '환풍기',
 		'airconditioner' : '에어컨',
+		'waterpump' : '급수',
 		"dashboard" : '홈',
 		"settings" : '설정',
 		"logout" : '로그아웃',

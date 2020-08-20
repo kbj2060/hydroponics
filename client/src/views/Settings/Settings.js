@@ -45,6 +45,9 @@ export default function Settings() {
     })
   }
 
+  useEffect(() => {
+    console.log(store.getState()['authentication']);
+  }, []);
 
   useEffect(() => {
     if(isApplied) {

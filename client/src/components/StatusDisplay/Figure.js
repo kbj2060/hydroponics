@@ -53,6 +53,9 @@ export default function Figure(props) {
     window.addEventListener('resize', () => {
       setWidth(window.innerWidth)
     });
+    return () => {
+      setDimensions({})
+    }
   }, [width]);
 
   return (

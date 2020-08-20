@@ -1,12 +1,12 @@
 import update from 'react-addons-update';
 
-export const AUTH_LOGIN = "AUTH_LOGIN";
+export const AUTH_INIT = "AUTH_INIT";
 export const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
 export const AUTH_LOGIN_FAILURE = "AUTH_LOGIN_FAILURE";
 
 export const login = () => {
   return {
-    type: AUTH_LOGIN
+    type: AUTH_INIT
   };
 }
 
@@ -38,12 +38,9 @@ function Authentication(state, action) {
     state = initialState;
 
   switch(action.type) {
-    case AUTH_LOGIN:
-      return update(state, {
-        login: {
-          status: { $set: 'WAITING' }
-        }
-      });
+    case AUTH_INIT:
+      return initialState;
+
     case AUTH_LOGIN_SUCCESS:
       console.log('login success');
       return update(state, {

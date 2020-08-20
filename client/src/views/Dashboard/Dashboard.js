@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import CCTV from "components/CCTV";
@@ -9,10 +9,15 @@ import StatusDisplay from "components/StatusDisplay";
 import useStyles from 'assets/jss/DashboardStyle';
 import MachinesHistoryCard from "components/MachinesHistory";
 import EnvironmentsHistroy from "components/EnvironmentsHistroy";
+import {store} from "../../redux/store";
 
 export default function Dashboard() {
   const classes = useStyles();
   const {environments, plants} = require('../../client_property');
+
+  useEffect(() => {
+    console.log(store.getState()['authentication']);
+  }, []);
 
   return (
       <div className={classes.root}>

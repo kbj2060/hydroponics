@@ -7,7 +7,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import withStyles from "@material-ui/core/styles/withStyles";
-
+import {login} from "../../redux/modules/Authentication";
+import {useDispatch} from "react-redux";
 
 const LinkButton = (props) => {
 	return (
@@ -66,16 +67,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Menu() {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const [open, setOpen] = React.useState(false);
 
 	const handleOpen = () => {
 		setOpen((prev) => !prev);
 	};
 
-	const handleClose = () => {
+	const handleClick = (value) => {
+		if (value === "logout"){
+			dispatch(login())
+		}
 		setOpen(false);
 	};
-
+	const handleClose = () => {
+		setOpen(false)
+	}
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 		<div>
@@ -101,9 +108,9 @@ export default function Menu() {
 						<h1 className={classes.header}>WJ</h1>
 					</div>
 					<div style={{height: "70%"}}>
-						<LinkButton onClick={handleClose} value={"홈"} page={"dashboard"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} value={"설정"} page={"settings"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={handleClose} value={"로그아웃"} page={"logout"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => {handleClick("home")}} value={"홈"} page={"dashboard"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => {handleClick("settings")}} value={"설정"} page={"settings"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => {handleClick("logout")}} value={"로그아웃"} page={"logout"} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
 			</Modal>

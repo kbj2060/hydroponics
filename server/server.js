@@ -68,7 +68,7 @@ const handleCurrentsMQTT = (topic, message) => {
     ${jsonMessage['led_current_4']}, ${jsonMessage['airconditioner_current_1']},
     ${jsonMessage['airconditioner_current_2']},${jsonMessage['fan_current_1']},
      ${jsonMessage['fan_current_2']}, ${jsonMessage['fan_current_3']},
-     ${jsonMessage['fan_current_4']},now(), 0);`;
+     ${jsonMessage['fan_current_4']}, ${jsonMessage['waterpump_current_1']},now(), 0);`;
   connection.query(sql,
     (err, rows) => {
       console.log(rows);
@@ -210,6 +210,7 @@ app.post('/api/signin', (req, res) => {
   const sql = `SELECT name, pw FROM iot.users WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
   const params = [username, password];
   connection.query(sql, params, (err, rows) => {
+    console.log(rows);
     let login = JSON.parse(JSON.stringify(rows))[0];
     res.send(login);
   })

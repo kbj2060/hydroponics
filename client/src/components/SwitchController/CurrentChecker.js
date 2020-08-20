@@ -83,6 +83,7 @@ export default function CurrentChecker({machine}) {
 		}, currentUpdateTime);
 		return () => {
 			clearInterval(interval);
+
 		}
 	}, []);
 

@@ -14,6 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory } from "react-router-dom";
 
 
 export default function Login() {
@@ -23,8 +24,17 @@ export default function Login() {
         name: "",
         pw: ""
     });
-    const [auth, setAuth] = React.useState({});
+    const [auth, setAuth] = React.useState({
+      login: {
+        status: 'INIT'
+      },
+      status: {
+        isLoggedIn: false,
+        currentUser: '',
+      }
+    });
     const [open, setOpen] = React.useState(false);
+    const history = useHistory()
 
     const handleClickOpen = () => {
       setOpen(true);
@@ -38,48 +48,58 @@ export default function Login() {
       setLogin({ ...login, [target]: e.target.value })
     }
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      loginRequest(login.name, login.pw).then((res) => {
-        setAuth(store.getState()['authentication']);
-        if (auth.login === "SUCCESS"){
-
-        }
-        else {
-
-        }
-        handleClickOpen();
-      })
-    };
-
     const dispatchLoginSuccess = (username) => {
-        return dispatch(loginSuccess(username))
+      return dispatch(loginSuccess(username))
     }
 
     const dispatchLoginFailure = () => {
-        return dispatch(loginFailure())
+      return dispatch(loginFailure())
     }
 
     const loginRequest = async (username, password) => {
-        await axios.post('/api/signin', {
-            params: {
-                username: username,
-                password: password
-            }})
-          .then(({data}) => {
-              console.log(data)
-              checkEmpty(data)?
-                dispatchLoginFailure() : dispatchLoginSuccess(username)
-          }).catch((error) => {
-              dispatchLoginFailure()
-          });
+      await axios.post('/api/signin', {
+        params: {
+          username: username,
+          password: password
+        }})
+        .then(({data}) => {
+          checkEmpty(data)?
+            dispatchLoginFailure() : dispatchLoginSuccess(username)
+          const updatedAuth = store.getState()['authentication'];
+          setAuth(updatedAuth);
+        }).catch((error) => {
+          dispatchLoginFailure()
+        });
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        loginRequest(login.name, login.pw)
+    };
 
-  /*
-			store.subscribe(() => {
-					//const auth = store.getState()['authentication'];
-			})*/
+    const resetAuth = () => {
+      setAuth({
+        login: {
+          status: 'INIT'
+        },
+        status: {
+          isLoggedIn: false,
+          currentUser: '',
+        }
+      })
+    }
+
+    useEffect(() => {
+      //TODO : 로그인 성공 후 다시 로그인 페이지로 들어갈 시 처리.
+      console.log(store.getState()['authentication']);
+      if (auth.login.status === 'INIT'){ return; }
+
+      if ( !checkEmpty(auth) && auth.login.status === "SUCCESS" ){
+        history.push("/dashboard")
+      } else { handleClickOpen(); }
+
+      return () => {resetAuth()}
+    }, [auth])
 
     return(
     <Background image={backgroundImage}>
@@ -98,10 +118,10 @@ export default function Login() {
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                 >
-                  <DialogTitle id="alert-dialog-title">{"로그인"}</DialogTitle>
+                  <DialogTitle id="alert-dialog-title">{"로그인 실패"}</DialogTitle>
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-
+                      {"이름 혹은 비밀번호를 확인해주세요."}
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
