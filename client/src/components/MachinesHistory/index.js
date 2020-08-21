@@ -125,16 +125,15 @@ export default function CustomPaginationActionsTable() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const [refresh , setRefresh] = React.useState();
+	const [refresh , setRefresh] = React.useState(Boolean);
 	const {WordsTable} = require('../../client_property');
+	let unsubscribe = store.subscribe(() => {
+		setRefresh(store.getState()['controlSwitch']);
+	})
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
   };
-
-	store.subscribe(() => {
-		setRefresh(store.getState()['controlSwitch']);
-	})
 
   const handleChangeRowsPerPage = event => {
 		setRowsPerPage(parseInt(event.target.value, 10));
@@ -162,6 +161,10 @@ export default function CustomPaginationActionsTable() {
 
 	useEffect(() => {
 		fetchSwitchHistory();
+		return () => {
+			unsubscribe();
+			setRefresh(Boolean);
+		}
 	}, [fetchSwitchHistory, refresh]);
 
 	if(isLoading){
