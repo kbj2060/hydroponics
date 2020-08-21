@@ -9,15 +9,15 @@ let getOptions = (data, environment) => {
 
 	return ({
 		legend: {
-			display: false
+			display: true
 		},
 		scales: {
 			xAxes: [{
 				type: 'time',
 				time: {
-					unit: "minute",
+					unit: "hour",
 					displayFormats: {
-						minute: 'h:mm a'
+						minute: 'hA'
 					},
 					parser: 'YYYY/MM/DD HH:mm:ss',
 				}
@@ -30,7 +30,7 @@ let getOptions = (data, environment) => {
 					mode: "horizontal",
 					scaleID: "y-axis-0",
 					value: max,
-					borderColor: "red",
+					borderColor: "#FF4F61",
 					borderWidth: '0.5',
 					label: {
 						backgroundColor: "#FF4F61",
@@ -43,7 +43,7 @@ let getOptions = (data, environment) => {
 					mode: "horizontal",
 					scaleID: "y-axis-0",
 					value: min,
-					borderColor: "red",
+					borderColor: "#FF4F61",
 					borderWidth: '0.5',
 					label: {
 						backgroundColor: "#FF4F61",
@@ -59,7 +59,7 @@ let state = {
 	labels: '',
 	datasets: [
 		{
-			label: 'PLANT1',
+			label: '1지점 ',
 			fill: false,
 			lineTension: 0.5,
 			backgroundColor: '#efcf76',
@@ -69,7 +69,7 @@ let state = {
 			data: []
 		},
 		{
-			label: 'PLANT2',
+			label: '2지점 ',
 			fill: false,
 			lineTension: 0.5,
 			backgroundColor: '#efcf76',
@@ -79,7 +79,7 @@ let state = {
 			data: []
 		},
 		{
-			label: 'PLANT3',
+			label: '3지점 ',
 			fill: false,
 			lineTension: 0.5,
 			backgroundColor: '#efcf76',

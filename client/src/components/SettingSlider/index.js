@@ -10,42 +10,85 @@ import {useDispatch} from "react-redux";
 import {controlSetting} from "../../redux/modules/ControlSetting";
 
 
-const StyledValueLabel = withStyles({
-  label: {
-    color : '#1E2425'
-  }
-})(ValueLabel);
+const iOSBoxShadow =
+  '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 
-const CustomSlider = withStyles({
+const IOSSlider = withStyles({
+  root: {
+    color: '#3880ff',
+    height: 2,
+    padding: '15px 0',
+  },
+  thumb: {
+    height: 28,
+    width: 28,
+    backgroundColor: '#fff',
+    boxShadow: iOSBoxShadow,
+    marginTop: -14,
+    marginLeft: -14,
+    '&:focus, &:hover, &$active': {
+      boxShadow: '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        boxShadow: iOSBoxShadow,
+      },
+    },
+  },
+  active: {},
   valueLabel: {
-    fontSize: '15px',
-    fontWeight : '500'
+    left: 'calc(-50% + 12px)',
+    top: -22,
+    '& *': {
+      background: 'transparent',
+      color: '#000',
+    },
+  },
+  track: {
+    height: 2,
+  },
+  rail: {
+    height: 2,
+    opacity: 0.5,
+    backgroundColor: '#bfbfbf',
+  },
+  mark: {
+    backgroundColor: '#bfbfbf',
+    height: 8,
+    width: 1,
+    marginTop: -3,
+  },
+  markActive: {
+    opacity: 1,
+    backgroundColor: 'currentColor',
   },
 })(Slider);
 
+const StyledValueLabel = withStyles({
+  label: {
+    color : '#fff'
+  }
+})(ValueLabel);
 
 const useStyles = makeStyles({
   root: {
     width: 'auto',
-    padding: '0 5% 0 5%'
+    padding: '5% 5% 5% 5%'
   },
   slider :{
     color : "#FFCB3A",
   },
   title : {
-    marginBottom : '40px',
+    fontWeight : '1000',
+    marginBottom : '10%',
     color:'white'
   },
 });
 
-function valuetext(value) {
-  return `${value}°C`;
-}
 
 export default function SettingSlider(props) {
   const { settingKey, isApplied } = props;
   const classes = useStyles();
-  const {settingMinMax, WordsTable } = require('../../client_property');
+  const {settingMinMax, WordsTable, unitsTable } = require('../../client_property');
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch()
@@ -70,7 +113,9 @@ export default function SettingSlider(props) {
         num : 1
       }
     }).then(({data}) => {
-      !data ? setSetting([0, 0]) : setSetting([data[`${settingKey}_min`], data[`${settingKey}_max`]])
+      const min = data[`${settingKey}_min`];
+      const max = data[`${settingKey}_max`];
+      !data ? setSetting([0, 0]) : setSetting([min, max])
       setIsLoading(false);
     }).catch((err) => {
       console.log(err);
@@ -86,11 +131,13 @@ export default function SettingSlider(props) {
     }
   }, [isApplied])
 
-
   useEffect(() => {
     fetchSettings();
     }, [])
 
+  function valuetext(value, index) {
+    return `${value}${unitsTable[settingKey]}`;
+  }
 
   if(isLoading){
     return <ColorCircularProgress />
@@ -102,7 +149,7 @@ export default function SettingSlider(props) {
         <Typography className={classes.title}>
           {WordsTable[settingKey]}
         </Typography>
-        <CustomSlider
+        <IOSSlider
           className={classes.slider}
           min={settingMinMax[settingKey][0]}
           max={settingMinMax[settingKey][1]}
@@ -111,7 +158,7 @@ export default function SettingSlider(props) {
           ValueLabelComponent={StyledValueLabel}
           valueLabelDisplay="on"
           aria-labelledby="range-slider"
-          getAriaValueText={valuetext}
+          valueLabelFormat={valuetext}
         />
       </Grid>
     </div>

@@ -7,7 +7,6 @@ const HistoryStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   foreground : (props) => ({
-    margin : '-30px 15px 0px 15px',
     position : 'relative',
     height : 'auto',
     width : 'auto',
@@ -41,19 +40,25 @@ const HistoryStyle = makeStyles(theme =>({
   updateTime : {
     display : 'inline',
     verticalAlign : 'middle',
-    fontSize : '10px',
+    fontSize : '0.7vw',
     fontWeight : 'bold',
     color : 'white',
   },
   updateInfo : {
     margin : 0,
-    paddingTop : '10px',
+    padding: '1%',
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : 'white',
+    borderTopColor : 'rgba(255, 255, 255, 0.1)',
     textAlign : 'left',
     verticalAlign : 'middle',
+  },
+  title : {
+    color: 'white',
+    fontWeight: 'bold',
+    padding: '1%',
+    fontSize : '1vw'
   },
   textColor : {
     color : 'white',

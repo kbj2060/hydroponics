@@ -51,18 +51,14 @@ export default function Index(props) {
   }, [fetchHistory]);
 
   return (
-    <div className={classes.background}>
       <div className={classes.foreground}>
-        <CustomLine environment={environment} history={history} width={3} height={1} />
-      </div>
-      <div className={classes.footer} >
-        <Typography variant="body1" className={classes.textColor}>{WordsTable[environment]}</Typography>
-        <Typography variant="body2" className={classes.textColor}>문제 감지 : 0</Typography>
+        <CustomLine environment={environment} history={history} width={5} height={2} />
+        <Typography className={classes.title}> {WordsTable[environment]} </Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
           <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate}</Typography>
         </div>
       </div>
-    </div>
+
     );
   }

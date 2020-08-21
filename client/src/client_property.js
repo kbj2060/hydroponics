@@ -29,7 +29,8 @@ module.exports = {
 	unitsTable : {
 		'humidity': '%',
 		'co2': 'ppm',
-		'temperature': '°C'
+		'temperature': '°C',
+		'led' : '시'
 	},
 	WordsTable : {
 		'humidity' : '습도',
