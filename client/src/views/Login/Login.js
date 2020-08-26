@@ -1,12 +1,12 @@
 import React,{ useEffect } from 'react';
-import Background from 'views/Background/Background';
+import Background from '../Background/Background';
 import useStyles from '../../assets/jss/LoginStyle';
-import backgroundImage from 'assets/img/background2.jpg'
+import backgroundImage from '../../assets/img/background2.jpg'
 import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
-import {checkEmpty} from "../../components/utils";
+import {checkEmpty} from "root/client/src/components/utils/CheckEmpty";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useHistory } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 
 export default function Login() {
@@ -57,7 +57,7 @@ export default function Login() {
     }
 
     const loginRequest = async (username, password) => {
-      await axios.post('/api/signin', {
+      await axios.post('/api/post/signin', {
         params: {
           username: username,
           password: password
@@ -109,7 +109,9 @@ export default function Login() {
               <TextField id="name" className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
               <TextField id="pw" className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
               <div>
+                <Link to={`/dashboard`} forcerefresh="true">
                   <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>
+                </Link>
               </div>
               <div>
                 <Dialog

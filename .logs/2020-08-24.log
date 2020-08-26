@@ -1,0 +1,54 @@
+{
+  level: 'info',
+  message: 'Socket ID : cRbB2nK1aT6iibMlAAAB Switch Control.',
+  label: 'socket',
+  timestamp: '2020-08-24 23:53:52'
+}
+{
+  level: 'info',
+  message: '[llewyn] OFF',
+  label: 'switch',
+  timestamp: '2020-08-24 23:53:52'
+}
+{
+  level: 'info',
+  message: 'Socket ID : cRbB2nK1aT6iibMlAAAB Switch Control.',
+  label: 'socket',
+  timestamp: '2020-08-24 23:58:17'
+}
+{
+  level: 'info',
+  message: '[llewyn] ON',
+  label: 'switch',
+  timestamp: '2020-08-24 23:58:17'
+}
+{
+  level: 'info',
+  message: 'Socket ID : cRbB2nK1aT6iibMlAAAB Switch Control.',
+  label: 'socket',
+  timestamp: '2020-08-24 23:58:17'
+}
+{
+  level: 'info',
+  message: '[llewyn] ON',
+  label: 'switch',
+  timestamp: '2020-08-24 23:58:17'
+}
+{
+  level: 'info',
+  message: 'Socket ID : cRbB2nK1aT6iibMlAAAB Switch Control.',
+  label: 'socket',
+  timestamp: '2020-08-24 23:58:18'
+}
+{
+  level: 'info',
+  message: '[llewyn] OFF',
+  label: 'switch',
+  timestamp: '2020-08-24 23:58:18'
+}
+{
+  level: 'info',
+  message: 'Socket ID : 8TlmXr6pdGKwLvT-AAAA connected.',
+  label: 'socket',
+  timestamp: '2020-08-24 23:59:31'
+}

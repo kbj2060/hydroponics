@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
-import useStyles from 'assets/jss/DashboardStyle';
+import useStyles from '../../assets/jss/DashboardStyle';
 import Figure from "./Figure";
 import axios from "axios";
 
 export default function StatusDisplay(props) {
-  const {statusUpdateTime, environments} = require('../../client_property');
+  const {statusUpdateTime, environments} = require('root/init_setting');
   const {plant} = props;
   const classes = useStyles();
-  const {circleColorTable, WordsTable} = require('../../client_property');
+  const {circleColorTable, WordsTable} = require('root/init_setting');
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,
@@ -28,10 +28,11 @@ export default function StatusDisplay(props) {
       return Number.parseFloat(x).toFixed(1);
   }
 
+  //TODO : 다른 url로 짤 것. 현재 url로 안됨.
   const fetchStatus = async () => {
-    await axios.get('/api/getStatus', {
+    await axios.get('/api/get/query', {
       params: {
-        table: plant,
+        section: plant,
         selects: environments,
         num: 1
       }

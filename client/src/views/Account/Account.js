@@ -3,12 +3,12 @@ import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from '../../assets/jss/accountStyle';
 import AppBar from 'components/AppBar/AppBar';
-import CustomGrid from '../../components/utils/CustomGrid';
+import CustomGrid from 'root/client/src/components/utils/CustomGrid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import locationImage from "assets/img/location.png";
+import locationImage from "../../assets/img/location.png";
 
 const ColorCircularProgress = withStyles({
   root: {

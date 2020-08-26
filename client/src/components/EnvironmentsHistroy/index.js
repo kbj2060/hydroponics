@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
 import CustomLine from './CustomLine';
-import useStyles from 'assets/jss/HistoryStyle';
-import TimerIcon from 'assets/icons/TimerIcon';
+import useStyles from '../../assets/jss/HistoryStyle';
+import TimerIcon from '../../assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
-import {checkEmpty} from "../utils";
+import {checkEmpty} from "../utils/CheckEmpty";
 
 export default function Index(props) {
-  const { WordsTable } = require('../../client_property');
+  const { WordsTable, plants } = require('root/init_setting');
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
@@ -24,10 +24,10 @@ export default function Index(props) {
       setLastUpdate(lastUpdateData);
     }
 
-    await axios.get('/api/getEnvironmentHistory', {
+    await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment, 'created'],
-        table: ['plant1', 'plant2', 'plant3']
+        sections: plants
       }
     }).then(({data})=> {
       setHistory(data);
@@ -39,7 +39,7 @@ export default function Index(props) {
   }, [environment])
 
   useEffect(() => {
-    const {historyUpdateTime} = require('../../client_property');
+    const {historyUpdateTime} = require('root/init_setting');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();

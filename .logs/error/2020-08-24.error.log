@@ -1,0 +1,7 @@
+{
+  level: 'error',
+  message: 'MQTT PUBLISH ERROR : SyntaxError: Unexpected token \n' +
+    ' in JSON at position 60',
+  label: 'MQTT',
+  timestamp: '2020-08-24 23:53:58'
+}

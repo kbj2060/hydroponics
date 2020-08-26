@@ -1,6 +1,6 @@
 module.exports = {
 	machines: [
-		'AirConditioner', 'LED', 'FAN'
+		'AirConditioner', 'LED', 'FAN', 'WaterPump'
 	],
 	n_machines: {
 		'AirConditioner': 2,
@@ -12,7 +12,10 @@ module.exports = {
 	plants: [
 		'plant1', 'plant2', 'plant3',
 	],
-	ip : "http://127.0.0.1",
+	serverSubscribe: [
+		'plant1', 'plant2', 'plant3', 'AirConditioner', 'LED', 'FAN', 'WaterPump', 'current'
+	],
+	ip : "localhost",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

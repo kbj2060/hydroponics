@@ -65,20 +65,20 @@ $ concurrently --kill-others-on-fail "nodemon server/server.js" "yarn client"
 [1] ./src/assets/jss/HistoryStyle.js
 [1]   Line 3:7:  'drawerWidth' is assigned a value but never used  no-unused-vars
 [1] 
-[1] ./src/components/StatusDisplay/index.js
+[1] ./src/components/StatusDisplay/CheckEmpty.js
 [1]   Line 53:6:  React Hook useEffect has missing dependencies: 'fetchStatus' and 'statusUpdateTime'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
 [1] 
 [1] ./src/App.js
 [1]   Line 54:1:  Block is redundant  no-lone-blocks
 [1] 
-[1] ./src/components/CCTV/index.js
+[1] ./src/components/CCTV/CheckEmpty.js
 [1]   Line 5:3:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
 [1] 
 [1] ./src/components/SwitchController/CurrentChecker.js
 [1]   Line 87:5:  React Hook useEffect has missing dependencies: 'currentUpdateTime' and 'fetchCurrent'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
 [1]   Line 94:5:  React Hook useEffect has a missing dependency: 'handleChecklist'. Either include it or remove the dependency array                         react-hooks/exhaustive-deps
 [1] 
-[1] ./src/components/SettingSlider/index.js
+[1] ./src/components/SettingSlider/CheckEmpty.js
 [1]   Line 89:6:  React Hook useEffect has missing dependencies: 'dispatch', 'setting', and 'settingKey'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
 [1]   Line 94:8:  React Hook useEffect has a missing dependency: 'fetchSettings'. Either include it or remove the dependency array                            react-hooks/exhaustive-deps
 [1] 

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
-import useStyles from 'assets/jss/SettingsStyle';
-import AppBar from 'components/AppBar';
-import SettingSlider from 'components/SettingSlider';
+import useStyles from '../../assets/jss/SettingsStyle';
+import AppBar from 'root/client/src/components/AppBar';
+import SettingSlider from 'root/client/src/components/SettingSlider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -27,7 +27,7 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { settings:settingKeys } = require('../../client_property');
+  const { settings:settingKeys } = require('root/init_setting');
   const [isApplied, setIsApplied] = useState(false)
   const [open, setOpen] = React.useState(false);
 
@@ -40,7 +40,7 @@ export default function Settings() {
   }
 
   const applySettings = async (settings) => {
-    await axios.post('/api/applySettings',{
+    await axios.post('/api/post/apply/settings',{
       params: { settings : settings }
     })
   }
@@ -52,8 +52,11 @@ export default function Settings() {
   useEffect(() => {
     if(isApplied) {
       const SettingsFromStore = handleNull(store.getState()['controlSetting']);
-      applySettings(SettingsFromStore);
+      applySettings(SettingsFromStore).then(() => {
+        console.log('applied completed!')
+      });
     }
+    return () => { setIsApplied(false)}
   }, [isApplied])
 
 

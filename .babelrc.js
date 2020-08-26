@@ -4,8 +4,10 @@ const plugins = [
         {
             root: ["./"],
             alias: {
-                "server_property" : "./server_property"
+                "CLIENT" : "./client/"
             }
         }
     ]
 ];
+
+module.exports = {  plugins: [...plugins] }

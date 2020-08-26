@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 export default function Figure(props) {
   const { environment, values, plant } = props;
-  const { environments, circleColorTable, unitsTable, WordsTable } = require('../../client_property');
+  const { environments, circleColorTable, unitsTable, WordsTable } = require('root/init_setting');
   const n_environment = environments.length;
   const roundFigureRef = useRef();
   const [width, setWidth] = React.useState(window.innerWidth);

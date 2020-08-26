@@ -10,6 +10,9 @@ import {controlSwitch} from "../../redux/modules/ControlSwitch";
 import socket from '../../socket';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
+import {loadState} from "../LocalStorage";
+import {Redirect} from "react-router-dom";
+import {CheckLogin} from "../utils/CheckLogin";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -91,69 +94,85 @@ export default function Switches(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
   const dispatch = useDispatch()
-  const {WordsTable} = require('../../client_property');
+  const {WordsTable} = require('root/init_setting');
 
-  const fetchSwitch = useCallback(async () => {
-    await axios.get('/api/getSwitch', {
+  const getCurrentUser = () => {
+    return loadState()['authentication']['status']['currentUser'];
+  }
+
+  const postSwitchMachine = async (status) => {
+    const name = getCurrentUser();
+    await axios.post('/api/post/switch/machine',{
       params: {
-        table : 'switch',
+        machine : machine,
+        status : status,
+        name : name
+      }
+    })
+  }
+
+  const getSwitchMachine = async () => {
+    return await axios.get('/api/get/switch', {
+      params: {
         selects : ['status'],
         machine : machine,
         num : 1
       }
-    }).then(({data}) => {
-      setState({
-        status: data[0]['status'] === 1,
-        machine: machine
-      })
-      setIsLoading(false);
-    }).catch((err) => {
-      setIsLoading(true);
     })
-  }, [machine])
+  }
 
-  const handleChange = async () => {
-    const status = !state.status
-    setState({
-      machine : machine,
-      status : status
-    });
-    setSnackbarOpen(true);
-
-    await axios.post('/api/switchMachine',{
-      params: {
-        machine : machine,
-        status : status
-      }
-    })
-
+  const emitSocket = (status) => {
     socket.emit('sendSwitchControl', {
       machine : machine,
       status : status
     })
+  }
 
-    dispatch(controlSwitch());
+  const receiveSocket = () => {
+    socket.on('receiveSwitchControl', (switchStatus) => {
+      if(machine === switchStatus.machine){ setState(switchStatus); }})
+  }
+
+  const handleChange = async () => {
+    if(CheckLogin()) {
+      const status = !state.status
+      setSnackbarOpen(true);
+      dispatch(controlSwitch());
+      setState({machine: machine, status: status});
+      emitSocket(status);
+      postSwitchMachine(status).then(() => {
+        console.log('switch machine')
+      });
+    }
   };
 
+  const cleanup = () => {
+    socket.disconnect();
+  }
+
   useEffect(() => {
-    fetchSwitch();
-  }, [fetchSwitch]);
+    getSwitchMachine().then(({data}) => {
+        setState({
+          status: data[0]['status'] === 1,
+          machine: machine
+        })
+        setIsLoading(false);
+    }).catch((err) => { setIsLoading(true); })
+
+    return () => { cleanup(); }
+  }, []);
 
   useEffect(()=>{
-    socket.on('receiveSwitchControl', (switchStatus) => {
-      if (machine === switchStatus.machine){
-        dispatch(controlSwitch());
-        setState(switchStatus);
-      }
-    })
-  }, [dispatch, machine]);
+    receiveSocket();
+    return () => { cleanup() }
+  }, [machine]);
 
   if(isLoading){
     return <ColorCircularProgress />
   }
 
   return (
-    <>
+    CheckLogin() ? <>
       <FormGroup>
         <FormControlLabel
           control={
@@ -171,6 +190,5 @@ export default function Switches(props) {
           {`${WordsTable[machine.toLowerCase()]} 전원 전환 완료!`}
         </Alert>
       </Snackbar>
-    </>
-  );
+    </> : <Redirect to={'/login'} />);
 }

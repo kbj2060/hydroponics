@@ -12,7 +12,7 @@ module.exports = {
 		'co2', 'humidity', 'temperature'
 	],
 	plants: [
-		'plant1', 'plant2', 'plant3',
+		'A', 'B', 'C'
 	],
 	settings: [
 		'co2', 'humidity', 'temperature', 'led'
@@ -24,9 +24,9 @@ module.exports = {
 		'led' : [0, 23]
 	},
 	circleColorTable : {
-		'plant1' : "#FF925D",
-		'plant2' : "#FFCB3A",
-		'plant3' : "#FF4F61"
+		'plantA' : "#FF925D",
+		'plantB' : "#FFCB3A",
+		'plantC' : "#FF4F61"
 	},
 	unitsTable : {
 		'humidity': '%',
@@ -45,9 +45,9 @@ module.exports = {
 		"dashboard" : '홈',
 		"settings" : '설정',
 		"logout" : '로그아웃',
-		'plant1' : '1 지점',
-		'plant2' : '2 지점',
-		'plant3' : '3 지점'
+		'plantA' : '1 지점',
+		'plantB' : '2 지점',
+		'plantC' : '3 지점'
 	},
 	statusUpdateTime : 10 * 1000,
 	historyUpdateTime : 10 * 1000,

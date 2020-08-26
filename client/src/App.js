@@ -3,10 +3,11 @@ import Dashboard from './views/Dashboard/Dashboard';
 import Login from './views/Login/Login';
 import Settings from './views/Settings/Settings';
 import { Route } from "react-router";
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux'
 import { store } from "./redux/store";
+import {saveState} from "./components/LocalStorage";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -30,15 +31,24 @@ const useStyles = makeStyles(() =>({
 
 export default function App() {
     const classes = useStyles();
-    const _store = store;
+
+    store.subscribe(() => {
+      saveState( store.getState() );
+    });
 
     return (
-      <Provider store={_store}>
+      <Provider store={store}>
         <BrowserRouter>
           <div className={classes.parent}>
-            <Route exact path="/" component={() => <Login />} />
-            <Route path="/dashboard" component={() => <Dashboard />} />
-            <Route path="/settings" component={() => <Settings /> } />
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/dashboard" >
+              <Dashboard />
+            </Route>
+            <Route exact path="/settings" >
+              <Settings />
+            </Route>
           </div>
         </BrowserRouter>
       </Provider>

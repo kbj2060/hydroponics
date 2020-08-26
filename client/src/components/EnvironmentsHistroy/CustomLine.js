@@ -1,7 +1,7 @@
 import {Line} from 'react-chartjs-2';
 import React from "react";
 import LineSetting from "./LineSetting";
-import {checkEmpty} from "../utils";
+import {checkEmpty} from "../utils/CheckEmpty";
 
 export default function CustomLine(props) {
     const { history, width, height, environment } = props;

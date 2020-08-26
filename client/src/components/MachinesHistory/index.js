@@ -118,18 +118,15 @@ const useStyles2 = makeStyles({
 	}
 });
 
-export default function CustomPaginationActionsTable() {
+export default function MachineHistory() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const [refresh , setRefresh] = React.useState(Boolean);
-	const {WordsTable} = require('../../client_property');
-	let unsubscribe = store.subscribe(() => {
-		setRefresh(store.getState()['controlSwitch']);
-	})
+	const [refresh , setRefresh] = React.useState();
+	const {WordsTable} = require('root/init_setting');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -140,32 +137,37 @@ export default function CustomPaginationActionsTable() {
 		setPage(0);
   };
 
-	const fetchSwitchHistory = useCallback(async () => {
-		const {showHistoryNumber} = require('../../client_property');
-
-		await axios.get('/api/getSwitchHistory', {
-			params: {
-				selects: ['machine', 'status', 'date'],
-				num: showHistoryNumber
-			}}).then(({data: switchHistory}) => {
-			const rows = switchHistory.map((history) => {
-				return {
-					status: history['status'],
-					machine: history['machine'],
-					date: history['date']
-				}})
-			setRows(rows);
-			setIsLoading(false);
+	useEffect(() => {
+		const unsubscribe = store.subscribe(() => {
+			setRefresh(store.getState()['controlSwitch'])
 		})
+		return () => { unsubscribe(); }
 	}, [])
 
 	useEffect(() => {
-		fetchSwitchHistory();
-		return () => {
-			unsubscribe();
-			setRefresh(Boolean);
-		}
-	}, [fetchSwitchHistory, refresh]);
+		let mounted = true;
+		const {showHistoryNumber} = require('root/init_setting');
+
+		axios.get('/api/get/switch/history', {
+			params: {
+				selects: ['machine', 'status', 'created'],
+				num: showHistoryNumber
+			}}).then(({data: switchHistory}) => {
+				if(mounted) {
+					const rows = switchHistory.map((history) => {
+						return {
+							status: history['status'],
+							machine: history['machine'],
+							date: history['date']
+						}
+					})
+					setRows(rows);
+					setIsLoading(false);
+				}
+		})
+
+		return () => { mounted = false;}
+	}, [refresh]);
 
 	if(isLoading){
 		return <ColorCircularProgress />

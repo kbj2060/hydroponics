@@ -1,5 +1,7 @@
+import {loadState} from "root/client/src/components/LocalStorage";
+
 const CONTROL_SETTING = "ControlSetting/CONTROL_SETTING";
-const {settingMinMax} = require('../../client_property');
+const {settingMinMax} = require('root/init_setting');
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
@@ -22,7 +24,7 @@ function ControlSetting(state = initialState, action) {
         ...state, [key]: value
       }
     default:
-      return initialState
+      return loadState()['controlSetting'];
   }
 };
 

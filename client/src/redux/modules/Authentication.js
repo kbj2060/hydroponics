@@ -1,4 +1,5 @@
 import update from 'react-addons-update';
+import {loadState} from "root/client/src/components/LocalStorage";
 
 export const AUTH_INIT = "AUTH_INIT";
 export const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
@@ -60,7 +61,7 @@ function Authentication(state, action) {
         }
       });
     default:
-      return state;
+      return loadState()['authentication'];
   }
 }
 

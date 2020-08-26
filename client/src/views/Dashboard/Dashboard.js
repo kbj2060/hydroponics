@@ -1,32 +1,30 @@
 import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import CCTV from "components/CCTV";
-//import WeatherCard from 'components/WeatherCard';
-import AppBar from 'components/AppBar';
-import SwitchController from 'components/SwitchController';
-import StatusDisplay from "components/StatusDisplay";
-import useStyles from 'assets/jss/DashboardStyle';
-import MachinesHistoryCard from "components/MachinesHistory";
-import EnvironmentsHistroy from "components/EnvironmentsHistroy";
-import {store} from "../../redux/store";
+import CCTV from "root/client/src/components/CCTV";
+import AppBar from 'root/client/src/components/AppBar';
+import SwitchController from 'root/client/src/components/SwitchController';
+import StatusDisplay from "root/client/src/components/StatusDisplay";
+import useStyles from '../../assets/jss/DashboardStyle';
+import MachinesHistoryCard from "root/client/src/components/MachinesHistory";
+import EnvironmentsHistroy from "root/client/src/components/EnvironmentsHistroy";
+import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
+import {Redirect} from "react-router-dom";
 
 export default function Dashboard() {
   const classes = useStyles();
-  const {environments, plants} = require('../../client_property');
+  const {environments, plants} = require('root/init_setting');
 
-  useEffect(() => {
-    console.log(store.getState()['authentication']);
-  }, []);
+  useEffect(()=> {
+
+  }, [])
 
   return (
+    CheckLogin() ?
       <div className={classes.root}>
         <AppBar />
         <CssBaseline />
         <Grid container className={classes.container}>
-         {/* <Grid item xs={12} sm={6} md={6} className={classes.item}>
-            <img src={logo} style={{width:'100%', height:'100%', borderRadius:'15px'}}/>
-          </Grid>*/}
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
             <SwitchController />
           </Grid>
@@ -47,6 +45,6 @@ export default function Dashboard() {
             </Grid>)
             })}
         </Grid>
-      </div>
+      </div> :  <Redirect to={'/login'} />
       );
     }

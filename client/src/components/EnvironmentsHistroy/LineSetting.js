@@ -1,5 +1,5 @@
 import React, {useEffect, useCallback} from 'react';
-import {checkEmpty} from "../utils";
+import {checkEmpty} from "../utils/CheckEmpty";
 import axios from "axios";
 import 'chartjs-plugin-annotation';
 
@@ -96,10 +96,10 @@ export default function LineSetting (history, environment) {
 
 	const fetchLineSetting = useCallback(async () => {
 		try {
-			await axios.get('/api/getStatus', {
+			await axios.get('/api/get/query', {
 				params: {
 					selects: [`${environment}_min`, `${environment}_max`],
-					table: ['setting'],
+					table: ['SETTING'],
 					num: 1
 				}
 			}).then(({data}) => {

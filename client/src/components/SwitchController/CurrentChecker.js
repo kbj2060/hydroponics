@@ -1,9 +1,12 @@
 import React, {useEffect} from 'react';
 import Box from "@material-ui/core/Box";
-import useStyles from 'assets/jss/DashboardStyle';
+import useStyles from '../../assets/jss/DashboardStyle';
 import axios from "axios";
 import {withStyles} from "@material-ui/core/styles";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
+import socket from "../../socket";
+import {useDispatch} from "react-redux";
+import {controlSwitch} from "../../redux/modules/ControlSwitch";
 
 
 const checkEmpty = (value) => {
@@ -22,58 +25,54 @@ const CurrentFlowing = withStyles((theme) => ({
 	}
 }))(({classes, ...props}) => {
 	return (
-		<svg className={classes.icon} fill={props.fillColor}  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-			<path d="M400.4 175.8c-1.7-3.4-4.3-5.1-7.7-5.1H292L391.9 12.8c1.7-2.6 1.7-6 0-8.5S387.6 0 384.2 0H247.6c-3.4 0-6 1.7-7.7 4.3l-128 256c-1.7 2.6-1.7 6 0 8.5 1.7 2.6 5.1 4.3 7.7 4.3h87.9l-95.6 227.8c-1.7 3.4 0 7.7 3.4 10.2 0.9 0.9 2.6 0.9 4.3 0.9 2.6 0 5.1-0.9 6.8-2.6l273.1-324.3C401.2 182.6 402.1 179.2 400.4 175.8zM149.5 454.8l78.5-187.7c0.9-2.6 0.9-5.1-0.9-7.7 -1.7-1.7-4.3-3.4-6.8-3.4h-87L252.8 17.1h116.1L268.1 174.9c-1.7 2.6-1.7 6 0 8.5s4.3 4.3 7.7 4.3h99L149.5 454.8z"/>
+		<svg display={props.display} className={classes.icon} fill={props.fillColor} x="0px" y="0px" viewBox="0 0 1000 1000" enableBackground="new 0 0 1000 1000" xmlSpace="preserve">
+			<g><g transform="translate(0.000000,511.000000) scale(0.100000,-0.100000)">
+				<path d="M4019.2,2676.1L2377.6,340l1119.5-10.8l1119.5-10.8L3063.6-2205.4c-854.2-1387-1563.9-2543.2-1576.8-2566.9c-15.1-30.2,0-21.6,49.6,23.7c41,36.7,1300.7,1197.2,2802,2577.7C5839.7-790.3,7392.8,637.6,7789.7,1004.3c396.9,364.6,724.8,673,729.1,686c4.3,10.8-498.3,21.6-1287.8,23.7l-1296.4,6.5l1121.7,1632.9c616.9,897.3,1121.7,1637.2,1121.7,1643.7c0,6.5-565.1,12.9-1257.5,12.9H5662.8L4019.2,2676.1z"/></g></g>
 		</svg>
 	)
 })
 
 // TODO: UpdateTime의 2배 시간동안 current와 switch가 안맞을 시 알림!
 export default function CurrentChecker({machine}) {
-	const {currentUpdateTime, n_machines } = require('../../client_property');
-	const [currents, setCurrents] = React.useState({});
-	const [checklist, setChecklist] = React.useState([]);
+	const {currentUpdateTime, n_machines } = require('root/init_setting');
+	const [currents, setCurrents] = React.useState({
+		'WaterPump': 0
+	});
 	const classes = useStyles();
 	const [isLoading, setIsLoading] = React.useState(true);
+	const dispatch = useDispatch()
 
-	// TODO: 각 machine의 허용 전류 값을 측정 후, 데이터베이스에 추가.
-	const min = 1.2
-	const max = 3
+	const criteria = 1
+
+
 
 	const fetchCurrent = async () => {
-		await axios.get('/api/getStatus', {
+		await axios.get('/api/get/query', {
 			params : {
-				selects : [...Array(n_machines[machine]).keys()].map(index => {
-					return `${machine}_current_${++index}`
-				}),
-				table: 'current',
+				selects : ['waterpump_current_1'],
+				table: 'CURRENT',
 				num : 1
-			}}).then(( {data:queriedCurrent} ) => {
-			setCurrents(queriedCurrent);
-			setIsLoading(false)
+			}}).then(( {data} ) => {
+				const current = data['waterpump_current_1'];
+				setCurrents({'WaterPump': current});
+				setIsLoading(false);
 		})
 	}
 
-	const checkCurrentRange = (current, min, max) => {
-		if (current < min || current > max) { return false; }
-		else { return true; }
-	}
-
-	const handleChecklist = () => {
-		if(checkEmpty(currents)){
-			setChecklist([]);
-			return;
+	const currentFlowing = () => {
+		if(currents['WaterPump'] < criteria){
+			return false
 		}
-		Object.values(currents).forEach((value) => {
-			let checkCurrent = checkCurrentRange(value, min, max)
-			setChecklist(
-				[ checkCurrent]
-			);
-		})
+		else {
+			return true
+		}
 	}
 
-	const currentNotFlowing = (checks) => {
-		return checks.some((element) => element === false)
+	const emitSocket = (status) => {
+		socket.emit('sendSwitchControl', {
+			machine : machine,
+			status : status
+		})
 	}
 
 	useEffect(() => {
@@ -83,16 +82,8 @@ export default function CurrentChecker({machine}) {
 		}, currentUpdateTime);
 		return () => {
 			clearInterval(interval);
-
 		}
 	}, []);
-
-	useEffect(() => {
-		handleChecklist();
-		return () => {
-			setChecklist([]);
-		}
-	}, [currents])
 
 	if(isLoading){
 		return <ColorCircularProgress></ColorCircularProgress>
@@ -101,8 +92,9 @@ export default function CurrentChecker({machine}) {
 	return (
 		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >
 			{
-				currentNotFlowing(checklist) ?
-				<CurrentFlowing fillColor={'#1E2425'}/> : <CurrentFlowing fillColor={'#FFCB3A'}/>}
+				machine !== 'WaterPump'? <CurrentFlowing display={"none"} fillColor={'#FFCB3A'} /> : currentFlowing() ?
+				<CurrentFlowing fillColor={'#FFCB3A'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
+			}
 		</Box>
 	);
 }

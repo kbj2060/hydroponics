@@ -1,3 +1,5 @@
+import {loadState} from "root/client/src/components/LocalStorage";
+
 const CONTROL_SWITCH = "CONTROL_SWITCH";
 
 export function controlSwitch() {
@@ -9,7 +11,7 @@ function ControlSwitch(state =false, action) {
     case CONTROL_SWITCH:
       return !state
     default: // need this for default case
-      return state
+      return loadState()['controlSwitch'];
   }
 };
 

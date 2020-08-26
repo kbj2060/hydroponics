@@ -88,10 +88,11 @@ const useStyles = makeStyles({
 export default function SettingSlider(props) {
   const { settingKey, isApplied } = props;
   const classes = useStyles();
-  const {settingMinMax, WordsTable, unitsTable } = require('../../client_property');
+  const {settingMinMax, WordsTable, unitsTable } = require('root/init_setting');
   const [setting, setSetting] = React.useState([0, 0]);
   const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch()
+/*
 
   const handleNames = (key) => {
     let names = [];
@@ -100,15 +101,22 @@ export default function SettingSlider(props) {
     })
     return names
   }
+*/
 
   const handleChange = (event, newValue) => {
     setSetting(newValue);
   };
 
+  const applySetting = async () => {
+    await axios.post('/api/post/apply/settings',{
+      params: { category: settingKey, setting: setting }
+    })
+  }
+
+  // TODO: 현재 쿼리랑 맞지 않음. 다른 쿼리를 짜서 할 것.
   const fetchSettings = useCallback(async () => {
-    await axios.get('api/getStatus', {
+    await axios.get('api/get/query', {
       params : {
-        table : 'setting',
         selects : handleNames(settingKey),
         num : 1
       }
@@ -128,6 +136,7 @@ export default function SettingSlider(props) {
   useEffect(() => {
     if(isApplied){
       dispatch(controlSetting({[settingKey] :setting}));
+      applySetting();
     }
   }, [isApplied])
 

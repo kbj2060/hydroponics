@@ -3,11 +3,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from "@material-ui/core/Box";
 import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
-import useStyles from 'assets/jss/DashboardStyle';
+import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 
 export default function Index() {
-    const {machines, WordsTable} = require('../../client_property');
+    const {machines, WordsTable} = require('root/init_setting');
     const classes = useStyles();
 
     return (
