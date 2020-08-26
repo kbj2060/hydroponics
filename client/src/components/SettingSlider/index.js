@@ -113,14 +113,15 @@ export default function SettingSlider(props) {
     })
   }
 
-  // TODO: 현재 쿼리랑 맞지 않음. 다른 쿼리를 짜서 할 것.
   const fetchSettings = useCallback(async () => {
-    await axios.get('api/get/query', {
+    await axios.get('/api/get/settingBar', {
       params : {
-        selects : handleNames(settingKey),
+        category : settingKey,
+        selects : ['min', 'max'],
         num : 1
       }
     }).then(({data}) => {
+      console.log(data);
       const min = data[`${settingKey}_min`];
       const max = data[`${settingKey}_max`];
       !data ? setSetting([0, 0]) : setSetting([min, max])

@@ -2,8 +2,7 @@ import {loadState} from "../LocalStorage";
 import React from "react";
 
 export const CheckLogin =  () => {
-  const loginStatus = loadState()['authentication']['status']['isLoggedIn'];
-  if (!loginStatus || loadState() === undefined) {
+  if (loadState() === undefined || !loadState()['authentication']['status']['isLoggedIn']) {
     return false
   } else {
     return true

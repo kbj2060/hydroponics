@@ -24,7 +24,9 @@ function ControlSetting(state = initialState, action) {
         ...state, [key]: value
       }
     default:
-      return loadState()['controlSetting'];
+      try{return loadState()['controlSetting'];}
+      catch(e){return initialState}
+
   }
 };
 

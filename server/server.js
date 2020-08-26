@@ -68,8 +68,9 @@ data : 2.3
  */
 const handleCurrentsMQTT = (topic, message) => {
   const current = JSON.parse(message.toString());
-  const [table, machine, section] = topic.split("/")
-  const sql = `INSERT INTO iot.${table} VALUES (null, ${machine}, ${section}, ${current}, now(), 0);`
+  const [table, machine, section] = topic.split("/");
+  const sql = `INSERT INTO iot.${table} 
+               VALUES (null, ${machine}, ${section}, ${current}, now(), 0);`
   connection.query(sql,
     (err, rows) => {
       console.log(rows);
@@ -90,7 +91,7 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   const _json = JSON.parse(message.toString());
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
-              VALUES (null, ${section}, ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
+               VALUES (null, ${section}, ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
   connection.query(sql, (err, rows) => {
       console.log(rows);
     }
@@ -118,11 +119,11 @@ const handleSwitchesMQTT = (topic, message, clientId) => {
 client.on('message', (topic, message) => {
   try{
     const clientId = client.options.clientId;
-    if(topic.includes("ENV")){
+    if(topic.includes("env")){
       handlePlantEnvironmentsMQTT(topic, message);
-    } else if (topic.includes("CURRENT")){
+    } else if (topic.includes("current")){
       handleCurrentsMQTT(topic, message);
-    } else if (topic.includes("SWITCH")){
+    } else if (topic.includes("switch")){
       handleSwitchesMQTT(topic, message, clientId);
     }
   } catch (err){
@@ -176,8 +177,28 @@ app.get('/api/get/switch', (req, res) => {
     const num = req.query['num'];
     const machine = req.query['machine'];
     connection.query(
-      `SELECT ${selects} FROM iot.SWITCH WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
+      `SELECT ${selects} FROM iot.switch WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
+        res.send(rows);
+      }
+    )
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+
+app.get('/api/get/status', (req, res) => {
+  try {
+    const selects = req.query['selects'].join(",");
+    const num = req.query['num'];
+    const section = req.query['section'];
+    const sql = `SELECT ${selects} FROM iot.env 
+                WHERE section = \"${section}\" 
+                ORDER BY id DESC LIMIT ${num};`
+    connection.query(sql, (err, rows) => {
         res.send(rows);
       }
     )
@@ -221,7 +242,7 @@ app.get('/api/get/switch/history', (req, res) => {
     const selects = req.query['selects'].join(",");
     const num = req.query['num'];
     connection.query(
-      `SELECT ${selects} FROM iot.SWITCH ORDER BY id DESC LIMIT ${num};`,
+      `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
         res.send(rows)
       }
@@ -233,10 +254,27 @@ app.get('/api/get/switch/history', (req, res) => {
   }
 });
 
+app.get('/api/get/settingBar', (req, res) => {
+  try{
+    const selects = req.query['selects'].join(",");
+    const category = req.query['category'];
+    const num = req.query['num'];
+    const sql = `SELECT ${selects} FROM iot.switch 
+                 WHERE category = ${category} 
+                 ORDER BY id DESC LIMIT ${num};`
+    connection.query( sql, (err, rows) => { res.send(rows) } )
+  } catch(err){
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SETTINGBAR QUERY ERROR : ${err}`
+    })
+  }
+});
+
 
 app.post('/api/post/switch/machine', (req, res) => {
   try {
-    let sql = 'INSERT INTO iot.SWITCH VALUES (null, ?, ?, ?, now(), 0)';
+    let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
     let machine = req.body.params['machine'];
     let status = req.body.params['status'];
     let name = req.body.params['name'];
@@ -263,8 +301,8 @@ app.post('/api/post/switch/machine', (req, res) => {
 
 app.post('/api/post/apply/settings', (req, res) => {
   try {
-    const sql = 'INSERT INTO iot.SETTING ' +
-      'VALUES (null, ?, ?, ?, now(), 0)';
+    const sql = 'INSERT INTO iot.setting ' +
+                'VALUES (null, ?, ?, ?, now(), 0)';
     const category = req.body.params['category'];
     const [min, max] =req.body.params['setting']
     const params = [category, min, max]
@@ -281,7 +319,8 @@ app.post('/api/post/apply/settings', (req, res) => {
 app.post('/api/post/signin', (req, res) => {
   try{
     const {username, password} = req.body.params;
-    const sql = `SELECT name, pw FROM iot.users WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
+    const sql = `SELECT name, pw FROM iot.user 
+                 WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
     const params = [username, password];
     connection.query(sql, params, (err, rows) => {
       console.log(rows);
@@ -312,10 +351,10 @@ app.post('/api/post/signin', (req, res) => {
 
   const sqls = sections.map((section) => {
     return `SELECT ${environment}, created
-    FROM iot.ENV
-    WHERE DATE_FORMAT(iot.ENV.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
-    AND section = ${section}
-    ORDER BY id DESC ;`;
+            FROM iot.env
+            WHERE DATE_FORMAT(iot.ENV.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+            AND section = ${section}
+            ORDER BY id DESC ;`;
   });
 
   return sqls.join(" ");

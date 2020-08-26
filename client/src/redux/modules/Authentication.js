@@ -61,7 +61,8 @@ function Authentication(state, action) {
         }
       });
     default:
-      return loadState()['authentication'];
+      try{return loadState()['authentication'];}
+      catch(e){return initialState}
   }
 }
 

@@ -10,8 +10,9 @@ function ControlSwitch(state =false, action) {
   switch(action.type){
     case CONTROL_SWITCH:
       return !state
-    default: // need this for default case
-      return loadState()['controlSwitch'];
+    default:
+      try{return loadState()['controlSwitch'];}
+      catch(e){return state}
   }
 };
 

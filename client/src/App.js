@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Dashboard from './views/Dashboard/Dashboard';
 import Login from './views/Login/Login';
 import Settings from './views/Settings/Settings';
@@ -7,7 +7,7 @@ import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux'
 import { store } from "./redux/store";
-import {saveState} from "./components/LocalStorage";
+import {saveState, loadState} from "./components/LocalStorage";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -31,6 +31,10 @@ const useStyles = makeStyles(() =>({
 
 export default function App() {
     const classes = useStyles();
+
+    useEffect(() => {
+      saveState( store.getState() );
+    }, []);
 
     store.subscribe(() => {
       saveState( store.getState() );

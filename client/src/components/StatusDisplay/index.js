@@ -28,15 +28,15 @@ export default function StatusDisplay(props) {
       return Number.parseFloat(x).toFixed(1);
   }
 
-  //TODO : 다른 url로 짤 것. 현재 url로 안됨.
   const fetchStatus = async () => {
-    await axios.get('/api/get/query', {
+    await axios.get('/api/get/status', {
       params: {
         section: plant,
         selects: environments,
         num: 1
       }
     }).then(({data:status}) => {
+      console.log(status);
       for (const [key, value] of Object.entries(status)) { status[key] = convertFixedFloat(value); }
       setRecentStatus(status);
     }).catch((err) => {
