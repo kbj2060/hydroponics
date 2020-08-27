@@ -30,6 +30,8 @@
     "react": "^16.13.1",
     "react-addons-update": "^15.6.2",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5",
     "socket.io-client": "^2.3.0",
     "socketio": "^1.0.0",
     "winston": "^3.3.3",

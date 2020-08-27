@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import useStyles from '../../assets/jss/DashboardStyle';
 import Figure from "./Figure";
 import axios from "axios";
+import {checkEmpty} from "../utils/CheckEmpty";
 
 export default function StatusDisplay(props) {
   const {statusUpdateTime, environments} = require('root/init_setting');
@@ -36,8 +37,10 @@ export default function StatusDisplay(props) {
         num: 1
       }
     }).then(({data:status}) => {
-      console.log(status);
-      for (const [key, value] of Object.entries(status)) { status[key] = convertFixedFloat(value); }
+      if(checkEmpty(status)){
+        return
+      }
+      for (const [key, value] of Object.entries(status[0])) { status[key] = convertFixedFloat(value); }
       setRecentStatus(status);
     }).catch((err) => {
       console.log('FETCH STATUS ERROR!');

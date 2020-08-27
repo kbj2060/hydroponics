@@ -1,12 +1,12 @@
 module.exports = {
 	machines: [
-	'AirConditioner', 'LED', 'FAN', 'WaterPump'
+	'airconditioner', 'led', 'fan', 'waterpump'
 	],
 	n_machines: {
-		'AirConditioner': 2,
-		'LED': 4,
-		'WaterPump': 1,
-		'FAN' : 4,
+		'airconditioner': 2,
+		'led': 4,
+		'waterpump': 1,
+		'fan' : 4,
 	},
 	environments: [
 		'co2', 'humidity', 'temperature'

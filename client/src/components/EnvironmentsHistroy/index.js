@@ -22,7 +22,7 @@ export default function Index(props) {
   //  {
   //    '1': {
   //      '2020/08/27 03:20:49': 1212,
-  //     '2020/08/27 03:20:42': 1212,
+  //      '2020/08/27 03:20:42': 1212,
   //      '2020/08/27 03:20:28': 1212
   //    },
   //    '2': { '2020/08/27 03:22:55': 1212 },
@@ -34,6 +34,7 @@ export default function Index(props) {
         selects: [environment],
       }
     }).then(({data})=> {
+      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);

@@ -36,6 +36,15 @@ const dashboardStyle = makeStyles(() =>({
     alignItems:'center',
     width:'calc(100%/3)',
   },
+  disable: {
+    color : 'white',
+    textAlign:'center',
+    margin:'auto',
+    display:'inline',
+    alignItems:'center',
+    width:'calc(100%/3)',
+   visibility : 'hidden'
+  },
   textColor : {
     padding : '5px 0 5px 0',
     color : 'white !important',

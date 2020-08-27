@@ -1,4 +1,5 @@
 'use strict'
+
 const INIT_SETTING_PATH = "../init_setting";
 const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
@@ -26,7 +27,7 @@ const mqtt = require('mqtt'),
           multipleStatements: true
        });
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
-const {machines, plants, serverSubscribe} = require(INIT_SETTING_PATH)
+const {machines, plants} = require(INIT_SETTING_PATH)
 const {checkEmpty} = require('./utils/CheckEmpty');
 
 app.use(bodyParser.json());
@@ -71,7 +72,7 @@ const handleCurrentsMQTT = (topic, message) => {
   const current = JSON.parse(message.toString());
   const [table, machine, section] = topic.split("/");
   const sql = `INSERT INTO iot.${table} 
-               VALUES (null, ${machine}, ${section}, ${current}, now(), 0);`
+               VALUES (null, \"${machine}\", ${section}, ${current}, now(), 0);`
   connection.query(sql,
     (err, rows) => {
       console.log(rows);
@@ -99,6 +100,12 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   )
 }
 
+const emitSwitch = (machine, status) => {
+  io.emit('receiveSwitchControl', {
+    machine : machine,
+    status : status
+  })
+}
 /*
 mqtt data send example
 topic : switch/{machine}
@@ -107,15 +114,13 @@ data : '1' or '0'
 // TODO : 오토매직 모듈에서 스위치 전환 시, DB 저장 / dispatch switchControl
 const handleSwitchesMQTT = (topic, message, clientId) => {
   const [table, machine] = topic.split("/")
-/*
-  if(clientId === 'Auto') {
-*/
-    const status = JSON.parse(message.toString());
-    const sql = `INSERT INTO iot.${table} 
-                 VALUES (null, \"${machine}\", ${status}, \"${clientId}\", now(), 0);`
-    connection.query(sql, (err, rows) => {
-      console.log(rows);
-    })
+  const status = JSON.parse(message.toString());
+  emitSwitch(machine, status);
+  const sql = `INSERT INTO iot.${table} 
+               VALUES (null, \"${machine}\", ${status}, \"${clientId}\", now(), 0);`
+  connection.query(sql, (err, rows) => {
+    console.log(rows);
+  })
 }
 
 client.on('message', (topic, message) => {
@@ -208,10 +213,7 @@ app.get('/api/get/status', (req, res) => {
                 WHERE section = \"${section}\" 
                 ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
+      if(checkEmpty(rows)){ return }
         res.send(rows);
       }
     )
@@ -233,10 +235,7 @@ app.get('/api/get/lineLimit', (req, res) => {
                 WHERE category = \"${environment}\" 
                 ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
+      if(checkEmpty(rows)){ res.send({}); return; }
         res.send(rows);
       }
     )
@@ -248,6 +247,7 @@ app.get('/api/get/lineLimit', (req, res) => {
   }
 });
 
+
 app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
@@ -255,26 +255,13 @@ app.get('/api/get/environment/history', (req, res) => {
                 FROM iot.env
                 WHERE DATE_FORMAT(iot.ENV.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
                 ORDER BY id DESC ;`;
-    let arr = new Array();
     connection.query(
       sql, (err, rows) => {
-        if(checkEmpty(rows)){
-          res.send({});
-          return
-        }
-        let dic = Object({})
+        if(checkEmpty(rows)){ res.send({}); return; }
+
         let results = JSON.parse(JSON.stringify(rows));
         results = groupBy(results, 'section');
-
-        for (let [key, value] of Object.entries(results)) {
-          value.map((v) => {
-            const date = getLocaleMoment(v['created']);
-            dic[date] = v[environment]
-          })
-          results[key] = dic;
-          dic = {};
-        }
-        console.log(results)
+        results = cleanHistoryDict(results, environment);
         res.send(results);
       });
   } catch (err) {
@@ -292,10 +279,8 @@ app.get('/api/get/switch/history', (req, res) => {
     connection.query(
       `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
-        if(checkEmpty(rows)){
-          res.send({});
-          return
-        }
+        if(checkEmpty(rows)){ res.send({}); return; }
+
         res.send(rows)
       }
     )} catch (err) {
@@ -311,16 +296,15 @@ app.get('/api/get/settingBar', (req, res) => {
     const selects = req.query['selects'].join(",");
     const category = req.query['category'];
     const num = req.query['num'];
-    const sql = `SELECT ${selects} FROM iot.switch 
-                 WHERE category = ${category} 
+    const sql = `SELECT ${selects} FROM iot.setting 
+                 WHERE category = \"${category}\" 
                  ORDER BY id DESC LIMIT ${num};`
     connection.query( sql, (err, rows) => {
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
-      res.send(rows) } )
+      console.log(rows)
+      if(checkEmpty(rows)){ res.send({}); return; }
 
+      res.send(rows)
+    })
   } catch(err){
     useErrorLogger('GET').error({
       level: 'error',
@@ -342,11 +326,8 @@ app.get('/api/get/current', (req, res) => {
                   GROUP BY section )
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
-      console.log(rows);
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
+      if(checkEmpty(rows)){ res.send({}); return; }
+
       res.send(rows)
     })
   } catch(err){
@@ -368,10 +349,8 @@ app.post('/api/post/switch/machine', (req, res) => {
 
     connection.query(sql, params,
       (err, rows) => {
-        if(checkEmpty(rows)){
-          res.send({});
-          return
-        }
+        if(checkEmpty(rows)){ res.send({}); return; }
+
         res.send(rows);
         useInfoLogger('switch').info({
           level: 'info',
@@ -397,10 +376,8 @@ app.post('/api/post/apply/settings', (req, res) => {
     const [min, max] =req.body.params['setting']
     const params = [category, min, max]
     connection.query(sql, params, (err, rows) => {
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
+      if(checkEmpty(rows)){ res.send({}); return; }
+
       res.send(rows); }
     )} catch (err) {
     useErrorLogger('POST').error({
@@ -418,10 +395,8 @@ app.post('/api/post/signin', (req, res) => {
                  WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
     const params = [username, password];
     connection.query(sql, params, (err, rows) => {
-      if(checkEmpty(rows)){
-        res.send({});
-        return
-      }
+      if(checkEmpty(rows)){ res.send({}); return; }
+
       console.log(rows);
       let login = JSON.parse(JSON.stringify(rows))[0];
       res.send(login);
@@ -441,23 +416,20 @@ const groupBy = function(xs, key) {
   }, {});
 };
 
-
- function getLocaleMoment(date) {
+function getLocaleMoment(date) {
   return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
 }
 
- function envHistoryReq2query(req_params){
-  const [environment] = req_params['selects'];
-  const sections = req_params['sections'];
-
-  return sqls.join(" ");
-}
-
- function nullToZeroFilter(rows){
-  console.log(rows)
-  const jsonRows = JSON.parse(JSON.stringify(rows))[0]
-  for( let key in jsonRows ){
-    if(jsonRows[key] === null){ jsonRows[key] = 0; }
-    return jsonRows
+const cleanHistoryDict = (res, env) => {
+  let dic = Object({})
+  for (let [key, value] of Object.entries(res)) {
+    value.map((v) => {
+      const date = getLocaleMoment(v['created']);
+      dic[date] = v[env]
+    })
+    res[key] = dic;
+    dic = {};
   }
+  return res
 }
+

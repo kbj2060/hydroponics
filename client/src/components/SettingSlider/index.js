@@ -121,9 +121,8 @@ export default function SettingSlider(props) {
         num : 1
       }
     }).then(({data}) => {
-      console.log(data);
-      const min = data[`${settingKey}_min`];
-      const max = data[`${settingKey}_max`];
+      const min = data[0][`min`];
+      const max = data[0][`max`];
       !data ? setSetting([0, 0]) : setSetting([min, max])
       setIsLoading(false);
     }).catch((err) => {
