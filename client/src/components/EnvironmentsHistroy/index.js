@@ -12,26 +12,31 @@ export default function Index(props) {
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(true)
 
+
+  const getLastUpdatedTime = (data) => {
+    return Object.keys(data[plants[0]])[0];
+  }
+  // json 형태로 반환 받아 사용
+  //  {
+  //    '1': {
+  //      '2020/08/27 03:20:49': 1212,
+  //     '2020/08/27 03:20:42': 1212,
+  //      '2020/08/27 03:20:28': 1212
+  //    },
+  //    '2': { '2020/08/27 03:22:55': 1212 },
+  //    '3': { '2020/08/27 03:23:07': 1212 }
+  //  }
   const fetchHistory = useCallback(async () => {
-    const getLastUpdateData = (history) => {
-      if (checkEmpty(history)){ return ''; }
-      return Object.keys(history[0])[0]
-    }
-
-    const setLastUpdateFromFiltered = (environmentFromPlant) => {
-      const lastUpdateData = getLastUpdateData(environmentFromPlant)
-      setLastUpdate(lastUpdateData);
-    }
-
     await axios.get('/api/get/environment/history', {
       params: {
-        selects: [environment, 'created'],
-        sections: plants
+        selects: [environment],
       }
     }).then(({data})=> {
       setHistory(data);
-      setLastUpdateFromFiltered(data);
+      setLastUpdate(getLastUpdatedTime(data));
+      setIsLoading(false);
     }).catch((err) => {
       console.log("HISTORY FETCH ERROR!");
       console.log(err);
@@ -44,21 +49,19 @@ export default function Index(props) {
     const interval = setInterval(() => {
       fetchHistory();
     }, historyUpdateTime);
-
     return () => {
       clearInterval(interval)
     };
   }, [fetchHistory]);
 
   return (
-      <div className={classes.foreground}>
+    !isLoading ? <div className={classes.foreground}>
         <CustomLine environment={environment} history={history} width={5} height={2} />
         <Typography className={classes.title}> {WordsTable[environment]} </Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
           <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate}</Typography>
         </div>
-      </div>
-
-    );
+      </div>: <></>
+    )
   }

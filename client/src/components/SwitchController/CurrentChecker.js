@@ -7,13 +7,7 @@ import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import socket from "../../socket";
 import {useDispatch} from "react-redux";
 import {controlSwitch} from "../../redux/modules/ControlSwitch";
-
-
-const checkEmpty = (value) => {
-	if (value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
-		return true;
-	}
-}
+import {checkEmpty} from "../utils/CheckEmpty";
 
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
@@ -35,32 +29,31 @@ const CurrentFlowing = withStyles((theme) => ({
 // TODO: UpdateTime의 2배 시간동안 current와 switch가 안맞을 시 알림!
 export default function CurrentChecker({machine}) {
 	const {currentUpdateTime, n_machines } = require('root/init_setting');
-	const [currents, setCurrents] = React.useState({
-		'WaterPump': 0
-	});
+	const sections = Array.from(Array(n_machines[machine]), (_, i) => i + 1)
+	const [current, setCurrent] = React.useState({});
+	const [disable, setDisable] = React.useState(false);
 	const classes = useStyles();
 	const [isLoading, setIsLoading] = React.useState(true);
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
+	const criteria = 1;
 
-	const criteria = 1
-
-
+	sections.map((section, index) => {
+		current[`${machine}${section}`] = 0
+	})
 
 	const fetchCurrent = async () => {
-		await axios.get('/api/get/query', {
+		await axios.get('/api/get/current', {
 			params : {
-				selects : ['waterpump_current_1'],
-				table: 'CURRENT',
-				num : 1
+				selects : ['section', 'current'],
+				machine : machine,
 			}}).then(( {data} ) => {
-				const current = data['waterpump_current_1'];
-				setCurrents({'WaterPump': current});
+				if(checkEmpty(data)){ setDisable(true) }
 				setIsLoading(false);
 		})
 	}
 
 	const currentFlowing = () => {
-		if(currents['WaterPump'] < criteria){
+		if(current < criteria){
 			return false
 		}
 		else {
@@ -89,10 +82,14 @@ export default function CurrentChecker({machine}) {
 		return <ColorCircularProgress></ColorCircularProgress>
 	}
 
+	if(disable){
+		return <CurrentFlowing display={'none'} />
+	}
+
 	return (
 		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >
 			{
-				machine !== 'WaterPump'? <CurrentFlowing display={"none"} fillColor={'#FFCB3A'} /> : currentFlowing() ?
+				currentFlowing() ?
 				<CurrentFlowing fillColor={'#FFCB3A'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
 			}
 		</Box>

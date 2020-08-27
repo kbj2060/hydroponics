@@ -55,51 +55,40 @@ let getOptions = (data, environment) => {
 		}
 })}
 
-let state = {
-	labels: '',
-	datasets: [
-		{
-			label: '1지점 ',
-			fill: false,
-			lineTension: 0.5,
-			backgroundColor: '#efcf76',
-			borderColor: '#FF925D',
-			borderWidth: 2,
-			pointRadius: 0,
-			data: []
-		},
-		{
-			label: '2지점 ',
-			fill: false,
-			lineTension: 0.5,
-			backgroundColor: '#efcf76',
-			borderColor: '#FFCB3A',
-			borderWidth: 2,
-			pointRadius: 0,
-			data: []
-		},
-		{
-			label: '3지점 ',
-			fill: false,
-			lineTension: 0.5,
-			backgroundColor: '#efcf76',
-			borderColor: '#FF4F61',
-			borderWidth: 2,
-			pointRadius: 0,
-			data: []
-		},
-	]
-}
-
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState({});
+	const {plants, circleColorTable} = require('root/init_setting');
+	const n_plants = plants.length;
+	let state = {
+		labels: '',
+		datasets: []
+	}
+
+	function makeBasicDataset(n_plant){
+		let n;
+		let datasets = []
+		for(n = 0; n < n_plant; n++){
+			let num = plants[n];
+			datasets.push({
+				label: `${num}지점 `,
+				fill: false,
+				lineTension: 0.5,
+				backgroundColor: '#efcf76',
+				borderColor: `${circleColorTable[num]}`,
+				borderWidth: 2,
+				pointRadius: 0,
+				data: []
+			},)
+		}
+		return datasets
+	}
 
 	const fetchLineSetting = useCallback(async () => {
 		try {
-			await axios.get('/api/get/query', {
+			await axios.get('/api/get/lineLimit', {
 				params: {
-					selects: [`${environment}_min`, `${environment}_max`],
-					table: ['SETTING'],
+					selects: [`min`, `max`],
+					environment: environment,
 					num: 1
 				}
 			}).then(({data}) => {
@@ -113,15 +102,15 @@ export default function LineSetting (history, environment) {
 		fetchLineSetting();
 	}, [fetchLineSetting])
 
-	if(checkEmpty(history)){
-		return {state, options}
-	}
+	state.datasets = makeBasicDataset(n_plants);
+	if(checkEmpty(history)){ return {state, options} }
 
-	history.forEach((dataset, index) => {
-			state.datasets[index].data = Object.values(history[index]);
-	});
+	Object.keys(history).map((h, i) => {
+		state.datasets[i].data = Object.values(history[h])
+	})
 
-	state.labels = Object.keys(history[0])
+	const firstKey = Object.keys(history)[0]
+	state.labels = Object.keys(history[firstKey])
 
 	return { state, options };
 }
