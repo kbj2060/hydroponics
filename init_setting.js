@@ -18,9 +18,9 @@ module.exports = {
 		'co2', 'humidity', 'temperature', 'led'
 	],
 	settingMinMax : {
-		'co2' : [500, 1500],
+		'co2' : [0, 2000],
 		'humidity' : [0, 100],
-		'temperature' : [20, 30],
+		'temperature' : [10, 40],
 		'led' : [0, 23]
 	},
 	circleColorTable : {
@@ -53,7 +53,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 5 * 1000,
 	showHistoryNumber : 20,
-	ip : "localhost",
+	ip : "121.157.207.47",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

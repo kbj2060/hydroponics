@@ -47,7 +47,6 @@ export default function CurrentChecker({machine}) {
 				selects : ['section', 'current'],
 				machine : machine,
 			}}).then(( {data} ) => {
-				console.log(data)
 				if(!currentActivationCheck(data)){
 					setDisable(true);
 					setFlowing(false);
@@ -63,7 +62,6 @@ export default function CurrentChecker({machine}) {
 
 	const currentActivationCheck = (currentsDict) => {
 		const currentsCheck = (element) => element >= criteria;
-		console.log(Object.values(currentsDict).some(currentsCheck))
 		return Object.values(currentsDict).some(currentsCheck);
 	}
 

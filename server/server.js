@@ -318,7 +318,7 @@ app.get('/api/get/current', (req, res) => {
   try{
     const selects = req.query['selects'].join(",");
     const machine = req.query['machine'];
-    const sql = `SELECT ${selects} FROM iot.CURRENT
+    const sql = `SELECT ${selects} FROM iot.current
                 WHERE id 
                 in (SELECT max(id)
                   FROM iot.current
@@ -379,8 +379,9 @@ app.post('/api/post/apply/settings', (req, res) => {
     const [min, max] =req.body.params['setting']
     const params = [category, min, max]
     connection.query(sql, params, (err, rows) => {
-      if(checkEmpty(rows)){ res.send({}); return; }
-
+      console.log(rows);
+	    if(checkEmpty(rows)){ res.send({}); return; }
+	
       res.send(rows); }
     )} catch (err) {
     useErrorLogger('POST').error({

@@ -110,7 +110,9 @@ export default function SettingSlider(props) {
   const applySetting = async () => {
     await axios.post('/api/post/apply/settings',{
       params: { category: settingKey, setting: setting }
-    })
+    }).then(() => {
+	    console.log('settings are applied');
+    });
   }
 
   const fetchSettings = useCallback(async () => {
