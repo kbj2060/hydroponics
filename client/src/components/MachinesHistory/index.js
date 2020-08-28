@@ -158,7 +158,7 @@ export default function MachineHistory() {
 						return {
 							status: history['status'],
 							machine: history['machine'],
-							date: history['date']
+							date: history['created']
 						}
 					})
 					setRows(rows);

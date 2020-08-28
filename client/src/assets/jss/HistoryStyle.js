@@ -40,7 +40,7 @@ const HistoryStyle = makeStyles(theme =>({
   updateTime : {
     display : 'inline',
     verticalAlign : 'middle',
-    fontSize : '0.7vw',
+    fontSize : '0.7em',
     fontWeight : 'bold',
     color : 'white',
   },
@@ -58,7 +58,7 @@ const HistoryStyle = makeStyles(theme =>({
     color: 'white',
     fontWeight: 'bold',
     padding: '1%',
-    fontSize : '1vw'
+    fontSize : '1em'
   },
   textColor : {
     color : 'white',

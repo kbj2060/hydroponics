@@ -108,6 +108,7 @@ const emitSwitch = (machine, status) => {
 }
 /*
 mqtt data send example
+section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 묶어서 켜고 끄기.
 topic : switch/{machine}
 data : '1' or '0'
  */
@@ -280,8 +281,7 @@ app.get('/api/get/switch/history', (req, res) => {
       `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
         if(checkEmpty(rows)){ res.send({}); return; }
-
-        res.send(rows)
+        res.send(rows);
       }
     )} catch (err) {
     useErrorLogger('GET').error({
