@@ -15,7 +15,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
+import withStyles from "@material-ui/core/styles/withStyles";
 
+
+const CssTextField = withStyles({
+  root: {
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'black',
+    }
+  },
+})(TextField);
 
 export default function Login() {
     const classes = useStyles();
@@ -105,9 +114,9 @@ export default function Login() {
     <Background image={backgroundImage}>
         <div className={classes.loginForm}>
             <form>
-              <p className={classes.title}>W J</p>
-              <TextField id="name" className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
-              <TextField id="pw" className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
+              <p className={classes.title}>WJ  Corporation</p>
+              <CssTextField id="name" className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
+              <CssTextField id="pw" className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
               <div>
                 <Link to={`/dashboard`} forcerefresh="true">
                   <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>

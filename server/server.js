@@ -27,14 +27,12 @@ const mqtt = require('mqtt'),
           multipleStatements: true
        });
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
-const {machines, plants} = require(INIT_SETTING_PATH)
 const {checkEmpty} = require('./utils/CheckEmpty');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 connection.connect();
-
 
 io.on("connection", function (socket) {
   useInfoLogger('socket').info({
@@ -61,8 +59,7 @@ io.on("connection", function (socket) {
   });
 });
 
-const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: "Web"});
-
+const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: "MQTT"});
 /*
 mqtt data send example
 topic : current/{machine}/{section}
@@ -112,10 +109,10 @@ section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 �
 topic : switch/{machine}
 data : '1' or '0'
  */
-// TODO : 오토매직 모듈에서 스위치 전환 시, DB 저장 / dispatch switchControl
 const handleSwitchesMQTT = (topic, message, clientId) => {
   const [table, machine] = topic.split("/")
   const status = JSON.parse(message.toString());
+  console.log(machine, status)
   emitSwitch(machine, status);
   const sql = `INSERT INTO iot.${table} 
                VALUES (null, \"${machine}\", ${status}, \"${clientId}\", now(), 0);`
@@ -142,7 +139,7 @@ client.on('message', (topic, message) => {
   }
 })
 
-client.on('connect', (packet) => {
+client.on('connect', () => {
   client.subscribe(['switch/#','env/#', 'current/#'],  function (err) {
     if(err){
       useErrorLogger('MQTT').error({
@@ -152,7 +149,7 @@ client.on('connect', (packet) => {
   });
 })
 
-client.on("error", (error) => {
+client.on("error", () => {
   useErrorLogger('MQTT').error({
     level: 'error',
     message: `CANNOT CONNECT MQTT`
@@ -226,7 +223,6 @@ app.get('/api/get/status', (req, res) => {
   }
 });
 
-
 app.get('/api/get/lineLimit', (req, res) => {
   try {
     const selects = req.query['selects'].join(",");
@@ -247,7 +243,6 @@ app.get('/api/get/lineLimit', (req, res) => {
     })
   }
 });
-
 
 app.get('/api/get/environment/history', (req, res) => {
   try{
@@ -344,7 +339,6 @@ app.get('/api/get/current', (req, res) => {
   }
 });
 
-
 app.post('/api/post/switch/machine', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
@@ -371,7 +365,6 @@ app.post('/api/post/switch/machine', (req, res) => {
       message: `POST SWITCH QUERY ERROR : ${err}`
     })
   }
-
 });
 
 app.post('/api/post/apply/settings', (req, res) => {
@@ -392,7 +385,6 @@ app.post('/api/post/apply/settings', (req, res) => {
       message: `POST SETTING QUERY ERROR : ${err}`
     })
   }
-
 });
 
 app.post('/api/post/signin', (req, res) => {
