@@ -3,9 +3,9 @@ import {checkEmpty} from "../utils/CheckEmpty";
 import axios from "axios";
 import 'chartjs-plugin-annotation';
 
-let getOptions = (data, environment) => {
-	const min = data[`${environment}_min`];
-	const max = data[`${environment}_max`];
+let getOptions = (data) => {
+	const min = data['min'];
+	const max = data['max'];
 
 	return ({
 		legend: {
@@ -13,13 +13,14 @@ let getOptions = (data, environment) => {
 		},
 		scales: {
 			xAxes: [{
+				display: true,
 				type: 'time',
 				time: {
 					unit: "hour",
 					displayFormats: {
 						minute: 'hA'
 					},
-					parser: 'YYYY/MM/DD HH:mm:ss',
+					parser: "YYYY/MM/DD HH:mm:ss",
 				}
 			}],
 		},
@@ -59,6 +60,7 @@ export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState({});
 	const {plants, circleColorTable} = require('root/init_setting');
 	const n_plants = plants.length;
+
 	let state = {
 		labels: '',
 		datasets: []
@@ -92,7 +94,7 @@ export default function LineSetting (history, environment) {
 					num: 1
 				}
 			}).then(({data}) => {
-				setOptions(getOptions(data, environment));
+				setOptions(getOptions(data[0]));
 			})} catch (e) {
 			console.log('FETCH SETTING ERROR.');
 		}
@@ -111,6 +113,6 @@ export default function LineSetting (history, environment) {
 
 	const firstKey = Object.keys(history)[0]
 	state.labels = Object.keys(history[firstKey])
-
+	console.log(state)
 	return { state, options };
 }

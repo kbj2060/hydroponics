@@ -232,7 +232,7 @@ app.get('/api/get/lineLimit', (req, res) => {
     const selects = req.query['selects'].join(",");
     const environment = req.query['environment'];
     const num = req.query['num'];
-    const sql = `SELECT ${selects} FROM iot.env 
+    const sql = `SELECT ${selects} FROM iot.setting 
                 WHERE category = \"${environment}\" 
                 ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
@@ -281,6 +281,9 @@ app.get('/api/get/switch/history', (req, res) => {
       `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
         if(checkEmpty(rows)){ res.send({}); return; }
+        rows.forEach((row) => {
+          row['created'] = getLocaleMoment(row['created'])
+        })
         res.send(rows);
       }
     )} catch (err) {
@@ -360,7 +363,7 @@ app.post('/api/post/switch/machine', (req, res) => {
           message: `[${name}] ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(`switch/${machine}`, status?'1':'0');
+        //client.publish(`switch/${machine}`, status?'1':'0');
       }
     )} catch (err) {
     useErrorLogger('POST').error({

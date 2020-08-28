@@ -1,4 +1,7 @@
 module.exports = {
+	pages : [
+		'dashboard', 'settings', 'login'
+	],
 	machines: [
 	'airconditioner', 'led', 'fan', 'waterpump'
 	],

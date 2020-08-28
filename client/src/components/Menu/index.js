@@ -35,18 +35,21 @@ const useStyles = makeStyles((theme) => ({
 		borderBottom : '1px',
 	},
 	paper: {
+		display : "flex",
+		flexDirection: "column",
 		backgroundColor : 'rgba(255, 255, 255, 0)',
 		borderRadius : '10px',
 		border : '1px solid',
 		color: 'white',
 		width : '300px',
 		height : '300px',
-		padding : '10px',
+		padding : '10px 10px 0 10px',
 		'&:focus': {
 			outline: '0',
 		}
 	},
-	menuButton : {
+	menuButton : props => ({
+		height : `${100/props.n_pages}%`,
 		backgroundColor : 'rgba(255, 255, 255, 0)',
 		border : 'none',
 		width : '100%',
@@ -55,21 +58,23 @@ const useStyles = makeStyles((theme) => ({
 		outline : 'none',
 		cursor : 'pointer',
 		'&:hover' : { color : '#FFCB3A'},
-		'&:active' : { transform : 'translateY(2px)'}
-	},
+		'&:active' : { transform : 'translateY(1px)'}
+	}),
 	header : {
 		fontSize : '2em',
 		borderBottom : '1px solid',
 		paddingBottom : '18.7px',
-		textAlign : 'center'
+		textAlign : 'center',
+		marginBottom : '2%'
 	},
 }));
 
 export default function Menu() {
-	const classes = useStyles();
 	const dispatch = useDispatch();
+	const {pages} = require('root/init_setting');
+	const n_pages = pages.length;
 	const [open, setOpen] = React.useState(false);
-	const history = useHistory();
+	const classes = useStyles({n_pages});
 
 	const handleOpen = () => {
 		setOpen((prev) => !prev);
@@ -105,7 +110,7 @@ export default function Menu() {
 				}}
 			>
 				<div className={classes.paper}>
-					<div>
+					<div style={{height: "30%"}}>
 						<h1 className={classes.header}>WJ</h1>
 					</div>
 					<div style={{height: "70%"}}>
