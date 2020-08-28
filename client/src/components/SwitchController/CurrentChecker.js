@@ -32,9 +32,9 @@ export default function CurrentChecker({machine}) {
 	const sections = Array.from(Array(n_machines[machine]), (_, i) => i + 1)
 	const [current, setCurrent] = React.useState({});
 	const [disable, setDisable] = React.useState(false);
+	const [flowing, setFlowing] = React.useState(false);
 	const classes = useStyles();
 	const [isLoading, setIsLoading] = React.useState(true);
-	const dispatch = useDispatch();
 	const criteria = 1;
 
 	sections.map((section, index) => {
@@ -47,13 +47,24 @@ export default function CurrentChecker({machine}) {
 				selects : ['section', 'current'],
 				machine : machine,
 			}}).then(( {data} ) => {
-				if(checkEmpty(data)){ setDisable(true) }
+				console.log(data)
+				if(!currentActivationCheck(data)){
+					setDisable(true);
+					setFlowing(false);
+				}
+				else {
+					setCurrent(data);
+					setFlowing(true);
+					setDisable(false);
+				}
 				setIsLoading(false);
 		})
 	}
 
-	const currentFlowing = () => {
-		return current >= criteria
+	const currentActivationCheck = (currentsDict) => {
+		const currentsCheck = (element) => element >= criteria;
+		console.log(Object.values(currentsDict).some(currentsCheck))
+		return Object.values(currentsDict).some(currentsCheck);
 	}
 
 	const emitSocket = (status) => {
@@ -63,6 +74,7 @@ export default function CurrentChecker({machine}) {
 		})
 	}
 
+
 	useEffect(() => {
 		fetchCurrent();
 		const interval = setInterval(() => {
@@ -70,11 +82,12 @@ export default function CurrentChecker({machine}) {
 		}, currentUpdateTime);
 		return () => {
 			clearInterval(interval);
+			setDisable(false);
 		}
 	}, []);
 
 	if(isLoading){
-		return <ColorCircularProgress></ColorCircularProgress>
+		return <ColorCircularProgress />
 	}
 
 	if(disable){
@@ -84,7 +97,7 @@ export default function CurrentChecker({machine}) {
 	return (
 		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >
 			{
-				currentFlowing() ?
+				flowing ?
 				<CurrentFlowing fillColor={'#FFCB3A'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
 			}
 		</Box>

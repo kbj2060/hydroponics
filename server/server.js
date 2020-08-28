@@ -253,7 +253,7 @@ app.get('/api/get/environment/history', (req, res) => {
     const [environment] = req.query['selects'];
     const sql = `SELECT section, ${environment}, created
                 FROM iot.env
-                WHERE DATE_FORMAT(iot.ENV.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+                WHERE DATE_FORMAT(iot.env.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
                 ORDER BY id DESC ;`;
     connection.query(
       sql, (err, rows) => {
@@ -319,16 +319,19 @@ app.get('/api/get/current', (req, res) => {
     const selects = req.query['selects'].join(",");
     const machine = req.query['machine'];
     const sql = `SELECT ${selects} FROM iot.CURRENT
-                WHERE id in
-                  (SELECT max(id)
-                  FROM iot.CURRENT
+                WHERE id 
+                in (SELECT max(id)
+                  FROM iot.current
                   WHERE machine = \"${machine}\"
                   GROUP BY section )
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
       if(checkEmpty(rows)){ res.send({}); return; }
-
-      res.send(rows)
+      let results = groupBy(rows, "section")
+      Object.keys(results).map((key) => {
+        results[key] = results[key][0]['current'];
+      })
+      res.send(results)
     })
   } catch(err){
     useErrorLogger('GET').error({
@@ -357,7 +360,7 @@ app.post('/api/post/switch/machine', (req, res) => {
           message: `[${name}] ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(machine, status?'1':'0');
+        client.publish(`switch/${machine}`, status?'1':'0');
       }
     )} catch (err) {
     useErrorLogger('POST').error({

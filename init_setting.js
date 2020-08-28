@@ -51,7 +51,7 @@ module.exports = {
 	},
 	statusUpdateTime : 10 * 1000,
 	historyUpdateTime : 10 * 1000,
-	currentUpdateTime : 10 * 1000,
+	currentUpdateTime : 5 * 1000,
 	showHistoryNumber : 20,
 	ip : "localhost",
 	mqttPort : "1883",
