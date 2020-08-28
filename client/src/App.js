@@ -3,11 +3,11 @@ import Dashboard from './views/Dashboard/Dashboard';
 import Login from './views/Login/Login';
 import Settings from './views/Settings/Settings';
 import { Route } from "react-router";
-import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux'
 import { store } from "./redux/store";
-import {saveState, loadState} from "./components/LocalStorage";
+import {saveState} from "./components/LocalStorage";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -58,13 +58,3 @@ export default function App() {
       </Provider>
     )
 }
-/*
-import video from 'assets/img/drone.mp4';
-
-<video autoPlay muted loop className={classes.video}>
-        <source src={video} type="video/mp4" />
-      </video>
- */
-/* <Route path="/account" component={() => <Account /> } />
-          <Route path="/history" component={() => <History /> } />
-          <Route component={NotFound} /> */

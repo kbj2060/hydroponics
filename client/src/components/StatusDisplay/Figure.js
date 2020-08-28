@@ -54,7 +54,7 @@ export default function Figure(props) {
       setWidth(window.innerWidth)
     });
     return () => {
-      setDimensions({})
+      setDimensions({width: 0, height: 0 })
     }
   }, [width]);
 

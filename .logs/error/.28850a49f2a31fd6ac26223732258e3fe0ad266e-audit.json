@@ -34,6 +34,11 @@
             "date": 1598540568854,
             "name": ".logs\\error\\2020-08-28.error.log",
             "hash": "d103521b372ae73cd37511a7cae45827"
+        },
+        {
+            "date": 1598591522635,
+            "name": ".logs/error/2020-08-28.error.log",
+            "hash": "9bdae08590aca5e1b8a132641442051e"
         }
     ]
 }

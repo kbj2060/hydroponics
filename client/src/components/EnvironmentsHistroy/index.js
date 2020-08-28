@@ -34,7 +34,6 @@ export default function Index(props) {
         selects: [environment],
       }
     }).then(({data})=> {
-      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);
