@@ -2,8 +2,10 @@ import pymysql
 import time
 import paho.mqtt.client as mqtt
 import json
+import datetime
+import os
 
-with open("../server/db_conf.json") as json_file:
+with open("./server/db_conf.json") as json_file:
     conf = json.load(json_file)
 
 host = conf['host']
@@ -26,7 +28,7 @@ class MQTT():
             print("Bad connection Returned code=", rc)
 
     def on_disconnect(self, client, userdata, flags, rc=0):
-        print(str(rc))
+        print()
 
     def on_publish(self, client, userdata, mid):
         print("In on_pub callback mid= ", mid)
@@ -163,7 +165,7 @@ class Automagic(MQTT):
 
 # TODO : 현재 조절 가능한 환경 변수는 온도와 조명 뿐.
 auto = Automagic()
-
+print(datetime.datetime.now())
 auto.led_control()
 auto.temp_control()
 
