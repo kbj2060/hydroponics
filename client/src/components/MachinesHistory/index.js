@@ -150,7 +150,7 @@ export default function MachineHistory() {
 
 		axios.get('/api/get/switch/history', {
 			params: {
-				selects: ['machine', 'status', 'created'],
+				selects: ['machine', 'status', 'created', 'controlledBy'],
 				num: showHistoryNumber
 			}}).then(({data: switchHistory}) => {
 				if(mounted) {
@@ -158,7 +158,8 @@ export default function MachineHistory() {
 						return {
 							status: history['status'],
 							machine: history['machine'],
-							date: history['created']
+							date: history['created'],
+							user : history['controlledBy']
 						}
 					})
 					setRows(rows);
@@ -188,8 +189,9 @@ export default function MachineHistory() {
 									  {WordsTable[row.machine.toLowerCase()]}
 								  </TableCell>
 								  <TableCell className={row.status === 1? classes.statusOn: classes.statusOff} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
-								  <TableCell className={classes.text} align="center">{row.date}</TableCell>
-							  </TableRow>)
+								  <TableCell className={classes.text} align="center">{row.user}</TableCell>
+									<TableCell className={classes.text} align="center">{row.date}</TableCell>
+								</TableRow>)
 						  })}
 
 					  {emptyRows > 0 && (
