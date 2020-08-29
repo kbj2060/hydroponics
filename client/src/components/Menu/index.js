@@ -116,7 +116,7 @@ export default function Menu() {
 					<div style={{height: "70%"}}>
 						<LinkButton onClick={() => {handleClick("dashboard")}} value={"홈"} to={"dashboard"} buttonDesign={classes.menuButton} />
 						<LinkButton onClick={() => {handleClick("settings")}} value={"설정"} to={"settings"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={() => {handleClick("login")}} value={"로그아웃"} to={"login"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => {handleClick("login")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
 			</Modal>
