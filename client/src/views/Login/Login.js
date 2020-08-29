@@ -136,8 +136,8 @@ export default function Login() {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} color="primary" autoFocus>
-                      OK
+                    <Button onClick={handleClose} color="black" autoFocus>
+                      확인
                     </Button>
                   </DialogActions>
                 </Dialog>

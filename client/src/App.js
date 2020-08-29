@@ -44,7 +44,7 @@ export default function App() {
       <Provider store={store}>
         <BrowserRouter>
           <div className={classes.parent}>
-            <Route exact path="/login">
+            <Route exact path="/">
               <Login />
             </Route>
             <Route exact path="/dashboard" >

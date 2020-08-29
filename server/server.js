@@ -4,6 +4,8 @@ const INIT_SETTING_PATH = "../init_setting";
 const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
 
+const localhostMqttClientId = "MQTT";
+
 const {socketIoPort:PORT} = require(INIT_SETTING_PATH),
        express = require('express'),
        bodyParser = require('body-parser'),
@@ -59,7 +61,7 @@ io.on("connection", function (socket) {
   });
 });
 
-const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: "MQTT"});
+const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: localhostMqttClientId});
 /*
 mqtt data send example
 topic : current/{machine}/{section}
@@ -110,6 +112,9 @@ topic : switch/{machine}
 data : '1' or '0'
  */
 const handleSwitchesMQTT = (topic, message, clientId) => {
+	if (clientId === localhostMqttClientId){
+		return;
+	}
   const [table, machine] = topic.split("/")
   const status = JSON.parse(message.toString());
   console.log(machine, status)
@@ -357,7 +362,7 @@ app.post('/api/post/switch/machine', (req, res) => {
           message: `[${name}] ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        //client.publish(`switch/${machine}`, status?'1':'0');
+        client.publish(`switch/${machine}`, status?'1':'0');
       }
     )} catch (err) {
     useErrorLogger('POST').error({
