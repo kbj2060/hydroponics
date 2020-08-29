@@ -1,13 +1,16 @@
 import pymysql
 import time
 import paho.mqtt.client as mqtt
+import json
 
-host = 'localhost'
-user = 'root'
-password = 'dnjfem2006'
-settings_path = './settings.json'
-environments_path = './environments.json'
-MQTT_PORT = 1883
+with open("../server/db_conf.json") as json_file:
+    conf = json.load(json_file)
+
+host = conf['host']
+user = conf['user']
+password = conf['password']
+MQTT_PORT = int(conf['port'])
+
 min_index, max_index = 0, 1
 client_id = 'Auto'
 
@@ -165,9 +168,3 @@ auto.led_control()
 auto.temp_control()
 
 auto.finish_automagic()
-
-
-
-# sql = "SELECT * FROM user where department = %s"
-# cursor.execute(sql, ("AI"))
-
