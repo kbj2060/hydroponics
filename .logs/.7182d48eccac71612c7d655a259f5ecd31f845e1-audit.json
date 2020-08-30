@@ -49,6 +49,11 @@
             "date": 1598633851078,
             "name": ".logs/2020-08-29.log",
             "hash": "c940dabddf3556cd42a5fbf5ae22efc8"
+        },
+        {
+            "date": 1598807179219,
+            "name": ".logs\\2020-08-31.log",
+            "hash": "338cfc93b6c00c664edf9798dfa3d125"
         }
     ]
 }
