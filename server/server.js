@@ -100,41 +100,37 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   )
 }
 
-const emitSwitch = (machine, status) => {
+// emit 할 때는 status의 값은 불리언 값으로 해야한다.
+// 숫자로 할 시 스위치 전환이 되지 않음.
+const emitSwitch = async (machine, status) => {
   io.emit('receiveSwitchControl', {
     machine : machine,
     status : status
   })
 }
+
 /*
 mqtt data send example
 section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 묶어서 켜고 끄기.
 topic : switch/{machine}
 data : '1' or '0'
  */
-const handleSwitchesMQTT = (topic, message, host) => {
-	if (host === "127.0.0.1"){ return; }
-	const hostname = host === AutomationHost? "Auto": "Anonymous"
-  const [table, machine] = topic.split("/");
-  const status = JSON.parse(message.toString());
-  console.log(machine, status)
+const handleSwitchesMQTT = (topic, message) => {
+  const [_, machine] = topic.split("/");
+  // !== 로 고치지 말 것.
+  const status = JSON.parse(message.toString()) != 0;
+  console.log(machine, status );
   emitSwitch(machine, status);
-  const sql = `INSERT INTO iot.${table} 
-               VALUES (null, \"${machine}\", ${status}, \"${hostname}\", now(), 0);`
-  connection.query(sql, (err, rows) => {
-    console.log(rows);
-  })
 }
 
 client.on('message', (topic, message) => {
   try{
-    const host = client.options.host;
     if(topic.includes("env")){
       handlePlantEnvironmentsMQTT(topic, message);
     } else if (topic.includes("current")){
       handleCurrentsMQTT(topic, message);
     } else if (topic.includes("switch")){
-      handleSwitchesMQTT(topic, message, host);
+      handleSwitchesMQTT(topic, message);
     }
   } catch (err){
     useErrorLogger('MQTT').error({
@@ -362,7 +358,7 @@ app.post('/api/post/switch/machine', (req, res) => {
           message: `[${name}] ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(`switch/${machine}`, status?'1':'0');
+        client.publish(`switch/${machine}`, String(status));
       }
     )} catch (err) {
     useErrorLogger('POST').error({

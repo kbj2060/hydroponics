@@ -13,7 +13,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import {loadState} from "../LocalStorage";
 import {Redirect} from "react-router-dom";
 import {CheckLogin} from "../utils/CheckLogin";
-
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const ColorCircularProgress = withStyles({
@@ -93,8 +94,9 @@ export default function Switches(props) {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
-  const dispatch = useDispatch()
-  const {WordsTable} = require('root/init_setting');
+  const dispatch = useDispatch();
+  const {WordsTable, switches, switchTable} = require('root/init_setting');
+
 
   const getCurrentUser = () => {
     return loadState()['authentication']['status']['currentUser'];
@@ -130,14 +132,20 @@ export default function Switches(props) {
 
   const receiveSocket = () => {
     socket.on('receiveSwitchControl', (switchStatus) => {
-      if(machine === switchStatus.machine){ setState(switchStatus); }})
+      if(machine === switchStatus.machine){
+        dispatch(controlSwitch());
+        setState(switchStatus);
+      }})
+  }
+  const handleChecked = (status) => {
+    return status !== false
   }
 
-  const handleChange = async () => {
+  const handleChange = async (e) => {
+    e.persist();
     if(CheckLogin()) {
-      const status = !state.status
+      const status = e.target.checked;
       setSnackbarOpen(true);
-      dispatch(controlSwitch());
       setState({machine: machine, status: status});
       emitSocket(status);
       postSwitchMachine(status).then(() => {
@@ -153,7 +161,7 @@ export default function Switches(props) {
   useEffect(() => {
     getSwitchMachine().then(({data}) => {
         setState({
-          status: data[0]['status'] === 1,
+          status: data[0]['status'] !== 0,
           machine: machine
         })
         setIsLoading(false);
@@ -177,7 +185,7 @@ export default function Switches(props) {
         <FormControlLabel
           control={
             <IOSSwitch
-              checked={state.status}
+              checked={handleChecked(state.status)}
               onChange={handleChange}
               value={machine}
             />
@@ -192,3 +200,6 @@ export default function Switches(props) {
       </Snackbar>
     </> : <Redirect to={'/login'} />);
 }
+
+/*
+* */

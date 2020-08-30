@@ -101,12 +101,20 @@ class Automagic(MQTT):
             machine = row[0]
             self.machines[machine] = row[1]
 
+    def insert_database(self, machine, status, ac_type=None):
+        if ac_type:
+            name = f"Auto({ac_type})"
+        else:
+            name = "Auto"
+        sql = f"INSERT INTO iot.switch VALUES (null, \"{machine}\", {status}, \"{name}\", now(), 0)"
+        self.cursor.execute(sql)
+
     @staticmethod
     def check_cooler_on(machine_power):
-        return machine_power == "2"
+        return machine_power == 2
     @staticmethod
     def check_boiler_on(machine_power):
-        return machine_power == "3"
+        return machine_power == 3
 
     def check_temperature(self, upper, lower):
         return lower < upper
@@ -114,6 +122,7 @@ class Automagic(MQTT):
     def temp_control(self):
         current_value = self.environments['temperature']
         ac_status = self.machines['airconditioner']
+        off, cool, hot = 0, 2, 3
 
         _min = self.settings['temperature'][min_index]
         _max = self.settings['temperature'][max_index]
@@ -123,27 +132,31 @@ class Automagic(MQTT):
         if not self.check_boiler_on(ac_status) and self.check_temperature(upper=_min,
                                                                           lower=current_value):
             print("AirConditioner Boiler ON")
-            self.client.publish(AC_TOPIC, "3")
+            self.insert_database(machine="airconditioner", status=hot, ac_type="H")
+            self.client.publish(AC_TOPIC, hot)
         # 냉방
         elif not self.check_cooler_on(ac_status) and self.check_temperature(upper=current_value,
                                                                             lower=_max):
             print("AirConditioner Cooler ON")
-            self.client.publish(AC_TOPIC, "2")
+            self.insert_database(machine="airconditioner", status=cool, ac_type="C")
+            self.client.publish(AC_TOPIC, cool)
         elif self.check_boiler_on(ac_status) and self.check_temperature(upper=current_value,
-                                                                        lower=_max):
+                                                                        lower=_mean):
             print("AirConditioner Boiler OFF")
-            self.client.publish(AC_TOPIC, "0")
-        elif self.check_cooler_on(ac_status) and self.check_temperature(upper=_min,
+            self.insert_database(machine="airconditioner", status=off)
+            self.client.publish(AC_TOPIC, off)
+        elif self.check_cooler_on(ac_status) and self.check_temperature(upper=_mean,
                                                                         lower=current_value):
             print("AirConditioner Cooler OFF")
-            self.client.publish(AC_TOPIC, "0")
+            self.insert_database(machine="airconditioner", status=off)
+            self.client.publish(AC_TOPIC, off, qos=2)
         else:
             print('AirConditioner Do Nothing')
 
 
     @staticmethod
     def check_power_on(machine_power):
-        return machine_power == '1'
+        return machine_power != 0
 
     def check_led_valid_hour(self, current_hour):
         return self.settings['led'][min_index] <= current_hour <= self.settings['led'][max_index]
@@ -151,18 +164,23 @@ class Automagic(MQTT):
     def led_control(self):
         current_hour = int(time.strftime('%H', time.localtime(time.time())))
         led_status = self.machines['led']
+        off, on = 0, 1
+
         if self.check_led_valid_hour(current_hour) and not self.check_power_on(led_status):
             print("LED ON")
-            self.client.publish(LED_TOPIC, '1')
+            self.insert_database(machine="led", status=on)
+            self.client.publish(LED_TOPIC, on)
         elif not self.check_led_valid_hour(current_hour) and self.check_power_on(led_status):
             print("LED OFF")
-            self.client.publish(LED_TOPIC, '0')
+            self.insert_database(machine="led", status=off)
+            self.client.publish(LED_TOPIC, off)
         else:
             print('LED Do Nothing')
 
     def finish_automagic(self):
         self.conn.commit()
         self.conn.close()
+        self.client.disconnect()
 
 
 # TODO : 현재 조절 가능한 환경 변수는 온도와 조명 뿐.
@@ -172,9 +190,3 @@ auto.led_control()
 auto.temp_control()
 
 auto.finish_automagic()
-
-
-
-# sql = "SELECT * FROM user where department = %s"
-# cursor.execute(sql, ("AI"))
-

@@ -188,7 +188,7 @@ export default function MachineHistory() {
 								  <TableCell className={classes.text} align="center" component="th" scope="row">
 									  {WordsTable[row.machine.toLowerCase()]}
 								  </TableCell>
-								  <TableCell className={row.status === 1? classes.statusOn: classes.statusOff} align="center">{row.status === 1? "ON":"OFF"}</TableCell>
+								  <TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{row.status !== 0? "ON":"OFF"}</TableCell>
 								  <TableCell className={classes.text} align="center">{row.user}</TableCell>
 									<TableCell className={classes.text} align="center">{row.date}</TableCell>
 								</TableRow>)

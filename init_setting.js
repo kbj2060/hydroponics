@@ -1,4 +1,16 @@
 module.exports = {
+	switches : {
+		'airconditioner': ["끄기", "냉방", "난방"],
+		'led': ["끄기", "켜기"],
+		'waterpump': ["끄기", "켜기"],
+		'fan' : ["끄기", "켜기"],
+	},
+	switchTable : {
+		"켜기" : 1,
+		"끄기" : 0,
+		"냉방" : 2,
+		"난방" : 3
+	},
 	pages : [
 		'dashboard', 'settings', 'login'
 	],
@@ -56,7 +68,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 5 * 1000,
 	showHistoryNumber : 20,
-	ip : "121.157.207.47",
+	ip : "localhost",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };
