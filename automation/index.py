@@ -1,15 +1,23 @@
 import pymysql
 import time
 import paho.mqtt.client as mqtt
+import json
+import os
 
-host = 'localhost'
-user = 'root'
-password = 'dnjfem2006'
-settings_path = './settings.json'
-environments_path = './environments.json'
+#os.chdir("/home/pi/hydroponics")
+with open(os.getcwd() + "/../server/db_conf.json") as json_file:
+    conf = json.load(json_file)
+
+host = conf['host']
+user = conf['user']
+password = conf['password']
+
 MQTT_PORT = 1883
+#MQTT_HOST = "192.168.0.3"
+MQTT_HOST = "localhost"
+CLIENT_ID = 'Auto'
+
 min_index, max_index = 0, 1
-client_id = 'Auto'
 
 LED_TOPIC = "switch/led"
 AC_TOPIC = "switch/airconditioner"
@@ -31,19 +39,19 @@ class MQTT():
 
 class Automagic(MQTT):
     def __init__(self):
-        self.conn = pymysql.connect(host=host, user=user, password=password, charset='utf8')
-        self.cursor = self.conn.cursor()
-
         self.settings = {"co2": [], "temperature": [], "humidity": [], "led": []}
         self.environments = {"temperature": 0, "humidity": 0, "co2": 0}
         self.machines = {"airconditioner": 0, "led": 0, "fan": 0, "waterpump": 0}
         self.sections = ['1', '2', '3']
 
-        self.client = mqtt.Client(client_id)
+        self.conn = pymysql.connect(host=host, user=user, password=password, charset='utf8')
+        self.cursor = self.conn.cursor()
+
+        self.client = mqtt.Client(client_id=CLIENT_ID)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_publish = self.on_publish
-        self.client.connect('127.0.0.1', MQTT_PORT)
+        self.client.connect(MQTT_HOST, MQTT_PORT)
         self.client.loop_start()
 
         self.fetch_machines()
@@ -155,7 +163,6 @@ class Automagic(MQTT):
     def finish_automagic(self):
         self.conn.commit()
         self.conn.close()
-        self.client.disconnect()
 
 
 # TODO : 현재 조절 가능한 환경 변수는 온도와 조명 뿐.

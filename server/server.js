@@ -5,6 +5,7 @@ const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
 
 const localhostMqttClientId = "MQTT";
+const AutomationHost = "192.168.0.2";
 
 const {socketIoPort:PORT} = require(INIT_SETTING_PATH),
        express = require('express'),
@@ -111,16 +112,15 @@ section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 �
 topic : switch/{machine}
 data : '1' or '0'
  */
-const handleSwitchesMQTT = (topic, message, clientId) => {
-	if (clientId === localhostMqttClientId){
-		return;
-	}
-  const [table, machine] = topic.split("/")
+const handleSwitchesMQTT = (topic, message, host) => {
+	if (host === "127.0.0.1"){ return; }
+	const hostname = host === AutomationHost? "Auto": "Anonymous"
+  const [table, machine] = topic.split("/");
   const status = JSON.parse(message.toString());
   console.log(machine, status)
   emitSwitch(machine, status);
   const sql = `INSERT INTO iot.${table} 
-               VALUES (null, \"${machine}\", ${status}, \"${clientId}\", now(), 0);`
+               VALUES (null, \"${machine}\", ${status}, \"${hostname}\", now(), 0);`
   connection.query(sql, (err, rows) => {
     console.log(rows);
   })
@@ -128,13 +128,13 @@ const handleSwitchesMQTT = (topic, message, clientId) => {
 
 client.on('message', (topic, message) => {
   try{
-    const clientId = client.options.clientId;
+    const host = client.options.host;
     if(topic.includes("env")){
       handlePlantEnvironmentsMQTT(topic, message);
     } else if (topic.includes("current")){
       handleCurrentsMQTT(topic, message);
     } else if (topic.includes("switch")){
-      handleSwitchesMQTT(topic, message, clientId);
+      handleSwitchesMQTT(topic, message, host);
     }
   } catch (err){
     useErrorLogger('MQTT').error({
