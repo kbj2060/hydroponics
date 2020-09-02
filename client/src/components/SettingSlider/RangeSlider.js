@@ -36,6 +36,7 @@ const IOSSlider = withStyles({
   },
   active: {},
   valueLabel: {
+    fontSize : '0.8em',
     left: 'calc(-50% + 12px)',
     top: -22,
     '& *': {
@@ -45,6 +46,7 @@ const IOSSlider = withStyles({
   },
   track: {
     height: 2,
+
   },
   rail: {
     height: 2,
@@ -59,7 +61,7 @@ const IOSSlider = withStyles({
   },
   markActive: {
     opacity: 1,
-    backgroundColor: 'currentColor',
+    backgroundColor: 'red',
   },
 })(Slider);
 
@@ -72,9 +74,10 @@ const StyledValueLabel = withStyles({
 const useStyles = makeStyles({
   root: {
     width: 'auto',
-    padding: '5% 5% 5% 5%'
+    padding: '5% 5% 5% 5%',
   },
   slider :{
+    fontSize : '0.9em',
     color : "#FFCB3A",
   },
   title : {
@@ -85,66 +88,29 @@ const useStyles = makeStyles({
 });
 
 
-export default function SettingSlider(props) {
-  const { settingKey, isApplied } = props;
+export default function RangeSlider(props) {
+  const { settingKey, isApplied, values } = props;
   const classes = useStyles();
   const {settingMinMax, WordsTable, unitsTable } = require('root/init_setting');
-  const [setting, setSetting] = React.useState([0, 0]);
+  const [setting, setSetting] = React.useState(values);
   const [isLoading, setIsLoading] = React.useState(true);
   const dispatch = useDispatch()
-/*
-
-  const handleNames = (key) => {
-    let names = [];
-    ['min', 'max'].forEach((MinMax) => {
-      names.push(`${key}_${MinMax}`);
-    })
-    return names
-  }
-*/
+  const {settingType} = require('root/init_setting');
 
   const handleChange = (event, newValue) => {
     setSetting(newValue);
   };
 
-  const applySetting = async () => {
-    await axios.post('/api/post/apply/settings',{
-      params: { category: settingKey, setting: setting }
-    }).then(() => {
-	    console.log('settings are applied');
-    });
-  }
-
-  const fetchSettings = useCallback(async () => {
-    await axios.get('/api/get/settingBar', {
-      params : {
-        category : settingKey,
-        selects : ['min', 'max'],
-        num : 1
-      }
-    }).then(({data}) => {
-      const min = data[0][`min`];
-      const max = data[0][`max`];
-      !data ? setSetting([0, 0]) : setSetting([min, max])
-      setIsLoading(false);
-    }).catch((err) => {
-      console.log(err);
-      console.log("SLIDER FETCH ERROR");
-      setSetting([0, 0]);
-    })
-  }, [settingKey])
-
-
   useEffect(() => {
     if(isApplied){
       dispatch(controlSetting({[settingKey] :setting}));
-      applySetting();
     }
   }, [isApplied])
 
   useEffect(() => {
-    fetchSettings();
-    }, [])
+    setSetting(values);
+    setIsLoading(false);
+  }, [])
 
   function valuetext(value, index) {
     return `${value}${unitsTable[settingKey]}`;

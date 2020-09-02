@@ -1,16 +1,5 @@
+
 module.exports = {
-	switches : {
-		'airconditioner': ["끄기", "냉방", "난방"],
-		'led': ["끄기", "켜기"],
-		'waterpump': ["끄기", "켜기"],
-		'fan' : ["끄기", "켜기"],
-	},
-	switchTable : {
-		"켜기" : 1,
-		"끄기" : 0,
-		"냉방" : 2,
-		"난방" : 3
-	},
 	pages : [
 		'dashboard', 'settings', 'login'
 	],
@@ -30,11 +19,17 @@ module.exports = {
 		'1', '2', '3'
 	],
 	settings: [
-		'co2', 'humidity', 'temperature', 'led'
+		'fan', 'waterpump', 'temperature', 'led'
 	],
+	settingType: {
+		'fan' : 'cycle',
+		'waterpump' : 'cycle',
+		'temperature' : 'range',
+		'led' : 'range',
+	},
 	settingMinMax : {
-		'co2' : [0, 2000],
-		'humidity' : [0, 100],
+		'fan' : [1, 23],
+		'waterpump' : [0, 30],
 		'temperature' : [10, 40],
 		'led' : [0, 23]
 	},
@@ -47,7 +42,9 @@ module.exports = {
 		'humidity': '%',
 		'co2': 'ppm',
 		'temperature': '°C',
-		'led' : '시'
+		'led' : '시',
+		'fan' : '시간',
+		'waterpump' : '시간'
 	},
 	WordsTable : {
 		'humidity' : '습도',
@@ -68,7 +65,7 @@ module.exports = {
 	historyUpdateTime : 10 * 1000,
 	currentUpdateTime : 5 * 1000,
 	showHistoryNumber : 20,
-	ip : "localhost",
+	ip : "192.168.1.66",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };

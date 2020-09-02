@@ -13,8 +13,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import {loadState} from "../LocalStorage";
 import {Redirect} from "react-router-dom";
 import {CheckLogin} from "../utils/CheckLogin";
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
 const ColorCircularProgress = withStyles({
@@ -95,8 +93,7 @@ export default function Switches(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
   const dispatch = useDispatch();
-  const {WordsTable, switches, switchTable} = require('root/init_setting');
-
+  const {WordsTable} = require('root/init_setting');
 
   const getCurrentUser = () => {
     return loadState()['authentication']['status']['currentUser'];
@@ -148,6 +145,7 @@ export default function Switches(props) {
       setSnackbarOpen(true);
       setState({machine: machine, status: status});
       emitSocket(status);
+      dispatch(controlSwitch());
       postSwitchMachine(status).then(() => {
         console.log('switch machine')
       });
@@ -166,7 +164,6 @@ export default function Switches(props) {
         })
         setIsLoading(false);
     }).catch((err) => { setIsLoading(true); })
-
     return () => { cleanup(); }
   }, []);
 

@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Grid from '@material-ui/core/Grid';
 import useStyles from '../../assets/jss/SettingsStyle';
 import AppBar from 'root/client/src/components/AppBar';
-import SettingSlider from 'root/client/src/components/SettingSlider';
+import RangeSlider from 'root/client/src/components/SettingSlider/RangeSlider';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +11,16 @@ import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
 import Typography from '@material-ui/core/Typography';
 import {store} from "../../redux/store";
+import Box from "@material-ui/core/Box";
+import AutomationButton from "../../components/AutomationButton";
+import SettingExplanation from "../../components/SettingExplanation";
+import {ColorCircularProgress} from "../../components/utils/ColorCircularProgress";
+import ReplayIcon from "@material-ui/icons/Replay";
+import AcUnitIcon from "@material-ui/icons/AcUnit";
+import PowerOffIcon from "@material-ui/icons/PowerOff";
+import WhatshotIcon from "@material-ui/icons/Whatshot";
+import PowerIcon from "@material-ui/icons/Power";
+import Tooltip from '@material-ui/core/Tooltip';
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -27,9 +37,11 @@ const CustomButton = withStyles({
 
 export default function Settings() {
   const classes = useStyles();
-  const { settings:settingKeys } = require('root/init_setting');
+  const { settings:settingKeys, WordsTable, settingType } = require('root/init_setting');
   const [isApplied, setIsApplied] = useState(false)
+  const [settings, setSettings] = useState({})
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const handleNull = (obj) => {
     const IndexOfNull = 1
@@ -45,20 +57,38 @@ export default function Settings() {
     })
   }
 
+  const fetchSettings = async () => {
+    await axios.get('/api/get/settings', {
+      params : {
+        settingKeys : settingKeys,
+        selects : ['category', 'type', 'min', 'max'],
+        num : 1
+      }
+    }).then(({data}) => {
+      setSettings(data);
+      setIsLoading(false);
+    }).catch((err) => {
+      console.log(err);
+      console.log("SLIDER FETCH ERROR");
+    })
+  }
+
+
   useEffect(() => {
     console.log(store.getState()['authentication']);
+    fetchSettings();
   }, []);
 
   useEffect(() => {
     if(isApplied) {
       const SettingsFromStore = handleNull(store.getState()['controlSetting']);
+      setSettings(store.getState()['controlSetting']);
       applySettings(SettingsFromStore).then(() => {
         console.log('applied completed!')
       });
     }
     return () => { setIsApplied(false)}
   }, [isApplied])
-
 
   const handleOnClick = async () => {
     setOpen(true);
@@ -70,16 +100,42 @@ export default function Settings() {
     setOpen(false);
   };
 
+  if(isLoading){
+    return <ColorCircularProgress />
+  }
   return (
     <div className={classes.root}>
       <AppBar />
       <Grid container className={classes.container}>
-        <Grid item xs={12} sm={12} md={12} className={classes.item}>
+
+        <Grid item xs={12} sm={6} md={6} className={classes.item}>
+          <Card className={classes.controlCardButtons}>
+            <div className={classes.controlCardDiv}>
+              {settingKeys.map((settingKey) =>(
+              <Box key={settingKey.toString()} className={classes.controlCardBox} display='flex'>
+                <Box className={classes.alignButtonIcon} flexGrow={1} p={1} >
+                  <Tooltip className={classes.textColor} title="Add" placement="top-start">
+                    <Button>{WordsTable[settingKey]}</Button>
+                  </Tooltip>
+                </Box>
+                <Box className={classes.alignNameBox} flexGrow={1} p={1} >
+                  <SettingExplanation setting={settingKey} values={settings[settingKey]}/>
+                </Box>
+                <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
+                  <AutomationButton setting={settingKey} />
+                </Box>
+              </Box>
+              ))}
+            </div>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={6} className={classes.item}>
           <Card className={classes.parentItem}>
             <Grid container style={{marginBottom: '20px'}}>
             { settingKeys.map((settingKey) =>(
               <Grid key={settingKey.toString()} item xs={12} sm={6} md={6} className={classes.slider}>
-                <SettingSlider isApplied={isApplied} key={settingKey.toString()} settingKey={settingKey}/>
+                <RangeSlider key={settingKey.toString()} values={settings[settingKey]} isApplied={isApplied}  settingKey={settingKey}/>
               </Grid>)
             )}
             </Grid>
@@ -93,6 +149,7 @@ export default function Settings() {
             </Snackbar>
           </Card>
         </Grid>
+
       </Grid>
   </div>
   );

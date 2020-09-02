@@ -45,6 +45,6 @@ export default function Dashboard() {
             </Grid>)
             })}
         </Grid>
-      </div> :  <Redirect to={'/login'} />
+      </div> :  <Redirect to={'/'} />
       );
     }

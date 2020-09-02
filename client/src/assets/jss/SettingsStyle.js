@@ -6,12 +6,6 @@ const settingsStyle = makeStyles(theme =>({
     flexGrow: 1,
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
-  container : {
-
-  },
-  item : {
-    padding:'8px',
-  },
   background : {
     position : 'relative',
     display : 'flex',
@@ -29,6 +23,61 @@ const settingsStyle = makeStyles(theme =>({
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',    borderRadius : '15px',
     padding : '20px',
+  },
+  controlCardButtons : {
+    height : '100%',
+    position: 'relative',
+    borderRadius: '0.5rem',
+    padding: '20px 0 20px 0',
+    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+    backgroundColor : 'rgba(255, 255, 255, 0.1)',
+  },
+  alignButtonIcon : {
+    display:'inline',
+    alignItems:'center',
+    width:'20%',
+    margin:'auto',
+    textAlign:'center',
+  },
+  alignNameBox : {
+    color : 'white',
+    textAlign:'center',
+    margin:'auto',
+    display:'inline',
+    alignItems:'center',
+    width:'60%',
+  },
+  disable: {
+    color : 'white',
+    textAlign:'center',
+    margin:'auto',
+    display:'inline',
+    alignItems:'center',
+    width:'calc(100%/3)',
+   visibility : 'hidden'
+  },
+  textColor : {
+    padding : '5px 0 5px 0',
+    color : 'white !important',
+    fontWeight : 'bold',
+  },
+  container : {
+    //padding :'15px 30px 15px 30px',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
+  },
+  item : {
+    padding:'8px',
+  },
+  controlCardDiv : {
+    paddingBottom:'3% 0 3% 0',
+    height:'100%'
+  },
+  controlCardBox : {
+    height:'25%'
+  },
+  figureCardDiv : {
+    display:'grid',
+    gridTemplateColumns: '33.3% 33.3% 33.3%',
   },
 })
 )

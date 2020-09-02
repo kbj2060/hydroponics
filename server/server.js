@@ -3,6 +3,7 @@
 const INIT_SETTING_PATH = "../init_setting";
 const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
+const BROKER_URL = 'mqtt://127.0.0.1';
 
 const localhostMqttClientId = "MQTT";
 const AutomationHost = "192.168.0.2";
@@ -62,7 +63,7 @@ io.on("connection", function (socket) {
   });
 });
 
-const client = mqtt.connect('mqtt://127.0.0.1',{port: 1883, clientId: localhostMqttClientId});
+const client = mqtt.connect(BROKER_URL,{port: 1883, clientId: localhostMqttClientId});
 /*
 mqtt data send example
 topic : current/{machine}/{section}
@@ -165,10 +166,6 @@ app.get('/api/get/query', (req, res) => {
     connection.query(
       `SELECT ${selects} FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
-        if(checkEmpty(rows)){
-          res.send({});
-          return
-        }
         res.send(rows);
       }
     )
@@ -188,10 +185,6 @@ app.get('/api/get/switch', (req, res) => {
     connection.query(
       `SELECT ${selects} FROM iot.switch WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
-        if(checkEmpty(rows)){
-          res.send({});
-          return
-        }
         res.send(rows);
       }
     )
@@ -212,7 +205,6 @@ app.get('/api/get/status', (req, res) => {
                 WHERE section = \"${section}\" 
                 ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-      if(checkEmpty(rows)){ return }
         res.send(rows);
       }
     )
@@ -233,7 +225,6 @@ app.get('/api/get/lineLimit', (req, res) => {
                 WHERE category = \"${environment}\" 
                 ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-      if(checkEmpty(rows)){ res.send({}); return; }
         res.send(rows);
       }
     )
@@ -254,8 +245,6 @@ app.get('/api/get/environment/history', (req, res) => {
                 ORDER BY id DESC ;`;
     connection.query(
       sql, (err, rows) => {
-        if(checkEmpty(rows)){ res.send({}); return; }
-
         let results = JSON.parse(JSON.stringify(rows));
         results = groupBy(results, 'section');
         results = cleanHistoryDict(results, environment);
@@ -276,7 +265,6 @@ app.get('/api/get/switch/history', (req, res) => {
     connection.query(
       `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
       (err, rows) => {
-        if(checkEmpty(rows)){ res.send({}); return; }
         rows.forEach((row) => {
           row['created'] = getLocaleMoment(row['created'])
         })
@@ -290,19 +278,30 @@ app.get('/api/get/switch/history', (req, res) => {
   }
 });
 
-app.get('/api/get/settingBar', (req, res) => {
+app.get('/api/get/settings', (req, res) => {
   try{
     const selects = req.query['selects'].join(",");
-    const category = req.query['category'];
+    const settingKeys = req.query['settingKeys'];
     const num = req.query['num'];
-    const sql = `SELECT ${selects} FROM iot.setting 
-                 WHERE category = \"${category}\" 
-                 ORDER BY id DESC LIMIT ${num};`
-    connection.query( sql, (err, rows) => {
-      console.log(rows)
-      if(checkEmpty(rows)){ res.send({}); return; }
-
-      res.send(rows)
+    const queries = settingKeys.map((settingKey) => {
+      return `SELECT ${selects} FROM iot.setting 
+                 WHERE category = \"${settingKey}\" 
+                 ORDER BY id DESC LIMIT ${num}`
+    })
+    connection.query( queries.join('; '), (err, rows) => {
+      let _json = {}
+      const result = rows.map((row) => {
+        const key = row[0]['category']
+        const type = row[0]['type']
+        let values = []
+        if(type === 'cycle'){ values = [row[0]['max']] }
+        else if(type === 'range'){ values = [row[0]['min'], row[0]['max']] }
+        return {[key] : values}
+      })
+      result.map((r) => {
+        _json = Object.assign(_json, r);
+      })
+      res.send(_json)
     })
   } catch(err){
     useErrorLogger('GET').error({
@@ -325,7 +324,6 @@ app.get('/api/get/current', (req, res) => {
                   GROUP BY section )
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
-      if(checkEmpty(rows)){ res.send({}); return; }
       let results = groupBy(rows, "section")
       Object.keys(results).map((key) => {
         results[key] = results[key][0]['current'];
@@ -340,6 +338,36 @@ app.get('/api/get/current', (req, res) => {
   }
 });
 
+app.get('/api/get/switch/auto', (req, res) => {
+  try {
+    const item = req.query['item'];
+    const sql = `SELECT status FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
+    connection.query(sql, (err, rows) => {
+      res.send(rows[0])
+    })
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET AUTO SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+
+app.post('/api/post/switch/auto', (req, res) => {
+  try {
+    const { setting, status, name } = req.body.params;
+    const sql =  `INSERT INTO iot.auto VALUES (null,  ${status}, \"${setting}\", \"${name}\", now(), 0);`;
+    connection.query(sql, (err, rows) => {
+      res.send(rows);
+    })
+  } catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST AUTO SWITCH QUERY ERROR : ${err}`
+    })
+  }
+})
+
 app.post('/api/post/switch/machine', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
@@ -350,15 +378,13 @@ app.post('/api/post/switch/machine', (req, res) => {
 
     connection.query(sql, params,
       (err, rows) => {
-        if(checkEmpty(rows)){ res.send({}); return; }
-
         res.send(rows);
         useInfoLogger('switch').info({
           level: 'info',
           message: `[${name}] ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(`switch/${machine}`, String(status));
+        client.publish(`switch/${machine}`, String(status?1:0));
       }
     )} catch (err) {
     useErrorLogger('POST').error({
@@ -370,23 +396,23 @@ app.post('/api/post/switch/machine', (req, res) => {
 
 app.post('/api/post/apply/settings', (req, res) => {
   try {
-    const sql = 'INSERT INTO iot.setting ' +
-                'VALUES (null, ?, ?, ?, now(), 0)';
-    const category = req.body.params['category'];
-    const [min, max] =req.body.params['setting']
-    const params = [category, min, max]
-    connection.query(sql, params, (err, rows) => {
-      console.log(rows);
-	    if(checkEmpty(rows)){ res.send({}); return; }
-	
-      res.send(rows); }
-    )} catch (err) {
+    const {settingType} = require('../init_setting');
+    const settings = req.body.params['settings'];
+    let queries = Object.entries(settings).map(([key,values])=> {
+      return getSqlBySettingType(key, values, settingType[key]);
+    })
+    console.log(queries.join('; '))
+    connection.query(queries.join('; '), (err, rows) => {
+      console.log(rows)
+      res.send(rows);
+    })} catch (err) {
     useErrorLogger('POST').error({
       level: 'error',
       message: `POST SETTING QUERY ERROR : ${err}`
     })
   }
 });
+
 
 app.post('/api/post/signin', (req, res) => {
   try{
@@ -395,8 +421,6 @@ app.post('/api/post/signin', (req, res) => {
                  WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
     const params = [username, password];
     connection.query(sql, params, (err, rows) => {
-      if(checkEmpty(rows)){ res.send({}); return; }
-
       console.log(rows);
       let login = JSON.parse(JSON.stringify(rows))[0];
       res.send(login);
@@ -408,6 +432,20 @@ app.post('/api/post/signin', (req, res) => {
     })
   }
 })
+
+const getSqlBySettingType = (key, values, type) => {
+  let sql = ``;
+  let min=0, max=0;
+  if(type === 'cycle'){
+    [max] = values;
+    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", 0, ${max}, \"${type}\", now(), 0)`;
+  }
+  else if (type === 'range'){
+    [min, max] = values;
+    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", ${min}, ${max}, \"${type}\", now(), 0)`;
+  }
+  return sql
+}
 
 const groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
