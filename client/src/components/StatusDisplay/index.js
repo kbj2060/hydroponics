@@ -17,14 +17,6 @@ export default function StatusDisplay(props) {
     "temperature": 0
   });
 
-/*  function statusReset() {
-    setRecentStatus({
-      "humidity": 0,
-      "co2": 0,
-      "temperature": 0
-    })
-  }*/
-
   const convertFixedFloat = (x) => {
       return Number.parseFloat(x).toFixed(1);
   }
