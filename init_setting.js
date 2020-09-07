@@ -19,7 +19,7 @@ module.exports = {
 		'1', '2', '3'
 	],
 	settings: [
-		'fan', 'waterpump', 'temperature', 'led'
+		'led', 'temperature', 'fan', 'waterpump'
 	],
 	settingType: {
 		'fan' : 'cycle',
@@ -28,8 +28,12 @@ module.exports = {
 		'led' : 'range',
 	},
 	settingMinMax : {
-		'fan' : [1, 23],
-		'waterpump' : [0, 30],
+		'fan' : {
+			start: [], end: [], term: []
+		},
+		'waterpump' : {
+			start: [], end: [], term: []
+		},
 		'temperature' : [10, 40],
 		'led' : [0, 23]
 	},
