@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ControlIcon(props) {
+export default function TemperatureIcon(props) {
   const classes = useStyles();
 
   return (

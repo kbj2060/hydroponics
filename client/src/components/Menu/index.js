@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -89,9 +89,11 @@ export default function Menu() {
 	const handleClose = () => {
 		setOpen(false)
 	}
+
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 		<div>
+
 			<IconButton
 				onClick={handleOpen}
 				type="button"
@@ -99,6 +101,7 @@ export default function Menu() {
 				aria-haspopup="true">
 				<MenuIcon style={{ color: 'white' }} />
 			</IconButton>
+
 			<Modal
 				disableAutoFocus={true}
 				className={classes.modal}
@@ -110,6 +113,7 @@ export default function Menu() {
 				}}
 			>
 				<div className={classes.paper}>
+
 					<div style={{height: "30%"}}>
 						<h1 className={classes.header}>WJ</h1>
 					</div>
@@ -119,6 +123,7 @@ export default function Menu() {
 						<LinkButton onClick={() => {handleClick("login")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
+
 			</Modal>
 		</div>
 		</ClickAwayListener>

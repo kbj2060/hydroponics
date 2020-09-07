@@ -37,7 +37,7 @@ const style = makeStyles({
   }
 });
 
-export default function AutomationButton(props) {
+export default function SettingModal(props) {
   const {setting} = props
   const [state, setState] = React.useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);

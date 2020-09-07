@@ -17,7 +17,7 @@ const dashboardStyle = makeStyles(() =>({
     height : '100%',
     position: 'relative',
     borderRadius: '0.5rem',
-    padding: '20px',
+    padding: '10px',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
@@ -62,7 +62,7 @@ const dashboardStyle = makeStyles(() =>({
     height:'100%'
   },
   controlCardBox : {
-    height:'25%'
+    height:'20%'
   },
   figureCardDiv : {
     display:'grid',

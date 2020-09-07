@@ -5,6 +5,7 @@ import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
 import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
+import SettingModal from "./SettingModal";
 
 export default function Index() {
     const {machines, WordsTable} = require('root/init_setting');
@@ -26,6 +27,9 @@ export default function Index() {
                       </Box>
                   )
               }) }
+              <Box style={{textAlign:'center'}}>
+                <SettingModal />
+              </Box>
           </div>
       </Card>
     );

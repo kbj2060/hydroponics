@@ -15,7 +15,7 @@ const iOSBoxShadow =
 
 const IOSSlider = withStyles({
   root: {
-    color: '#3880ff',
+    color: '#FFCB3A',
     height: 2,
     padding: '15px 0',
   },
@@ -36,7 +36,6 @@ const IOSSlider = withStyles({
   },
   active: {},
   valueLabel: {
-    fontSize : '0.8em',
     left: 'calc(-50% + 12px)',
     top: -22,
     '& *': {
@@ -46,7 +45,6 @@ const IOSSlider = withStyles({
   },
   track: {
     height: 2,
-
   },
   rail: {
     height: 2,
@@ -61,7 +59,7 @@ const IOSSlider = withStyles({
   },
   markActive: {
     opacity: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'currentColor',
   },
 })(Slider);
 
@@ -78,7 +76,6 @@ const useStyles = makeStyles({
   },
   slider :{
     fontSize : '0.9em',
-    color : "#FFCB3A",
   },
   title : {
     fontWeight : '1000',
@@ -91,19 +88,18 @@ const useStyles = makeStyles({
 export default function RangeSlider(props) {
   const { settingKey, isApplied, values } = props;
   const classes = useStyles();
-  const {settingMinMax, WordsTable, unitsTable } = require('root/init_setting');
+  const {settingMinMax, unitsTable } = require('root/init_setting');
   const [setting, setSetting] = React.useState(values);
   const [isLoading, setIsLoading] = React.useState(true);
-  const dispatch = useDispatch()
-  const {settingType} = require('root/init_setting');
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
+    dispatch(controlSetting({[settingKey] :newValue}));
     setSetting(newValue);
   };
 
   useEffect(() => {
     if(isApplied){
-      dispatch(controlSetting({[settingKey] :setting}));
     }
   }, [isApplied])
 
@@ -123,9 +119,6 @@ export default function RangeSlider(props) {
   return (
     <div className={classes.margin}>
       <Grid className={classes.root}>
-        <Typography className={classes.title}>
-          {WordsTable[settingKey]}
-        </Typography>
         <IOSSlider
           className={classes.slider}
           min={settingMinMax[settingKey][0]}
@@ -134,7 +127,6 @@ export default function RangeSlider(props) {
           onChange={handleChange}
           ValueLabelComponent={StyledValueLabel}
           valueLabelDisplay="on"
-          aria-labelledby="range-slider"
           valueLabelFormat={valuetext}
         />
       </Grid>

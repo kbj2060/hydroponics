@@ -7,7 +7,12 @@ export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
 }
 
-const initialState = loadState()['controlSetting'];
+let initialState = '';
+try {
+  initialState = loadState()['controlSetting'];
+} catch(e) {
+  initialState = settingMinMax;
+}
 
 function ControlSetting(state = initialState, action) {
   switch(action.type){

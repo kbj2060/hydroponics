@@ -12,14 +12,9 @@ import axios from "axios";
 import Typography from '@material-ui/core/Typography';
 import {store} from "../../redux/store";
 import Box from "@material-ui/core/Box";
-import AutomationButton from "../../components/AutomationButton";
+import AutomationButton from "../../components/AutomationCard";
 import SettingExplanation from "../../components/SettingExplanation";
 import {ColorCircularProgress} from "../../components/utils/ColorCircularProgress";
-import ReplayIcon from "@material-ui/icons/Replay";
-import AcUnitIcon from "@material-ui/icons/AcUnit";
-import PowerOffIcon from "@material-ui/icons/PowerOff";
-import WhatshotIcon from "@material-ui/icons/Whatshot";
-import PowerIcon from "@material-ui/icons/Power";
 import Tooltip from '@material-ui/core/Tooltip';
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
@@ -44,7 +39,7 @@ export default function Settings() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const handleNull = (obj) => {
-    const IndexOfNull = 1
+    const IndexOfNull = 1;
     Object.keys(obj).forEach(function(key) {
       if(obj[key][IndexOfNull] === null) { obj[key][IndexOfNull] = 0; }
     })
@@ -72,7 +67,6 @@ export default function Settings() {
       console.log("SLIDER FETCH ERROR");
     })
   }
-
 
   useEffect(() => {
     console.log(store.getState()['authentication']);
@@ -103,12 +97,15 @@ export default function Settings() {
   if(isLoading){
     return <ColorCircularProgress />
   }
+
   return (
     <div className={classes.root}>
+{/*
       <AppBar />
+*/}
       <Grid container className={classes.container}>
 
-        <Grid item xs={12} sm={6} md={6} className={classes.item}>
+{/*        <Grid item xs={12} sm={6} md={6} className={classes.item}>
           <Card className={classes.controlCardButtons}>
             <div className={classes.controlCardDiv}>
               {settingKeys.map((settingKey) =>(
@@ -122,13 +119,13 @@ export default function Settings() {
                   <SettingExplanation setting={settingKey} values={settings[settingKey]}/>
                 </Box>
                 <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                  <AutomationButton setting={settingKey} />
+                  <AutomationCard setting={settingKey} />
                 </Box>
               </Box>
               ))}
             </div>
           </Card>
-        </Grid>
+        </Grid>*/}
 
         <Grid item xs={12} sm={6} md={6} className={classes.item}>
           <Card className={classes.parentItem}>
