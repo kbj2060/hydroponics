@@ -24,7 +24,7 @@ let getOptions = (data) => {
 				}
 			}],
 		},
-		annotation: {
+		/*annotation: {
 			annotations: [
 				{
 					type: "line",
@@ -53,7 +53,7 @@ let getOptions = (data) => {
 					}
 				}
 			]
-		}
+		}*/
 })}
 
 export default function LineSetting (history, environment) {
@@ -85,24 +85,20 @@ export default function LineSetting (history, environment) {
 		return datasets
 	}
 
-	const fetchLineSetting = useCallback(async () => {
+/*	const fetchLineSetting = useCallback(async () => {
 		try {
 			await axios.get('/api/get/lineLimit', {
-				params: {
-					selects: [`min`, `max`],
-					environment: environment,
-					num: 1
-				}
+				params: { environment: environment, }
 			}).then(({data}) => {
 				setOptions(getOptions(data[0]));
 			})} catch (e) {
 			console.log('FETCH SETTING ERROR.');
 		}
-	}, [environment])
+	}, [environment])*/
 
-	useEffect(() => {
+/*	useEffect(() => {
 		fetchLineSetting();
-	}, [fetchLineSetting])
+	}, [fetchLineSetting])*/
 
 	state.datasets = makeBasicDataset(n_plants);
 	if(checkEmpty(history)){ return {state, options} }

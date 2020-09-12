@@ -4,15 +4,14 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CircularTimespanpicker from "../TimeSpanPicker";
-import RangeSlider from "../SettingSlider/RangeSlider";
-import {useDispatch} from "react-redux";
-import {controlSetting} from "../../redux/modules/ControlSetting";
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import RangeSlider from "../SettingModal/RangeSlider";
+import TimePickerWrapper from "../SettingModal/TimePickerWrapper";
+import {store} from "../../redux/store";
+import axios from "axios";
+import CloseIcon from '@material-ui/icons/Close';
+import SettingExplanation from "../SettingModal/SettingExplanation";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import AutoSwitchWrapper from "../SettingModal/AutoSwitchWrapper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
+  buttonLabel: {
+    fontSize: '0.8rem',
+    color: 'white',
+  },
   wrapper: {
     textAlign: 'center',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
@@ -34,21 +37,22 @@ const useStyles = makeStyles((theme) => ({
   },
   stepper : {
     backgroundColor : 'rgba(255,255,255,0)',
-    paddingBottom: '0px',
+    paddingBottom: theme.spacing(1),
   },
   backButton: {
-    backgroundColor: 'gray',
-    color: 'black !important',
+    float:'left',
+    color: 'white !important',
     marginRight: theme.spacing(1),
   },
   instructions: {
-    paddingBottom: '24px',
+    paddingBottom: theme.spacing(1),
     color: 'white',
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
   alternativeLabel: {
     color: 'white',
+    fontSize : '1.1rem'
   },
   active : {
     color: '#FFCB3A !important'
@@ -63,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'gray !important'
   },
   NextButton: {
-    backgroundColor : '#FFCB3A !important'
+    float:'right',
+    color: 'white'
   },
   iconButtonColor: {
     color: '#FFCB3A !important'
@@ -78,20 +83,34 @@ function getStepContent(stepIndex, contentComponents) {
   }
 }
 
+const getSteps = (step) => {
+  let steps = step;
+  steps.push('tail');
+  steps.unshift('head');
+  return steps
+}
+
+const getLabels = (steps, WordsTable) => {
+  return steps.map((step, index) => {
+    if(index === 0){ return '이전 설정' }
+    else if(index === steps.length - 1){ return '현재 설정' }
+    else { return `${WordsTable[step]}` }
+  });
+}
+
+const autoSwitchDisable = (index, len) => {
+    return index === 0 || index === len -1;
+}
+
+const {settings, WordsTable} = require('root/init_setting');
+
+const steps = getSteps(settings);
+const labels = getLabels(steps, WordsTable);
+
+
 export default function CustomStepper({modalClose}) {
   const classes = useStyles();
-  const {settings:steps, WordsTable, settingMinMax} = require('root/init_setting')
-  const fs = require('fs');
-  const dispatch = useDispatch();
-
-  const interval = 30;
   const [activeStep, setActiveStep] = React.useState(0);
-  const [apply, setApplied] = React.useState(false);
-  const [settings, setSettings] = React.useState(settingMinMax);
-
-  const labels = steps.map((step) => {
-    return `${WordsTable[step]} 제어 `
-  });
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -101,57 +120,28 @@ export default function CustomStepper({modalClose}) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleApply = () => {
-    modalClose();
+  const handleApply = async () => {
+    const obj = store.getState()['controlSetting']
+    const json = JSON.stringify(obj);
+    await axios.post('/api/post/save/auto/json',{ params: { 'controlSetting' : json }})
+      .then(()=>{ modalClose(); })
   };
 
-  const handleTimePicker = (time, settingSubject) => {
-    let start=[], end=[], range={};
-    time.map((t) => {
-      start.push(t[0].format('hh:mm'))
-      end.push(t[1].format('hh:mm'))
-    })
-    range['start'] = start
-    range['end']= end
-    dispatch(controlSetting({[settingSubject] : range } ));
-  }
-
   const stepperComponents = {
-    'led' : <RangeSlider key={'led'} values={settingMinMax['led']} settingKey={'led'}/>,
-    'temperature' : <RangeSlider key={'temperature'} values={settingMinMax['temperature']} settingKey={'temperature'}/>,
-    'fan' : (
-      <div style={{flexDirection: 'row', display:'flex', justifyContent:'center'}}>
-        <div style={{position: 'relative'}}>
-        <CircularTimespanpicker key={'fan'}
-                                onClick={(time) => handleTimePicker(time, "fan")}
-                                boundaryHour="12" interval={interval} showResults={false} />
-        </div>
-        <div style={{position: 'absolute', display:'flex', top: '333px'}}>
-          <p>매일</p>
-          <ButtonGroup
-            orientation="vertical"
-            color="primary"
-            aria-label="vertical outlined primary button group"
-          >
-            <IconButton classes={{root : classes.iconButtonColor}} size='small'>
-              <ArrowDropUpIcon />
-            </IconButton>
-            <IconButton classes={{root : classes.iconButtonColor}} size='small'>
-              <ArrowDropDownIcon />
-            </IconButton>
-          </ButtonGroup>
-        </div>
-        </div>),
-    'waterpump' : <CircularTimespanpicker key={'waterpump'}
-                                          onClick={(time) => handleTimePicker(time, "waterpump")}
-                                          boundaryHour="12" interval={interval} showResults={false} />,
+    'head' : <SettingExplanation key={'head'} position={'head'} />,
+    'led' : <RangeSlider key={'led'} settingKey={'led'}/>,
+    'temperature' : <RangeSlider key={'temperature'} settingKey={'temperature'}/>,
+    'fan' : <TimePickerWrapper key={'fan'} setting={'fan'} outerSize={150} />,
+    'waterpump' : <TimePickerWrapper key={'waterpump'} setting={'waterpump'} outerSize={150} />,
+    'tail' : <SettingExplanation key={'tail'} position={'tail'} />,
   }
 
   return (
-    // TODO : root 의 높이를 받는 CircularTimespanpicker 컴포넌트 새로운 파일로 만들 것.
     <div className={classes.root}>
       <div className={classes.wrapper}>
-
+        <div style={{display:'flex'}}>
+          <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:'white', cursor:'pointer'}}/>
+        </div>
         <Stepper className={classes.stepper} activeStep={activeStep} alternativeLabel>
           {labels.map((label) => (
             <Step key={label}>
@@ -173,14 +163,16 @@ export default function CustomStepper({modalClose}) {
         <div>
           {activeStep === steps.length ? (
             <div>
-              <Button className={classes.NextButton} onClick={handleApply}> 저장 </Button>
+              <Button className={classes.NextButton} onClick={modalClose}> 닫기 </Button>
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>
+              <div className={classes.instructions}>
                 {getStepContent(steps[activeStep], stepperComponents)}
-              </Typography>
-              <div>
+              </div>
+              <div style={{display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'}}>
                 <Button
                   disabled={activeStep === 0}
                   onClick={handleBack}
@@ -188,7 +180,24 @@ export default function CustomStepper({modalClose}) {
                 >
                   뒤로
                 </Button>
-                {activeStep === steps.length - 1 ? (
+                <div style={{display: 'inline-flex'}}>
+                  {autoSwitchDisable(activeStep, steps.length)
+                    ? null
+                    : <FormControlLabel
+                      value="자동화"
+                      control={ <AutoSwitchWrapper key={Object.keys(stepperComponents)[activeStep]}
+                                                   name={Object.keys(stepperComponents)[activeStep]}/> }
+                      label="자동화"
+                      labelPlacement="top"
+                      classes={{
+                       label:classes.buttonLabel
+                      }}
+                    />
+                  }
+
+                </div>
+                {
+                  activeStep === steps.length - 1 ? (
                   <Button className={classes.NextButton} onClick={handleApply}>
                     저장
                   </Button>
@@ -201,7 +210,6 @@ export default function CustomStepper({modalClose}) {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

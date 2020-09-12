@@ -3,6 +3,8 @@ import * as d3 from 'd3';
 import moment from 'moment';
 import './timeSpanPicker.css';
 import PropTypes from 'prop-types';
+import {useDispatch} from "react-redux";
+import {store} from "../../redux/store";
 
 const config = {
   labelsPAdding: 13,
@@ -16,11 +18,14 @@ class CircularTimespanpicker extends Component {
     super(props);
     this.state = {};
   }
+
   static propTypes = {
     outerRadius : PropTypes.number,
     innerRadius : PropTypes.number,
     showResults : PropTypes.bool,
     onClick   : PropTypes.func,
+    subject : PropTypes.string,
+
     interval : (props, propName, componentName) => {
       const interval = props[propName];
       if ( !Number.isInteger(interval) || interval > 60 || 60 % interval) {
@@ -43,24 +48,67 @@ class CircularTimespanpicker extends Component {
 
   static defaultProps = {
     outerRadius : 100,
-    interval : 30,
-    boundaryHour: 8,
+    interval : 60,
+    boundaryHour: 0,
     showResults : true,
-    onClick   : (value) => { console.log (value) }
+    onClick   : (value) => { console.log (value) },
   };
 
+  oneToNArray(n){
+    return Array.from({ length: n }, (_, i) => i+1)
+  }
+
+  hourToMoment(clickedValue){
+    const clickedStartValue = clickedValue[0];
+    const clickedFinishValue = clickedValue[1];
+    const { initialObject: { boundaryHour }, ...segments } = this.state;
+    const segmentPreviousValue = segments[clickedFinishValue];
+    const segmentCurrentValue = {
+      [String(clickedFinishValue)]: segmentPreviousValue
+        ? null
+        : [
+          moment().set('hour', boundaryHour).set('minute', 0).minute(clickedStartValue),
+          moment().set('hour', boundaryHour).set('minute', 0).minute(clickedFinishValue)
+        ]
+    };
+    return Object.values(segmentCurrentValue)[0]
+  }
+
+  componentDidMount() {
+    const { subject, interval } = this.props;
+    const {start:selectedStartHours, end:selectedEndHours, term} = store.getState()['controlSetting'][subject]
+
+    const selectedStart = this.getSelectedHours(selectedStartHours);
+    const selectedEnd = this.getSelectedHours(selectedEndHours);
+    let selectedHours = {}
+
+    selectedEnd.forEach((end, index) => {
+      const distance = end - selectedStart[index];
+      if(distance > 0) {
+        for (let d in this.oneToNArray(distance)) {
+          const oneUnitEnd = (end - d) * interval;
+          selectedHours[oneUnitEnd] = this.hourToMoment([oneUnitEnd - interval ,oneUnitEnd])
+        }
+      } else {
+        const lastHour = 24 * interval
+        selectedHours[[24 * interval]] = this.hourToMoment([lastHour - interval ,lastHour])}
+    });
+
+    this.setState({...selectedHours})
+  }
+
   componentWillMount() {
-    let { outerRadius, innerRadius, interval, boundaryHour, onClick, showResults } = this.props;
+    let { outerRadius, innerRadius, interval, boundaryHour, onClick, showResults, subject } = this.props;
     innerRadius = (innerRadius && innerRadius < outerRadius) ? innerRadius : outerRadius/config.defaultInnerRadiusIndex;
 
     const width = outerRadius * 2 + config.defaultChartPadding;
-    const segmentsInHour = 60/interval;
-    const totalNumberOfSegments = 720/interval;
+    const segmentsInHour = 1;
+    const totalNumberOfSegments = 24; //24시로 설정하고 간격을 1시간으로 바꾸어 12시간짜리를 24시간으로 바꿈.
     const boundaryIsPostMeridiem = boundaryHour > 12;
 
     const pie = d3.pie().sort(null).value(d => 1);
     const segmentsArray = pie(new Array(totalNumberOfSegments));
-    const hoursLabelsArray = pie(new Array(12));
+    const hoursLabelsArray = pie(new Array(24));
     const colorScale = d3.scaleOrdinal().domain([0, 1, 2]).range(config.segmentsColorsArray);
     const segmentsArcFn = d3.arc()
       .outerRadius(outerRadius)
@@ -73,15 +121,22 @@ class CircularTimespanpicker extends Component {
     const hoursArcFn = d3.arc()
       .outerRadius(outerRadius + config.labelsPAdding)
       .innerRadius(outerRadius + config.labelsPAdding)
-      .startAngle(d => d.startAngle - 0.26)
-      .endAngle(d => d.endAngle - 0.26);
+      .startAngle(d => d.startAngle - 0.13)
+      .endAngle(d => d.endAngle - 0.13);
 
     const initialObject = {
       interval, boundaryHour, width, segmentsInHour, boundaryIsPostMeridiem,
       segmentsArcFn, minutesArcFn, hoursArcFn, segmentsArray, showResults, onClick,
-      hoursLabelsArray, colorScale, innerRadius, outerRadius, totalNumberOfSegments
+      hoursLabelsArray, colorScale, innerRadius, outerRadius, totalNumberOfSegments, subject
     };
     this.setState({ initialObject })
+  }
+
+
+  getSelectedHours(hoursList) {
+    return hoursList.map((hour) => {
+      return parseInt(hour.split(':')[0])
+    })
   }
 
   /* On click on segment convert simple segment's value [startValue, endValue] in moment.js object and save it in a state as "chosen" */
@@ -102,6 +157,7 @@ class CircularTimespanpicker extends Component {
     };
 
     this.setState(segmentCurrentValue);
+    console.log(segmentCurrentValue)
     onClick(this.getReducedArray({...this.state, ...segmentCurrentValue}));
   }
 
@@ -124,6 +180,7 @@ class CircularTimespanpicker extends Component {
   /* combine the neighbour short time spans in one union (e.g. '5:20-5:30' and '5:30-5:40' will be combined in a '5:20-5:40') */
   getReducedArray(state) {
     const keysArr = Object.keys(state).filter(key => key !== 'initialObject' && state[key]);
+    console.log(keysArr)
     if (keysArr.length) {
       if(keysArr.length === 1)  {
         /* if is single, returns it - no needs to combine */
@@ -155,6 +212,7 @@ class CircularTimespanpicker extends Component {
     return 30 * (boundaryIsPostMeridiem ? boundaryHour - 12 : boundaryHour);
     /* 1 hour = 360 / 12 = 30 degrees */
   }
+
   setSegmentsValue(index) {
     const {interval, boundaryHour, totalNumberOfSegments, segmentsInHour, boundaryIsPostMeridiem } = this.state.initialObject;
     index = boundaryIsPostMeridiem ? index + totalNumberOfSegments : index;
@@ -245,6 +303,7 @@ function TimeResults(props) {
 
 function Segment(props) {
   const {item, segmentArcFn, minutesArcFn, label, fill, value, handleClick, isActive } = props;
+
   return (
     <g className={`segment${isActive ? " active":""}`}
        onClick={()=>{handleClick(value)}}

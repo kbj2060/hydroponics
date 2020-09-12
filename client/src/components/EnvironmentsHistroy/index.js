@@ -16,6 +16,7 @@ export default function Index(props) {
 
 
   const getLastUpdatedTime = (data) => {
+    if(checkEmpty(data)){ return null }
     return Object.keys(data[plants[0]])[0];
   }
   // json 형태로 반환 받아 사용

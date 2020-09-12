@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import Dashboard from './views/Dashboard/Dashboard';
 import Login from './views/Login/Login';
-import Settings from './views/Settings/Settings';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -49,9 +48,6 @@ export default function App() {
             </Route>
             <Route exact path="/dashboard" >
               <Dashboard />
-            </Route>
-            <Route exact path="/settings" >
-              <Settings />
             </Route>
           </div>
         </BrowserRouter>

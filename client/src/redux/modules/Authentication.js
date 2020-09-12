@@ -1,20 +1,14 @@
 import update from 'react-addons-update';
-import {loadState} from "root/client/src/components/LocalStorage";
+import {loadState, resetState} from "root/client/src/components/LocalStorage";
 
 export const AUTH_INIT = "AUTH_INIT";
 export const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
 export const AUTH_LOGIN_FAILURE = "AUTH_LOGIN_FAILURE";
-
-export const login = () => {
-  return {
-    type: AUTH_INIT
-  };
-}
+export const LOGOUT = "LOGOUT";
 
 export const loginSuccess = (username) => {
   return {
-    type: AUTH_LOGIN_SUCCESS,
-    username
+    type: AUTH_LOGIN_SUCCESS, username
   };
 }
 
@@ -23,6 +17,13 @@ export const loginFailure = () => {
     type: AUTH_LOGIN_FAILURE
   };
 }
+
+export const logout = () => {
+  return {
+    type: LOGOUT
+  };
+}
+
 
 const initialState = {
   login: {
@@ -60,6 +61,8 @@ function Authentication(state, action) {
           status: { $set: 'FAILURE' }
         }
       });
+    case LOGOUT:
+      return initialState;
     default:
       try{return loadState()['authentication'];}
       catch(e){return initialState}

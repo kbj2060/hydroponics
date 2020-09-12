@@ -5,10 +5,8 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
-import Setting from "../Setting";
 import "../../assets/css/AutomationCircle.scss"
 import CustomStepper from "../utils/CustomStepper";
-
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -20,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		height: '100%',
 		width : '100%',
+		maxWidth: '500px',
 		display : "flex",
 		flexDirection: "column",
 		padding : '10px 10px 0 10px',

@@ -22,16 +22,15 @@ export default function StatusDisplay(props) {
   }
 
   const fetchStatus = async () => {
-    await axios.get('/api/get/status', {
+    await axios.get('/api/get/query/last', {
       params: {
-        section: plant,
+        where: plant,
+        whereColumn: 'section',
         selects: environments,
-        num: 1
+        table: 'env'
       }
     }).then(({data:status}) => {
-      if(checkEmpty(status)){
-        return
-      }
+      if(checkEmpty(status)){ return; }
       for (const [key, value] of Object.entries(status[0])) { status[key] = convertFixedFloat(value); }
       setRecentStatus(status);
     }).catch((err) => {

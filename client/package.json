@@ -58,5 +58,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9000"
+  "proxy": "http://localhost:9000",
+  "devDependencies": {
+    "html-react-parser": "^0.13.0"
+  }
 }

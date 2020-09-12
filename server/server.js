@@ -5,10 +5,10 @@ const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
 const BROKER_URL = 'mqtt://127.0.0.1';
 
+const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const localhostMqttClientId = "MQTT";
-const AutomationHost = "192.168.0.2";
 
-const {socketIoPort:PORT} = require(INIT_SETTING_PATH),
+const {socketIoPort:PORT, settingType} = require(INIT_SETTING_PATH),
        express = require('express'),
        bodyParser = require('body-parser'),
        moment = require('moment'),
@@ -30,8 +30,6 @@ const mqtt = require('mqtt'),
           database: conf.database,
           multipleStatements: true
        });
-const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
-const {checkEmpty} = require('./utils/CheckEmpty');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,7 +44,6 @@ io.on("connection", function (socket) {
 
   socket.on('sendSwitchControl', (switchStatus) => {
     console.log('switch socket has been sent.');
-    console.log(switchStatus);
     useInfoLogger('socket').info({
       level: 'info',
       message: `Socket ID : ${socket.id} Switch Control.`
@@ -64,6 +61,7 @@ io.on("connection", function (socket) {
 });
 
 const client = mqtt.connect(BROKER_URL,{port: 1883, clientId: localhostMqttClientId});
+
 /*
 mqtt data send example
 topic : current/{machine}/{section}
@@ -101,14 +99,7 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   )
 }
 
-// emit 할 때는 status의 값은 불리언 값으로 해야한다.
-// 숫자로 할 시 스위치 전환이 되지 않음.
-const emitSwitch = async (machine, status) => {
-  io.emit('receiveSwitchControl', {
-    machine : machine,
-    status : status
-  })
-}
+
 
 /*
 mqtt data send example
@@ -122,6 +113,15 @@ const handleSwitchesMQTT = (topic, message) => {
   const status = JSON.parse(message.toString()) != 0;
   console.log(machine, status );
   emitSwitch(machine, status);
+}
+
+// emit 할 때는 status의 값은 불리언 값으로 해야한다.
+// 숫자로 할 시 스위치 전환이 되지 않음.
+const emitSwitch = async (machine, status) => {
+  io.emit('receiveSwitchControl', {
+    machine : machine,
+    status : status
+  })
 }
 
 client.on('message', (topic, message) => {
@@ -157,7 +157,9 @@ client.on("error", () => {
     message: `CANNOT CONNECT MQTT`
   })
 })
-
+/*
+ * 기본 쿼리 구조 시작
+ */
 app.get('/api/get/query', (req, res) => {
   try {
     const table = req.query['table'];
@@ -177,17 +179,16 @@ app.get('/api/get/query', (req, res) => {
   }
 });
 
-app.get('/api/get/switch', (req, res) => {
+app.get('/api/get/query/last', (req, res) => {
   try {
     const selects = req.query['selects'].join(",");
-    const num = req.query['num'];
-    const machine = req.query['machine'];
-    connection.query(
-      `SELECT ${selects} FROM iot.switch WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
-      (err, rows) => {
-        res.send(rows);
-      }
-    )
+    const whereColumn = req.query['whereColumn'];
+    const where = req.query['where'];
+    const table = req.query['table'];
+    const sql = `SELECT ${selects} FROM iot.${table} 
+                WHERE ${whereColumn} = \"${where}\"
+                ORDER BY id DESC LIMIT 1;`
+    connection.query(sql, (err, rows) => { res.send(rows); } )
   } catch (err) {
     useErrorLogger('GET').error({
       level: 'error',
@@ -195,47 +196,11 @@ app.get('/api/get/switch', (req, res) => {
     })
   }
 });
-
-app.get('/api/get/status', (req, res) => {
-  try {
-    const selects = req.query['selects'].join(",");
-    const num = req.query['num'];
-    const section = req.query['section'];
-    const sql = `SELECT ${selects} FROM iot.env 
-                WHERE section = \"${section}\" 
-                ORDER BY id DESC LIMIT ${num};`
-    connection.query(sql, (err, rows) => {
-        res.send(rows);
-      }
-    )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});
-
-app.get('/api/get/lineLimit', (req, res) => {
-  try {
-    const selects = req.query['selects'].join(",");
-    const environment = req.query['environment'];
-    const num = req.query['num'];
-    const sql = `SELECT ${selects} FROM iot.setting 
-                WHERE category = \"${environment}\" 
-                ORDER BY id DESC LIMIT ${num};`
-    connection.query(sql, (err, rows) => {
-        res.send(rows);
-      }
-    )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});
-
+/*
+ * 기본 쿼리 구조 끝
+ * ---------------------------------------------------------------------------------------------------------------------
+ * 환경 설정 시작
+ */
 app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
@@ -257,6 +222,11 @@ app.get('/api/get/environment/history', (req, res) => {
     })
   }
 });
+/*
+ * 환경 설정 끝
+ * ---------------------------------------------------------------------------------------------------------------------
+ * 스위치 설정 시작
+ */
 
 app.get('/api/get/switch/history', (req, res) => {
   try{
@@ -277,96 +247,6 @@ app.get('/api/get/switch/history', (req, res) => {
     })
   }
 });
-
-app.get('/api/get/settings', (req, res) => {
-  try{
-    const selects = req.query['selects'].join(",");
-    const settingKeys = req.query['settingKeys'];
-    const num = req.query['num'];
-    const queries = settingKeys.map((settingKey) => {
-      return `SELECT ${selects} FROM iot.setting 
-                 WHERE category = \"${settingKey}\" 
-                 ORDER BY id DESC LIMIT ${num}`
-    })
-    connection.query( queries.join('; '), (err, rows) => {
-      let _json = {}
-      const result = rows.map((row) => {
-        const key = row[0]['category']
-        const type = row[0]['type']
-        let values = []
-        if(type === 'cycle'){ values = [row[0]['max']] }
-        else if(type === 'range'){ values = [row[0]['min'], row[0]['max']] }
-        return {[key] : values}
-      })
-      result.map((r) => {
-        _json = Object.assign(_json, r);
-      })
-      res.send(_json)
-    })
-  } catch(err){
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SETTINGBAR QUERY ERROR : ${err}`
-    })
-  }
-});
-
-// GROUP BY 설정을 바꿔주어야 오류가 안남.
-app.get('/api/get/current', (req, res) => {
-  try{
-    const selects = req.query['selects'].join(",");
-    const machine = req.query['machine'];
-    const sql = `SELECT ${selects} FROM iot.current
-                WHERE id 
-                in (SELECT max(id)
-                  FROM iot.current
-                  WHERE machine = \"${machine}\"
-                  GROUP BY section )
-                ORDER BY id desc;`
-    connection.query( sql, (err, rows) => {
-      let results = groupBy(rows, "section")
-      Object.keys(results).map((key) => {
-        results[key] = results[key][0]['current'];
-      })
-      res.send(results)
-    })
-  } catch(err){
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET CURRENT QUERY ERROR : ${err}`
-    })
-  }
-});
-
-app.get('/api/get/switch/auto', (req, res) => {
-  try {
-    const item = req.query['item'];
-    const sql = `SELECT status FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
-    connection.query(sql, (err, rows) => {
-      res.send(rows[0])
-    })
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET AUTO SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});
-
-app.post('/api/post/switch/auto', (req, res) => {
-  try {
-    const { setting, status, name } = req.body.params;
-    const sql =  `INSERT INTO iot.auto VALUES (null,  ${status}, \"${setting}\", \"${name}\", now(), 0);`;
-    connection.query(sql, (err, rows) => {
-      res.send(rows);
-    })
-  } catch (err) {
-    useErrorLogger('POST').error({
-      level: 'error',
-      message: `POST AUTO SWITCH QUERY ERROR : ${err}`
-    })
-  }
-})
 
 app.post('/api/post/switch/machine', (req, res) => {
   try {
@@ -393,7 +273,208 @@ app.post('/api/post/switch/machine', (req, res) => {
     })
   }
 });
+/*
+ * 스위치 설정 끝
+ * ---------------------------------------------------------------------------------------------------------------------
+ * 전류 설정 시작
+ */
+// GROUP BY 설정을 바꿔주어야 오류가 안남.
+app.get('/api/get/current', (req, res) => {
+  try{
+    const selects = req.query['selects'].join(",");
+    const machine = req.query['machine'];
+    const sql = `SELECT ${selects} FROM iot.current
+                WHERE id 
+                in (SELECT max(id)
+                  FROM iot.current
+                  WHERE machine = \"${machine}\"
+                  GROUP BY section )
+                ORDER BY id desc;`
+    connection.query( sql, (err, rows) => {
+      let results = groupBy(rows, "section")
+      Object.keys(results).map((key) => { results[key] = results[key][0]['current']; })
+      res.send(results)
+    })
+  } catch(err){
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET CURRENT QUERY ERROR : ${err}`
+    })
+  }
+});
+/*
+* 전류 설정 끝
+* ---------------------------------------------------------------------------------------------------------------------
+* 자동화 설정 시작
+*/
+app.get('/api/get/switch/auto', (req, res) => {
+  try {
+    const item = req.query['item'];
+    const sql = `SELECT status FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
+    connection.query(sql, (err, rows) => { res.send(rows[0]) })
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET AUTO SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
 
+app.get('/api/get/load/auto/json', (req,res) => {
+  try{
+    fs.readFile('./automation/automation_setting.json', (err, data) => {
+      if (err) throw err;
+      console.log(data)
+      res.send(data);
+    });
+  }catch(err){
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST LOAD AUTO ERROR : ${err}`
+    })
+  }
+})
+
+app.post('/api/post/save/auto/json', (req,res) => {
+  try{
+    const { controlSetting } = req.body.params;
+    fs.writeFile('./automation/automation_setting.json', JSON.stringify(JSON.parse(controlSetting), null, 4), (e)=>{
+      res.send(e);
+    });
+  }catch(err){
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST SAVE AUTO ERROR : ${err}`
+    })
+  }
+})
+
+app.post('/api/post/switch/auto', (req, res) => {
+  try {
+    const { item, status, user } = req.body.params;
+    const _type = settingType[item];
+    const sql =  `INSERT INTO iot.auto VALUES (null, \"${item}\",  ${status},  \"${_type}\", \"${user}\", now(), 0);`;
+    connection.query(sql, (err, rows) => {
+      res.send(rows);
+    })
+  } catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST AUTO SWITCH QUERY ERROR : ${err}`
+    })
+  }
+})
+/*
+ * 자동화 설정 끝
+ * ---------------------------------------------------------------------------------------------------------------------
+ * 로그인 설정 시작
+ */
+app.post('/api/post/signin', (req, res) => {
+  try{
+    const {username, password} = req.body.params;
+    const sql = `SELECT name, pw FROM iot.user 
+                 WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
+    const params = [username, password];
+    connection.query(sql, params, (err, rows) => {
+      let login = JSON.parse(JSON.stringify(rows))[0];
+      res.send(login);
+    })
+  } catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST SIGN IN QUERY ERROR : ${err}`
+    })
+  }
+})
+/*
+ * 로그인 설정 끝
+ * ---------------------------------------------------------------------------------------------------------------------
+ * 유틸 함수 시작
+ */
+const groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
+
+function getLocaleMoment(date) { return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss'); }
+
+const cleanHistoryDict = (res, env) => {
+  let dic = Object({})
+  for (let [key, value] of Object.entries(res)) {
+    value.map((v) => {
+      const date = getLocaleMoment(v['created']);
+      dic[date] = v[env]
+    })
+    res[key] = dic;
+    dic = {};
+  }
+  return res
+}
+/*
+ * 유틸 함수 끝
+ */
+
+/*
+app.get('/api/get/switch', (req, res) => {
+  try {
+    const selects = req.query['selects'].join(",");
+    const num = req.query['num'];
+    const machine = req.query['machine'];
+    connection.query(
+      `SELECT ${selects} FROM iot.switch WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
+      (err, rows) => {
+        res.send(rows);
+      }
+    )
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+ */
+
+/*
+const getSqlBySettingType = (key, values, type) => {
+  let sql = ``;
+  let min=0, max=0;
+  if(type === 'cycle'){
+    [max] = values;
+    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", 0, ${max}, \"${type}\", now(), 0)`;
+  }
+  else if (type === 'range'){
+    [min, max] = values;
+    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", ${min}, ${max}, \"${type}\", now(), 0)`;
+  }
+  return sql
+}
+*/
+
+/*
+app.get('/api/get/status', (req, res) => {
+  try {
+    const selects = req.query['selects'].join(",");
+    const num = req.query['num'];
+    const section = req.query['section'];
+    const sql = `SELECT ${selects} FROM iot.env
+                WHERE section = \"${section}\"
+                ORDER BY id DESC LIMIT ${num};`
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+      }
+    )
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});*/
+
+/*
 app.post('/api/post/apply/settings', (req, res) => {
   try {
     const {settingType} = require('../init_setting');
@@ -411,63 +492,4 @@ app.post('/api/post/apply/settings', (req, res) => {
       message: `POST SETTING QUERY ERROR : ${err}`
     })
   }
-});
-
-
-app.post('/api/post/signin', (req, res) => {
-  try{
-    const {username, password} = req.body.params;
-    const sql = `SELECT name, pw FROM iot.user 
-                 WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
-    const params = [username, password];
-    connection.query(sql, params, (err, rows) => {
-      console.log(rows);
-      let login = JSON.parse(JSON.stringify(rows))[0];
-      res.send(login);
-    })
-  } catch (err) {
-    useErrorLogger('POST').error({
-      level: 'error',
-      message: `POST SIGN IN QUERY ERROR : ${err}`
-    })
-  }
-})
-
-const getSqlBySettingType = (key, values, type) => {
-  let sql = ``;
-  let min=0, max=0;
-  if(type === 'cycle'){
-    [max] = values;
-    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", 0, ${max}, \"${type}\", now(), 0)`;
-  }
-  else if (type === 'range'){
-    [min, max] = values;
-    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", ${min}, ${max}, \"${type}\", now(), 0)`;
-  }
-  return sql
-}
-
-const groupBy = function(xs, key) {
-  return xs.reduce(function(rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
-
-function getLocaleMoment(date) {
-  return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss');
-}
-
-const cleanHistoryDict = (res, env) => {
-  let dic = Object({})
-  for (let [key, value] of Object.entries(res)) {
-    value.map((v) => {
-      const date = getLocaleMoment(v['created']);
-      dic[date] = v[env]
-    })
-    res[key] = dic;
-    dic = {};
-  }
-  return res
-}
-
+});*/

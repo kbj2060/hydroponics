@@ -5,9 +5,9 @@ import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
 import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
-import SettingModal from "./SettingModal";
+import SettingModal from "../SettingModal";
 
-export default function Index() {
+export default function SwitchController() {
     const {machines, WordsTable} = require('root/init_setting');
     const classes = useStyles();
 
@@ -22,7 +22,7 @@ export default function Index() {
                           </Box>
                           <CurrentChecker machine={machine}/>
                           <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
-                              <Switch machine={machine} />
+                              <Switch key={machine} machine={machine} />
                           </Box>
                       </Box>
                   )

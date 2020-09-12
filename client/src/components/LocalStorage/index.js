@@ -19,4 +19,12 @@ const saveState = (state) => {
   }
 };
 
-module.exports = {saveState, loadState}
+const resetState = () => {
+  try {
+    localStorage.clear();
+  } catch {
+    // ignore write errors
+  }
+}
+
+module.exports = {saveState, loadState, resetState}

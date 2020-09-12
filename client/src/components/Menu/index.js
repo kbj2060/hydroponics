@@ -7,7 +7,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {login} from "../../redux/modules/Authentication";
+import {logout} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
 
 const LinkButton = (props) => {
@@ -81,11 +81,9 @@ export default function Menu() {
 	};
 
 	const handleClick = (value) => {
-		if (value === "login"){
-			dispatch(login())
-		}
-		setOpen(false);
+		value === "logout"? dispatch(logout()) : setOpen(false)
 	};
+
 	const handleClose = () => {
 		setOpen(false)
 	}
@@ -119,8 +117,7 @@ export default function Menu() {
 					</div>
 					<div style={{height: "70%"}}>
 						<LinkButton onClick={() => {handleClick("dashboard")}} value={"홈"} to={"dashboard"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={() => {handleClick("settings")}} value={"설정"} to={"settings"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={() => {handleClick("login")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => {handleClick("logout")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
 
@@ -129,68 +126,3 @@ export default function Menu() {
 		</ClickAwayListener>
 	);
 }
-
-/*
-
-const getModalStyle = {
-	backgroundColor : 'rgba(255, 255, 255, 0)',
-	borderRadius : '10px',
-	width:'300px',
-	height:'300px',
-	justifyContent: 'center',
-	alignItems: 'center',
-	textAlign : 'center',
-}
-
-const styles = makeStyles(() => ({
-	popupWrapper : {
-		width : "100%",
-		display : 'grid',
-	},
-	header : {
-		borderBottom : '1px solid',
-		paddingBottom : '18.7px',
-		marginLeft : '30px',
-		marginRight : '30px',
-	},
-	button : {
-		background: "rgba(255, 255, 255, 0)",
-		color: "#FFF",
-		border: "none",
-		textDecoration: 'none',
-		outline : 'none',
-		cursor : 'pointer',
-		'&:hover' : { color : '#FFCB3A'},
-		'&:active' : { transform : 'translateY(2px)'}
-	},
-	})
-)
-
-const Menu = (props) => {
-	const classes = styles();
-	const [open, setOpen] = React.useState(false)
-
-	const handleClose = () => {
-		setOpen(false);
-	}
-
-	const handleClick = (e) => {
-		setOpen((prev) => !prev);
-	}
-
-	return (
-		<ClickAwayListener onClickAway={handleClose}>
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby="simple-modal-title"
-				aria-describedby="simple-modal-description"
-			>
-
-			</Modal>
-		</ClickAwayListener>
-	)
-};
-
-export default Menu;
-*/

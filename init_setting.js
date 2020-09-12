@@ -1,7 +1,7 @@
 
 module.exports = {
 	pages : [
-		'dashboard', 'settings', 'login'
+		'dashboard', 'logout'
 	],
 	machines: [
 	'airconditioner', 'led', 'fan', 'waterpump'
@@ -29,13 +29,27 @@ module.exports = {
 	},
 	settingMinMax : {
 		'fan' : {
-			start: [], end: [], term: []
+			start: [], end: [], term: 1
 		},
 		'waterpump' : {
-			start: [], end: [], term: []
+			start: [], end: [], term: 1
 		},
 		'temperature' : [10, 40],
 		'led' : [0, 23]
+	},
+	defaultSetting : {
+		'fan' : {
+			start: [], end: [], term: 1, enable: false
+		},
+		'waterpump' : {
+			start: [], end: [], term: 1, enable: false
+		},
+		'temperature' : {
+			range : [10, 40], enable: false
+		},
+		'led' : {
+			range: [0, 23], enable: false
+}
 	},
 	circleColorTable : {
 		'1' : "#FF925D",
@@ -55,8 +69,8 @@ module.exports = {
 		'temperature': '온도',
 		'co2': '이산화탄소',
 		'led' : '조명',
-		'fan' : '환풍기',
-		'airconditioner' : '에어컨',
+		'fan' : '환기',
+		'airconditioner' : '공조기',
 		'waterpump' : '급수',
 		"dashboard" : '홈',
 		"settings" : '설정',
@@ -65,11 +79,11 @@ module.exports = {
 		'plant2' : '2 지점',
 		'plant3' : '3 지점'
 	},
-	statusUpdateTime : 10 * 1000,
-	historyUpdateTime : 10 * 1000,
-	currentUpdateTime : 5 * 1000,
+	statusUpdateTime : 10.7 * 1000,
+	historyUpdateTime : 60.3 * 1000,
+	currentUpdateTime : 4.3 * 1000,
 	showHistoryNumber : 20,
-	ip : "192.168.1.66",
+	ip : "localhost",
 	mqttPort : "1883",
 	socketIoPort : "9000",
 };
