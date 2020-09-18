@@ -1,9 +1,9 @@
-import React, {useEffect, useCallback} from 'react';
+import React from 'react';
 import {checkEmpty} from "../utils/CheckEmpty";
-import axios from "axios";
 import 'chartjs-plugin-annotation';
-
+/*
 let getOptions = (data) => {
+
 	const min = data['min'];
 	const max = data['max'];
 
@@ -24,7 +24,7 @@ let getOptions = (data) => {
 				}
 			}],
 		},
-		/*annotation: {
+		/!*annotation: {
 			annotations: [
 				{
 					type: "line",
@@ -53,8 +53,8 @@ let getOptions = (data) => {
 					}
 				}
 			]
-		}*/
-})}
+		}*!/
+})}*/
 
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState({});
@@ -103,7 +103,7 @@ export default function LineSetting (history, environment) {
 	state.datasets = makeBasicDataset(n_plants);
 	if(checkEmpty(history)){ return {state, options} }
 
-	Object.keys(history).map((h, i) => {
+	Object.keys(history).forEach((h, i) => {
 		state.datasets[i].data = Object.values(history[h])
 	})
 

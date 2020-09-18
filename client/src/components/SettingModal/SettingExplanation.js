@@ -91,7 +91,7 @@ export default function SettingExplanation({position}) {
       let {start, end, term} = setting[subject];
       let result = [];
       result.push(<Chip key={'loop'} className={classes.chip} icon={<LoopIcon style={{color: 'white'}}/>} variant="outlined" size="small" label={`${term} 일`} />)
-      start.map((s, i) => {
+      start.forEach((s, i) => {
         const label = `${s} - ${end[i]}`;
         result.push(<Chip key={label} className={classes.chip} variant="outlined" size="small" label={label} />);
       });

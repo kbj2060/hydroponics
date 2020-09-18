@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 import ControlSwitch from "./ControlSwitch";
 import ControlSetting from "./ControlSetting";
 import Authentication from "./Authentication";
-import {resetState} from "../../components/LocalStorage";
 
 const allReducers = combineReducers({
 	controlSwitch: ControlSwitch,

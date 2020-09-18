@@ -34,7 +34,7 @@ export default function CurrentChecker({machine}) {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const criteria = 1;
 
-	sections.map((section, index) => {
+	sections.forEach((section, index) => {
 		current[`${machine}${section}`] = 0
 	})
 

@@ -21,12 +21,12 @@ export default function TimeSpanWrapper({setting, outerSize}) {
       setVisible(store.getState()['controlSetting'][setting]['enable']);
     })
     return () => { unsubscribe(); }
-  }, [])
+  }, [setting])
 
   const handleTimePicker = (time) => {
     const reduxSetting = store.getState()['controlSetting'][setting]
     let startList=[], endList=[];
-    time.map((t) => {
+    time.forEach((t) => {
       startList.push(t[0].format('HH:mm'))
       endList.push(t[1].format('HH:mm'))
     })

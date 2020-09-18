@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -105,7 +105,7 @@ export default function Switches(props) {
         setIsLoading(false);
     }).catch(() => { setIsLoading(true); })
     return () => { cleanup(); }
-  }, []);
+  }, [machine]);
 
   useEffect(()=>{
     receiveSocket();

@@ -108,7 +108,7 @@ export default function Login() {
       } else { handleClickOpen(); }
 
       return () => {resetAuth()}
-    }, [auth])
+    }, [auth, history])
 
     return(
     <Background image={backgroundImage}>

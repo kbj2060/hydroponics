@@ -14,11 +14,6 @@ export default function Index(props) {
   const [lastUpdate, setLastUpdate] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true)
 
-
-  const getLastUpdatedTime = (data) => {
-    if(checkEmpty(data)){ return null }
-    return Object.keys(data[plants[0]])[0];
-  }
   // json 형태로 반환 받아 사용
   //  {
   //    '1': {
@@ -30,6 +25,10 @@ export default function Index(props) {
   //    '3': { '2020/08/27 03:23:07': 1212 }
   //  }
   const fetchHistory = useCallback(async () => {
+    const getLastUpdatedTime = (data) => {
+      if(checkEmpty(data)){ return null }
+      return Object.keys(data[plants[0]])[0];
+    }
     await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment],
