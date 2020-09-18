@@ -44,10 +44,6 @@ io.on("connection", function (socket) {
 
   socket.on('sendSwitchControl', (switchStatus) => {
     console.log('switch socket has been sent.');
-    useInfoLogger('socket').info({
-      level: 'info',
-      message: `Socket ID : ${socket.id} Switch Control.`
-    })
     io.emit('receiveSwitchControl', switchStatus);
   })
 
@@ -111,7 +107,7 @@ const handleSwitchesMQTT = (topic, message) => {
   const [_, machine] = topic.split("/");
   // !== 로 고치지 말 것.
   const status = JSON.parse(message.toString()) != 0;
-  console.log(machine, status );
+  console.log(machine, status);
   emitSwitch(machine, status);
 }
 

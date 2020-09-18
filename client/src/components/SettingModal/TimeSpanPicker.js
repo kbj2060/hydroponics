@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 import moment from 'moment';
 import './timeSpanPicker.css';
 import PropTypes from 'prop-types';
-import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
 
 const config = {
@@ -76,7 +75,7 @@ class CircularTimespanpicker extends Component {
 
   componentDidMount() {
     const { subject, interval } = this.props;
-    const {start:selectedStartHours, end:selectedEndHours, term} = store.getState()['controlSetting'][subject]
+    const {start:selectedStartHours, end:selectedEndHours} = store.getState()['controlSetting'][subject]
 
     const selectedStart = this.getSelectedHours(selectedStartHours);
     const selectedEnd = this.getSelectedHours(selectedEndHours);
@@ -157,7 +156,6 @@ class CircularTimespanpicker extends Component {
     };
 
     this.setState(segmentCurrentValue);
-    console.log(segmentCurrentValue)
     onClick(this.getReducedArray({...this.state, ...segmentCurrentValue}));
   }
 
@@ -180,7 +178,7 @@ class CircularTimespanpicker extends Component {
   /* combine the neighbour short time spans in one union (e.g. '5:20-5:30' and '5:30-5:40' will be combined in a '5:20-5:40') */
   getReducedArray(state) {
     const keysArr = Object.keys(state).filter(key => key !== 'initialObject' && state[key]);
-    console.log(keysArr)
+
     if (keysArr.length) {
       if(keysArr.length === 1)  {
         /* if is single, returns it - no needs to combine */
