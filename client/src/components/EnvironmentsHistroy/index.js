@@ -29,6 +29,7 @@ export default function Index(props) {
       if(checkEmpty(data)){ return null }
       return Object.keys(data[plants[0]])[0];
     }
+
     await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment],

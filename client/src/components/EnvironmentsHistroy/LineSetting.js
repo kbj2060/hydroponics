@@ -1,13 +1,8 @@
 import React from 'react';
 import {checkEmpty} from "../utils/CheckEmpty";
 import 'chartjs-plugin-annotation';
-/*
-let getOptions = (data) => {
 
-	const min = data['min'];
-	const max = data['max'];
-
-	return ({
+let getOptions = {
 		legend: {
 			display: true
 		},
@@ -24,7 +19,7 @@ let getOptions = (data) => {
 				}
 			}],
 		},
-		/!*annotation: {
+		/*annotation: {
 			annotations: [
 				{
 					type: "line",
@@ -53,11 +48,11 @@ let getOptions = (data) => {
 					}
 				}
 			]
-		}*!/
-})}*/
+		}*/
+}
 
 export default function LineSetting (history, environment) {
-	const [options, setOptions] = React.useState({});
+	const [options, setOptions] = React.useState(getOptions);
 	const {plants, circleColorTable} = require('root/init_setting');
 	const n_plants = plants.length;
 
