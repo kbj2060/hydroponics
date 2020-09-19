@@ -13,7 +13,7 @@
 
 
 -- iot 데이터베이스 구조 내보내기
-CREATE DATABASE IF NOT EXISTS `iot` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `iot`;
 USE `iot`;
 
 -- 테이블 iot.current 구조 내보내기
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `current` (
   `created` datetime DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7;
 
 -- 테이블 데이터 iot.current:~4 rows (대략적) 내보내기
 DELETE FROM `current`;
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `env` (
   `created` datetime DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37;
 
 -- 테이블 데이터 iot.env:~36 rows (대략적) 내보내기
 DELETE FROM `env`;
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `setting` (
   `created` datetime DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26;
 
 -- 테이블 데이터 iot.setting:~25 rows (대략적) 내보내기
 DELETE FROM `setting`;
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `switch` (
   `created` datetime DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67;
 
 -- 테이블 데이터 iot.switch:~66 rows (대략적) 내보내기
 DELETE FROM `switch`;
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `created` datetime DEFAULT NULL,
   `isDeleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2;
 
 -- 테이블 데이터 iot.user:~0 rows (대략적) 내보내기
 DELETE FROM `user`;
