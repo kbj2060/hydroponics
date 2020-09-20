@@ -1,6 +1,7 @@
 from json.decoder import JSONDecodeError
 import pymysql
 import time
+import datetime
 import paho.mqtt.client as mqtt
 import json
 import os
@@ -14,9 +15,8 @@ default_setting = dict(fan={
 }, led={
     "range": [0, 23], "enable": False
 })
-
-#os.chdir("/home/pi/hydroponics")
-with open(os.getcwd() + "/../server/db_conf.json") as json_file:
+os.chdir("/home/server/hydroponics/")
+with open("server/db_conf.json") as json_file:
     conf = json.load(json_file)
 
 host = conf['host']
@@ -100,7 +100,7 @@ class Automagic(MQTT):
 
     def fetch_settings(self):
         try:
-            with open("automation_setting.json") as _json:
+            with open("automation/automation_setting.json") as _json:
                 self.settings = json.load(_json)
                 print(json.dumps(self.settings, indent=4, sort_keys=True))
         except JSONDecodeError:
@@ -274,10 +274,11 @@ class Automagic(MQTT):
 
 
 auto = Automagic()
+print(datetime.datetime.now())
 print(auto.machines)
 auto.led_control()
 auto.temp_control()
 auto.cycle_control('fan')
 auto.cycle_control('waterpump')
-
+print()
 auto.finish_automagic()
