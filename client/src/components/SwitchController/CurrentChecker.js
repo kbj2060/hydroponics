@@ -78,11 +78,11 @@ export default function CurrentChecker({machine}) {
 	}
 
 	if(disable){
-		return <Box className={classes.disable} p={1} flexGrow={1} />
+		return <div className={classes.disable} />
 	}
 
 	return (
-		<Box className={classes.alignNameBox}  p={1} flexGrow={1} >
+		<Box className={classes.optionBox}  p={1} flexGrow={1} >
 			{
 				flowing ?
 				<CurrentFlowing fillColor={'#FFCB3A'}/> : <CurrentFlowing fillColor={'#1E2425'}/>

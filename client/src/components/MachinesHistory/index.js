@@ -137,6 +137,18 @@ export default function MachineHistory() {
 		setPage(0);
   };
 
+  const handleStatus = row => {
+  	if(row.machine === 'airconditioner'){
+  		if(row.status === 3){ return 'HEATER' }
+  		else if(row.status === 2){ return 'COOLER' }
+  		else if(row.status === 0){ return 'OFF' }
+  		else{ return 'None' }
+		}
+  	else{
+  		return row.status !== 0? 'ON':'OFF'
+		}
+	}
+
 	useEffect(() => {
 		const unsubscribe = store.subscribe(() => {
 			setRefresh(store.getState()['controlSwitch'])
@@ -188,7 +200,7 @@ export default function MachineHistory() {
 								  <TableCell className={classes.text} align="center" component="th" scope="row">
 									  {WordsTable[row.machine.toLowerCase()]}
 								  </TableCell>
-								  <TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{row.status !== 0? "ON":"OFF"}</TableCell>
+								  <TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
 								  <TableCell className={classes.text} align="center">{row.user}</TableCell>
 									<TableCell className={classes.text} align="center">{row.date}</TableCell>
 								</TableRow>)

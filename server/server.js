@@ -257,10 +257,37 @@ app.post('/api/post/switch/machine', (req, res) => {
         res.send(rows);
         useInfoLogger('switch').info({
           level: 'info',
-          message: `[${name}] ${status?"ON":"OFF"}`
+          message: `[${name}] ${machine} ${status?"ON":"OFF"}`
         });
         console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(`switch/${machine}`, String(status?1:0));
+        client.publish(`switch/${machine}`, String(status));
+      }
+    )} catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+
+
+app.post('/api/post/ac', (req, res) => {
+  try {
+    let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
+    let machine = req.body.params['machine'];
+    let status = req.body.params['status'];
+    let name = req.body.params['name'];
+    let params = [machine, status, name];
+
+    connection.query(sql, params,
+      (err, rows) => {
+        res.send(rows);
+        useInfoLogger('switch').info({
+          level: 'info',
+          message: `[${name}] ${machine} ${status?"ON":"OFF"}`
+        });
+        console.log(`${machine} power has been changed through mqtt.`);
+        client.publish(`switch/${machine}`, String(status));
       }
     )} catch (err) {
     useErrorLogger('POST').error({

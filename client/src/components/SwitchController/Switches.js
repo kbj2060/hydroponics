@@ -13,6 +13,7 @@ import {loadState} from "../LocalStorage";
 import {Redirect} from "react-router-dom";
 import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
+import {store} from "../../redux/store";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -84,7 +85,12 @@ export default function Switches(props) {
     setState({machine: machine, status: status});
     emitSocket(status);
     dispatch(controlSwitch());
-    postSwitchMachine(status).then(() => { console.log('switch machine') });
+    if(machine === 'airconditioner' && status){
+      const ACtype = store.getState()['controlACtype'];
+      postSwitchMachine(ACtype).then(() => { console.log('switch machine') });
+    } else {
+      postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
+    }
   };
 
   const handleSqlStatus = (data) => {
@@ -122,6 +128,7 @@ export default function Switches(props) {
         <FormControlLabel
           control={
             <CustomIOSSwitch
+              key={machine}
               checked={state.status}
               onChange={handleChange}
               value={machine}
@@ -137,6 +144,3 @@ export default function Switches(props) {
       </Snackbar>
     </> : <Redirect to={'/'} />);
 }
-
-/*
-* */

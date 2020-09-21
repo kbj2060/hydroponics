@@ -2,7 +2,7 @@ import {withStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import React from "react";
 
-export const CustomIOSSwitch = withStyles(theme => ({
+export const CustomIOSSwitch = withStyles((theme) => ({
   root: {
     width: 42,
     height: 26,

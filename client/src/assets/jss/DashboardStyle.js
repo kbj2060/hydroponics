@@ -17,32 +17,34 @@ const dashboardStyle = makeStyles(() =>({
     height : '100%',
     position: 'relative',
     borderRadius: '0.5rem',
-    padding: '10px',
+    padding: '0 10%',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
   alignButtonIcon : {
-    display:'inline',
-    alignItems:'center',
-    width:'calc(100%/3)',
+    display:'inline-flex',
+    justifyContent:'flex-end',
+    width:'calc(100%/4)',
     margin:'auto',
     textAlign:'center',
   },
   alignNameBox : {
     color : 'white',
-    textAlign:'center',
+    textAlign:'left',
     margin:'auto',
     display:'inline',
-    alignItems:'center',
-    width:'calc(100%/3)',
+    alignItems:'left',
+    width:'calc(100%/4)',
   },
-  disable: {
+  optionBox : {
     color : 'white',
     textAlign:'center',
     margin:'auto',
     display:'inline',
     alignItems:'center',
-    width:'calc(100%/3)',
+    width:'calc(100%/4)',
+  },
+  disable: {
    visibility : 'hidden'
   },
   textColor : {
