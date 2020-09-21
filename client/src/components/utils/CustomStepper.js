@@ -92,8 +92,8 @@ const getSteps = (step) => {
 
 const getLabels = (steps, WordsTable) => {
   return steps.map((step, index) => {
-    if(index === 0){ return '이전 설정' }
-    else if(index === steps.length - 1){ return '현재 설정' }
+    if(index === 0){ return '현재 설정' }
+    else if(index === steps.length - 1){ return '다음 설정' }
     else { return `${WordsTable[step]}` }
   });
 }

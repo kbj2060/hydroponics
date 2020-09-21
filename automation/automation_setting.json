@@ -27,15 +27,15 @@
     },
     "temperature": {
         "range": [
-            26,
-            34
+            25,
+            35
         ],
         "enable": true
     },
     "led": {
         "range": [
             8,
-            18
+            16
         ],
         "enable": true
     }

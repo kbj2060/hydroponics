@@ -1,4 +1,5 @@
 import {loadState} from "root/client/src/components/LocalStorage";
+import {checkEmpty} from "../../components/utils/CheckEmpty";
 
 const CONTROL_AC_TYPE = "CONTROL_AC_TYPE";
 
@@ -13,7 +14,8 @@ function ControlACtype(state=0, action) {
       return action.ACtype;
     default:
       try{
-        return loadState()['controlACtype'];
+	if(checkEmpty(loadState()['controlACtype'])){ return state }
+        else { return loadState()['controlACtype']; }
       } catch(e){
         return state
       }
