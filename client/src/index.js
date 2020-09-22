@@ -14,11 +14,10 @@ const theme = createMuiTheme({
 })
 
 ReactDOM.render(
-  <Provider store={store}>
   <MuiThemeProvider theme={theme}>
         <App />
       </MuiThemeProvider>
-  </Provider>,
+  ,
   document.getElementById('root')
 )
 

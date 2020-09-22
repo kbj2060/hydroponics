@@ -38,8 +38,8 @@ const defaultIcons = {
 }
 
 export default function IconWrapper({machine}) {
-  const reduxSwitch = store.getState()['controlSwitch'][machine]
-  const [animation, setAnimation] = useState(reduxSwitch);
+  //const reduxSwitch = store.getState()['controlSwitch'][machine]
+  const [animation, setAnimation] = useState(false);
   const [icon ,setIcon] = useState(defaultIcons[machine]);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -56,17 +56,28 @@ export default function IconWrapper({machine}) {
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
-      console.log(store.getState()['controlSwitch'][machine])
-      setAnimation(store.getState()['controlSwitch'][machine]);
+      const activeSwitch = store.getState()['controlSwitch'][machine]
+      if(!checkEmpty(activeSwitch)) {
+        setAnimation(activeSwitch);
+      }
     })
     return () => { unsubscribe(); }
   }, [])
 
   useEffect(() => {
+    const activeSwitch = store.getState()['controlSwitch'][machine]
+    if(!checkEmpty(activeSwitch)) {
+      setAnimation(activeSwitch);
+    }
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
     if(!checkEmpty(animation)){
       setIcon(getIcon(machine, animation))
       setIsLoading(false);
     }
+    return () => { mounted = false;}
   }, [animation])
 
   if(isLoading){ return <ColorCircularProgress /> }

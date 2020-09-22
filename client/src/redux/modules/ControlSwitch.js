@@ -28,7 +28,7 @@ function ControlSwitch(state =initialState, action) {
       const value = Object.values(action._switch)[0];
       return { ...state, [key]: value };
     case SAVE_SWITCH:
-      return action._switch
+      return action._switch;
     default:
       try{
         if (checkEmpty(loadState()['controlSwitch'])) {
