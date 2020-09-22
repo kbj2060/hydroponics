@@ -7,6 +7,7 @@ import OpacityIcon from "@material-ui/icons/Opacity";
 import {store} from "../../redux/store";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import './FanOut.css'
+import {checkEmpty} from "../utils/CheckEmpty";
 
 const CustomCoolerIcon = ({active}) => {
   return JSON.parse(active) ? <AcUnitIcon style={{color: '#425DFF'}} /> : <AcUnitIcon />
@@ -55,14 +56,17 @@ export default function IconWrapper({machine}) {
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
+      console.log(store.getState()['controlSwitch'][machine])
       setAnimation(store.getState()['controlSwitch'][machine]);
     })
     return () => { unsubscribe(); }
   }, [])
 
   useEffect(() => {
-    setIcon(getIcon(machine, animation))
-    setIsLoading(false);
+    if(!checkEmpty(animation)){
+      setIcon(getIcon(machine, animation))
+      setIsLoading(false);
+    }
   }, [animation])
 
   if(isLoading){ return <ColorCircularProgress /> }

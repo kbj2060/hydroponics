@@ -9,7 +9,7 @@ export function controlSwitch(_switch) {
 };
 
 export function saveSwitch(_switch) {
-  return { type: CONTROL_SWITCH, _switch }
+  return { type: SAVE_SWITCH, _switch }
 }
 
 let initialState = '';
