@@ -4,11 +4,12 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {Provider, useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
 import axios from "axios";
-import {controlSetting} from "./redux/modules/ControlSetting";
+import {saveSetting} from "./redux/modules/ControlSetting";
+import {saveSwitch} from "./redux/modules/ControlSwitch";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -37,7 +38,7 @@ export default function App() {
 
     const getControlSetting = async () => {
       await axios.get('/api/get/load/auto/json').then(({data}) => {
-        dispatch(controlSetting(data))
+        dispatch(saveSetting(data))
       })
     }
   const getControlSwitch =  async (machine) => {
@@ -57,7 +58,7 @@ export default function App() {
           result[machine] = status
         })
       })
-      dispatch(controlSetting(result))
+      dispatch(saveSwitch(result))
     }
 
     useEffect(() => {
