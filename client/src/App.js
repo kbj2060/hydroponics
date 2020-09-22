@@ -4,9 +4,11 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Provider } from 'react-redux'
+import {Provider, useDispatch} from 'react-redux'
 import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
+import axios from "axios";
+import {controlSetting} from "./redux/modules/ControlSetting";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -30,8 +32,37 @@ const useStyles = makeStyles(() =>({
 
 export default function App() {
     const classes = useStyles();
+    const {machines} = require('root/init_setting');
+    const dispatch = useDispatch();
+
+    const getControlSetting = async () => {
+      await axios.get('/api/get/load/auto/json').then(({data}) => {
+        dispatch(controlSetting(data))
+      })
+    }
+  const getControlSwitch =  async (machine) => {
+    return await axios.get('/api/get/query/last', {
+      params: {
+        where: machine,
+        whereColumn: 'machine',
+        selects: ['status'],
+        table: 'switch'
+      }})
+  }
+    const getControlSwitches = () => {
+      let result = {}
+      machines.forEach( (machine) => {
+        getControlSwitch(machine).then(({data}) => {
+          const status = data[0]['status'] === 1
+          result[machine] = status
+        })
+      })
+      dispatch(controlSetting(result))
+    }
 
     useEffect(() => {
+      getControlSetting();
+      getControlSwitches();
       saveState( store.getState() );
     }, []);
 
@@ -40,7 +71,6 @@ export default function App() {
     });
 
     return (
-      <Provider store={store}>
         <BrowserRouter>
           <div className={classes.parent}>
             <Route exact path="/">
@@ -51,6 +81,5 @@ export default function App() {
             </Route>
           </div>
         </BrowserRouter>
-      </Provider>
     )
 }

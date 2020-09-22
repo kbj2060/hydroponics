@@ -16,6 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
+import {resetState} from "../../components/LocalStorage";
 
 
 const CssTextField = withStyles({

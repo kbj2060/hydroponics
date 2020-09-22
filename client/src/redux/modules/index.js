@@ -12,7 +12,7 @@ const allReducers = combineReducers({
 });
 /*
 const rootReducer = (state, action) => {
-	if (action.type === LOGOUT) {
+	if (action.type === AUTH_LOGIN_SUCCESS) {
 		state = undefined
 		resetState();
 		console.log('redux clear');

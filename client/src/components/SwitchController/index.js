@@ -1,19 +1,10 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import Box from "@material-ui/core/Box";
 import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
 import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
-import OptionSwitch from "./OptionSwitch";
-
-import AcUnitIcon from '@material-ui/icons/AcUnit';
-import WhatshotIcon from '@material-ui/icons/Whatshot';
-import TemperatureIcon from '../../assets/icons/TemperatureIcon'
-import WbSunnyIcon from '@material-ui/icons/WbSunny';
-import ToysIcon from '@material-ui/icons/Toys';
-import OpacityIcon from '@material-ui/icons/Opacity';
 import IconWrapper from "./IconWrapper";
 
 export default function SwitchController() {
