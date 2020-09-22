@@ -1,5 +1,6 @@
 import update from 'react-addons-update';
 import {loadState} from "root/client/src/components/LocalStorage";
+import {checkEmpty} from "../../components/utils/CheckEmpty";
 
 export const AUTH_INIT = "AUTH_INIT";
 export const AUTH_LOGIN_SUCCESS = "AUTH_LOGIN_SUCCESS";
@@ -64,8 +65,17 @@ function Authentication(state, action) {
     case LOGOUT:
       return initialState;
     default:
-      try{return loadState()['authentication'];}
-      catch(e){return initialState}
+
+      try {
+        if (checkEmpty(loadState()['authentication'])) {
+          return state
+        } else {
+          return loadState()['authentication'];
+        }
+      }
+      catch(e){
+        return initialState
+      }
   }
 }
 

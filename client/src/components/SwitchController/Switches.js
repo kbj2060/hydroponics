@@ -84,13 +84,8 @@ export default function Switches(props) {
     setSnackbarOpen(true);
     setState({machine: machine, status: status});
     emitSocket(status);
-    dispatch(controlSwitch());
-    if(machine === 'airconditioner' && status){
-      const ACtype = store.getState()['controlACtype'];
-      postSwitchMachine(ACtype).then(() => { console.log('switch machine') });
-    } else {
-      postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
-    }
+    dispatch(controlSwitch({[machine] : status}));
+    postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
   };
 
   const handleSqlStatus = (data) => {

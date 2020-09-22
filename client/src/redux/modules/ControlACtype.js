@@ -14,7 +14,7 @@ function ControlACtype(state=0, action) {
       return action.ACtype;
     default:
       try{
-	if(checkEmpty(loadState()['controlACtype'])){ return state }
+	      if(checkEmpty(loadState()['controlACtype'])){ return state }
         else { return loadState()['controlACtype']; }
       } catch(e){
         return state

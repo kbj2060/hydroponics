@@ -64,7 +64,7 @@ const dashboardStyle = makeStyles(() =>({
     height:'100%'
   },
   controlCardBox : {
-    height:'20%'
+    height:'calc(100%/6)'
   },
   figureCardDiv : {
     display:'grid',

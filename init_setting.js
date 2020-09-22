@@ -4,7 +4,7 @@ module.exports = {
 		'dashboard', 'logout'
 	],
 	machines: [
-	'airconditioner', 'led', 'fan', 'waterpump'
+		'cooler', 'heater', 'led', 'fan', 'waterpump'
 	],
 	n_machines: {
 		'airconditioner': 2,
@@ -65,6 +65,8 @@ module.exports = {
 		'waterpump' : '시간'
 	},
 	WordsTable : {
+		'cooler': '냉방',
+		'heater': '난방',
 		'humidity' : '습도',
 		'temperature': '온도',
 		'co2': '이산화탄소',
