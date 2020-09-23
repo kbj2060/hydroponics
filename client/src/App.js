@@ -34,7 +34,7 @@ const useStyles = makeStyles(() =>({
 export default function App() {
     const classes = useStyles();
     const {machines} = require('root/init_setting');
-    /*const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const getControlSetting = async () => {
       await axios.get('/api/get/load/auto/json').then(({data}) => {
@@ -56,14 +56,15 @@ export default function App() {
         getControlSwitch(machine).then(({data}) => {
           const status = data[0]['status'] === 1
           result[machine] = status
+        }).then(()=> {
+          dispatch(saveSwitch(result))
         })
       })
-      dispatch(saveSwitch(result))
-    }*/
+    }
 
     useEffect(() => {
-      /*getControlSwitches();
-      getControlSetting();*/
+      getControlSwitches();
+      getControlSetting();
       saveState( store.getState() );
     }, []);
 
@@ -72,8 +73,6 @@ export default function App() {
     });
 
     return (
-      <Provider store={store}>
-
       <BrowserRouter>
           <div className={classes.parent}>
             <Route exact path="/">
@@ -84,6 +83,5 @@ export default function App() {
             </Route>
           </div>
         </BrowserRouter>
-      </Provider>
     )
 }
