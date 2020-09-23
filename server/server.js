@@ -244,6 +244,15 @@ app.get('/api/get/switch/history', (req, res) => {
   }
 });
 
+const ACdivider = (machine, status) => {
+  let publishStatus = 0
+  if (machine === "cooler" && status !== 0){
+    publishStatus = 2
+  } else if (machine === "heater" && status !== 0){
+    publishStatus = 3
+  }
+  return publishStatus
+}
 app.post('/api/post/switch/machine', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
@@ -251,6 +260,10 @@ app.post('/api/post/switch/machine', (req, res) => {
     let status = req.body.params['status'];
     let name = req.body.params['name'];
     let params = [machine, status, name];
+    if (machine === "cooler" || machine === "heater"){
+      status = ACdivider(machine, status)
+      machine = "airconditioner"
+    }
 
     connection.query(sql, params,
       (err, rows) => {
@@ -270,7 +283,7 @@ app.post('/api/post/switch/machine', (req, res) => {
   }
 });
 
-
+/*
 app.post('/api/post/ac', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
@@ -278,7 +291,7 @@ app.post('/api/post/ac', (req, res) => {
     let status = req.body.params['status'];
     let name = req.body.params['name'];
     let params = [machine, status, name];
-
+    if (machine === 'cooler')
     connection.query(sql, params,
       (err, rows) => {
         res.send(rows);
@@ -295,7 +308,7 @@ app.post('/api/post/ac', (req, res) => {
       message: `POST SWITCH QUERY ERROR : ${err}`
     })
   }
-});
+});*/
 /*
  * 스위치 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------

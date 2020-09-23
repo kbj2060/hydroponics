@@ -52,14 +52,14 @@ export default function App() {
   }
     const getControlSwitches = () => {
       let result = {}
-      machines.forEach( (machine) => {
-        getControlSwitch(machine).then(({data}) => {
+      machines.forEach((machine) => {
+        getControlSwitch(machine)
+          .then(({data}) => {
           const status = data[0]['status'] === 1
           result[machine] = status
-        }).then(()=> {
-          dispatch(saveSwitch(result))
         })
       })
+      dispatch(saveSwitch(result))
     }
 
     useEffect(() => {
