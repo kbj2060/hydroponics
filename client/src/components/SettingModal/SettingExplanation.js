@@ -112,11 +112,14 @@ export default function SettingExplanation({position}) {
   const getRangeTempChips = () => {
     if(!checkEmpty(setting.temperature)){
       const _min = getRangeMin(setting.temperature), _max = getRangeMax(setting.temperature);
-      const _mean = (_min+_max)/2
+      const heater_off_limit = _min + (_max - _min) * (1 / 4)
+      const cooler_off_limit = _min + (_max - _min) * (3 / 4)
+
       return (
           <>
             <Chip className={classes.chip} variant="outlined" size="small" label={`${_min}°C 난방 켜기`} />
-            <Chip className={classes.chip} variant="outlined" size="small" label={`${_mean}°C 끄기`} />
+            <Chip className={classes.chip} variant="outlined" size="small" label={`${heater_off_limit}°C 난방 끄기`} />
+            <Chip className={classes.chip} variant="outlined" size="small" label={`${cooler_off_limit}°C 냉방 끄기`} />
             <Chip className={classes.chip} variant="outlined" size="small" label={`${_max}°C 냉방 켜기`} />
           </>
       )}

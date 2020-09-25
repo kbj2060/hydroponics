@@ -7,7 +7,8 @@ module.exports = {
 		'cooler', 'heater', 'led', 'fan', 'waterpump'
 	],
 	n_machines: {
-		'airconditioner': 2,
+		'heater': 2,
+		'cooler': 2,
 		'led': 4,
 		'waterpump': 1,
 		'fan' : 4,

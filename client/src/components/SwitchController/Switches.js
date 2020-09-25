@@ -81,10 +81,19 @@ export default function Switches(props) {
   const handleChange = async (e) => {
     e.persist();
     const status = e.target.checked;
+    const switches = store.getState()['controlSwitch'];
+
+    if (machine === "cooler" && status && switches['heater']){
+      return;
+    }
+    else if(machine === "heater" && status && switches['cooler']){
+      return;
+    }
+
+    dispatch(controlSwitch({[machine] : status}));
     setSnackbarOpen(true);
     setState({machine: machine, status: status});
     emitSocket(status);
-    dispatch(controlSwitch({[machine] : status}));
     postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
   };
 

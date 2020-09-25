@@ -31,7 +31,8 @@ CLIENT_ID = 'Auto'
 min_index, max_index = 0, 1
 
 LED_TOPIC = "switch/led"
-AC_TOPIC = "switch/airconditioner"
+HEATER_TOPIC = "switch/heater"
+COOLER_TOPIC = "switch/cooler"
 FAN_TOPIC = "switch/fan"
 WT_TOPIC = "switch/waterpump"
 
@@ -54,7 +55,7 @@ class Automagic(MQTT):
     def __init__(self):
         self.settings = {"waterpump": {}, "temperature": {}, "fan": {}, "led": {}}
         self.environments = {"temperature": 0, "humidity": 0, "co2": 0}
-        self.machines = {"airconditioner": 0, "led": 0, "fan": 0, "waterpump": 0}
+        self.machines = {"heater": 0, "cooler":0, "led": 0, "fan": 0, "waterpump": 0}
         self.sections = ['1', '2', '3']
 
         self.conn = pymysql.connect(host=host, user=user, password=password, charset='utf8')
@@ -116,7 +117,7 @@ class Automagic(MQTT):
                 machine = row[0]
                 self.machines[machine] = row[1]
         except:
-            self.machines = {"airconditioner": 0, "led": 0, "fan": 0, "waterpump": 0}
+            self.machines = {"heater": 0, "cooler": 0, "led": 0, "fan": 0, "waterpump": 0}
 
     def insert_database(self, machine, status):
         name = "Auto"
@@ -135,43 +136,46 @@ class Automagic(MQTT):
         return lower < upper
 
     def temp_control(self):
-        topic = self.make_topic('airconditioner')
+        heater_topic = self.make_topic('heater')
+        cooler_topic = self.make_topic('cooler')
         current_value = self.environments['temperature']
-        ac_status = self.machines['airconditioner']
+        heater_status = self.machines['heater']
+        cooler_status = self.machines['cooler']
         auto_switch = self.settings['temperature']['enable']
-        off, cool, hot = 0, 2, 3
+        off, on = 0, 1
 
         _min = self.settings['temperature']['range'][min_index]
         _max = self.settings['temperature']['range'][max_index]
-        _mean = (_min + _max) / 2
+        heater_off_limit = _min + (_max - _min) * (1 / 4)
+        cooler_off_limit = _min + (_max - _min) * (3 / 4)
 
         if not auto_switch:
             print('AirConditioner Auto Switch Disabled')
         # 난방
         elif not self.check_boiler_on(ac_status) and self.check_temperature(upper=_min,
                                                                           lower=current_value):
-            print("AirConditioner Boiler ON")
-            self.insert_database(machine="airconditioner", status=hot)
-            self.client.publish(topic, hot, qos=2)
+            print("AirConditioner Heater ON")
+            self.insert_database(machine="heater", status=hot)
+            self.client.publish(heater_topic, on, qos=2)
 
         # 냉방
         elif not self.check_cooler_on(ac_status) and self.check_temperature(upper=current_value,
                                                                             lower=_max):
             print("AirConditioner Cooler ON")
-            self.insert_database(machine="airconditioner", status=cool)
-            self.client.publish(topic, cool, qos=2)
+            self.insert_database(machine="cooler", status=cool)
+            self.client.publish(cooler_topic, on, qos=2)
 
         elif self.check_boiler_on(ac_status) and self.check_temperature(upper=current_value,
-                                                                        lower=_mean):
-            print("AirConditioner Boiler OFF")
-            self.insert_database(machine="airconditioner", status=off)
-            self.client.publish(topic, off, qos=2)
+                                                                        lower=heater_off_limit):
+            print("AirConditioner Heater OFF")
+            self.insert_database(machine="heater", status=off)
+            self.client.publish(heater_topic, off, qos=2)
 
-        elif self.check_cooler_on(ac_status) and self.check_temperature(upper=_mean,
+        elif self.check_cooler_on(ac_status) and self.check_temperature(upper=cooler_off_limit,
                                                                         lower=current_value):
             print("AirConditioner Cooler OFF")
-            self.insert_database(machine="airconditioner", status=off)
-            self.client.publish(topic, off, qos=2)
+            self.insert_database(machine="cooler", status=off)
+            self.client.publish(cooler_topic, off, qos=2)
 
         else:
             print('AirConditioner Do Nothing.')

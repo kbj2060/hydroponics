@@ -6,18 +6,11 @@ import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
+import {store} from "../../redux/store";
 
 export default function SwitchController() {
     const classes = useStyles();
     const machines = [ "cooler", "heater", "led", "fan", "waterpump" ]
-
-    const currentACdividier = (machine) =>{
-        if(machine === 'heater' || machine === 'cooler'){
-          return <CurrentChecker machine={'airconditioner'}/>
-        } else {
-          return <CurrentChecker machine={machine}/>
-        }
-      }
 
     return (
       <Card className={classes.controlCardButtons}>
@@ -28,7 +21,7 @@ export default function SwitchController() {
                       <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                         <IconWrapper key={machine} machine={machine} />
                       </Box>
-                      {currentACdividier(machine)}
+                        <CurrentChecker machine={machine}/>
                       <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                         <Switch key={machine} machine={machine} />
                       </Box>

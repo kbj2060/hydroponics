@@ -96,7 +96,6 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
 }
 
 
-
 /*
 mqtt data send example
 section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 묶어서 켜고 끄기.
@@ -253,6 +252,7 @@ const ACdivider = (machine, status) => {
   }
   return publishStatus
 }
+
 app.post('/api/post/switch/machine', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
@@ -260,10 +260,6 @@ app.post('/api/post/switch/machine', (req, res) => {
     let status = req.body.params['status'];
     let name = req.body.params['name'];
     let params = [machine, status, name];
-    if (machine === "cooler" || machine === "heater"){
-      status = ACdivider(machine, status)
-      machine = "airconditioner"
-    }
 
     connection.query(sql, params,
       (err, rows) => {

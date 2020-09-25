@@ -38,7 +38,6 @@ const defaultIcons = {
 }
 
 export default function IconWrapper({machine}) {
-  //const reduxSwitch = store.getState()['controlSwitch'][machine]
   const [animation, setAnimation] = useState(false);
   const [icon ,setIcon] = useState(defaultIcons[machine]);
   const [isLoading, setIsLoading] = React.useState(true);

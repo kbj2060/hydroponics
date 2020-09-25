@@ -4,7 +4,7 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import {Provider, useDispatch} from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
 import axios from "axios";
@@ -41,22 +41,23 @@ export default function App() {
         dispatch(saveSetting(data))
       })
     }
-  const getControlSwitch =  async (machine) => {
-    return await axios.get('/api/get/query/last', {
-      params: {
-        where: machine,
-        whereColumn: 'machine',
-        selects: ['status'],
-        table: 'switch'
-      }})
-  }
+
+    const getControlSwitch =  async (machine) => {
+      return await axios.get('/api/get/query/last', {
+        params: {
+          where: machine,
+          whereColumn: 'machine',
+          selects: ['status'],
+          table: 'switch'
+        }})
+    }
+
     const getControlSwitches = () => {
       let result = {}
       machines.forEach((machine) => {
         getControlSwitch(machine)
           .then(({data}) => {
-          const status = data[0]['status'] === 1
-          result[machine] = status
+          result[machine] = data[0]['status'] === 1
         })
       })
       dispatch(saveSwitch(result))

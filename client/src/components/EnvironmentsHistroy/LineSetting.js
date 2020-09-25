@@ -104,6 +104,6 @@ export default function LineSetting (history, environment) {
 
 	const firstKey = Object.keys(history)[0]
 	state.labels = Object.keys(history[firstKey])
-	console.log(state)
+
 	return { state, options };
 }
