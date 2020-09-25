@@ -243,16 +243,6 @@ app.get('/api/get/switch/history', (req, res) => {
   }
 });
 
-const ACdivider = (machine, status) => {
-  let publishStatus = 0
-  if (machine === "cooler" && status !== 0){
-    publishStatus = 2
-  } else if (machine === "heater" && status !== 0){
-    publishStatus = 3
-  }
-  return publishStatus
-}
-
 app.post('/api/post/switch/machine', (req, res) => {
   try {
     let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';

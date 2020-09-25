@@ -53,7 +53,7 @@ let getOptions = {
 
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState(getOptions);
-	const {plants, circleColorTable} = require('root/init_setting');
+	const {plants, circleColorTable, WordsTable} = require('root/init_setting');
 	const n_plants = plants.length;
 
 	let state = {
@@ -67,7 +67,7 @@ export default function LineSetting (history, environment) {
 		for(n = 0; n < n_plant; n++){
 			let num = plants[n];
 			datasets.push({
-				label: `${num}지점 `,
+				label: WordsTable[`plant${num}`],
 				fill: false,
 				lineTension: 0.5,
 				backgroundColor: '#efcf76',

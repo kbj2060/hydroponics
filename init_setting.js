@@ -78,9 +78,9 @@ module.exports = {
 		"dashboard" : '홈',
 		"settings" : '설정',
 		"logout" : '로그아웃',
-		'plant1' : '1 지점',
-		'plant2' : '2 지점',
-		'plant3' : '3 지점'
+		'plant1' : 'CENTER',
+		'plant2' : 'LEFT',
+		'plant3' : 'RIGTH'
 	},
 	statusUpdateTime : 10.7 * 1000,
 	historyUpdateTime : 60.3 * 1000,
