@@ -50,7 +50,7 @@ export default function StatusDisplay(props) {
 
   return (
     <Card className={classes.parentItem}>
-      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[plant]}</Typography>
+      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant${plant}`]}</Typography>
       <div className={classes.figureCardDiv}>
         {
           environments.map((env) =>
