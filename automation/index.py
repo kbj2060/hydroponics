@@ -20,7 +20,7 @@ default_setting = dict(fan={
 # SERVER CHANGE:
 # os.chdir("/home/server/hydroponics/")
 # with open("server/db_conf.json") as json_file:
-with open("../server/db_conf.json") as json_file:
+with open("server/db_conf.json") as json_file:
     conf = json.load(json_file)
 
 host = conf['host']
@@ -112,7 +112,7 @@ class Automagic(MQTT):
         try:
             # server :
             # with open("automation/automation_setting.json") as _json:
-            with open("../automation/automation_setting.json") as _json:
+            with open("automation/automation_setting.json") as _json:
                 self.settings = json.load(_json)
                 print(json.dumps(self.settings, indent=4, sort_keys=True))
         except JSONDecodeError:
@@ -168,7 +168,8 @@ class Automagic(MQTT):
                                                                                 lower=current_value):
 
             if self.check_cooler_on(cooler_status):
-                self.sio.emit('sendSwitchControl', {"machine": 'cooler', "status": False})
+                self.sio.emit('sendSwitchControl', {"machine": 'cooler', "status": False}) 
+                self.insert_database(machine="cooler", status=off)
 
             print("AirConditioner Heater ON")
             self.insert_database(machine="heater", status=on)
@@ -179,6 +180,7 @@ class Automagic(MQTT):
                                                                                 lower=_max):
             if self.check_heater_on(heater_status):
                 self.sio.emit('sendSwitchControl', {"machine": 'heater', "status": False})
+                self.insert_database(machine="heater", status=off)
 
             print("AirConditioner Cooler ON")
             self.insert_database(machine="cooler", status=on)

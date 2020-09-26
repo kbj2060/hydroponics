@@ -7,6 +7,7 @@
 # vscode file
 .vscode
 
+automation/automation_setting.json
 db_conf.json
 .logs/
 
