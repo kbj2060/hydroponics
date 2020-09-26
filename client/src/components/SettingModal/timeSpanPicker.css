@@ -1,0 +1,55 @@
+.timepickerwrapper .results {
+    padding: 5px;
+    vertical-align: middle;
+    font-size: 0.8em;
+}
+.results p {
+    margin: 5px;
+}
+.timepickerwrapper svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+.segment text {
+    font: 10px sans-serif;
+    text-anchor: middle;
+}
+
+.segment:active, .segment:hover, .segment:focus {
+    background: none;
+    transition: none;
+}
+
+.segment path {
+    stroke: #fff;
+    cursor: pointer;
+}
+.segment:hover path {
+    opacity: 1;
+}
+.segment:focus path {
+    opacity: 1;
+}
+
+.segment.active path {
+    cursor: pointer;
+    stroke: #fff;
+    fill: #FFCB3A !important;
+}
+
+.segment text {
+    cursor: pointer;
+}
+.hourLabel {
+    fill: #FFCB3A;
+    font-size: 1.2em;
+}
+.minuteLabel {
+    fill: grey;
+    text-anchor: middle;
+    font-size: 0.6em
+}
+.boundaryLine {
+    stroke: #FFCB3A;
+    stroke-width: 3
+}
