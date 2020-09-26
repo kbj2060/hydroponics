@@ -14,6 +14,7 @@ import {Redirect} from "react-router-dom";
 import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
+import {checkEmpty} from "../utils/CheckEmpty";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -75,6 +76,7 @@ export default function Switches(props) {
     socket.on('receiveSwitchControl', (switchStatus) => {
       if(machine === switchStatus.machine){
         setState(switchStatus);
+        dispatch(controlSwitch({[machine] : switchStatus.status}));
       }})
   }
 
@@ -108,18 +110,21 @@ export default function Switches(props) {
   useEffect(() => {
     getSwitchMachine()
       .then(({data}) => {
-        setState({
-          status: handleSqlStatus(data[0]['status']),
-          machine: machine
-        })
-        setIsLoading(false);
+        if(checkEmpty(data)) {
+          setState({
+            status: false,
+            machine: machine
+          })
+        } else {
+          setState({
+            status: handleSqlStatus(data[0]['status']),
+            machine: machine
+          })
+        }
+          setIsLoading(false);
     }).catch(() => { setIsLoading(true); })
-    return () => { cleanup(); }
-  }, [machine]);
-
-  useEffect(()=>{
     receiveSocket();
-    return () => { cleanup() }
+    return () => { cleanup(); }
   }, [machine]);
 
   if(isLoading){

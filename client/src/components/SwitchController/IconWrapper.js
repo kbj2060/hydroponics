@@ -8,6 +8,7 @@ import {store} from "../../redux/store";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import './FanOut.css'
 import {checkEmpty} from "../utils/CheckEmpty";
+import socket from "../../socket";
 
 const CustomCoolerIcon = ({active}) => {
   return JSON.parse(active) ? <AcUnitIcon style={{color: '#425DFF'}} /> : <AcUnitIcon />
@@ -52,6 +53,22 @@ export default function IconWrapper({machine}) {
     }
     return icons[machine]
   }
+
+  const receiveSocket = () => {
+    socket.on('receiveSwitchControl', (switchStatus) => {
+      if(machine === switchStatus.machine){
+        setAnimation(switchStatus.status);
+      }})
+  }
+
+  const cleanup = () => {
+    socket.disconnect();
+  }
+
+  useEffect(() => {
+    receiveSocket();
+    return () => cleanup();
+  }, [machine]);
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {

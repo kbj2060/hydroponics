@@ -5,6 +5,7 @@ import datetime
 import paho.mqtt.client as mqtt
 import json
 import os
+import socketio
 
 default_setting = dict(fan={
     "start": [], "end": [], "term": 1, "enable": False
@@ -15,13 +16,19 @@ default_setting = dict(fan={
 }, led={
     "range": [0, 23], "enable": False
 })
-os.chdir("/home/server/hydroponics/")
-with open("server/db_conf.json") as json_file:
+
+# SERVER CHANGE:
+# os.chdir("/home/server/hydroponics/")
+# with open("server/db_conf.json") as json_file:
+with open("../server/db_conf.json") as json_file:
     conf = json.load(json_file)
 
 host = conf['host']
 user = conf['user']
 password = conf['password']
+
+SOCKET_PORT = 9000
+SOCKET_HOST = "localhost"
 
 MQTT_PORT = 1883
 #MQTT_HOST = "192.168.0.3"
@@ -68,6 +75,8 @@ class Automagic(MQTT):
         self.client.connect(MQTT_HOST, MQTT_PORT)
         self.client.loop_start()
 
+        self.sio = socketio.Client()
+        self.sio.connect(f'http://{SOCKET_HOST}:{SOCKET_PORT}')
         self.fetch_machines()
         self.fetch_settings()
         self.fetch_environments_mean()
@@ -101,7 +110,9 @@ class Automagic(MQTT):
 
     def fetch_settings(self):
         try:
-            with open("automation/automation_setting.json") as _json:
+            # server :
+            # with open("automation/automation_setting.json") as _json:
+            with open("../automation/automation_setting.json") as _json:
                 self.settings = json.load(_json)
                 print(json.dumps(self.settings, indent=4, sort_keys=True))
         except JSONDecodeError:
@@ -126,11 +137,11 @@ class Automagic(MQTT):
 
     @staticmethod
     def check_cooler_on(machine_power):
-        return machine_power == 2
+        return machine_power == 1
 
     @staticmethod
-    def check_boiler_on(machine_power):
-        return machine_power == 3
+    def check_heater_on(machine_power):
+        return machine_power == 1
 
     def check_temperature(self, upper, lower):
         return lower < upper
@@ -151,28 +162,36 @@ class Automagic(MQTT):
 
         if not auto_switch:
             print('AirConditioner Auto Switch Disabled')
+
         # 난방
-        elif not self.check_boiler_on(ac_status) and self.check_temperature(upper=_min,
-                                                                          lower=current_value):
+        elif not self.check_heater_on(heater_status) and self.check_temperature(upper=_min,
+                                                                                lower=current_value):
+
+            if self.check_cooler_on(cooler_status):
+                self.sio.emit('sendSwitchControl', {"machine": 'cooler', "status": False})
+
             print("AirConditioner Heater ON")
-            self.insert_database(machine="heater", status=hot)
+            self.insert_database(machine="heater", status=on)
             self.client.publish(heater_topic, on, qos=2)
 
         # 냉방
-        elif not self.check_cooler_on(ac_status) and self.check_temperature(upper=current_value,
-                                                                            lower=_max):
+        elif not self.check_cooler_on(cooler_status) and self.check_temperature(upper=current_value,
+                                                                                lower=_max):
+            if self.check_heater_on(heater_status):
+                self.sio.emit('sendSwitchControl', {"machine": 'heater', "status": False})
+
             print("AirConditioner Cooler ON")
-            self.insert_database(machine="cooler", status=cool)
+            self.insert_database(machine="cooler", status=on)
             self.client.publish(cooler_topic, on, qos=2)
 
-        elif self.check_boiler_on(ac_status) and self.check_temperature(upper=current_value,
-                                                                        lower=heater_off_limit):
+        elif self.check_heater_on(heater_status) and self.check_temperature(upper=current_value,
+                                                                            lower=heater_off_limit):
             print("AirConditioner Heater OFF")
             self.insert_database(machine="heater", status=off)
             self.client.publish(heater_topic, off, qos=2)
 
-        elif self.check_cooler_on(ac_status) and self.check_temperature(upper=cooler_off_limit,
-                                                                        lower=current_value):
+        elif self.check_cooler_on(cooler_status) and self.check_temperature(upper=cooler_off_limit,
+                                                                            lower=current_value):
             print("AirConditioner Cooler OFF")
             self.insert_database(machine="cooler", status=off)
             self.client.publish(cooler_topic, off, qos=2)
@@ -275,6 +294,7 @@ class Automagic(MQTT):
         self.conn.commit()
         self.conn.close()
         self.client.disconnect()
+        self.sio.disconnect()
 
 
 auto = Automagic()

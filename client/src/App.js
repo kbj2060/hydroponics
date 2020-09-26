@@ -9,7 +9,8 @@ import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
 import axios from "axios";
 import {saveSetting} from "./redux/modules/ControlSetting";
-import {saveSwitch} from "./redux/modules/ControlSwitch";
+import {controlSwitch, saveSwitch} from "./redux/modules/ControlSwitch";
+import {checkEmpty} from "./components/utils/CheckEmpty";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -53,14 +54,16 @@ export default function App() {
     }
 
     const getControlSwitches = () => {
-      let result = {}
       machines.forEach((machine) => {
         getControlSwitch(machine)
           .then(({data}) => {
-          result[machine] = data[0]['status'] === 1
+            if(checkEmpty(data)){
+              dispatch(controlSwitch({[machine]: false}))
+            } else {
+              dispatch(controlSwitch({[machine]: data[0]['status'] === 1}))
+            }
         })
       })
-      dispatch(saveSwitch(result))
     }
 
     useEffect(() => {

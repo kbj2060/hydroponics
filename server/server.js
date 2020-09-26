@@ -44,7 +44,7 @@ io.on("connection", function (socket) {
 
   socket.on('sendSwitchControl', (switchStatus) => {
     console.log('switch socket has been sent.');
-    io.emit('receiveSwitchControl', switchStatus);
+    socket.broadcast.emit('receiveSwitchControl', switchStatus);
   })
 
   socket.on('disconnect', function(){
@@ -95,7 +95,6 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   )
 }
 
-
 /*
 mqtt data send example
 section 이 없기 때문에 각각 기계 켜고 끄기 불가능. 하나로 묶어서 켜고 끄기.
@@ -104,15 +103,15 @@ data : '1' or '0'
  */
 const handleSwitchesMQTT = (topic, message) => {
   const [_, machine] = topic.split("/");
-  // !== 로 고치지 말 것.
-  const status = JSON.parse(message.toString()) != 0;
+  const status = JSON.parse(message.toString()) !== 0;
   console.log(machine, status);
-  emitSwitch(machine, status);
+  emitMqttSwitch(machine, status);
 }
 
 // emit 할 때는 status의 값은 불리언 값으로 해야한다.
 // 숫자로 할 시 스위치 전환이 되지 않음.
-const emitSwitch = async (machine, status) => {
+const emitMqttSwitch = async (machine, status) => {
+  console.log(machine, status)
   io.emit('receiveSwitchControl', {
     machine : machine,
     status : status
