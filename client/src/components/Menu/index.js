@@ -9,12 +9,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {logout} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
+import {Typography} from "@material-ui/core";
 
 const LinkButton = (props) => {
 	return (
 		<Link to={`/${props.to}`} forcerefresh="true">
 			<button onClick={props.onClick} className={props.buttonDesign} type="button">
-				<h2>{props.value}</h2>
+				<Typography>{props.value}</Typography>
 			</button>
 		</Link>
 	)
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Menu() {
 	const dispatch = useDispatch();
-	const {pages} = require('root/init_setting');
+	const {pages} = require('root/values/preferences')
 	const n_pages = pages.length;
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles({n_pages});

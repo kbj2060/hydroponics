@@ -7,7 +7,9 @@ import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
 
 export default function Index(props) {
-  const { WordsTable, plants } = require('root/init_setting');
+  const {WordsTable} = require('root/values/strings');
+  const {plants} = require('root/values/preferences');
+
   const { environment } = props;
   const classes = useStyles();
   const [history, setHistory] = React.useState([]);
@@ -45,7 +47,7 @@ export default function Index(props) {
   }, [environment])
 
   useEffect(() => {
-    const {historyUpdateTime} = require('root/init_setting');
+    const {historyUpdateTime} = require('root/values/time');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();

@@ -6,13 +6,13 @@ const SAVE_SWITCH = "SAVE_SWITCH";
 
 export function controlSwitch(_switch) {
   return { type: CONTROL_SWITCH, _switch }
-};
+}
 
 export function saveSwitch(_switch) {
   return { type: SAVE_SWITCH, _switch }
 }
 
-let initialState = '';
+let initialState;
 try {
   initialState = loadState()['controlSwitch'];
 } catch(e) {
@@ -41,6 +41,6 @@ function ControlSwitch(state =initialState, action) {
         return state
       }
   }
-};
+}
 
 export default ControlSwitch;

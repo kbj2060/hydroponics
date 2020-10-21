@@ -4,9 +4,9 @@ import Slider from "@material-ui/core/Slider";
 const iOSBoxShadow =
   '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
 
-export const CustomIOSSlider = withStyles({
+export const CustomIOSSlider = withStyles(({
   root: {
-    color: '#FFCB3A',
+    color: props => props.linecolor,
     height: 2,
     padding: '15px 0',
   },
@@ -52,4 +52,4 @@ export const CustomIOSSlider = withStyles({
     opacity: 1,
     backgroundColor: 'currentColor',
   },
-})(Slider);
+}))(Slider);

@@ -1,9 +1,5 @@
 import {loadState} from "../LocalStorage";
 
 export const CheckLogin =  () => {
-  if (loadState() === undefined || !loadState()['authentication']['status']['isLoggedIn']) {
-    return false
-  } else {
-    return true
-  }
+  return !(loadState() === undefined || !loadState()['authentication']['status']['isLoggedIn']);
 }

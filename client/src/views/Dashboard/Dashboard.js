@@ -13,7 +13,8 @@ import {Redirect} from "react-router-dom";
 
 export default function Dashboard() {
   const classes = useStyles();
-  const {environments, plants} = require('root/init_setting');
+  const {environments, plants} = require('root/values/preferences')
+
 
   useEffect(()=> {
 

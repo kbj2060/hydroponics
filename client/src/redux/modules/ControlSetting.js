@@ -4,7 +4,7 @@ const CONTROL_SETTING = "ControlSetting/CONTROL_SETTING";
 const RESET_SETTING = "ControlSetting/RESET_SETTING";
 const SAVE_SETTING = "ControlSetting/SAVE_SETTING";
 
-const {defaultSetting} = require('root/init_setting');
+const {defaultSetting} = require('root/values/defaults')
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
@@ -38,6 +38,6 @@ function ControlSetting(state = initialState, action) {
     default:
       return initialState
   }
-};
+}
 
 export default ControlSetting;

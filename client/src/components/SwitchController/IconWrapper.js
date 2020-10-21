@@ -43,6 +43,7 @@ export default function IconWrapper({machine}) {
   const [icon ,setIcon] = useState(defaultIcons[machine]);
   const [isLoading, setIsLoading] = React.useState(true);
 
+
   const getIcon = (machine, active) => {
     const icons = {
       "cooler" : <CustomCoolerIcon active={active.toString()} />,
@@ -73,9 +74,7 @@ export default function IconWrapper({machine}) {
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
       const activeSwitch = store.getState()['controlSwitch'][machine]
-      if(!checkEmpty(activeSwitch)) {
-        setAnimation(activeSwitch);
-      }
+      if(!checkEmpty(activeSwitch)) { setAnimation(activeSwitch); }
     })
     return () => { unsubscribe(); }
   }, [])
@@ -88,14 +87,12 @@ export default function IconWrapper({machine}) {
   }, []);
 
   useEffect(() => {
-    let mounted = true;
     if(!checkEmpty(animation)){
       setIcon(getIcon(machine, animation))
       setIsLoading(false);
     }
-    return () => { mounted = false;}
   }, [animation])
 
   if(isLoading){ return <ColorCircularProgress /> }
-  else { return icon }
+  else {return icon}
 }

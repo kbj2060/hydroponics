@@ -16,6 +16,7 @@ const useStyles = makeStyles({
     justifyContent:'center'
   },
   title : {
+    fontFamily : "Nanum Myeongjo",
     padding : '5px 0 5px 0',
     color : 'white',
     fontWeight : 'bold'
@@ -31,7 +32,9 @@ const useStyles = makeStyles({
 
 export default function Figure(props) {
   const { environment, values, plant } = props;
-  const { environments, circleColorTable, unitsTable, WordsTable } = require('root/init_setting');
+  const { unitsTable, WordsTable } = require('root/values/strings');
+  const {environments} = require('root/values/preferences')
+  const {colors} = require('root/values/colors')
   const n_environment = environments.length;
   const roundFigureRef = useRef();
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -40,7 +43,7 @@ export default function Figure(props) {
   const classes = useStyles({
     dimensions: dimensions,
     n_environment : n_environment,
-    plantColor : circleColorTable[plant],
+    plantColor : colors[plant],
   });
 
   useLayoutEffect(() => {

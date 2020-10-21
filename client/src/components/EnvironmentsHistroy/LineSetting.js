@@ -53,7 +53,9 @@ let getOptions = {
 
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState(getOptions);
-	const {plants, circleColorTable, WordsTable} = require('root/init_setting');
+	const {WordsTable} = require('root/values/strings');
+	const {plants} = require('root/values/preferences');
+	const {colors} = require('root/values/colors');
 	const n_plants = plants.length;
 
 	let state = {
@@ -71,7 +73,7 @@ export default function LineSetting (history, environment) {
 				fill: false,
 				lineTension: 0.5,
 				backgroundColor: '#efcf76',
-				borderColor: `${circleColorTable[num]}`,
+				borderColor: `${colors[num]}`,
 				borderWidth: 2,
 				pointRadius: 0,
 				data: []

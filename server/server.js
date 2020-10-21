@@ -1,6 +1,6 @@
 'use strict'
 
-const INIT_SETTING_PATH = "../init_setting";
+const SETTING_PATH = "../values/preferences";
 const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
 const BROKER_URL = 'mqtt://127.0.0.1';
@@ -8,7 +8,7 @@ const BROKER_URL = 'mqtt://127.0.0.1';
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const localhostMqttClientId = "MQTT";
 
-const {socketIoPort:PORT, settingType} = require(INIT_SETTING_PATH),
+const {socketIoPort:PORT, settingType} = require(SETTING_PATH),
        express = require('express'),
        bodyParser = require('body-parser'),
        moment = require('moment'),
@@ -328,10 +328,10 @@ app.get('/api/get/current', (req, res) => {
 * ---------------------------------------------------------------------------------------------------------------------
 * 자동화 설정 시작
 */
-app.get('/api/get/switch/auto', (req, res) => {
+/*app.get('/api/get/switch/auto', (req, res) => {
   try {
     const item = req.query['item'];
-    const sql = `SELECT status FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
+    const sql = `SELECT enable FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
     connection.query(sql, (err, rows) => { res.send(rows[0]) })
   } catch (err) {
     useErrorLogger('GET').error({
@@ -339,14 +339,29 @@ app.get('/api/get/switch/auto', (req, res) => {
       message: `GET AUTO SWITCH QUERY ERROR : ${err}`
     })
   }
-});
+});*/
 
-app.get('/api/get/load/auto/json', (req,res) => {
+function union_all(selects, arr) {
+  const sqls = arr.map((item, index) => {
+    if(index === 0){ return `(SELECT ${selects} FROM iot.auto WHERE item = '${item}' ORDER BY id DESC LIMIT 1)` }
+    else { return `UNION ALL (SELECT ${selects} FROM iot.auto WHERE item = '${item}' ORDER BY id DESC LIMIT 1)` }
+  })
+  return sqls.join(' ')
+}
+
+app.get('/api/get/load/auto', (req,res) => {
   try{
-    fs.readFile('./automation/automation_setting.json', (err, data) => {
-      if (err) throw err;
-      console.log(data)
-      res.send(data);
+    const selects = req.query['selects'].join(",");
+    const auto = req.query['where'];
+    const sql = union_all(selects, auto);
+    connection.query(sql, (err, rows) => {
+      let dic = {}
+      rows.forEach((row) => {
+        let values = JSON.parse(row['duration']);
+        values['enable'] = row['enable'] === 1;
+        dic[row['item']] = values;
+      })
+      res.send(dic)
     });
   }catch(err){
     useErrorLogger('POST').error({
@@ -356,12 +371,25 @@ app.get('/api/get/load/auto/json', (req,res) => {
   }
 })
 
-app.post('/api/post/save/auto/json', (req,res) => {
+function classifyValues (argDic, user) {
+  return Object.keys(argDic).map((key, index) => {
+    const enable = argDic[key]['enable']
+    const _type = settingType[key];
+    delete argDic[key]['enable']
+    return `(null, \"${key}\", ${enable}, \"${_type}\", \"${user}\", \'${JSON.stringify(argDic[key])}\', now(), 0)`;
+  })
+}
+
+app.post('/api/post/save/auto', (req,res) => {
   try{
-    const { controlSetting } = req.body.params;
-    fs.writeFile('./automation/automation_setting.json', JSON.stringify(JSON.parse(controlSetting), null, 4), (e)=>{
-      res.send(e);
-    });
+    const { controlSetting, user } = req.body.params;
+    const sqlValues = classifyValues(controlSetting, user).join(',');
+    const sql =  `INSERT INTO iot.auto VALUES ${sqlValues}`;
+    console.log(controlSetting, user)
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+      }
+    );
   }catch(err){
     useErrorLogger('POST').error({
       level: 'error',
@@ -370,11 +398,11 @@ app.post('/api/post/save/auto/json', (req,res) => {
   }
 })
 
-app.post('/api/post/switch/auto', (req, res) => {
+/*app.post('/api/post/switch/auto', (req, res) => {
   try {
-    const { item, status, user } = req.body.params;
+    const { item, enable, user, duration } = req.body.params;
     const _type = settingType[item];
-    const sql =  `INSERT INTO iot.auto VALUES (null, \"${item}\",  ${status},  \"${_type}\", \"${user}\", now(), 0);`;
+    const sql =  `INSERT INTO iot.auto VALUES (null, \"${item}\",  ${enable},  \"${_type}\", \"${user}\", \"${duration}\" now(), 0);`;
     connection.query(sql, (err, rows) => {
       res.send(rows);
     })
@@ -384,17 +412,7 @@ app.post('/api/post/switch/auto', (req, res) => {
       message: `POST AUTO SWITCH QUERY ERROR : ${err}`
     })
   }
-})
-
-/*
- * redux 설정 시작
- */
-
-
-/*
- * redux 설정 끝
- */
-
+})*/
 /*
  * 자동화 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------

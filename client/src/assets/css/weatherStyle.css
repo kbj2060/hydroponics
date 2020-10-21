@@ -1,7 +1,3 @@
-.App {
-  font-family: sans-serif;
-  text-align: center;
-}
 html,
 body {
   align-items: center;
@@ -24,8 +20,6 @@ body {
   margin-top : 3%;
   height : 100%;
   width : 100%;
-  margin : 0;
-  padding : 20px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23);
   background-color : rgba(255, 255, 255, 0.1);
   display : inline-block;
@@ -70,7 +64,6 @@ body {
 .main-info {
   align-items: flex-start;
   display: flex;
-  flex-start: start;
   order: 0;
 }
 
@@ -154,7 +147,7 @@ body {
 }
 
 .title-icon {
-  padding-bottom : '8%';
+  padding-bottom : 8%;
 }
 
 .selected {
@@ -163,30 +156,30 @@ body {
 }
 
 .cloudy {
-  background-color: 'white'
+  background-color: white
   /* background-image: linear-gradient(0deg, #bbdefb, #2196f3); */
 }
 
 .clear {
-  background-color: 'white'
+  background-color: white
 
   /* background-image: linear-gradient(0deg, #b3e5fc, #29b6f6); */
 }
 
 .snow {
-  background-color: 'white'
+  background-color: white
 
   /* background-image: linear-gradient(0deg, #b2ebf2, #26c6da); */
 }
 
 .rain {
-  background-color: 'white'
+  background-color: white
 
   /* background-image: linear-gradient(0deg, #c5cae9, #5c6bc0); */
 }
 
 .thunderstorm {
-  background-color: 'white'
+  background-color: white
 
   /* background-image: linear-gradient(0deg, #e0e0e0, #757575); */
 }

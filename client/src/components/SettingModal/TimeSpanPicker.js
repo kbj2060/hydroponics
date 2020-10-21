@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import * as d3 from 'd3';
 import moment from 'moment';
 import './timeSpanPicker.css';
@@ -185,20 +185,19 @@ class CircularTimespanpicker extends Component {
         return [state[keysArr[0]]];
       } else {
         /* combine time spans */
-        let reducedArr = keysArr.reduce((prev, currentKey) => {
+        return keysArr.reduce((prev, currentKey) => {
           let tempArr = Array.isArray(prev) ? prev : [state[prev]],
-            lastElement = tempArr[tempArr.length-1],
+            lastElement = tempArr[tempArr.length - 1],
             currentElement = state[currentKey];
 
           if (!currentElement[0].diff(lastElement[1], 'minutes')) {
             /*if last element finished in the same time current started, combine them as ['start of the last', 'end of the current]*/
-            tempArr[tempArr.length-1] = [lastElement[0], currentElement[1]]
+            tempArr[tempArr.length - 1] = [lastElement[0], currentElement[1]]
           } else {
             tempArr.push(currentElement);
           }
           return tempArr
         });
-        return reducedArr;
       }
     }
     /* if there is no chosen spans in the state, returns empty array */

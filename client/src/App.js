@@ -9,7 +9,7 @@ import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
 import axios from "axios";
 import {saveSetting} from "./redux/modules/ControlSetting";
-import {controlSwitch, saveSwitch} from "./redux/modules/ControlSwitch";
+import {controlSwitch} from "./redux/modules/ControlSwitch";
 import {checkEmpty} from "./components/utils/CheckEmpty";
 
 const useStyles = makeStyles(() =>({
@@ -33,59 +33,69 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-    const classes = useStyles();
-    const {machines} = require('root/init_setting');
-    const dispatch = useDispatch();
+  const classes = useStyles();
+  const {machines, autoItem} = require('root/values/preferences');
+  const {defaultSetting} = require('root/values/defaults')
+  const dispatch = useDispatch();
 
-    const getControlSetting = async () => {
-      await axios.get('/api/get/load/auto/json').then(({data}) => {
+  const getControlSetting = async () => {
+    await axios.get('/api/get/load/auto', {
+      params: {
+        selects : ['item', 'enable', 'duration'],
+        where : autoItem
+      }
+    }).then(({data}) => {
+      if(Object.keys(data).length === Object.keys(defaultSetting).length){
         dispatch(saveSetting(data))
+      } else {
+        dispatch(saveSetting(defaultSetting));
+      }
+    })
+  }
+
+  const getControlSwitch =  async (machine) => {
+    return await axios.get('/api/get/query/last', {
+      params: {
+        where: machine,
+        whereColumn: 'machine',
+        selects: ['status'],
+        table: 'switch'
+      }})
+  }
+
+  const getControlSwitches = () => {
+    machines.forEach((machine) => {
+      getControlSwitch(machine)
+        .then(({data}) => {
+          if(checkEmpty(data)){
+            dispatch(controlSwitch({[machine]: false}))
+          } else {
+            dispatch(controlSwitch({[machine]: data[0]['status'] === 1}))
+          }
       })
-    }
+    })
+  }
 
-    const getControlSwitch =  async (machine) => {
-      return await axios.get('/api/get/query/last', {
-        params: {
-          where: machine,
-          whereColumn: 'machine',
-          selects: ['status'],
-          table: 'switch'
-        }})
-    }
+  useEffect(() => {
+    getControlSwitches();
+    getControlSetting();
+    saveState( store.getState() );
+  }, []);
 
-    const getControlSwitches = () => {
-      machines.forEach((machine) => {
-        getControlSwitch(machine)
-          .then(({data}) => {
-            if(checkEmpty(data)){
-              dispatch(controlSwitch({[machine]: false}))
-            } else {
-              dispatch(controlSwitch({[machine]: data[0]['status'] === 1}))
-            }
-        })
-      })
-    }
+  store.subscribe(() => {
+    saveState( store.getState() );
+  });
 
-    useEffect(() => {
-      getControlSwitches();
-      getControlSetting();
-      saveState( store.getState() );
-    }, []);
-
-    store.subscribe(() => {
-      saveState( store.getState() );
-    });
-
-    return (
-      <BrowserRouter>
-          <div className={classes.parent}>
-            <Route exact path="/">
-              <Login />
-            </Route>
-            <Route exact path="/dashboard" >
-              <Dashboard />
-            </Route>
-          </div>
-        </BrowserRouter>
-    )
+  return (
+    <BrowserRouter>
+        <div className={classes.parent}>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route exact path="/dashboard" >
+            <Dashboard />
+          </Route>
+        </div>
+      </BrowserRouter>
+  )
 }

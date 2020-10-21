@@ -6,7 +6,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
 import "../../assets/css/AutomationCircle.scss"
-import CustomStepper from "../utils/CustomStepper";
+import CustomStepper from "./CustomStepper";
 
 const useStyles = makeStyles((theme) => ({
 	modal: {

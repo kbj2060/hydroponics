@@ -25,14 +25,16 @@ const CurrentFlowing = withStyles((theme) => ({
 })
 
 export default function CurrentChecker({machine}) {
-	const {currentUpdateTime, n_machines } = require('root/init_setting');
+	const {n_machines} = require('root/values/preferences')
+	const {currentUpdateTime } = require('root/values/time');
+	const {currentCriteria:criteria} = require('root/values/defaults')
 	const sections = Array.from(Array(n_machines[machine]), (_, i) => i + 1)
 	const [current, setCurrent] = React.useState({});
 	const [disable, setDisable] = React.useState(false);
 	const [flowing, setFlowing] = React.useState(false);
-	const classes = useStyles();
 	const [isLoading, setIsLoading] = React.useState(true);
-	const criteria = 1;
+	const classes = useStyles();
+
 
 	sections.forEach((section, index) => {
 		current[`${machine}${section}`] = 0

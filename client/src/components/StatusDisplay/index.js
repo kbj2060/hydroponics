@@ -7,10 +7,14 @@ import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
 
 export default function StatusDisplay(props) {
-  const {statusUpdateTime, environments} = require('root/init_setting');
+  const {statusUpdateTime} = require('root/values/time');
+  const {environments} = require('root/values/preferences')
+
   const {plant} = props;
   const classes = useStyles();
-  const {circleColorTable, WordsTable} = require('root/init_setting');
+  const {WordsTable} = require('root/values/strings');
+  const {colors} = require('root/values/colors')
+
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,
@@ -50,7 +54,7 @@ export default function StatusDisplay(props) {
 
   return (
     <Card className={classes.parentItem}>
-      <Typography style={{color: `${circleColorTable[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant${plant}`]}</Typography>
+      <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant${plant}`]}</Typography>
       <div className={classes.figureCardDiv}>
         {
           environments.map((env) =>

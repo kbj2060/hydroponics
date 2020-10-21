@@ -1,0 +1,12 @@
+{
+  "SOCKET_PORT" : 9000,
+  "SOCKET_HOST" : "localhost",
+  "MQTT_PORT" : "1883",
+  "MQTT_HOST" : "localhost",
+  "CLIENT_ID" : "Auto",
+  "LED_TOPIC" : "switch/led",
+  "HEATER_TOPIC" : "switch/heater",
+  "COOLER_TOPIC" : "switch/cooler",
+  "FAN_TOPIC" : "switch/fan",
+  "WT_TOPIC" : "switch/waterpump"
+}

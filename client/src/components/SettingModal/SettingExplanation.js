@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import axios from 'axios';
 import {makeStyles} from "@material-ui/core/styles";
 import TemperatureIcon from '../../assets/icons/TemperatureIcon'
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import AcUnitIcon from '@material-ui/icons/AcUnit';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
 import ToysIcon from '@material-ui/icons/Toys';
 import OpacityIcon from '@material-ui/icons/Opacity';
@@ -53,17 +55,29 @@ const getRangeMax = (subject) => {
   return subject.range[1]
 }
 
+const nullCheck = (arg) => {
+  return arg === null;
+}
+
 export default function SettingExplanation({position}) {
   const [setting, setSetting] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {defaultSetting} = require('root/init_setting')
+  const {defaultSetting} = require('root/values/defaults');
+  const {autoItem} = require('root/values/preferences')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
   const getAutoFromJson = async () => {
-    await axios.get('/api/get/load/auto/json').then(({data}) => {
-      if(checkEmpty(data)){ data = defaultSetting }
+    await axios.get('/api/get/load/auto', {
+      params: {
+        selects : ['item', 'enable', 'duration'],
+        where : autoItem
+      }
+    }).then(({data}) => {
+      if(Object.values(data).every(nullCheck) || Object.keys(data).length !== Object.keys(defaultSetting).length){
+        data = defaultSetting;
+      }
       setSetting(data);
       dispatch(saveSetting(data));
       setIsLoading(false);
@@ -109,23 +123,30 @@ export default function SettingExplanation({position}) {
         )}
   }
 
-  const getRangeTempChips = () => {
-    if(!checkEmpty(setting.temperature)){
-      const _min = getRangeMin(setting.temperature), _max = getRangeMax(setting.temperature);
-      const heater_off_limit = _min + (_max - _min) * (1 / 4)
-      const cooler_off_limit = _min + (_max - _min) * (3 / 4)
-
+  const getCoolerChips = () => {
+    if(!checkEmpty(setting.cooler)){
+      const _min = getRangeMin(setting.cooler), _max = getRangeMax(setting.cooler);
       return (
           <>
-            <Chip className={classes.chip} variant="outlined" size="small" label={`${_min}°C 난방 켜기`} />
-            <Chip className={classes.chip} variant="outlined" size="small" label={`${heater_off_limit}°C 난방 끄기`} />
-            <Chip className={classes.chip} variant="outlined" size="small" label={`${cooler_off_limit}°C 냉방 끄기`} />
+            <Chip className={classes.chip} variant="outlined" size="small" label={`${_min}°C 냉방 끄기`} />
             <Chip className={classes.chip} variant="outlined" size="small" label={`${_max}°C 냉방 켜기`} />
           </>
       )}
   }
 
-  useEffect(() => {
+  const getHeaterChips = () => {
+    if(!checkEmpty(setting.cooler)) {
+      const _min = getRangeMin(setting.heater), _max = getRangeMax(setting.heater);
+      return (
+        <>
+          <Chip className={classes.chip} variant="outlined" size="small" label={`${_min}°C 난방 켜기`}/>
+          <Chip className={classes.chip} variant="outlined" size="small" label={`${_max}°C 난방 끄기`}/>
+        </>
+      )
+    }
+  }
+
+    useEffect(() => {
     position === 'head' ? getAutoFromJson() : getAutoFromStore()
   }, [])
 
@@ -146,10 +167,18 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <TemperatureIcon />
+          <WhatshotIcon />
         </td>
         <td style={{margin: 'auto'}}>
-            {!getAutoEnable('temperature') ? getOffChips() : getRangeTempChips()}
+            {!getAutoEnable('heater') ? getOffChips() : getHeaterChips()}
+        </td>
+      </tr>
+      <tr className={classes.cell}>
+        <td className={classes.icon}>
+          <AcUnitIcon />
+        </td>
+        <td style={{margin: 'auto'}}>
+          {!getAutoEnable('cooler') ? getOffChips() : getCoolerChips()}
         </td>
       </tr>
       <tr className={classes.cell}>

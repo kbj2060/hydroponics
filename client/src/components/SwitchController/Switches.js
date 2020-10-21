@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {memo, useEffect} from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -30,14 +30,14 @@ const style = makeStyles({
   }
 });
 
-export default function Switches(props) {
+function Switches(props) {
   const {machine} = props
   const [state, setState] = React.useState({ status: true, machine: machine});
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = style();
   const dispatch = useDispatch();
-  const {WordsTable} = require('root/init_setting');
+  const {WordsTable} = require('root/values/strings');
 
   const getCurrentUser = () => {
     return loadState()['authentication']['status']['currentUser'];
@@ -99,6 +99,10 @@ export default function Switches(props) {
     postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
   };
 
+  const closeSnackBar = () => {
+    setSnackbarOpen(false);
+  }
+
   const handleSqlStatus = (data) => {
     return data !== 0;
   }
@@ -144,12 +148,14 @@ export default function Switches(props) {
             />
           }
           className={classes.controlForm}
-        />
+         />
       </FormGroup>
-      <Snackbar open={snackbarOpen} onClose={() => setSnackbarOpen(false)} autoHideDuration={2000}>
-        <Alert onClose={() => setSnackbarOpen(false)} severity="info">
+      <Snackbar open={snackbarOpen} onClose={closeSnackBar} autoHideDuration={2000}>
+        <Alert onClose={closeSnackBar} severity="info">
           {`${WordsTable[machine.toLowerCase()]} 전원 수동 전환 완료!`}
         </Alert>
       </Snackbar>
     </> : <Redirect to={'/'} />);
 }
+
+export default memo(Switches);

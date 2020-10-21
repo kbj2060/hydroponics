@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Box from "@material-ui/core/Box";
 import Switch from "./Switches";
 import Card from "@material-ui/core/Card";
@@ -6,11 +6,10 @@ import useStyles from '../../assets/jss/DashboardStyle';
 import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
-import {store} from "../../redux/store";
 
 export default function SwitchController() {
     const classes = useStyles();
-    const machines = [ "cooler", "heater", "led", "fan", "waterpump" ]
+    const {machines} = require('root/values/preferences')
 
     return (
       <Card className={classes.controlCardButtons}>

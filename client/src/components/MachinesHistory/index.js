@@ -103,6 +103,7 @@ const useStyles2 = makeStyles({
 		borderRadius: '0.5rem',
 		height: '100%'},
 	text : {
+		fontFamily : "Nanum Myeongjo",
 		padding : '5px 0 5px 0',
 		color : 'white !important',
 		fontWeight : 'bold',
@@ -126,7 +127,7 @@ export default function MachineHistory() {
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
-	const {WordsTable} = require('root/init_setting');
+	const {WordsTable} = require('root/values/strings');
 
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -158,7 +159,7 @@ export default function MachineHistory() {
 
 	useEffect(() => {
 		let mounted = true;
-		const {showHistoryNumber} = require('root/init_setting');
+		const {showHistoryNumber} = require('root/values/defaults');
 
 		axios.get('/api/get/switch/history', {
 			params: {

@@ -38,6 +38,7 @@ const HistoryStyle = makeStyles(theme =>({
     }
   },
   updateTime : {
+    fontFamily : "Nanum Myeongjo",
     display : 'inline',
     verticalAlign : 'middle',
     fontSize : '0.7em',
@@ -55,6 +56,7 @@ const HistoryStyle = makeStyles(theme =>({
     verticalAlign : 'middle',
   },
   title : {
+    fontFamily : "Nanum Myeongjo",
     color: 'white',
     fontWeight: 'bold',
     padding: '1%',

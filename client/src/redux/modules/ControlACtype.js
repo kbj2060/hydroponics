@@ -20,6 +20,6 @@ function ControlACtype(state=0, action) {
         return state
       }
   }
-};
+}
 
 export default ControlACtype;
