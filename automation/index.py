@@ -7,7 +7,7 @@ import json
 import socketio
 import os
 
-// TODO [SERVER CHANGE] : Change Directory
+#TODO [SERVER CHANGE] : Change Directory
 os.chdir("/home/server/hydroponics/automation/")
 
 with open('defaults.json') as default_json:
@@ -157,13 +157,17 @@ class Automagic(MQTT):
         if ac_type == "heater":
             if current_value > _max:
                 return False
-            else:
+            elif current_value < _min:
                 return True
+            else:
+                return None
         elif ac_type == "cooler":
             if current_value < _min:
                 return False
-            else:
+            elif current_value >_max:
                 return True
+            else:
+                return None
 
     def get_opposite_ac(self, ac_type):
         return "cooler" if ac_type == "heater" else "heater"
@@ -175,12 +179,17 @@ class Automagic(MQTT):
         auto_switch = self.settings[ac_type]['enable']
         _min = self.settings[ac_type]['range'][min_index]
         _max = self.settings[ac_type]['range'][max_index]
+        temperature_condition = self.check_temp_condition(ac_type)
+        machine_power = self.check_machine_on(ac_status)
         off, on = 0, 1
         
         if not auto_switch:
             print('AirConditioner Auto Switch Disabled')
 
-        elif not self.check_machine_on(ac_status) and self.check_temp_condition(ac_type):
+        elif temperature_condition is None:
+            print(f'{ac_type} Do Nothing.')
+
+        elif not machine_power  and temperature_condition:
             if self.check_machine_on(opposite_ac_type):
                 self.sio.emit('sendSwitchControl', {"machine": opposite_ac_type, "status": False})
                 self.insert_database(machine=opposite_ac_type, status=off)
@@ -189,7 +198,7 @@ class Automagic(MQTT):
             self.insert_database(machine=ac_type, status=on)
             self.client.publish(ac_topic, on, qos=2)
 
-        elif self.check_machine_on(ac_status) and not self.check_temp_condition(ac_type):
+        elif machine_power and not temperature_condition:
             print(f"AirConditioner {ac_type} OFF")
             self.insert_database(machine=ac_type, status=off)
             self.client.publish(ac_topic, off, qos=2)
