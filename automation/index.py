@@ -5,7 +5,9 @@ import datetime
 import paho.mqtt.client as mqtt
 import json
 import socketio
+import os
 
+os.chdir("/home/server/hydroponics/automation/")
 with open('defaults.json') as default_json:
     defaults = json.load(default_json)
     DEFAULT_SETTING = defaults['settings']
@@ -50,6 +52,7 @@ class MQTT():
 
     def on_disconnect(self, client, userdata, flags, rc=0):
         print("MQTT Disconnected")
+        print("-----------------------------------------------------")
 
     def on_publish(self, client, userdata, mid):
         print("In on_pub callback mid= ", mid)
@@ -152,26 +155,16 @@ class Automagic(MQTT):
         current_value = self.environments['temperature']
         _min = self.settings[ac_type]['range'][min_index]
         _max = self.settings[ac_type]['range'][max_index]
-
         if ac_type == "heater":
             if current_value > _max:
                 return False
-            elif current_value < _min:
+            else:
                 return True
         elif ac_type == "cooler":
-            if current_value > _max:
-                return True
-            elif current_value < _min:
+            if current_value < _min:
                 return False
-
-    def check_inside_range(self, ac_type):
-        current_value = self.environments['temperature']
-        _min = self.settings[ac_type]['range'][min_index]
-        _max = self.settings[ac_type]['range'][max_index]
-        if _min <= current_value <= _max:
-            return True
-        else:
-            return False
+            else:
+                return True
 
     def get_opposite_ac(self, ac_type):
         return "cooler" if ac_type == "heater" else "heater"
@@ -184,11 +177,11 @@ class Automagic(MQTT):
         _min = self.settings[ac_type]['range'][min_index]
         _max = self.settings[ac_type]['range'][max_index]
         off, on = 0, 1
-
+        
         if not auto_switch:
             print('AirConditioner Auto Switch Disabled')
 
-        elif not self.check_machine_on(ac_status) and (self.check_inside_range(ac_type) or self.check_temp_condition(ac_type)):
+        elif not self.check_machine_on(ac_status) and self.check_temp_condition(ac_type):
             if self.check_machine_on(opposite_ac_type):
                 self.sio.emit('sendSwitchControl', {"machine": opposite_ac_type, "status": False})
                 self.insert_database(machine=opposite_ac_type, status=off)
@@ -310,5 +303,4 @@ auto.temp_control("heater")
 auto.temp_control("cooler")
 auto.cycle_control('fan')
 auto.cycle_control('waterpump')
-print()
 auto.finish_automagic()

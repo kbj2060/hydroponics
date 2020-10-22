@@ -1,6 +1,6 @@
 module.exports = {
   // TODO [SERVER CHANGE] : IP
-  ip : "localhost",
+  ip : "121.157.207.47",
   mqttPort : "1883",
   socketIoPort : "9000",
   pages : [
