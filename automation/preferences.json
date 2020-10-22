@@ -1,6 +1,6 @@
 {
-  "SOCKET_PORT" : 9000,
   "SOCKET_HOST" : "121.157.207.47",
+  "SOCKET_PORT" : 9000,
   "MQTT_PORT" : "1883",
   "MQTT_HOST" : "localhost",
   "CLIENT_ID" : "Auto",

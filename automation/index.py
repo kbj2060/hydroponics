@@ -7,7 +7,9 @@ import json
 import socketio
 import os
 
+// TODO [SERVER CHANGE] : Change Directory
 os.chdir("/home/server/hydroponics/automation/")
+
 with open('defaults.json') as default_json:
     defaults = json.load(default_json)
     DEFAULT_SETTING = defaults['settings']
@@ -15,9 +17,6 @@ with open('defaults.json') as default_json:
     DEFAULT_MACHINES = defaults['machines']
     DEFAULT_SECTIONS = defaults['sections']
 
-# SERVER CHANGE:
-# os.chdir("/home/server/hydroponics/")
-# with open("server/db_conf.json") as json_file:
 with open("../server/db_conf.json") as json_file:
     conf = json.load(json_file)
     DB_HOST = conf['host']
