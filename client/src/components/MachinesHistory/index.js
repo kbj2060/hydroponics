@@ -103,7 +103,7 @@ const useStyles2 = makeStyles({
 		borderRadius: '0.5rem',
 		height: '100%'},
 	text : {
-		fontFamily : "Nanum Myeongjo",
+		fontFamily : "Nanum Gothic",
 		padding : '5px 0 5px 0',
 		color : 'white !important',
 		fontWeight : 'bold',

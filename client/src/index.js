@@ -9,7 +9,7 @@ import {store} from "./redux/store";
 
 const theme = createMuiTheme({
   typography: {
-      "fontFamily" : '"Nanum Myeongjo", serif',
+      "fontFamily" : '"Nanum Gothic", serif',
     },
 })
 

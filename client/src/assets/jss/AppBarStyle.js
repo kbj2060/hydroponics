@@ -51,7 +51,7 @@ const appBarStyle = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   title: {
-    fontFamily : "Nanum Myeongjo",
+    fontFamily : "Nanum Gothic",
     flexGrow: 1,
     align: "center",
     display: 'flex',

@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     justifyContent:'center'
   },
   title : {
-    fontFamily : "Nanum Myeongjo",
+    fontFamily : "Nanum Gothic",
     padding : '5px 0 5px 0',
     color : 'white',
     fontWeight : 'bold'

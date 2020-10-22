@@ -1,6 +1,5 @@
 /*noinspection CssUnknownTarget*/
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 html {
     width: auto;
     height: fit-content;
@@ -8,7 +7,7 @@ html {
 
 body {
   margin: 0;
-  font-family:  "Nanum Myeongjo", sans-serif !important;
+  font-family:  "Nanum Gothic", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #ABBFBE;
