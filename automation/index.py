@@ -71,8 +71,8 @@ class Automagic(MQTT):
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_publish = self.on_publish
-        self.client.connect(MQTT_HOST, MQTT_PORT)
-        self.client.loop_start()
+        self.client.connect(MQTT_HOST, MQTT_PORT, keepalive=60)
+        #self.client.loop_start()
 
         self.sio = socketio.Client()
         self.sio.connect(f'http://{SOCKET_HOST}:{SOCKET_PORT}')
@@ -196,12 +196,12 @@ class Automagic(MQTT):
 
             print(f"AirConditioner {ac_type} ON")
             self.insert_database(machine=ac_type, status=on)
-            self.client.publish(ac_topic, on, qos=2)
+            self.client.publish(ac_topic, on)
 
         elif machine_power and not temperature_condition:
             print(f"AirConditioner {ac_type} OFF")
             self.insert_database(machine=ac_type, status=off)
-            self.client.publish(ac_topic, off, qos=2)
+            self.client.publish(ac_topic, off)
 
         else:
             print(f'{ac_type} Do Nothing.')
@@ -222,12 +222,12 @@ class Automagic(MQTT):
         elif self.check_led_valid_hour(current_hour) and not self.check_machine_on(led_status):
             print("LED ON")
             self.insert_database(machine="led", status=on)
-            self.client.publish(topic, on, qos=2)
+            self.client.publish(topic, on)
 
         elif not self.check_led_valid_hour(current_hour) and self.check_machine_on(led_status):
             print("LED OFF")
             self.insert_database(machine="led", status=off)
-            self.client.publish(topic, off, qos=2)
+            self.client.publish(topic, off)
 
         else:
             print('LED Do Nothing.')
@@ -283,14 +283,14 @@ class Automagic(MQTT):
 
             print(f"{cycle_machine} ON")
             self.insert_database(machine=cycle_machine, status=on)
-            self.client.publish(topic, on, qos=2)
+            self.client.publish(topic, on)
 
         elif self.check_machine_on(status) and not (
             self.check_right_term(cycle_machine) and self.check_right_hour(cycle_machine)):
 
             print(f"{cycle_machine} OFF")
             self.insert_database(machine=cycle_machine, status=off)
-            self.client.publish(topic, off, qos=2)
+            self.client.publish(topic, off)
 
         else:
             print(f"{cycle_machine} Do Nothing.")

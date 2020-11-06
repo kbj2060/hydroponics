@@ -1,14 +1,16 @@
 'use strict'
 
+//process.chdir('/home/server/hydroponics');
+
 const SETTING_PATH = "../values/preferences";
 const LOGGER_PATH = "./utils/useLogger";
 const DB_CONF_PATH = "./server/db_conf.json";
-const BROKER_URL = 'mqtt://127.0.0.1';
+//const BROKER_URL = 'mqtt://192.168.0.3';
 
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const localhostMqttClientId = "MQTT";
 
-const {socketIoPort:PORT, settingType} = require(SETTING_PATH),
+const {socketIoPort:PORT, settingType, mqttURL:BROKER_URL} = require(SETTING_PATH),
        express = require('express'),
        bodyParser = require('body-parser'),
        moment = require('moment'),
@@ -68,9 +70,8 @@ const handleCurrentsMQTT = (topic, message) => {
   const [table, machine, section] = topic.split("/");
   const sql = `INSERT INTO iot.${table} 
                VALUES (null, \"${machine}\", ${section}, ${current}, now(), 0);`
-  connection.query(sql,
-    (err, rows) => {
-      console.log(rows);
+  connection.query(sql,(err, rows) => {
+    if(err) {console.log(err);}
     }
   )
 }
@@ -90,8 +91,8 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   const sql = `INSERT INTO iot.${table}
                VALUES (null, ${section}, ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
   connection.query(sql, (err, rows) => {
-      console.log(rows);
-    }
+    if(err) {console.log(err);}
+  	}
   )
 }
 

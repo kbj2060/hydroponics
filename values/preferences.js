@@ -2,6 +2,7 @@ module.exports = {
   // TODO [SERVER CHANGE] : IP & SOCKET_HOST in automation/preferences.json
   ip : "121.157.207.47",
   mqttPort : "1883",
+  mqttURL : "mqtt://192.168.0.3",
   socketIoPort : "9000",
   pages : [
     'dashboard', 'logout'
