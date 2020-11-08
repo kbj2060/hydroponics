@@ -34,7 +34,9 @@ export default function PermanentAppBar(props) {
             스마트팜 관리시스템
           </Typography>
           <div className={classes.grow} />
-            <div>
+            <div style={{		borderRadius: '20px',
+              background: '#161717',
+              boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323',}}>
               <Menu MenuButton={MenuButton} />
             </div>
         </Toolbar>

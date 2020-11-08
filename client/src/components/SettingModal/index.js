@@ -7,6 +7,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
 import "../../assets/css/AutomationCircle.scss"
 import CustomStepper from "./CustomStepper";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -38,6 +39,20 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover' : { color : '#FFCB3A'},
 		'&:active' : { transform : 'translateY(1px)'}
 	}),
+	autoButton : {
+		width : '50px',
+		height : '50px',
+		borderRadius: '50%',
+		background: 'linear-gradient(225deg, #141515, #181919)',
+		boxShadow:  ' -6px 6px 12px #111111, 6px -6px 12px #1b1d1d',
+		margin: '0',
+		display : 'grid',
+		textAlign : 'center',
+		alignItems : 'center',
+	},
+	autoButtonText : {
+		color : 'white'
+	}
 }));
 
 
@@ -64,7 +79,9 @@ export default function SettingModal() {
       <div>
 
         <Button onClick={handleOpen} type="button">
-					<div className="circle" />
+					<div className={classes.autoButton}>
+						<Typography className={classes.autoButtonText}>A</Typography>
+					</div>
         </Button>
 
         <Modal
