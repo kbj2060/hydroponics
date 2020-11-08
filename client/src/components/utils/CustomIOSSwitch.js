@@ -22,8 +22,8 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     '&$checked': {
       transform: 'translateX(23px)',
       '& + $track': {
-        backgroundColor : '#FFCB3A',
-        boxShadow: 'inset -5px 5px 10px #665117,inset 5px -5px 10px #ffff5d',
+        backgroundColor : '#95A68A',
+        boxShadow: 'inset -6px 6px 12px #717e69, inset 6px -6px 12px #b9ceab',
         opacity: 1,
         overflow: 'hidden',
       },
@@ -44,9 +44,8 @@ export const CustomIOSSwitch = withStyles((theme) => ({
   track: {
     border: 'none',
     borderRadius: 26 / 2,
-    backgroundColor: '#FF4F61',
-    boxShadow : 'inset 5px 5px 10px #662027, \n' +
-      '            inset -5px -5px 10px #ff7e9b',
+    backgroundColor: '#C1D4D9',
+    boxShadow : 'inset 6px 6px 12px #93a1a5,inset -6px -6px 12px #efffff',
     opacity: 1,
     transition: theme.transitions.create(['background-color', 'border']),
   },

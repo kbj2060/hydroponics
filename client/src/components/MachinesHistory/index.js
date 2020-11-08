@@ -112,10 +112,10 @@ const useStyles2 = makeStyles({
 		fontWeight : 'bold',
 	},
 	statusOn : {
-		color : '#FFCB3A'
+		color : props => props.colorOn
 	},
 	statusOff : {
-		color : '#FF4F61'
+		color : props => props.colorOff
 	},
 	table : {
 		height: '100%'
@@ -136,7 +136,9 @@ export default function MachineHistory() {
 	const [refresh , setRefresh] = React.useState();
 	const {WordsTable} = require('root/values/strings');
 	const classes = useStyles2({
-		componentBgColor : colors['component']
+		componentBgColor : colors['component'],
+		colorOn : colors['buttonOn'],
+		colorOff : colors['buttonOff']
 	})
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);

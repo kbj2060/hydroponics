@@ -9,7 +9,7 @@ import {store} from "./redux/store";
 
 const theme = createMuiTheme({
   typography: {
-    color : "black",
+    color : "white",
   },
 })
 

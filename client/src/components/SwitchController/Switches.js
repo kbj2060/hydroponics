@@ -15,6 +15,7 @@ import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
 import {checkEmpty} from "../utils/CheckEmpty";
+import Box from "@material-ui/core/Box";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -30,6 +31,14 @@ const style = makeStyles({
     borderRadius: '20px',
     background: 'linear-gradient(145deg, #181919, #141515)',
     boxShadow:  ' 8px 8px 16px #0b0b0b, -8px -8px 16px #212323',
+  },
+  displayPowerOn : {
+    paddingLeft : '10px',
+    color : props => props.buttonOn
+  },
+  displayPowerOff : {
+    paddingLeft : '10px',
+    color : props => props.buttonOff
   }
 });
 
@@ -38,7 +47,11 @@ function Switches(props) {
   const [state, setState] = React.useState({ status: true, machine: machine});
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const classes = style();
+  const {colors} = require('root/values/colors');
+  const classes = style({
+    buttonOn : colors.buttonOn,
+    buttonOff : colors.buttonOff
+  });
   const dispatch = useDispatch();
   const {WordsTable} = require('root/values/strings');
 
@@ -153,6 +166,8 @@ function Switches(props) {
           className={classes.controlForm}
          />
       </FormGroup>
+      {state.status?
+        <p className={classes.displayPowerOn}>ON</p>:<p className={classes.displayPowerOff}>OFF</p>}
       <Snackbar open={snackbarOpen} onClose={closeSnackBar} autoHideDuration={2000}>
         <Alert onClose={closeSnackBar} severity="info">
           {`${WordsTable[machine.toLowerCase()]} 전원 수동 전환 완료!`}

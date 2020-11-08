@@ -13,23 +13,27 @@ import socket from "../../socket";
 const {colors} = require('root/values/colors');
 
 const CustomCoolerIcon = ({active}) => {
-  return JSON.parse(active) ? <AcUnitIcon style={{color: colors['coolerIcon']}} /> : <AcUnitIcon />
+  return JSON.parse(active) ? <AcUnitIcon style={{color: colors['coolerIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
+    : <AcUnitIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
 };
 
 const CustomWhatshotIcon = ({active}) => {
-  return JSON.parse(active) ? <WhatshotIcon style={{color: colors['heaterIcon']}} /> : <WhatshotIcon />
+  return JSON.parse(active) ? <WhatshotIcon style={{color: colors['heaterIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
+  : <WhatshotIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
 };
 
 const CustomWbSunnyIcon = ({active}) => {
-  return JSON.parse(active) ? <WbSunnyIcon style={{color: colors['ledIcon']}} /> : <WbSunnyIcon />
+  return JSON.parse(active) ? <WbSunnyIcon style={{color: colors['ledIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} /> :
+    <WbSunnyIcon  style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
 };
 
 const CustomOpacityIcon = ({active}) => {
-  return JSON.parse(active) ? <OpacityIcon style={{color: colors['waterpumpIcon']}} /> : <OpacityIcon />
+  return JSON.parse(active) ? <OpacityIcon style={{color: colors['waterpumpIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
+  : <OpacityIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
 };
 
 const CustomToysIcon = ({active}) => {
-  return JSON.parse(active) ? <ToysIcon className="spin" /> : <ToysIcon />
+  return JSON.parse(active) ? <ToysIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} className="spin" /> : <ToysIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
 };
 
 const defaultIcons = {

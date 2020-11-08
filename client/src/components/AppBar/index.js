@@ -31,7 +31,7 @@ export default function PermanentAppBar(props) {
               color='primary'>
         <Toolbar>
           <Typography className={classes.title} variant="h6">
-            스마트팜 관리시스템
+            Kairos
           </Typography>
           <div className={classes.grow} />
             <div style={{		borderRadius: '20px',

@@ -11,7 +11,6 @@ import axios from "axios";
 import {saveSetting} from "./redux/modules/ControlSetting";
 import {controlSwitch} from "./redux/modules/ControlSwitch";
 import {checkEmpty} from "./components/utils/CheckEmpty";
-import Background from "./views/Background/Background";
 
 const useStyles = makeStyles(() =>({
   video : {

@@ -6,6 +6,7 @@ import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles({
   controlCardButtons : {
@@ -45,7 +46,7 @@ export default function SwitchController() {
     const {colors} = require('root/values/colors');
     const classes = useStyles({
       componentBgColor : colors.component,
-      n_machines : machines.length
+      n_machines : machines.length,
     })
     return (
       <Card className={classes.controlCardButtons}>
@@ -56,7 +57,7 @@ export default function SwitchController() {
                       <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                         <IconWrapper key={machine} machine={machine} />
                       </Box>
-                        <CurrentChecker machine={machine}/>
+                      <CurrentChecker machine={machine}/>
                       <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                         <Switch key={machine} machine={machine} />
                       </Box>
