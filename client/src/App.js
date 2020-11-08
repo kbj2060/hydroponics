@@ -11,6 +11,7 @@ import axios from "axios";
 import {saveSetting} from "./redux/modules/ControlSetting";
 import {controlSwitch} from "./redux/modules/ControlSwitch";
 import {checkEmpty} from "./components/utils/CheckEmpty";
+import Background from "./views/Background/Background";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() =>({
   overflow:'none'
   },
   parent : {
-    backgroundColor:"#1E2425",
+    backgroundColor: props => props.backgroundColor,
     position: 'fixed',
     right: 0,
     bottom: 0,
@@ -33,10 +34,14 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  const classes = useStyles();
+  //const classes = useStyles();
   const {machines, autoItem} = require('root/values/preferences');
   const {defaultSetting} = require('root/values/defaults')
   const dispatch = useDispatch();
+  const {colors} = require('root/values/colors')
+  const classes = useStyles({
+    backgroundColor : colors['pageBackground']
+  });
 
   const getControlSetting = async () => {
     await axios.get('/api/get/load/auto', {

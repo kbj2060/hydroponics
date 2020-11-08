@@ -1,19 +1,38 @@
 import React, {useState, useEffect} from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
-import useStyles from '../../assets/jss/DashboardStyle';
 import Figure from "./Figure";
 import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
+import {makeStyles} from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles({
+  parentItem : {
+    borderRadius: '20px',
+    background: '#161717',
+    boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323',
+    textAlign : 'center',
+    padding : '0px 0px 20px 0px',
+    backgroundColor : props => props.componentBgColor,
+  },
+  figureCardDiv : {
+    display:'grid',
+    gridTemplateColumns: props => `${100/props.n_environment}% ${100/props.n_environment}% ${100/props.n_environment}% ${100/props.n_environment}%`,
+  },
+});
 
 export default function StatusDisplay(props) {
   const {statusUpdateTime} = require('root/values/time');
   const {environments} = require('root/values/preferences')
-
   const {plant} = props;
-  const classes = useStyles();
+  //const classes = useStyles();
   const {WordsTable} = require('root/values/strings');
   const {colors} = require('root/values/colors')
+  const classes = useStyles({
+    componentBgColor : colors['component'],
+    n_environment : environments.length,
+  });
 
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,

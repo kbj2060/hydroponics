@@ -10,20 +10,22 @@ import './FanOut.css'
 import {checkEmpty} from "../utils/CheckEmpty";
 import socket from "../../socket";
 
+const {colors} = require('root/values/colors');
+
 const CustomCoolerIcon = ({active}) => {
-  return JSON.parse(active) ? <AcUnitIcon style={{color: '#425DFF'}} /> : <AcUnitIcon />
+  return JSON.parse(active) ? <AcUnitIcon style={{color: colors['coolerIcon']}} /> : <AcUnitIcon />
 };
 
 const CustomWhatshotIcon = ({active}) => {
-  return JSON.parse(active) ? <WhatshotIcon style={{color: '#FF5C6F'}} /> : <WhatshotIcon />
+  return JSON.parse(active) ? <WhatshotIcon style={{color: colors['heaterIcon']}} /> : <WhatshotIcon />
 };
 
 const CustomWbSunnyIcon = ({active}) => {
-  return JSON.parse(active) ? <WbSunnyIcon style={{color: '#FFCC29'}} /> : <WbSunnyIcon />
+  return JSON.parse(active) ? <WbSunnyIcon style={{color: colors['ledIcon']}} /> : <WbSunnyIcon />
 };
 
 const CustomOpacityIcon = ({active}) => {
-  return JSON.parse(active) ? <OpacityIcon style={{color: '#36BEFF'}} /> : <OpacityIcon />
+  return JSON.parse(active) ? <OpacityIcon style={{color: colors['waterpumpIcon']}} /> : <OpacityIcon />
 };
 
 const CustomToysIcon = ({active}) => {

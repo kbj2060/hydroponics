@@ -24,7 +24,6 @@ const accountStyle = makeStyles(theme =>({
     accountCircle : {
       width: 'auto', 
       height: '90px', 
-      color: 'white',
     },
     item2 : {
       padding:'5px', 

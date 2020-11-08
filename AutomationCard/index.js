@@ -22,8 +22,8 @@ const ColorCircularProgress = withStyles({
 })(CircularProgress);
 
 const CustomBrightnessAutoOutlinedIcon = ({filled, onClick}) => {
-  console.log()
-  const color = filled ? '#FFCB3A' : 'white'
+  const {colors} = require('root/values/colors');
+  const color = filled ? colors['buttonOn'] : colors['buttonOff']
   return (
     <div onClick={onClick}>
       <BrightnessAutoOutlinedIcon style={{color: color}}/>

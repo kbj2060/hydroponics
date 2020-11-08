@@ -58,7 +58,7 @@ const appBarStyle = makeStyles(theme => ({
     color : "white"
   },
   notification: {
-    color : 'white',
+    color : 'black',
   }
 }));
 

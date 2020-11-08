@@ -1,21 +1,58 @@
 import React, {useCallback, useEffect} from 'react';
 import CustomLine from './CustomLine';
-import useStyles from '../../assets/jss/HistoryStyle';
 import TimerIcon from '../../assets/icons/TimerIcon';
 import Typography from '@material-ui/core/Typography';
 import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles(() =>({
+  foreground : {
+    position : 'relative',
+    height : 'auto',
+    width : 'auto',
+    padding : '3px',
+    backgroundColor : props => props.componentBgColor,
+    borderRadius: '20px',
+    background: '#161717',
+    boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323'
+  },
+  title : {
+    color: 'white',
+    fontWeight: 'bold',
+    padding: '1%',
+    fontSize : '1em'
+  },
+  updateInfo : {
+    margin : 0,
+    padding: '1%',
+    display : 'inlineBlock',
+    borderTopWidth : '1px',
+    borderTopStyle : 'solid',
+    borderTopColor : props => props.componentBgColor,
+    textAlign : 'left',
+    verticalAlign : 'middle',
+  },
+  updateTime : {
+    display : 'inline',
+    verticalAlign : 'middle',
+    fontSize : '0.7em',
+    fontWeight : 'bold',
+    color : 'white',
+  },
+}));
 
 export default function Index(props) {
   const {WordsTable} = require('root/values/strings');
+  const {colors} = require('root/values/colors');
   const {plants} = require('root/values/preferences');
-
   const { environment } = props;
-  const classes = useStyles();
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true)
-
+  const classes = useStyles({
+    componentBgColor : colors['component']
+  });
   // json 형태로 반환 받아 사용
   //  {
   //    '1': {

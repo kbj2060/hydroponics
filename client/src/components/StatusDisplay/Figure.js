@@ -5,10 +5,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
-    boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
-    backgroundColor : 'rgba(255, 255, 255, 0)',
     borderRadius: '50%',
-    border: props => '3px solid ' + props.plantColor,
+    background: '#161717',
+    boxShadow: 'inset 6px 6px 12px #0b0b0b,inset -6px -6px 12px #212323',
+    //boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
+    //borderRadius: '50%',
+    //border: props => '3px solid ' + props.plantColor,
     height: props => props.dimensions.width,
     margin: '5%',
     display: 'flex',

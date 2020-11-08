@@ -9,6 +9,12 @@ let getOptions = {
 		scales: {
 			xAxes: [{
 				display: true,
+				gridLines: {
+					color: 'white'
+				},
+				ticks: {
+					fontColor: "white", // this here
+				},
 				type: 'time',
 				time: {
 					unit: "hour",
@@ -18,6 +24,14 @@ let getOptions = {
 					parser: "YYYY/MM/DD HH:mm:ss",
 				}
 			}],
+			yAxes: [{
+				gridLines: {
+					color: 'white'
+				},
+				ticks: {
+					fontColor: "white", // this here
+				},
+			}]
 		},
 		/*annotation: {
 			annotations: [

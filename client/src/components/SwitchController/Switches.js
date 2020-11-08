@@ -26,7 +26,10 @@ const ColorCircularProgress = withStyles({
 
 const style = makeStyles({
   controlForm : {
-    margin : 'auto'
+    margin : 'auto',
+    borderRadius: '20px',
+    background: 'linear-gradient(145deg, #181919, #141515)',
+    boxShadow:  ' 8px 8px 16px #0b0b0b, -8px -8px 16px #212323',
   }
 });
 

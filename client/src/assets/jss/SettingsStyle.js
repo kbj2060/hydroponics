@@ -52,7 +52,7 @@ const settingsStyle = makeStyles(theme =>({
     textAlign:'center',
   },
   alignNameBox : {
-    color : 'white',
+    color : 'black',
     textAlign:'center',
     margin:'auto',
     display:'inline',

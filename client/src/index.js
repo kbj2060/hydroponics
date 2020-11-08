@@ -9,8 +9,8 @@ import {store} from "./redux/store";
 
 const theme = createMuiTheme({
   typography: {
-      "fontFamily" : '"Nanum Gothic", serif',
-    },
+    color : "black",
+  },
 })
 
 ReactDOM.render(

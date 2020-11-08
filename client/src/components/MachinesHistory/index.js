@@ -97,13 +97,16 @@ TablePaginationActions.propTypes = {
 };
 
 const useStyles2 = makeStyles({
+	root: {
+		flexShrink: 0,
+	},
 	container : {
-		boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
-		backgroundColor : 'rgba(255, 255, 255, 0.1)',
-		borderRadius: '0.5rem',
+		borderRadius: '20px',
+		background: '#161717',
+		boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323',
+		backgroundColor : props => props.componentBgColor,
 		height: '100%'},
 	text : {
-		fontFamily : "Nanum Gothic",
 		padding : '5px 0 5px 0',
 		color : 'white !important',
 		fontWeight : 'bold',
@@ -116,19 +119,25 @@ const useStyles2 = makeStyles({
 	},
 	table : {
 		height: '100%'
+	},
+	footer: {
+		color : 'white !important',
 	}
 });
 
 export default function MachineHistory() {
-  const classes = useStyles2();
-  const [page, setPage] = React.useState(0);
+  //const classes = useStyles2();
+	const {colors} = require('root/values/colors');
+	const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(false);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	const [refresh , setRefresh] = React.useState();
 	const {WordsTable} = require('root/values/strings');
-
+	const classes = useStyles2({
+		componentBgColor : colors['component']
+	})
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
   };
@@ -216,7 +225,7 @@ export default function MachineHistory() {
 					<TableFooter>
 					  <TableRow>
 						<TablePagination
-			        className={classes.text}
+			        className={classes.footer}
 						  rowsPerPageOptions={[5]}
 						  colSpan={3}
 						  count={rows.length}
