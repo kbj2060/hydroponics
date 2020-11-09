@@ -12,7 +12,7 @@ export const CustomIOSSwitch = withStyles((theme) => ({
   },
   switchBase: {
     border: 'none',
-    borderRadius: '15px',
+    borderRadius: '50%',
     background: colors.customTheme,
     overflow: 'hidden',
     boxShadow: colors.neumInShadow,
@@ -21,7 +21,8 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     alignItems:'center',
     transition: 'transform 0.4s cubic-bezier(0.85, 0.05, 0.18, 1.35)',
     '&$checked': {
-      transform: 'translateX(23px)',
+      overflow: 'hidden',
+      transform: 'translateX(22px)',
       '& + $track': {
         backgroundColor : colors.customTheme,
         boxShadow: colors.neumInShadow,
@@ -30,16 +31,16 @@ export const CustomIOSSwitch = withStyles((theme) => ({
       },
     },
     '&$focusVisible $thumb': {
-      border: 'none',
       overflow: 'hidden',
     },
   },
   thumb: {
+    overflow: 'hidden',
     width: 24,
     height: 24,
-    borderRadius: '15px',
+    borderRadius: '50%',
     background: colors.customTheme,
-    boxShadow:  colors.neumOutShadow,
+    border : 'none',
   },
   track: {
     border: 'none',

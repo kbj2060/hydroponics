@@ -4,7 +4,7 @@ module.exports = {
     '1' : "#8C8A7A",
     '2' : "#6F6C8C",
     '3' : "#7A828C",
-    'buttonOn' : "#6F6C8C",
+    'buttonOn' : "#595957",
     'buttonOff' : "#8C8A7A",
     "neumInShadow" : 'inset 6px 6px 12px #a5a4a0,inset -6px -6px 12px #ffffff',
     "neumOutShadow" : '6px 6px 12px #a5a4a0, -6px -6px 12px #ffffff',
@@ -12,7 +12,7 @@ module.exports = {
     'heaterIcon' : '#FF5C6F',
     'waterpumpIcon' : '#36BEFF',
     'ledIcon' : '#FFCC29',
-    'defaultIcon' : '#A6A5A1',
+    'defaultIcon' : '#595957',
     'fontColor' : '#595957',
     'graphGridColor' : '#595957'
   }

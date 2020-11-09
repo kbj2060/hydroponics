@@ -39,19 +39,20 @@ const useStyles = makeStyles((theme) => ({
 		'&:hover' : { color : '#FFCB3A'},
 		'&:active' : { transform : 'translateY(1px)'}
 	}),
-	autoButton : {
+	autoButtonDiv : {
 		width : '50px',
 		height : '50px',
 		borderRadius: '50%',
 		background: props => props.customTheme,
 		boxShadow: props => props.neumOutShadow,
-		margin: '0',
-		display : 'grid',
-		textAlign : 'center',
-		alignItems : 'center',
+		margin: 'auto',
+		display : 'inline-flex',
+		justifyContent : 'center',
+		textAlign: 'center'
 	},
 	autoButtonText : {
-		color : props => props.fontColor
+		color : props => props.fontColor,
+		margin: 'auto',
 	}
 }));
 
@@ -81,11 +82,9 @@ export default function SettingModal() {
 
     return(
 		<ClickAwayListener onClickAway={handleClose}>
-      <div>
+      <div className={classes.autoButtonDiv}>
         <Button onClick={handleOpen} type="button">
-					<div className={classes.autoButton}>
 						<Typography className={classes.autoButtonText}>A</Typography>
-					</div>
         </Button>
 
         <Modal

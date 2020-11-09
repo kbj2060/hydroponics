@@ -12,10 +12,8 @@ import socket from "../../socket";
 
 const {colors} = require('root/values/colors');
 
-
 const IconStyleHelper = onColor => {
-  const {colors} = require('root/values/colors');
-  let neum = { borderRadius : '50%', background: colors.customTheme, boxShadow:  colors.neumOutShadow }
+  let neum = {  }
   neum.color = onColor
   return neum
 }
