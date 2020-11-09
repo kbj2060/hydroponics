@@ -15,7 +15,6 @@ import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
 import {checkEmpty} from "../utils/CheckEmpty";
-import Box from "@material-ui/core/Box";
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -28,9 +27,6 @@ const ColorCircularProgress = withStyles({
 const style = makeStyles({
   controlForm : {
     margin : 'auto',
-    borderRadius: '20px',
-    background: 'linear-gradient(145deg, #181919, #141515)',
-    boxShadow:  ' 8px 8px 16px #0b0b0b, -8px -8px 16px #212323',
   },
   displayPowerOn : {
     paddingLeft : '10px',
@@ -52,7 +48,7 @@ function Switches(props) {
   const {colors} = require('root/values/colors');
   const classes = style({
     buttonOn : colors.buttonOn,
-    buttonOff : colors.buttonOff
+    buttonOff : colors.buttonOff,
   });
   const dispatch = useDispatch();
   const {WordsTable} = require('root/values/strings');

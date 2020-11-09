@@ -36,7 +36,10 @@ const useStyles1 = makeStyles({
 });
 
 function TablePaginationActions(props) {
-  const classes = useStyles1();
+	const {colors} = require('root/values/colors');
+	const classes = useStyles1({
+		fontColor : colors.fontColor
+	});
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
 
@@ -59,26 +62,24 @@ function TablePaginationActions(props) {
   return (
 	<div className={classes.root}>
 	  <IconButton
-    style={{color:'white'}}
+    style={{color: colors.fontColor}}
 		onClick={handleFirstPageButtonClick}
 		disabled={page === 0}
 		aria-label="first page"
 	  >
 		{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
 	  </IconButton>
-	  <IconButton style={{color:'white'}} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+	  <IconButton style={{color: colors.fontColor}} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
 		{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
 	  </IconButton>
-	  <IconButton
-    style={{color:'white'}}
+	  <IconButton style={{color: colors.fontColor}}
 		onClick={handleNextButtonClick}
 		disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 		aria-label="next page"
 	  >
 		{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 	  </IconButton>
-	  <IconButton
-    style={{color:'white'}}
+	  <IconButton style={{color: colors.fontColor}}
 		onClick={handleLastPageButtonClick}
 		disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 		aria-label="last page"
@@ -102,13 +103,12 @@ const useStyles2 = makeStyles({
 	},
 	container : {
 		borderRadius: '20px',
-		background: '#161717',
-		boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323',
-		backgroundColor : props => props.componentBgColor,
+		boxShadow: props => props.neumOutShadow,
+		background : props => props.customTheme,
 		height: '100%'},
 	text : {
 		padding : '5px 0 5px 0',
-		color : 'white !important',
+		color : props => props.fontColor,
 		fontWeight : 'bold',
 	},
 	statusOn : {
@@ -121,12 +121,11 @@ const useStyles2 = makeStyles({
 		height: '100%'
 	},
 	footer: {
-		color : 'white !important',
+		color : props => props.fontColor,
 	}
 });
 
 export default function MachineHistory() {
-  //const classes = useStyles2();
 	const {colors} = require('root/values/colors');
 	const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -136,9 +135,11 @@ export default function MachineHistory() {
 	const [refresh , setRefresh] = React.useState();
 	const {WordsTable} = require('root/values/strings');
 	const classes = useStyles2({
-		componentBgColor : colors['component'],
+		customTheme : colors.customTheme,
 		colorOn : colors['buttonOn'],
-		colorOff : colors['buttonOff']
+		colorOff : colors['buttonOff'],
+		neumOutShadow : colors.neumOutShadow,
+		fontColor : colors.fontColor,
 	})
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);

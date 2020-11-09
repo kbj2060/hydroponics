@@ -22,7 +22,7 @@ const useStyles = makeStyles(() =>({
   overflow:'none'
   },
   parent : {
-    backgroundColor: props => props.backgroundColor,
+    backgroundColor: props => props.customTheme,
     position: 'fixed',
     right: 0,
     bottom: 0,
@@ -39,7 +39,7 @@ export default function App() {
   const dispatch = useDispatch();
   const {colors} = require('root/values/colors')
   const classes = useStyles({
-    backgroundColor : colors['pageBackground']
+    customTheme : colors.customTheme
   });
 
   const getControlSetting = async () => {

@@ -5,8 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
-import useStyles from '../../assets/jss/AppBarStyle.js'
 import Menu from '../Menu';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 
 const MenuButton = () => {
@@ -19,8 +19,82 @@ const MenuButton = () => {
   )
 }
 
+const drawerWidth = 240;
+const useStyles =  makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    backgroundColor : 'rgba(255, 255, 255, 0)',
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
+  appBar: {
+    backgroundColor : 'rgba(255, 255, 255, 0)',
+    [theme.breakpoints.up('md')]: {
+      marginRight : -drawerWidth,
+    },
+  },
+  drawer: {
+    display : 'none',
+    [theme.breakpoints.up('md')]: {
+      borderRadius: '0.5rem',
+      display : 'contents',
+      width: drawerWidth,
+      flexShrink: 0,
+      overflow : 'hidden',
+    },
+  },
+  paper: {
+    width: drawerWidth,
+    borderTopLeftRadius: '0.5rem',
+    borderBottomLeftRadius: '0.5rem',
+    overflowX : 'hidden',
+  },
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing(3),
+  },
+  title: {
+    fontFamily : "Tangerine, cursive",
+    justifyContent: 'center',
+    fontSize : 'xx-large',
+    width : '100%',
+    flexGrow: 1,
+    textAlign: "center",
+    display: 'flex',
+    color : props => props.fontColor
+  },
+  notification: {
+    color : 'black',
+  },
+  menuWrapper : {
+    borderRadius: '20px',
+    background: props => props.customTheme,
+    boxShadow: props => props.neumOutShadow
+  }
+}))
+
 export default function PermanentAppBar(props) {
-  const classes = useStyles();
+  const {colors} = require('root/values/colors');
+  const classes = useStyles({
+    customTheme : colors.customTheme,
+    neumOutShadow : colors.neumOutShadow,
+    fontColor : colors.fontColor,
+  });
 
   return (  
     <div className={classes.root}>
@@ -34,9 +108,7 @@ export default function PermanentAppBar(props) {
             Kairos
           </Typography>
           <div className={classes.grow} />
-            <div style={{		borderRadius: '20px',
-              background: '#161717',
-              boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323',}}>
+            <div className={classes.menuWrapper} >
               <Menu MenuButton={MenuButton} />
             </div>
         </Toolbar>

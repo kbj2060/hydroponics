@@ -24,7 +24,6 @@ const dashboardStyle = makeStyles(() =>({
 
 
   optionBox : {
-    color : 'white',
     textAlign:'center',
     margin:'auto',
     display:'inline',

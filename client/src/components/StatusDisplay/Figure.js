@@ -7,11 +7,8 @@ const useStyles = makeStyles({
   root: {
     borderRadius: '50%',
     background: '#161717',
-    boxShadow: 'inset 6px 6px 12px #0b0b0b,inset -6px -6px 12px #212323',
-    //boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
+    boxShadow: props => props.neumInShadow,
     backgroundColor : 'rgba(255, 255, 255, 0)',
-    //borderRadius: '50%',
-    //border: props => '3px solid ' + props.plantColor,
     height: props => props.dimensions.width,
     margin: '5%',
     display: 'flex',
@@ -21,12 +18,12 @@ const useStyles = makeStyles({
   title : {
     fontFamily : "Nanum Gothic",
     padding : '5px 0 5px 0',
-    color : 'white',
+    color : props => props.fontColor,
     fontWeight : 'bold'
   },
   environmentValues: {
     padding : '5px 0 5px 0',
-    color : 'white',
+    color : props => props.fontColor,
     textAlign : 'center',
     fontSize : '1rem',
     fontWeight : 'bold',
@@ -47,6 +44,8 @@ export default function Figure(props) {
     dimensions: dimensions,
     n_environment : n_environment,
     plantColor : colors[plant],
+    neumInShadow : colors.neumInShadow,
+    fontColor : colors.fontColor
   });
 
   useLayoutEffect(() => {

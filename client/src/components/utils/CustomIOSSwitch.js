@@ -2,6 +2,8 @@ import {withStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import React from "react";
 
+
+const {colors} = require('root/values/colors');
 export const CustomIOSSwitch = withStyles((theme) => ({
   root: {
     width: 48,
@@ -11,10 +13,9 @@ export const CustomIOSSwitch = withStyles((theme) => ({
   switchBase: {
     border: 'none',
     borderRadius: '15px',
-    background: '#161717',
+    background: colors.customTheme,
     overflow: 'hidden',
-    boxShadow: 'inset -5px 5px 10px #090909, \n' +
-      '            inset 5px -5px 10px #232525',
+    boxShadow: colors.neumInShadow,
     padding: 1,
     display:'flex',
     alignItems:'center',
@@ -22,8 +23,8 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     '&$checked': {
       transform: 'translateX(23px)',
       '& + $track': {
-        backgroundColor : '#95A68A',
-        boxShadow: 'inset -6px 6px 12px #717e69, inset 6px -6px 12px #b9ceab',
+        backgroundColor : colors.customTheme,
+        boxShadow: colors.neumInShadow,
         opacity: 1,
         overflow: 'hidden',
       },
@@ -37,15 +38,14 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     width: 24,
     height: 24,
     borderRadius: '15px',
-    background: '#161717',
-    boxShadow:  '5px 5px 10px #090909, \n' +
-      '             -5px -5px 10px #232525',
+    background: colors.customTheme,
+    boxShadow:  colors.neumOutShadow,
   },
   track: {
     border: 'none',
     borderRadius: 26 / 2,
-    backgroundColor: '#C1D4D9',
-    boxShadow : 'inset 6px 6px 12px #93a1a5,inset -6px -6px 12px #efffff',
+    backgroundColor: colors.customTheme,
+    boxShadow : colors.neumInShadow,
     opacity: 1,
     transition: theme.transitions.create(['background-color', 'border']),
   },

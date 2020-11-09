@@ -6,19 +6,19 @@ import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
 import {makeStyles} from "@material-ui/core/styles";
 
+
 const useStyles = makeStyles(() =>({
   foreground : {
     position : 'relative',
     height : 'auto',
     width : 'auto',
     padding : '3px',
-    backgroundColor : props => props.componentBgColor,
+    background : props => props.customTheme,
     borderRadius: '20px',
-    background: '#161717',
-    boxShadow:  ' 6px 6px 12px #0b0b0b, -6px -6px 12px #212323'
+    boxShadow: props => props.neumOutShadow
   },
   title : {
-    color: 'white',
+    color : props => props.fontColor,
     fontWeight: 'bold',
     padding: '1%',
     fontSize : '1em'
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() =>({
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : props => props.componentBgColor,
+    borderTopColor : props => props.customTheme,
     textAlign : 'left',
     verticalAlign : 'middle',
   },
@@ -38,7 +38,7 @@ const useStyles = makeStyles(() =>({
     verticalAlign : 'middle',
     fontSize : '0.7em',
     fontWeight : 'bold',
-    color : 'white',
+    color : props => props.fontColor,
   },
 }));
 
@@ -51,7 +51,9 @@ export default function Index(props) {
   const [lastUpdate, setLastUpdate] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true)
   const classes = useStyles({
-    componentBgColor : colors['component']
+    customTheme : colors.customTheme,
+    neumOutShadow : colors.neumOutShadow,
+    fontColor : colors.fontColor
   });
   // json 형태로 반환 받아 사용
   //  {
@@ -100,7 +102,7 @@ export default function Index(props) {
         <Typography className={classes.title}> {WordsTable[environment]} </Typography>
         <div className={classes.updateInfo}>
           <TimerIcon />
-          <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate}</Typography>
+          <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate} </Typography>
         </div>
       </div>: <></>
     )

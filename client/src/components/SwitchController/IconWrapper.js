@@ -12,28 +12,37 @@ import socket from "../../socket";
 
 const {colors} = require('root/values/colors');
 
+
+const IconStyleHelper = onColor => {
+  const {colors} = require('root/values/colors');
+  let neum = { borderRadius : '50%', background: colors.customTheme, boxShadow:  colors.neumOutShadow }
+  neum.color = onColor
+  return neum
+}
+
 const CustomCoolerIcon = ({active}) => {
-  return JSON.parse(active) ? <AcUnitIcon style={{color: colors['coolerIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
-    : <AcUnitIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
+  return JSON.parse(active) ? <AcUnitIcon style={IconStyleHelper(colors['coolerIcon'])} />
+    : <AcUnitIcon style={IconStyleHelper(colors.defaultIcon)}/>
 };
 
 const CustomWhatshotIcon = ({active}) => {
-  return JSON.parse(active) ? <WhatshotIcon style={{color: colors['heaterIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
-  : <WhatshotIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
+  return JSON.parse(active) ? <WhatshotIcon style={IconStyleHelper(colors['heaterIcon'])} />
+  : <WhatshotIcon style={IconStyleHelper(colors['defaultIcon'])}/>
 };
 
 const CustomWbSunnyIcon = ({active}) => {
-  return JSON.parse(active) ? <WbSunnyIcon style={{color: colors['ledIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} /> :
-    <WbSunnyIcon  style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
+  return JSON.parse(active) ? <WbSunnyIcon style={IconStyleHelper(colors['ledIcon'])} /> :
+    <WbSunnyIcon  style={IconStyleHelper(colors.defaultIcon)}/>
 };
 
 const CustomOpacityIcon = ({active}) => {
-  return JSON.parse(active) ? <OpacityIcon style={{color: colors['waterpumpIcon'], borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
-  : <OpacityIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} />
+  return JSON.parse(active) ? <OpacityIcon style={IconStyleHelper(colors['waterpumpIcon'])}  />
+  : <OpacityIcon style={IconStyleHelper(colors.defaultIcon)} />
 };
 
 const CustomToysIcon = ({active}) => {
-  return JSON.parse(active) ? <ToysIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515)', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}} className="spin" /> : <ToysIcon style={{borderRadius : '50%',background: 'linear-gradient(225deg, #181919, #141515', boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'}}/>
+  return JSON.parse(active) ? <ToysIcon style={IconStyleHelper(colors.defaultIcon)} className="spin" />
+  : <ToysIcon  style={IconStyleHelper(colors.defaultIcon)}/>
 };
 
 const defaultIcons = {
@@ -48,7 +57,6 @@ export default function IconWrapper({machine}) {
   const [animation, setAnimation] = useState(false);
   const [icon ,setIcon] = useState(defaultIcons[machine]);
   const [isLoading, setIsLoading] = React.useState(true);
-
 
   const getIcon = (machine, active) => {
     const icons = {

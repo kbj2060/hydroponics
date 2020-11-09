@@ -10,11 +10,10 @@ import {makeStyles} from "@material-ui/core/styles";
 const useStyles = makeStyles({
   parentItem : {
     borderRadius: '20px',
-    background: '#161717',
-    boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323',
+    boxShadow: props => props.neumOutShadow,
     textAlign : 'center',
     padding : '0px 0px 20px 0px',
-    backgroundColor : props => props.componentBgColor,
+    background : props => props.customTheme,
   },
   figureCardDiv : {
     display:'grid',
@@ -30,8 +29,9 @@ export default function StatusDisplay(props) {
   const {WordsTable} = require('root/values/strings');
   const {colors} = require('root/values/colors')
   const classes = useStyles({
-    componentBgColor : colors['component'],
+    customTheme : colors.customTheme,
     n_environment : environments.length,
+    neumOutShadow : colors.neumOutShadow
   });
 
   const [recentStatus, setRecentStatus] = useState({

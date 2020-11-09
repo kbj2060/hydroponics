@@ -43,15 +43,15 @@ const useStyles = makeStyles((theme) => ({
 		width : '50px',
 		height : '50px',
 		borderRadius: '50%',
-		background: 'linear-gradient(225deg, #141515, #181919)',
-		boxShadow:  ' -6px 6px 12px #111111, 6px -6px 12px #1b1d1d',
+		background: props => props.customTheme,
+		boxShadow: props => props.neumOutShadow,
 		margin: '0',
 		display : 'grid',
 		textAlign : 'center',
 		alignItems : 'center',
 	},
 	autoButtonText : {
-		color : 'white'
+		color : props => props.fontColor
 	}
 }));
 
@@ -64,7 +64,12 @@ const customBackdrop = withStyles(() => ({
 
 export default function SettingModal() {
   	const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
+  	const {colors} = require('root/values/colors');
+    const classes = useStyles({
+			customTheme : colors.customTheme,
+			neumOutShadow: colors.neumOutShadow,
+			fontColor : colors.fontColor
+		});
 
   	const handleOpen = () => {
       setOpen((prev) => !prev);
@@ -77,7 +82,6 @@ export default function SettingModal() {
     return(
 		<ClickAwayListener onClickAway={handleClose}>
       <div>
-
         <Button onClick={handleOpen} type="button">
 					<div className={classes.autoButton}>
 						<Typography className={classes.autoButtonText}>A</Typography>
@@ -93,9 +97,7 @@ export default function SettingModal() {
             timeout: 500,
           }}>
 				  <div className={classes.paper}>
-
 						<CustomStepper modalClose={handleClose}/>
-
           </div>
         </Modal>
       </div>

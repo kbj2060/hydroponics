@@ -5,6 +5,7 @@
 html {
     width: auto;
     height: fit-content;
+    color : black;
 }
 
 body {
@@ -23,19 +24,19 @@ code {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 20px #aaa;
+  box-shadow: inset 0 0 20px #A6A5A1;
   border-radius: 20px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #aaa;
+  background: #A6A5A1;
   border-radius: 20px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #999;
+  background: #D9D8D2;
 }
 
 /* Change autocomplete styles in WebKit */

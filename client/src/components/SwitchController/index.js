@@ -6,7 +6,6 @@ import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles({
   controlCardButtons : {
@@ -14,8 +13,8 @@ const useStyles = makeStyles({
     position: 'relative',
     padding: '3% 10%',
     borderRadius: '20px',
-    background: '#161717',
-    boxShadow:  '6px 6px 12px #0b0b0b,-6px -6px 12px #212323'
+    background: props => props.customTheme,
+    boxShadow: props => props.neumOutShadow
   },
   controlCardDiv : {
     paddingBottom:'3% 0 3% 0',
@@ -45,8 +44,9 @@ export default function SwitchController() {
     const {machines} = require('root/values/preferences');
     const {colors} = require('root/values/colors');
     const classes = useStyles({
-      componentBgColor : colors.component,
+      customTheme : colors.customTheme,
       n_machines : machines.length,
+      neumOutShadow : colors.neumOutShadow
     })
     return (
       <Card className={classes.controlCardButtons}>
