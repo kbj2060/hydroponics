@@ -34,10 +34,12 @@ const style = makeStyles({
   },
   displayPowerOn : {
     paddingLeft : '10px',
+    width : '40px',
     color : props => props.buttonOn
   },
   displayPowerOff : {
     paddingLeft : '10px',
+    width : '40px',
     color : props => props.buttonOff
   }
 });
