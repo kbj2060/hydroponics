@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Menu() {
+	const {colors} = require('root/values/colors')
 	const dispatch = useDispatch();
 	const {pages} = require('root/values/preferences')
 	const n_pages = pages.length;
@@ -98,7 +99,7 @@ export default function Menu() {
 				type="button"
 				aria-label="show more"
 				aria-haspopup="true">
-				<MenuIcon style={{ color: 'white' }} />
+				<MenuIcon style={{ color: colors.fontColor }} />
 			</IconButton>
 
 			<Modal

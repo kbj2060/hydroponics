@@ -1,7 +1,7 @@
 import React from 'react';
 import {checkEmpty} from "../utils/CheckEmpty";
 import 'chartjs-plugin-annotation';
-
+const {colors} = require('root/values/colors');
 let getOptions = {
 		legend: {
 			display: true
@@ -9,6 +9,12 @@ let getOptions = {
 		scales: {
 			xAxes: [{
 				display: true,
+				gridLines: {
+					color: colors.graphGridColor
+				},
+				ticks: {
+					fontColor: colors.graphGridColor
+				},
 				type: 'time',
 				time: {
 					unit: "hour",
@@ -18,6 +24,14 @@ let getOptions = {
 					parser: "YYYY/MM/DD HH:mm:ss",
 				}
 			}],
+			yAxes: [{
+				gridLines: {
+					color: colors.graphGridColor
+				},
+				ticks: {
+					fontColor: colors.graphGridColor
+				},
+			}]
 		},
 		/*annotation: {
 			annotations: [
