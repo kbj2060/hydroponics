@@ -12,9 +12,9 @@ module.exports = {
     "dashboard" : '홈',
     "settings" : '설정',
     "logout" : '로그아웃',
-    'plant1' : 'CENTER',
-    'plant2' : 'LEFT',
-    'plant3' : 'RIGTH'
+    'plant-s1-1' : 'CENTER',
+    'plant-s1-2' : 'LEFT',
+    'plant-s1-3' : 'RIGTH'
   },
   unitsTable : {
     'humidity': '%',

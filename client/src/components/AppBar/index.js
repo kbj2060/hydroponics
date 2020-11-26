@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useLayoutEffect, useRef, useState} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -72,7 +72,8 @@ const useStyles =  makeStyles(theme => ({
     fontFamily : "Tangerine, cursive",
     justifyContent: 'center',
     fontSize : 'xx-large',
-    width : '100%',
+    position : 'absolute',
+    width : props => `${props.page_width}px`,
     flexGrow: 1,
     textAlign: "center",
     display: 'flex',
@@ -90,11 +91,31 @@ const useStyles =  makeStyles(theme => ({
 
 export default function PermanentAppBar(props) {
   const {colors} = require('root/values/colors');
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const [dimensions, setDimensions] = useState({width: 0, height: 0});
+  const roundFigureRef = useRef();
+
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor,
+    page_width : width
   });
+
+  useLayoutEffect(() => {
+    if (roundFigureRef.current) {
+      setDimensions({
+        width: roundFigureRef.current.offsetWidth,
+        height: roundFigureRef.current.offsetHeight
+      });
+    }
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth)
+    });
+    return () => {
+      setDimensions({width: 0, height: 0 })
+    }
+  }, [width]);
 
   return (  
     <div className={classes.root}>
@@ -102,7 +123,8 @@ export default function PermanentAppBar(props) {
       <AppBar position="sticky"
               className={classes.appBar}
               elevation={0}
-              color='primary'>
+              color='primary'
+              ref={roundFigureRef}>
         <Toolbar>
           <Typography className={classes.title} variant="h6">
             Kairos

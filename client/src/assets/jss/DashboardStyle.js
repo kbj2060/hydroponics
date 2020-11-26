@@ -21,8 +21,6 @@ const dashboardStyle = makeStyles(() =>({
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
   },
-
-
   optionBox : {
     textAlign:'center',
     margin:'auto',
@@ -45,8 +43,6 @@ const dashboardStyle = makeStyles(() =>({
   item : {
     padding:'8px',
   },
-
-
   figureCardDiv : {
     display:'grid',
     gridTemplateColumns: '33.3% 33.3% 33.3%',

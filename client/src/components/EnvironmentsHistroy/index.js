@@ -74,8 +74,10 @@ export default function Index(props) {
     await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment],
+        section: "s1"
       }
     }).then(({data})=> {
+      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);
