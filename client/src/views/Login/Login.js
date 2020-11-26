@@ -163,12 +163,14 @@ export default function Login() {
     }
 
     useEffect(() => {
+      const {pages} = require('root/values/preferences')
+
       //TODO : 로그인 성공 후 다시 로그인 페이지로 들어갈 시 처리.
       console.log(store.getState()['authentication']);
       if (auth.login.status === 'INIT'){ return; }
 
       if ( !checkEmpty(auth) && auth.login.status === "SUCCESS" ){
-        history.push("/dashboard")
+        history.push(`/${pages[0]}`)
       } else { handleClickOpen(); }
 
       return () => {resetAuth()}

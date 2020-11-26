@@ -5,7 +5,7 @@ module.exports = {
   mqttURL : "mqtt://192.168.0.3",
   socketIoPort : "9000",
   pages : [
-    '무들로 29', 'setting', 'logout'
+    '무들로29', 'setting', 'logout'
   ],
   machines: [
     'cooler', 'heater', 'led', 'fan', 'waterpump'
