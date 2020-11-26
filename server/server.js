@@ -194,14 +194,45 @@ app.get('/api/get/query/last', (req, res) => {
 /*
  * 기본 쿼리 구조 끝
  * ---------------------------------------------------------------------------------------------------------------------
+ * 섹션 시작
+ */
+
+app.get('/api/get/section', (req, res) => {
+  try {
+    const sql = `SELECT id, section_name FROM iot.section;`
+    connection.query(sql, (err, rows) => {
+      let result = {}
+      rows.forEach((row, index) => {
+        result[row.id] = row.section_name 
+      })
+      console.log({"sections" : result})
+      res.send({"sections" : result});
+    })
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SECTIONS QUERY ERROR : ${err}`
+    })
+  }
+});
+
+
+/*
+ * 섹션 끝
+ * ---------------------------------------------------------------------------------------------------------------------
  * 환경 설정 시작
  */
 app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
+    const section = req.query['section'];
+
     const sql = `SELECT section, ${environment}, created
                 FROM iot.env
-                WHERE DATE_FORMAT(iot.env.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+                WHERE 
+                  DATE_FORMAT(iot.env.created, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') 
+                AND
+                  section LIKE \"%${section}%\"
                 ORDER BY id DESC ;`;
     connection.query(
       sql, (err, rows) => {
@@ -217,11 +248,71 @@ app.get('/api/get/environment/history', (req, res) => {
     })
   }
 });
+
+// Android
+app.get('/api/get/environment/average', (req, res) => {
+  try {
+    const section = req.query['section'];
+    const sql = `SELECT section, temperature, humidity, co2 FROM iot.env
+                WHERE id in (SELECT max(id) FROM iot.env GROUP BY section )
+                ORDER BY id DESC;`
+    connection.query(sql, (err, rows) => {
+      let avgs = {'temperature' : 0, 'humidity' : 0, 'co2' : 0}
+      let n_subsection = 0;
+      rows.forEach((row, index) => {
+        if(!row.section.includes(`${section}-`)){ return false } 
+        else{ n_subsection++ }
+        avgs['temperature'] += row['temperature']
+        avgs['humidity'] += row['humidity']
+        avgs['co2'] += row['co2']
+      })
+      avgs['temperature'] = parseInt( avgs['temperature'] / n_subsection)
+      avgs['humidity'] = parseInt( avgs['humidity'] / n_subsection)
+      avgs['co2'] = parseInt( avgs['co2'] / n_subsection)
+        console.log(avgs);
+      res.send(avgs);
+    })
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+
 /*
  * 환경 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------
  * 스위치 설정 시작
  */
+//Android
+app.get('/api/get/switch/now', (req, res) => {
+  try{
+    const sql = `SELECT section, machine, status FROM iot.switch
+                WHERE id in (SELECT max(id) FROM iot.switch GROUP BY section, machine)
+                ORDER BY id DESC;`
+    connection.query(sql, (err, rows) => {
+        let results = {} 
+        rows.forEach((row, index) => {
+            if(row.section === null) { return }
+            if(row.status === 1){ 
+                if(!results.hasOwnProperty(`${row.section}`)){
+                    results[`${row.section}`] = [row.machine];
+                } else {
+                    results[`${row.section}`].push(row.machine)
+                } 
+            }
+        })
+        console.log({"switches" : results});
+        res.send({"switches" : results});
+      }
+    )} catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET CURRENT SWITCH HISTORY QUERY ERROR : ${err}`
+    })
+  }
+})
 
 app.get('/api/get/switch/history', (req, res) => {
   try{
@@ -306,11 +397,7 @@ app.get('/api/get/current', (req, res) => {
     const selects = req.query['selects'].join(",");
     const machine = req.query['machine'];
     const sql = `SELECT ${selects} FROM iot.current
-                WHERE id 
-                in (SELECT max(id)
-                  FROM iot.current
-                  WHERE machine = \"${machine}\"
-                  GROUP BY section )
+                WHERE id in (SELECT max(id) FROM iot.current WHERE machine = \"${machine}\" GROUP BY section )
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
       let results = groupBy(rows, "section")
@@ -453,7 +540,7 @@ function getLocaleMoment(date) { return moment.utc(date).local().format('YYYY/MM
 const cleanHistoryDict = (res, env) => {
   let dic = Object({})
   for (let [key, value] of Object.entries(res)) {
-    value.map((v) => {
+    value.forEach((v) => {
       const date = getLocaleMoment(v['created']);
       dic[date] = v[env]
     })

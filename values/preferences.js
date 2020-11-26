@@ -5,7 +5,7 @@ module.exports = {
   mqttURL : "mqtt://192.168.0.3",
   socketIoPort : "9000",
   pages : [
-    'dashboard', 'logout'
+    '무들로 29', 'setting', 'logout'
   ],
   machines: [
     'cooler', 'heater', 'led', 'fan', 'waterpump'
@@ -21,7 +21,7 @@ module.exports = {
     'co2', 'humidity', 'temperature'
   ],
   plants: [
-    '1', '2', '3'
+    's1-1', 's1-2', 's1-3'
   ],
   autoItem: [
     'led', 'heater','cooler', 'fan', 'waterpump'

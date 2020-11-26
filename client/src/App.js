@@ -11,6 +11,7 @@ import axios from "axios";
 import {saveSetting} from "./redux/modules/ControlSetting";
 import {controlSwitch} from "./redux/modules/ControlSwitch";
 import {checkEmpty} from "./components/utils/CheckEmpty";
+import Setting from "./views/Setting/Setting";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -96,8 +97,11 @@ export default function App() {
           <Route exact path="/">
             <Login />
           </Route>
-          <Route exact path="/dashboard" >
+          <Route exact path="/무들로29" >
             <Dashboard />
+          </Route>
+          <Route exact path="/setting" >
+            <Setting />
           </Route>
         </div>
       </BrowserRouter>

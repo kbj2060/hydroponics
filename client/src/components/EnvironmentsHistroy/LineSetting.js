@@ -13,7 +13,7 @@ let getOptions = {
 					color: colors.graphGridColor
 				},
 				ticks: {
-					fontColor: colors.graphGridColor
+					fontColor: colors.fontColor
 				},
 				type: 'time',
 				time: {
@@ -81,13 +81,13 @@ export default function LineSetting (history, environment) {
 		let n;
 		let datasets = []
 		for(n = 0; n < n_plant; n++){
-			let num = plants[n];
+			let section = plants[n];
 			datasets.push({
-				label: WordsTable[`plant${num}`],
+				label: WordsTable[`plant-${section}`],
 				fill: false,
 				lineTension: 0.5,
 				backgroundColor: '#efcf76',
-				borderColor: `${colors[num]}`,
+				borderColor: `${colors[section]}`,
 				borderWidth: 2,
 				pointRadius: 0,
 				data: []

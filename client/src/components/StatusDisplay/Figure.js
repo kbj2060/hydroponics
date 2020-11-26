@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   root: {
     borderRadius: '50%',
-    background: '#161717',
+    background: props => props.customTheme,
     boxShadow: props => props.neumInShadow,
     backgroundColor : 'rgba(255, 255, 255, 0)',
     height: props => props.dimensions.width,
@@ -43,6 +43,7 @@ export default function Figure(props) {
   const classes = useStyles({
     dimensions: dimensions,
     n_environment : n_environment,
+    customTheme : colors.customTheme,
     plantColor : colors[plant],
     neumInShadow : colors.neumInShadow,
     fontColor : colors.fontColor

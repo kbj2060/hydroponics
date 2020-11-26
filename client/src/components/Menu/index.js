@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 		'&:active' : { transform : 'translateY(1px)'}
 	}),
 	header : {
+		fontFamily : "Tangerine, cursive",
 		fontSize : '2em',
 		borderBottom : '1px solid',
 		paddingBottom : '18.7px',
@@ -93,7 +94,6 @@ export default function Menu() {
 	return (
 		<ClickAwayListener onClickAway={handleClose}>
 		<div>
-
 			<IconButton
 				onClick={handleOpen}
 				type="button"
@@ -115,10 +115,11 @@ export default function Menu() {
 				<div className={classes.paper}>
 
 					<div style={{height: "30%"}}>
-						<h1 className={classes.header}>WJ</h1>
+						<h1 className={classes.header}>Kairos</h1>
 					</div>
 					<div style={{height: "70%"}}>
-						<LinkButton onClick={() => {handleClick("dashboard")}} value={"홈"} to={"dashboard"} buttonDesign={classes.menuButton} />
+						<LinkButton  value={"무들로29"} to={"무들로29"} buttonDesign={classes.menuButton} />
+						<LinkButton  value={"설정"} to={"setting"} buttonDesign={classes.menuButton} />
 						<LinkButton onClick={() => {handleClick("logout")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>

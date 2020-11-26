@@ -8,6 +8,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import "../../assets/css/AutomationCircle.scss"
 import CustomStepper from "./CustomStepper";
 import {Typography} from "@material-ui/core";
+import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -53,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
 	autoButtonText : {
 		color : props => props.fontColor,
 		margin: 'auto',
+	},
+	autoIcon : {
+		color : props => props.defaultIconColor
 	}
 }));
 
@@ -69,7 +73,8 @@ export default function SettingModal() {
     const classes = useStyles({
 			customTheme : colors.customTheme,
 			neumOutShadow: colors.neumOutShadow,
-			fontColor : colors.fontColor
+			fontColor : colors.fontColor,
+			defaultIconColor : colors.defaultIcon
 		});
 
   	const handleOpen = () => {
@@ -84,7 +89,7 @@ export default function SettingModal() {
 		<ClickAwayListener onClickAway={handleClose}>
       <div className={classes.autoButtonDiv}>
         <Button onClick={handleOpen} type="button">
-						<Typography className={classes.autoButtonText}>A</Typography>
+					<AllInclusiveIcon className={classes.autoIcon}/>
         </Button>
 
         <Modal

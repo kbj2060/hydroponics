@@ -1,6 +1,5 @@
 import React,{ useEffect } from 'react';
 import Background from '../Background/Background';
-import useStyles from '../../assets/jss/LoginStyle';
 import backgroundImage from '../../assets/img/background2.jpg'
 import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
@@ -17,18 +16,82 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {resetState} from "../../components/LocalStorage";
+import {makeStyles} from "@material-ui/core/styles";
 
+const {colors} = require('root/values/colors')
+const useStyles = makeStyles(()=>({
+  root : {
+    width: 'auto',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginForm : {
+    borderRadius : '10px',
+    backgroundColor: props => props.customTheme,
+    boxShadow: props => props.neumOutShadow,
+    width:'300px',
+    height:'300px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign : 'center',
+  },
+  login : {
+    display : 'block',
+    border:  'none',
+    borderBottom:  props => `solid 1px ${props.fontColor}`,
+    margin: '5px 0 5px 0',
+    '&:focus' : {
+      borderBottom: props => `solid 1px ${props.fontColor}`,
+      outline: '0',
+      boxShadow: '0 2px 6px -8px rgba($primary, .45)',
+    },
+  },
+  loginButton : {
+    cursor: 'pointer',
+    backgroundColor: props => props.customTheme,
+    width:  'auto',
+    minWidth:  '100px',
+    borderRadius:  '24px',
+    textAlign:  'center',
+    padding:  '15px 40px',
+    marginTop:  '20px',
+    color:  props => props.fontColor,
+    fontSize:  '14px',
+    marginLeft:  'auto',
+    fontWeight:  '500',
+    boxShadow: props => props.neumOutShadow,
+    border:  'none',
+    transition:  'all .3s ease',
+    outline: '0',
+  },
+  title : {
+    color: props => props.fontColor,
+    fontSize : 'xx-large',
+    marginTop:'0px',
+    fontFamily : "Tangerine, cursive",
+  },
+  input : {
+    color : props => props.fontColor
+  }
+}));
 
 const CssTextField = withStyles({
   root: {
     '& .MuiInput-underline:after': {
-      borderBottomColor: 'black',
+      borderBottomColor: colors.fontColor,
     }
   },
 })(TextField);
 
 export default function Login() {
-    const classes = useStyles();
+    const classes = useStyles({
+      customTheme : colors.customTheme,
+      neumOutShadow : colors.neumOutShadow,
+      fontColor : colors.fontColor,
+    });
     const dispatch = useDispatch();
     const [login, setLogin] = React.useState({
         name: "",
@@ -112,15 +175,19 @@ export default function Login() {
     }, [auth, history])
 
     return(
-    <Background image={backgroundImage}>
-        <div className={classes.loginForm}>
+      <div className={classes.root}>
+      <div className={classes.loginForm}>
             <form>
-              <p className={classes.title}>WJ  Corporation</p>
-              <CssTextField id="name" className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
-              <CssTextField id="pw" className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
+              <p className={classes.title}>Kairos</p>
+              <CssTextField id="name" InputProps={{
+                className: classes.input
+              }} className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
+              <CssTextField id="pw" InputProps={{
+                className: classes.input
+              }} className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
               <div>
                 <Link to={`/dashboard`} forcerefresh="true">
-                  <button onClick={handleSubmit} className={classes.loginButton} type="submit" >Log in</button>
+                  <button onClick={handleSubmit} className={classes.loginButton} type="submit" >로그인</button>
                 </Link>
               </div>
               <div>
@@ -145,6 +212,6 @@ export default function Login() {
               </div>
             </form>
         </div>
-    </Background>    
+      </div>
     )
 }
