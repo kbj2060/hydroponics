@@ -72,9 +72,7 @@ const useStyles =  makeStyles(theme => ({
     fontFamily : "Tangerine, cursive",
     justifyContent: 'center',
     fontSize : 'xx-large',
-    position : 'absolute',
-    width : props => `${props.page_width}px`,
-    flexGrow: 1,
+    flexGrow: 10000,
     textAlign: "center",
     display: 'flex',
     color : props => props.fontColor
@@ -99,7 +97,6 @@ export default function PermanentAppBar(props) {
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor,
-    page_width : width
   });
 
   useLayoutEffect(() => {
