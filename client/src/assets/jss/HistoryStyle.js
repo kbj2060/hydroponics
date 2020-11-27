@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 240
 const HistoryStyle = makeStyles(theme =>({
   root: {
     overflow: 'hidden',
@@ -8,11 +7,10 @@ const HistoryStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   foreground : (props) => ({
-    margin : '-30px 15px 0px 15px',
     position : 'relative',
     height : 'auto',
     width : 'auto',
-    padding : '15px',
+    padding : '3px',
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
     boxShadow : '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
     borderRadius : '6px',
@@ -21,7 +19,7 @@ const HistoryStyle = makeStyles(theme =>({
     backgroundColor : 'rgba(255, 255, 255, 0.1)',
     position : 'relative',
     display : 'flex',
-    margin : '30px 0px 30px 0px',
+    margin : '30px 0px 0px 0px',
     flexDirection:'column',
     boxShadow : '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
     borderRadius : '6px',
@@ -30,7 +28,7 @@ const HistoryStyle = makeStyles(theme =>({
     width:'100%',
   },
   footer : {
-    padding : '15px 20px',
+    padding : '10px 20px 10px 20px',
     flex : '1 1 auto',
     position : 'relative',
     textAlign : 'left',
@@ -40,21 +38,29 @@ const HistoryStyle = makeStyles(theme =>({
     }
   },
   updateTime : {
+    fontFamily : "Nanum Gothic",
     display : 'inline',
     verticalAlign : 'middle',
-    fontSize : '10px',
+    fontSize : '0.7em',
     fontWeight : 'bold',
     color : 'white',
   },
   updateInfo : {
     margin : 0,
-    paddingTop : '10px',
+    padding: '1%',
     display : 'inlineBlock',
     borderTopWidth : '1px',
     borderTopStyle : 'solid',
-    borderTopColor : 'white',
+    borderTopColor : 'rgba(255, 255, 255, 0.1)',
     textAlign : 'left',
     verticalAlign : 'middle',
+  },
+  title : {
+    fontFamily : "Nanum Gothic",
+    color: 'white',
+    fontWeight: 'bold',
+    padding: '1%',
+    fontSize : '1em'
   },
   textColor : {
     color : 'white',

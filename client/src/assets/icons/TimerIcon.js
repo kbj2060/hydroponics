@@ -8,12 +8,15 @@ const useStyles = makeStyles(theme => ({
     height : '12px',
     width : '12px',
     verticalAlign : 'middle',
-    fill : '#ffcd12',
+    fill : props => props.timerIcon,
   }
 }));
 
 export default function Timer(props) {
-  const classes = useStyles();
+  const {colors} = require('root/values/colors')
+  const classes = useStyles({
+    timerIcon : colors.timerIcon
+  });
 
   return (
       <SvgIcon className={classes.icon} xmlns="http://www.w3.org/2000/svg" height="12" viewBox="0 0 24 24" width="12">

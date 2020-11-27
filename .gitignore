@@ -1,15 +1,21 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+
 # .lock files
 *.~lock*
 
 # vscode file
 .vscode
 
+automation/automation_setting.json
+db_conf.json
+.logs/
+
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+/client/node_modules
 
 # testing
 /coverage

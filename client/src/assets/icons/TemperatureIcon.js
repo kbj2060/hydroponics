@@ -4,13 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   icon:{
-    height : 'auto',
-    width : 'auto',
-    fill : '#D7A310',
+    height : '24px',
+    width : '24px',
+    fill : 'white',
   }
 }));
 
-export default function ControlIcon(props) {
+export default function TemperatureIcon(props) {
   const classes = useStyles();
 
   return (
