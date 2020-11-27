@@ -324,9 +324,10 @@ app.get('/api/get/switch/history', (req, res) => {
   try{
     const selects = req.query['selects'].join(",");
     const num = req.query['num'];
-    connection.query(
-      `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT ${num};`,
-      (err, rows) => {
+    const section = req.query['section']
+    const sql = `SELECT ${selects} FROM iot.switch WHERE section = \"${section}\" ORDER BY id DESC LIMIT ${num};`
+    connection.query(sql, (err, rows) => {
+        console.log(rows);
         rows.forEach((row) => {
           row['created'] = getLocaleMoment(row['created'])
         })

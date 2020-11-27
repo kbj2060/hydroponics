@@ -178,6 +178,7 @@ export default function MachineHistory() {
 		axios.get('/api/get/switch/history', {
 			params: {
 				selects: ['machine', 'status', 'created', 'controlledBy'],
+				section : 's1',
 				num: showHistoryNumber
 			}}).then(({data: switchHistory}) => {
 				if(mounted) {
