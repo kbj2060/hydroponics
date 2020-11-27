@@ -7,6 +7,7 @@ import {controlSetting} from "../../redux/modules/ControlSetting";
 import update from "react-addons-update";
 
 export default function AutoSwitchWrapper({name:setting}) {
+  const {colors} = require('root/values/colors')
   const reduxSetting = store.getState()['controlSetting'][setting]
   const [status, setStatus] = React.useState(reduxSetting.enable);
   const dispatch = useDispatch();
@@ -23,14 +24,14 @@ export default function AutoSwitchWrapper({name:setting}) {
 
   return(
     <Grid container>
-      <Grid item style={{color:'white',padding:'0.1rem'}}>끄기</Grid>
+      <Grid item style={{color:colors.fontColor,padding:'0.1rem'}}>끄기</Grid>
       <Grid item style={{display:'flex', alignItems:'center'}}>
         <CustomAntSwitch checked={status}
                          onChange={handleChange}
                          value={setting}
                          name={setting}/>
       </Grid>
-      <Grid item style={{color:'white',padding:'0.1rem'}}>켜기</Grid>
+      <Grid item style={{color:colors.fontColor,padding:'0.1rem'}}>켜기</Grid>
     </Grid>
   )
 }

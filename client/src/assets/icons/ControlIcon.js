@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     width : '50px',
     display : 'block',
     margin : 'auto',
-    fill : '#FFCB3A',
+    fill : '#dec11e',
   }
 }));
 

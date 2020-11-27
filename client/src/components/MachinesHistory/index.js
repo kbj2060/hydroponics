@@ -121,6 +121,8 @@ const useStyles2 = makeStyles({
 		height: '100%'
 	},
 	footer: {
+		padding: '0',
+		width : '100%',
 		color : props => props.fontColor,
 	}
 });
@@ -226,11 +228,10 @@ export default function MachineHistory() {
 					  )}
 					</TableBody>
 					<TableFooter>
-					  <TableRow>
 						<TablePagination
 			        className={classes.footer}
 						  rowsPerPageOptions={[5]}
-						  colSpan={3}
+						  colSpan={5}
 						  count={rows.length}
 						  rowsPerPage={rowsPerPage}
 						  page={page}
@@ -242,7 +243,6 @@ export default function MachineHistory() {
 						  onChangeRowsPerPage={handleChangeRowsPerPage}
 						  ActionsComponent={TablePaginationActions}
 						/>
-					  </TableRow>
 					</TableFooter>
 			  </Table>
 			</TableContainer>

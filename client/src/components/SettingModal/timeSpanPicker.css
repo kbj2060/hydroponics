@@ -34,14 +34,14 @@
 .segment.active path {
     cursor: pointer;
     stroke: #fff;
-    fill: #FFCB3A !important;
+    fill: #dec11e !important;
 }
 
 .segment text {
     cursor: pointer;
 }
 .hourLabel {
-    fill: #FFCB3A;
+    fill: #595957;
     font-size: 1.2em;
 }
 .minuteLabel {
@@ -50,6 +50,6 @@
     font-size: 0.6em
 }
 .boundaryLine {
-    stroke: #FFCB3A;
+    stroke: #595957;
     stroke-width: 3
 }

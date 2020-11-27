@@ -10,7 +10,7 @@ import update from 'react-addons-update';
 
 const useStyles = makeStyles((theme) => ({
   iconButtonColor: {
-    color: '#FFCB3A !important'
+    color: props => props.fontColor
   },
   term:{
     display:'flex',
@@ -20,7 +20,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TermControlButton({setting}) {
-  const classes = useStyles();
+  const {colors} = require('root/values/colors')
+  const classes = useStyles({
+    fontColor : colors.fontColor
+  });
   const dispatch = useDispatch();
   const reduxSetting = store.getState()['controlSetting'][setting]
   const [term, setTerm] = React.useState(reduxSetting['term']);

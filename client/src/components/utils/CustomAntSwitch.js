@@ -17,7 +17,7 @@ export const CustomAntSwitch = withStyles((theme) => ({
       color: theme.palette.common.white,
       '& + $track': {
         opacity: 1,
-        backgroundColor: '#FFCB3A',
+        backgroundColor: '#dec11e',
         borderColor: theme.palette.primary.main,
       },
     },

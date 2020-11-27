@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   icon:{
-    fill : '#FFCB3A',
+    fill : '#dec11e',
     height : '27px',
     width : '27px',
   }

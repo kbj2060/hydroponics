@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
   icon:{
     height : '35px',
     width : '50px',
-    fill : '#FFCB3A',
+    fill : '#dec11e',
   }
 }));
 

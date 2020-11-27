@@ -3,7 +3,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 export const ColorCircularProgress = withStyles({
 	root: {
-		color: '#FFCB3A',
+		color: '#dec11e',
 		margin : 'auto',
 		display : 'block'
 	},

@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.6rem'
   },
   chip: {
-    color: 'white',
-    borderColor: 'white'
+    color : props => props.fontColor,
+    borderColor: props => props.borderColor
   },
   icon: {
     padding: theme.spacing(1),
@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection : 'column',
   },
   title : {
-    color: 'white'
+    color : props => props.fontColor,
   },
   detailExplanation: {
     display:'flex',
     flexDirection: 'row',
   },
   explanation: {
-    color: 'white',
+    color : props => props.fontColor,
     margin: '0',
   },
   cell : {
@@ -60,9 +60,13 @@ const nullCheck = (arg) => {
 }
 
 export default function SettingExplanation({position}) {
+  const {colors} = require('root/values/colors')
   const [setting, setSetting] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
-  const classes = useStyles();
+  const classes = useStyles({
+    borderColor : colors.fontColor,
+    fontColor : colors.fontColor
+  });
   const dispatch = useDispatch();
   const {defaultSetting} = require('root/values/defaults');
   const {autoItem} = require('root/values/preferences')
@@ -104,7 +108,7 @@ export default function SettingExplanation({position}) {
     if(!checkEmpty(setting[subject])){
       let {start, end, term} = setting[subject];
       let result = [];
-      result.push(<Chip key={'loop'} className={classes.chip} icon={<LoopIcon style={{color: 'white'}}/>} variant="outlined" size="small" label={`${term} 일`} />)
+      result.push(<Chip key={'loop'} className={classes.chip} icon={<LoopIcon style={{color: colors.fontColor}}/>} variant="outlined" size="small" label={`${term} 일`} />)
       start.forEach((s, i) => {
         const label = `${s} - ${end[i]}`;
         result.push(<Chip key={label} className={classes.chip} variant="outlined" size="small" label={label} />);
@@ -159,7 +163,7 @@ export default function SettingExplanation({position}) {
       <tbody>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WbSunnyIcon />
+          <WbSunnyIcon style={{color: colors.defaultIcon}}/>
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('led') ? getOffChips() : getRangeLEDChips()}
@@ -167,7 +171,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WhatshotIcon />
+          <WhatshotIcon style={{color: colors.defaultIcon}}/>
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('heater') ? getOffChips() : getHeaterChips()}
@@ -175,7 +179,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <AcUnitIcon />
+          <AcUnitIcon style={{color: colors.defaultIcon}}/>
         </td>
         <td style={{margin: 'auto'}}>
           {!getAutoEnable('cooler') ? getOffChips() : getCoolerChips()}
@@ -183,7 +187,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <ToysIcon />
+          <ToysIcon style={{color: colors.defaultIcon}}/>
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('fan') ? getOffChips() : getCycleChips('fan')}
@@ -191,7 +195,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <OpacityIcon />
+          <OpacityIcon style={{color: colors.defaultIcon}}/>
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('waterpump') ? getOffChips() : getCycleChips('waterpump')}

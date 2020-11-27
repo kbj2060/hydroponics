@@ -151,7 +151,7 @@ body {
 }
 
 .selected {
-  color: #FFCB3A;
+  color: #dec11e;
   transition: all 0.3s ease-in-out;
 }
 

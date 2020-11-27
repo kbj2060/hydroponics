@@ -27,6 +27,7 @@ export const CustomIOSSlider = withStyles(({
   },
   active: {},
   valueLabel: {
+    color : '#595957',
     left: 'calc(-50% + 12px)',
     top: -22,
     '& *': {

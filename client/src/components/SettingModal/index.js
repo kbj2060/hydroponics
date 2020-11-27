@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 		textDecoration: 'none',
 		outline : 'none',
 		cursor : 'pointer',
-		'&:hover' : { color : '#FFCB3A'},
+		'&:hover' : { color : '#dec11e'},
 		'&:active' : { transform : 'translateY(1px)'}
 	}),
 	autoButtonDiv : {

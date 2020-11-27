@@ -4,17 +4,16 @@ import Grid from '@material-ui/core/Grid';
 import {ColorCircularProgress} from "../utils/ColorCircularProgress"
 import ValueLabel from "@material-ui/core/Slider/ValueLabel";
 import {useDispatch} from "react-redux";
-import {controlSetting, saveSetting} from "../../redux/modules/ControlSetting";
+import {controlSetting} from "../../redux/modules/ControlSetting";
 import {store} from "../../redux/store";
 import {CustomIOSSlider} from "../utils/CustomIOSSlider";
 import update from 'react-addons-update';
-import {Typography} from "@material-ui/core";
 import Chip from "@material-ui/core/Chip";
 
-
+const {colors} = require('root/values/colors')
 const StyledValueLabel = withStyles({
   label: {
-    color : '#fff'
+    color : colors.fontColor,
   }
 })(ValueLabel);
 
@@ -22,9 +21,9 @@ const useStyles = makeStyles({
   root: {
     width: 'auto',
   },
-  chip : {
-    color: 'white',
-    borderColor: 'white',
+  chip: {
+    color : props => props.fontColor,
+    borderColor: props => props.borderColor,
     margin: '0 10%'
   },
   typoExplanation : {
@@ -51,7 +50,10 @@ const getDefaultRangeMax = (subject) => {
 
 export default function RangeSlider(props) {
   const { settingKey } = props;
-  const classes = useStyles();
+  const classes = useStyles({
+    borderColor : colors.fontColor,
+    fontColor : colors.fontColor
+  });
   const { unitsTable } = require('root/values/strings');
   const { defaultSetting } = require('root/values/defaults')
   const [setting, setSetting] = React.useState(defaultSetting[settingKey]['range']);
@@ -106,7 +108,7 @@ const getOffExplanation = (_type) => {
       return '#FF2E63'
     }
     else{
-      return "#FFCB3A"
+      return "#dec11e"
     }
   }
 
