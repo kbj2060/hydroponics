@@ -206,7 +206,7 @@ app.get('/api/get/section', (req, res) => {
         result[row.id] = row.section_name 
       })
       console.log({"sections" : result})
-      res.send({"sections" : result});
+      res.send({"sections" : result})
     })
   } catch (err) {
     useErrorLogger('GET').error({
@@ -274,7 +274,7 @@ app.get('/api/get/environment/average', (req, res) => {
       avgs['temperature'] = parseInt( avgs['temperature'] / n_subsection)
       avgs['humidity'] = parseInt( avgs['humidity'] / n_subsection)
       avgs['co2'] = parseInt( avgs['co2'] / n_subsection)
-        console.log(avgs);
+      console.log(avgs);
       res.send(avgs);
     })
   } catch (err) {
@@ -364,33 +364,6 @@ app.post('/api/post/switch/machine', (req, res) => {
     })
   }
 });
-
-/*
-app.post('/api/post/ac', (req, res) => {
-  try {
-    let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
-    let machine = req.body.params['machine'];
-    let status = req.body.params['status'];
-    let name = req.body.params['name'];
-    let params = [machine, status, name];
-    if (machine === 'cooler')
-    connection.query(sql, params,
-      (err, rows) => {
-        res.send(rows);
-        useInfoLogger('switch').info({
-          level: 'info',
-          message: `[${name}] ${machine} ${status?"ON":"OFF"}`
-        });
-        console.log(`${machine} power has been changed through mqtt.`);
-        client.publish(`switch/${machine}`, String(status));
-      }
-    )} catch (err) {
-    useErrorLogger('POST').error({
-      level: 'error',
-      message: `POST SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});*/
 /*
  * 스위치 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------
@@ -410,10 +383,9 @@ app.get('/api/get/current', (req, res) => {
                   section LIKE \"%${section}%\"
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
-      console.log(rows)
       let results = groupBy(rows, "section")
-      Object.keys(results).map((key) => { results[key] = results[key][0]['current']; })
-      console.log(results)
+      Object.keys(results).forEach((key) => { results[key] = results[key][0]['current']; })
+      console.log(results);
       res.send(results)
     })
   } catch(err){
@@ -497,22 +469,6 @@ app.post('/api/post/save/auto', (req,res) => {
     })
   }
 })
-
-/*app.post('/api/post/switch/auto', (req, res) => {
-  try {
-    const { item, enable, user, duration } = req.body.params;
-    const _type = settingType[item];
-    const sql =  `INSERT INTO iot.auto VALUES (null, \"${item}\",  ${enable},  \"${_type}\", \"${user}\", \"${duration}\" now(), 0);`;
-    connection.query(sql, (err, rows) => {
-      res.send(rows);
-    })
-  } catch (err) {
-    useErrorLogger('POST').error({
-      level: 'error',
-      message: `POST AUTO SWITCH QUERY ERROR : ${err}`
-    })
-  }
-})*/
 /*
  * 자동화 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------
@@ -561,84 +517,3 @@ const cleanHistoryDict = (res, env) => {
   }
   return res
 }
-/*
- * 유틸 함수 끝
- */
-
-/*
-app.get('/api/get/switch', (req, res) => {
-  try {
-    const selects = req.query['selects'].join(",");
-    const num = req.query['num'];
-    const machine = req.query['machine'];
-    connection.query(
-      `SELECT ${selects} FROM iot.switch WHERE machine = \"${machine}\" ORDER BY id DESC LIMIT ${num};`,
-      (err, rows) => {
-        res.send(rows);
-      }
-    )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});
- */
-
-/*
-const getSqlBySettingType = (key, values, type) => {
-  let sql = ``;
-  let min=0, max=0;
-  if(type === 'cycle'){
-    [max] = values;
-    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", 0, ${max}, \"${type}\", now(), 0)`;
-  }
-  else if (type === 'range'){
-    [min, max] = values;
-    sql = `INSERT INTO iot.setting VALUES (null, \"${key}\", ${min}, ${max}, \"${type}\", now(), 0)`;
-  }
-  return sql
-}
-*/
-
-/*
-app.get('/api/get/status', (req, res) => {
-  try {
-    const selects = req.query['selects'].join(",");
-    const num = req.query['num'];
-    const section = req.query['section'];
-    const sql = `SELECT ${selects} FROM iot.env
-                WHERE section = \"${section}\"
-                ORDER BY id DESC LIMIT ${num};`
-    connection.query(sql, (err, rows) => {
-        res.send(rows);
-      }
-    )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});*/
-
-/*
-app.post('/api/post/apply/settings', (req, res) => {
-  try {
-    const {settingType} = require('../init_setting');
-    const settings = req.body.params['settings'];
-    let queries = Object.entries(settings).map(([key,values])=> {
-      return getSqlBySettingType(key, values, settingType[key]);
-    })
-    console.log(queries.join('; '))
-    connection.query(queries.join('; '), (err, rows) => {
-      console.log(rows)
-      res.send(rows);
-    })} catch (err) {
-    useErrorLogger('POST').error({
-      level: 'error',
-      message: `POST SETTING QUERY ERROR : ${err}`
-    })
-  }
-});*/
