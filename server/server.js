@@ -87,9 +87,10 @@ data : {
  */
 const handlePlantEnvironmentsMQTT = (topic, message) => {
   const _json = JSON.parse(message.toString());
+  console.log(topic, _json)
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
-               VALUES (null, ${section}, ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
+               VALUES (null, \"${section}\", ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
   connection.query(sql, (err, rows) => {
     if(err) {console.log(err);}
   	}
@@ -341,14 +342,13 @@ app.get('/api/get/switch/history', (req, res) => {
 
 app.post('/api/post/switch/machine', (req, res) => {
   try {
-    let sql = 'INSERT INTO iot.switch VALUES (null, ?, ?, ?, now(), 0)';
     let machine = req.body.params['machine'];
     let status = req.body.params['status'];
     let name = req.body.params['name'];
-    let params = [machine, status, name];
+    let section = req.body.params['section'];
+    let sql = `INSERT INTO iot.switch VALUES (null, ${section}, ${machine}, ${status}, ${name}, now(), 0)`;
 
-    connection.query(sql, params,
-      (err, rows) => {
+    connection.query(sql, (err, rows) => {
         res.send(rows);
         useInfoLogger('switch').info({
           level: 'info',

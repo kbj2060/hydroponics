@@ -62,6 +62,7 @@ function Switches(props) {
     await axios.post('/api/post/switch/machine',{
       params: {
         machine : machine,
+        section : "s1",
         status : status,
         name : name
       }
