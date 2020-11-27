@@ -188,7 +188,7 @@ export default function Login() {
                 className: classes.input
               }} className={classes.login} placeholder="비밀번호" type="password" onChange={handleChange('pw')}/>
               <div>
-                <Link to={`/dashboard`} forcerefresh="true">
+                <Link to={`/무들로29`} forcerefresh="true">
                   <button onClick={handleSubmit} className={classes.loginButton} type="submit" >로그인</button>
                 </Link>
               </div>

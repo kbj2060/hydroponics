@@ -132,7 +132,8 @@ export default function CustomStepper({modalClose}) {
     await axios.post('/api/post/save/auto',{
       params: {
         controlSetting : controlSetting,
-        user : user
+        user : user,
+	section : "s1"
       }
     }).then(()=>{
       modalClose();

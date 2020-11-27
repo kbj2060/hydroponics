@@ -46,7 +46,8 @@ export default function App() {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
-        where : autoItem
+        where : autoItem,
+	section : "s1"
       }
     }).then(({data}) => {
       if(Object.keys(data).length === Object.keys(defaultSetting).length){

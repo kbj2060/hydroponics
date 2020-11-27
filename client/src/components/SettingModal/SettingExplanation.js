@@ -76,7 +76,8 @@ export default function SettingExplanation({position}) {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
-        where : autoItem
+        where : autoItem,
+	      section: "s1"
       }
     }).then(({data}) => {
       if(Object.values(data).every(nullCheck) || Object.keys(data).length !== Object.keys(defaultSetting).length){

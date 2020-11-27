@@ -69,7 +69,7 @@ const handleCurrentsMQTT = (topic, message) => {
   const current = JSON.parse(message.toString());
   const [table, machine, section] = topic.split("/");
   const sql = `INSERT INTO iot.${table} 
-               VALUES (null, \"${machine}\", ${section}, ${current}, now(), 0);`
+               VALUES (null, \"${machine}\", \"${section}\", ${current}, now(), 0);`
   connection.query(sql,(err, rows) => {
     if(err) {console.log(err);}
     }
@@ -87,7 +87,6 @@ data : {
  */
 const handlePlantEnvironmentsMQTT = (topic, message) => {
   const _json = JSON.parse(message.toString());
-  console.log(topic, _json)
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
                VALUES (null, \"${section}\", ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
@@ -327,7 +326,6 @@ app.get('/api/get/switch/history', (req, res) => {
     const section = req.query['section']
     const sql = `SELECT ${selects} FROM iot.switch WHERE section = \"${section}\" ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-        console.log(rows);
         rows.forEach((row) => {
           row['created'] = getLocaleMoment(row['created'])
         })
@@ -347,7 +345,8 @@ app.post('/api/post/switch/machine', (req, res) => {
     let status = req.body.params['status'];
     let name = req.body.params['name'];
     let section = req.body.params['section'];
-    let sql = `INSERT INTO iot.switch VALUES (null, ${section}, ${machine}, ${status}, ${name}, now(), 0)`;
+    let sql = `INSERT INTO iot.switch VALUES (null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0)`;
+	  console.log(sql);
 
     connection.query(sql, (err, rows) => {
         res.send(rows);
@@ -414,10 +413,14 @@ app.get('/api/get/current', (req, res) => {
   }
 });*/
 
-function union_all(selects, arr) {
+function union_all(selects, section, arr) {
   const sqls = arr.map((item, index) => {
-    if(index === 0){ return `(SELECT ${selects} FROM iot.auto WHERE item = '${item}' ORDER BY id DESC LIMIT 1)` }
-    else { return `UNION ALL (SELECT ${selects} FROM iot.auto WHERE item = '${item}' ORDER BY id DESC LIMIT 1)` }
+    if(index === 0){ return `(SELECT ${selects} FROM iot.auto 
+	    WHERE item = '${item}' AND section = \"${section}\" 
+	    ORDER BY id DESC LIMIT 1)` }
+    else { return `UNION ALL (SELECT ${selects} FROM iot.auto 
+    		WHERE item = '${item}' AND section = \"${section}\" 
+		ORDER BY id DESC LIMIT 1)` }
   })
   return sqls.join(' ')
 }
@@ -426,11 +429,14 @@ app.get('/api/get/load/auto', (req,res) => {
   try{
     const selects = req.query['selects'].join(",");
     const auto = req.query['where'];
-    const sql = union_all(selects, auto);
+	  const section = req.query['section']
+    const sql = union_all(selects,section, auto);
+	  console.log(sql);
     connection.query(sql, (err, rows) => {
       let dic = {}
       rows.forEach((row) => {
-        let values = JSON.parse(row['duration']);
+	      console.log(row);
+	      let values = JSON.parse(row['duration']);
         values['enable'] = row['enable'] === 1;
         dic[row['item']] = values;
       })
@@ -443,21 +449,22 @@ app.get('/api/get/load/auto', (req,res) => {
     })
   }
 })
-
-function classifyValues (argDic, user) {
+// set global sql_mode=''; 로 엄격 모드를 풀어야 json 형식으로 들어감.
+function classifyValues (section, argDic, user) {
   return Object.keys(argDic).map((key, index) => {
     const enable = argDic[key]['enable']
     const _type = settingType[key];
     delete argDic[key]['enable']
-    return `(null, \"${key}\", ${enable}, \"${_type}\", \"${user}\", \'${JSON.stringify(argDic[key])}\', now(), 0)`;
+    return `(null,\"${section}\", \"${key}\", ${enable}, \"${_type}\", \"${user}\",\'${JSON.stringify(argDic[key])}\', now(), 0)`;
   })
 }
 
 app.post('/api/post/save/auto', (req,res) => {
   try{
-    const { controlSetting, user } = req.body.params;
-    const sqlValues = classifyValues(controlSetting, user).join(',');
-    const sql =  `INSERT INTO iot.auto VALUES ${sqlValues}`;
+    const { section, controlSetting, user } = req.body.params;
+    const sqlValues = classifyValues(section, controlSetting, user).join(',');
+	  console.log(sqlValues);
+    const sql =  `INSERT INTO iot.auto VALUES ${sqlValues};`;
     console.log(controlSetting, user)
     connection.query(sql, (err, rows) => {
         res.send(rows);
@@ -481,6 +488,7 @@ app.post('/api/post/signin', (req, res) => {
     const sql = `SELECT name, pw FROM iot.user 
                  WHERE (name="${username}" AND pw="${password}") AND isDeleted=0;`
     const params = [username, password];
+	  console.log(params);
     connection.query(sql, params, (err, rows) => {
       let login = JSON.parse(JSON.stringify(rows))[0];
       res.send(login);
