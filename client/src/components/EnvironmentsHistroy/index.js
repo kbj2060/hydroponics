@@ -19,6 +19,7 @@ const useStyles = makeStyles(() =>({
   },
   title : {
     color : props => props.fontColor,
+    textAlign : 'center',
     fontWeight: 'bold',
     padding: '1%',
     fontSize : '1em'
@@ -45,7 +46,7 @@ const useStyles = makeStyles(() =>({
 export default function Index(props) {
   const {WordsTable} = require('root/values/strings');
   const {colors} = require('root/values/colors');
-  const {plants} = require('root/values/preferences');
+  const {sections} = require('root/values/preferences');
   const { environment } = props;
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
@@ -68,7 +69,7 @@ export default function Index(props) {
   const fetchHistory = useCallback(async () => {
     const getLastUpdatedTime = (data) => {
       if(checkEmpty(data)){ return null }
-      return Object.keys(data[plants[0]])[0];
+      return Object.keys(data[sections[0]])[0];
     }
 
     await axios.get('/api/get/environment/history', {
@@ -77,7 +78,6 @@ export default function Index(props) {
         section: "s1"
       }
     }).then(({data})=> {
-      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);
@@ -100,8 +100,8 @@ export default function Index(props) {
 
   return (
     !isLoading ? <div className={classes.foreground}>
-        <CustomLine environment={environment} history={history} width={5} height={2} />
-        <Typography className={classes.title}> {WordsTable[environment]} </Typography>
+      <Typography className={classes.title}> {WordsTable[environment]} </Typography>
+      <CustomLine environment={environment} history={history} width={5} height={2} />
         <div className={classes.updateInfo}>
           <TimerIcon />
           <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate} </Typography>

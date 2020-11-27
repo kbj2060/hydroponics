@@ -69,11 +69,7 @@ const useStyles =  makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   title: {
-    fontFamily : "Tangerine, cursive",
-    justifyContent: 'center',
-    fontSize : 'xx-large',
-    flexGrow: 10000,
-    textAlign: "center",
+    fontSize : 'x-large',
     display: 'flex',
     color : props => props.fontColor
   },
@@ -88,31 +84,13 @@ const useStyles =  makeStyles(theme => ({
 }))
 
 export default function PermanentAppBar(props) {
+  const {page} = props;
   const {colors} = require('root/values/colors');
-  const [width, setWidth] = React.useState(window.innerWidth);
-  const [dimensions, setDimensions] = useState({width: 0, height: 0});
-  const roundFigureRef = useRef();
-
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor,
   });
-
-  useLayoutEffect(() => {
-    if (roundFigureRef.current) {
-      setDimensions({
-        width: roundFigureRef.current.offsetWidth,
-        height: roundFigureRef.current.offsetHeight
-      });
-    }
-    window.addEventListener('resize', () => {
-      setWidth(window.innerWidth)
-    });
-    return () => {
-      setDimensions({width: 0, height: 0 })
-    }
-  }, [width]);
 
   return (  
     <div className={classes.root}>
@@ -120,11 +98,10 @@ export default function PermanentAppBar(props) {
       <AppBar position="sticky"
               className={classes.appBar}
               elevation={0}
-              color='primary'
-              ref={roundFigureRef}>
+              color='primary'>
         <Toolbar>
           <Typography className={classes.title} variant="h6">
-            Kairos
+            {page}
           </Typography>
           <div className={classes.grow} />
             <div className={classes.menuWrapper} >

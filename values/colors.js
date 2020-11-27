@@ -2,9 +2,9 @@ module.exports = {
   /* dark version */
   colors : {
     'customTheme' : '#D9D8D2',
-    's1' : "#8C8A7A",
-    's2' : "#7A828C",
-    's3' : "#6F6C8C",
+    's1-1' : "#8C8A7A",
+    's1-2' : "#7A828C",
+    's1-3' : "#6F6C8C",
     'buttonOn' : "#61564E",
     'buttonOff' : "#474346",
     "neumInShadow" : 'inset 6px 6px 12px #a5a4a0,inset -6px -6px 12px #ffffff',
@@ -16,7 +16,8 @@ module.exports = {
     'timerIcon' : '#f8bb14',
     'defaultIcon' : '#595957',
     'fontColor' : '#595957',
-    'graphGridColor' : '#595957'
+    'graphGridColor' : '#595957',
+    'current' : '#dec11e'
   }
 }
 /*
@@ -57,7 +58,7 @@ colors : {
     'heaterIcon' : '#FF5C6F',
     'waterpumpIcon' : '#36BEFF',
     'ledIcon' : '#FFCC29',
-    'timerIcon' : '#FFCB3A',
+    'timerIcon' : '#dec11e',
     'defaultIcon' : '#ffffff',
     'fontColor' : '#ffffff',
     'graphGridColor' : '#595957'

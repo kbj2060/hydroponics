@@ -20,7 +20,7 @@ module.exports = {
   environments: [
     'co2', 'humidity', 'temperature'
   ],
-  plants: [
+  sections: [
     's1-1', 's1-2', 's1-3'
   ],
   autoItem: [

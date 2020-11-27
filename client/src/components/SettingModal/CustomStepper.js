@@ -23,16 +23,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    backgroundColor : 'rgba(255, 255, 255, 0)',
   },
   buttonLabel: {
     fontSize: '0.8rem',
-    color: 'white',
+    color: props => props.font,
   },
   wrapper: {
     textAlign: 'center',
     boxShadow: '0 3px 5px rgba(0, 0, 0, 0.16), 0 3px 5px rgba(0, 0, 0, 0.23)',
-    backgroundColor : 'rgba(255, 255, 255, 0.1)',
+    backgroundColor : '#D9D8D2',
     borderRadius : '15px',
     padding : '20px',
   },
@@ -42,37 +41,37 @@ const useStyles = makeStyles((theme) => ({
   },
   backButton: {
     float:'left',
-    color: 'white !important',
+    color: props => props.font,
     marginRight: theme.spacing(1),
   },
   instructions: {
     paddingBottom: theme.spacing(1),
-    color: 'white',
+    color: props => props.font,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
   alternativeLabel: {
-    color: 'white',
+    color: props => props.font,
     fontSize : '0.9rem'
   },
   active : {
-    color: '#FFCB3A !important'
+    color: '#dec11e !important'
   },
   completed: {
     color: 'gray !important'
   },
   iconActive: {
-    color: '#FFCB3A !important'
+    color: '#dec11e !important'
   },
   iconCompleted: {
     color: 'gray !important'
   },
   NextButton: {
     float:'right',
-    color: 'white'
+    color: props => props.font,
   },
   iconButtonColor: {
-    color: '#FFCB3A !important'
+    color: '#dec11e !important'
   }
 }));
 
@@ -108,13 +107,15 @@ const cloneObj = obj => JSON.parse(JSON.stringify(obj));
 const {autoItem} = require('root/values/preferences')
 const {WordsTable} = require('root/values/strings');
 const copied = cloneObj(autoItem);
-
 const steps = getSteps(copied);
 const labels = getLabels(steps, WordsTable);
 
 
 export default function CustomStepper({modalClose}) {
-  const classes = useStyles();
+  const {colors} = require('root/values/colors')
+  const classes = useStyles({
+      fontColor: colors.fontColor
+    });
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -152,7 +153,7 @@ export default function CustomStepper({modalClose}) {
     <div className={classes.root}>
       <div className={classes.wrapper}>
         <div style={{display:'flex'}}>
-          <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:'white', cursor:'pointer'}}/>
+          <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:colors.fontColor, cursor:'pointer'}}/>
         </div>
         <Stepper className={classes.stepper} activeStep={activeStep} alternativeLabel>
           {labels.map((label) => (

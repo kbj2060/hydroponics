@@ -254,17 +254,22 @@ app.get('/api/get/environment/average', (req, res) => {
   try {
     const section = req.query['section'];
     const sql = `SELECT section, temperature, humidity, co2 FROM iot.env
-                WHERE id in (SELECT max(id) FROM iot.env GROUP BY section )
+                WHERE id 
+                  in (SELECT max(id) FROM iot.env GROUP BY section )
+                AND
+                  section LIKE \"%${section}%\"
                 ORDER BY id DESC;`
     connection.query(sql, (err, rows) => {
       let avgs = {'temperature' : 0, 'humidity' : 0, 'co2' : 0}
       let n_subsection = 0;
       rows.forEach((row, index) => {
         if(!row.section.includes(`${section}-`)){ return false } 
-        else{ n_subsection++ }
-        avgs['temperature'] += row['temperature']
-        avgs['humidity'] += row['humidity']
-        avgs['co2'] += row['co2']
+        else {
+          avgs['temperature'] += row['temperature']
+          avgs['humidity'] += row['humidity']
+          avgs['co2'] += row['co2']
+          n_subsection++
+        }
       })
       avgs['temperature'] = parseInt( avgs['temperature'] / n_subsection)
       avgs['humidity'] = parseInt( avgs['humidity'] / n_subsection)
@@ -396,12 +401,19 @@ app.get('/api/get/current', (req, res) => {
   try{
     const selects = req.query['selects'].join(",");
     const machine = req.query['machine'];
-    const sql = `SELECT ${selects} FROM iot.current
-                WHERE id in (SELECT max(id) FROM iot.current WHERE machine = \"${machine}\" GROUP BY section )
+    const section = req.query['section'];
+    const sql = `SELECT 
+                  ${selects} FROM iot.current
+                WHERE 
+                  id in (SELECT max(id) FROM iot.current WHERE machine = \"${machine}\" GROUP BY section )
+                AND 
+                  section LIKE \"%${section}%\"
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
+      console.log(rows)
       let results = groupBy(rows, "section")
       Object.keys(results).map((key) => { results[key] = results[key][0]['current']; })
+      console.log(results)
       res.send(results)
     })
   } catch(err){

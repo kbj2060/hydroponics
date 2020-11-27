@@ -34,7 +34,6 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  //const classes = useStyles();
   const {machines, autoItem} = require('root/values/preferences');
   const {defaultSetting} = require('root/values/defaults')
   const dispatch = useDispatch();
@@ -98,7 +97,7 @@ export default function App() {
             <Login />
           </Route>
           <Route exact path="/무들로29" >
-            <Dashboard />
+            <Dashboard page={"무들로29"}/>
           </Route>
           <Route exact path="/setting" >
             <Setting />

@@ -25,10 +25,9 @@ const CurrentFlowing = withStyles((theme) => ({
 })
 
 export default function CurrentChecker({machine}) {
-	const {n_machines} = require('root/values/preferences')
+	const {sections} = require('root/values/preferences')
 	const {currentUpdateTime } = require('root/values/time');
 	const {currentCriteria:criteria} = require('root/values/defaults')
-	const sections = Array.from(Array(n_machines[machine]), (_, i) => i + 1)
 	const [current, setCurrent] = React.useState({});
 	const [disable, setDisable] = React.useState(false);
 	const [flowing, setFlowing] = React.useState(false);
@@ -45,6 +44,7 @@ export default function CurrentChecker({machine}) {
 			params : {
 				selects : ['section', 'current'],
 				machine : machine,
+				section : "s1"
 			}}).then(( {data} ) => {
 				if(checkEmpty(data) || !currentActivationCheck(data)){
 					setDisable(true);
@@ -87,7 +87,7 @@ export default function CurrentChecker({machine}) {
 		<Box className={classes.optionBox}  p={1} flexGrow={1} >
 			{
 				flowing ?
-				<CurrentFlowing fillColor={'#FFCB3A'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
+				<CurrentFlowing fillColor={'#dec11e'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
 			}
 		</Box>
 	);

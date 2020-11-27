@@ -68,9 +68,9 @@ let getOptions = {
 export default function LineSetting (history, environment) {
 	const [options, setOptions] = React.useState(getOptions);
 	const {WordsTable} = require('root/values/strings');
-	const {plants} = require('root/values/preferences');
+	const {sections} = require('root/values/preferences');
 	const {colors} = require('root/values/colors');
-	const n_plants = plants.length;
+	const n_sections = sections.length;
 
 	let state = {
 		labels: '',
@@ -81,7 +81,7 @@ export default function LineSetting (history, environment) {
 		let n;
 		let datasets = []
 		for(n = 0; n < n_plant; n++){
-			let section = plants[n];
+			let section = sections[n];
 			datasets.push({
 				label: WordsTable[`plant-${section}`],
 				fill: false,
@@ -111,7 +111,7 @@ export default function LineSetting (history, environment) {
 		fetchLineSetting();
 	}, [fetchLineSetting])*/
 
-	state.datasets = makeBasicDataset(n_plants);
+	state.datasets = makeBasicDataset(n_sections);
 	if(checkEmpty(history)){ return {state, options} }
 
 	Object.keys(history).forEach((h, i) => {

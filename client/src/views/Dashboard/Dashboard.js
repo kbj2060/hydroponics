@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import CCTV from "root/client/src/components/CCTV";
@@ -11,19 +11,15 @@ import EnvironmentsHistroy from "root/client/src/components/EnvironmentsHistroy"
 import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
+  const {page} = props;
   const classes = useStyles();
-  const {environments, plants} = require('root/values/preferences')
-
-
-  useEffect(()=> {
-
-  }, [])
+  const {environments, sections} = require('root/values/preferences')
 
   return (
     CheckLogin() ?
       <div className={classes.root}>
-        <AppBar />
+        <AppBar page={page}/>
         <CssBaseline />
         <Grid container className={classes.container}>
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
@@ -35,9 +31,9 @@ export default function Dashboard() {
           <Grid item xs={12} sm={12} md={4} className={classes.item}>
             <MachinesHistoryCard />
           </Grid>
-          {plants.map(plant => { return(
-               <Grid key={plant.toString()} item xs={12} sm={12} md={4} className={classes.item} >
-                 <StatusDisplay plant={plant} />
+          {sections.map(section => { return(
+               <Grid key={section.toString()} item xs={12} sm={12} md={4} className={classes.item} >
+                 <StatusDisplay plant={section} />
                </Grid>)
             })}
           {environments.map(env => { return (

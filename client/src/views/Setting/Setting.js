@@ -33,12 +33,6 @@ export default function Setting() {
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
   });
-  const {environments, plants} = require('root/values/preferences')
-
-
-  useEffect(()=> {
-
-  }, [])
 
   return (
     CheckLogin() ?
@@ -51,6 +45,9 @@ export default function Setting() {
           </Grid>
           <Grid item xs={12} sm={12} md={8} className={classes.item}>
             <p>automation device setting type</p>
+          </Grid>
+          <Grid item xs={12} sm={12} md={8} className={classes.item}>
+            <p>Add Device</p>
           </Grid>
         </Grid>
       </div> :  <Redirect to={'/'} />
