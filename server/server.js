@@ -449,13 +449,15 @@ app.get('/api/get/load/auto', (req,res) => {
     })
   }
 })
+
 // set global sql_mode=''; 로 엄격 모드를 풀어야 json 형식으로 들어감.
-function classifyValues (section, argDic, user) {
-  return Object.keys(argDic).map((key, index) => {
-    const enable = argDic[key]['enable']
-    const _type = settingType[key];
-    delete argDic[key]['enable']
-    return `(null,\"${section}\", \"${key}\", ${enable}, \"${_type}\", \"${user}\",\'${JSON.stringify(argDic[key])}\', now(), 0)`;
+// JSON 을 넣을 시 \' \' 로 감싸주어야 함.
+function classifyValues (section, controlSetting, user) {
+  return Object.keys(controlSetting).map((key, index) => {
+    const enable = controlSetting[key]['enable']
+    const _type = settingType[section][key];
+    delete controlSetting[key]['enable']
+    return `(null,\"${section}\", \"${key}\", ${enable}, \"${_type}\", \"${user}\",\'${JSON.stringify(controlSetting[key])}\', now(), 0)`;
   })
 }
 
@@ -463,7 +465,6 @@ app.post('/api/post/save/auto', (req,res) => {
   try{
     const { section, controlSetting, user } = req.body.params;
     const sqlValues = classifyValues(section, controlSetting, user).join(',');
-	  console.log(sqlValues);
     const sql =  `INSERT INTO iot.auto VALUES ${sqlValues};`;
     console.log(controlSetting, user)
     connection.query(sql, (err, rows) => {

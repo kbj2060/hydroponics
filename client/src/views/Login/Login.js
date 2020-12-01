@@ -1,6 +1,4 @@
 import React,{ useEffect } from 'react';
-import Background from '../Background/Background';
-import backgroundImage from '../../assets/img/background2.jpg'
 import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
@@ -17,6 +15,7 @@ import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {resetState} from "../../components/LocalStorage";
 import {makeStyles} from "@material-ui/core/styles";
+import {controlPage} from "../../redux/modules/ControlPage";
 
 const {colors} = require('root/values/colors')
 const useStyles = makeStyles(()=>({
@@ -86,7 +85,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-export default function Login() {
+export default function Login({page}) {
     const classes = useStyles({
       customTheme : colors.customTheme,
       neumOutShadow : colors.neumOutShadow,
@@ -108,6 +107,7 @@ export default function Login() {
     });
     const [open, setOpen] = React.useState(false);
     const history = useHistory()
+    dispatch(controlPage(page));
 
     const handleClickOpen = () => {
       setOpen(true);

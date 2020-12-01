@@ -42,7 +42,7 @@ export default function App() {
     customTheme : colors.customTheme
   });
 
-  const getControlSetting = async () => {
+  /*const getControlSetting = async () => {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
@@ -85,7 +85,7 @@ export default function App() {
     getControlSwitches();
     getControlSetting();
     saveState( store.getState() );
-  }, []);
+  }, []);*/
 
   store.subscribe(() => {
     saveState( store.getState() );
@@ -95,13 +95,13 @@ export default function App() {
     <BrowserRouter>
         <div className={classes.parent}>
           <Route exact path="/">
-            <Login />
+            <Login page={"login"}/>
           </Route>
           <Route exact path="/무들로29" >
-            <Dashboard page={"무들로29"}/>
+            <Dashboard page={"s1"}/>
           </Route>
           <Route exact path="/setting" >
-            <Setting />
+            <Setting page={"setting"} />
           </Route>
         </div>
       </BrowserRouter>

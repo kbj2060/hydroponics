@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -86,6 +86,7 @@ const useStyles =  makeStyles(theme => ({
 export default function PermanentAppBar(props) {
   const {page} = props;
   const {colors} = require('root/values/colors');
+  const {WordsTable} = require('root/values/strings')
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
@@ -101,7 +102,7 @@ export default function PermanentAppBar(props) {
               color='primary'>
         <Toolbar>
           <Typography className={classes.title} variant="h6">
-            {page}
+            {WordsTable[page]}
           </Typography>
           <div className={classes.grow} />
             <div className={classes.menuWrapper} >

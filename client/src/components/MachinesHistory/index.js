@@ -105,9 +105,10 @@ const useStyles2 = makeStyles({
 		borderRadius: '20px',
 		boxShadow: props => props.neumOutShadow,
 		background : props => props.customTheme,
-		height: '100%'},
+		height: '100%'
+	},
 	text : {
-		padding : '5px 0 5px 0',
+		padding: '0 !important',
 		color : props => props.fontColor,
 		fontWeight : 'bold',
 	},
@@ -212,13 +213,14 @@ export default function MachineHistory() {
 						? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						: rows
 					  ).map((row, index, arr) => {
-							  return (<TableRow key={index}>
-								  <TableCell className={classes.text} align="center" component="th" scope="row">
-									  {WordsTable[row.machine.toLowerCase()]}
-								  </TableCell>
-								  <TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
-								  <TableCell className={classes.text} align="center">{row.user}</TableCell>
-									<TableCell className={classes.text} align="center">{row.date}</TableCell>
+							  return (
+							  	<TableRow key={index}>
+										<TableCell className={classes.text} align="center" component="th" scope="row">
+											{WordsTable[row.machine.toLowerCase()]}
+										</TableCell>
+										<TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
+										<TableCell className={classes.text} align="center">{row.user}</TableCell>
+										<TableCell className={classes.text} align="center">{row.date}</TableCell>
 								</TableRow>)
 						  })}
 
@@ -229,6 +231,7 @@ export default function MachineHistory() {
 					  )}
 					</TableBody>
 					<TableFooter>
+						<TableRow>
 						<TablePagination
 			        className={classes.footer}
 						  rowsPerPageOptions={[5]}
@@ -244,6 +247,7 @@ export default function MachineHistory() {
 						  onChangeRowsPerPage={handleChangeRowsPerPage}
 						  ActionsComponent={TablePaginationActions}
 						/>
+						</TableRow>
 					</TableFooter>
 			  </Table>
 			</TableContainer>

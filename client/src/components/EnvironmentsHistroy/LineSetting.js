@@ -1,6 +1,7 @@
 import React from 'react';
 import {checkEmpty} from "../utils/CheckEmpty";
 import 'chartjs-plugin-annotation';
+
 const {colors} = require('root/values/colors');
 let getOptions = {
 		legend: {
@@ -66,7 +67,7 @@ let getOptions = {
 }
 
 export default function LineSetting (history, environment) {
-	const [options, setOptions] = React.useState(getOptions);
+	const options = getOptions;
 	const {WordsTable} = require('root/values/strings');
 	const {sections} = require('root/values/preferences');
 	const {colors} = require('root/values/colors');

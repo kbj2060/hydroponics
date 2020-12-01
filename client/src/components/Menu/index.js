@@ -73,18 +73,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Menu() {
 	const {colors} = require('root/values/colors')
-	const dispatch = useDispatch();
 	const {pages} = require('root/values/preferences')
+	const {WordsTable} = require('root/values/strings');
+	const dispatch = useDispatch();
 	const n_pages = pages.length;
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles({n_pages});
 
 	const handleOpen = () => {
 		setOpen((prev) => !prev);
-	};
-
-	const handleClick = (value) => {
-		value === "logout"? dispatch(logout()) : setOpen(false)
 	};
 
 	const handleClose = () => {
@@ -118,9 +115,9 @@ export default function Menu() {
 						<h1 className={classes.header}>Kairos</h1>
 					</div>
 					<div style={{height: "70%"}}>
-						<LinkButton  value={"무들로29"} to={"무들로29"} buttonDesign={classes.menuButton} />
-						<LinkButton  value={"설정"} to={"setting"} buttonDesign={classes.menuButton} />
-						<LinkButton onClick={() => {handleClick("logout")}} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
+						<LinkButton value={WordsTable['s1']} to={WordsTable['s1']} buttonDesign={classes.menuButton} />
+						<LinkButton value={"설정"} to={"setting"} buttonDesign={classes.menuButton} />
+						<LinkButton onClick={() => dispatch(logout())} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
 

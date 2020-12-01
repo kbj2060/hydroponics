@@ -10,11 +10,12 @@ module.exports = {
     'airconditioner' : '공조기',
     'waterpump' : '급수',
     "dashboard" : '홈',
-    "settings" : '설정',
+    "setting" : '설정',
     "logout" : '로그아웃',
-    'plant-s1-1' : 'CENTER',
-    'plant-s1-2' : 'LEFT',
-    'plant-s1-3' : 'RIGTH'
+    'plant-s1-1' : 'LEFT',
+    'plant-s1-2' : 'CENTER',
+    'plant-s1-3' : 'RIGTH',
+    's1': '무들로29',
   },
   unitsTable : {
     'humidity': '%',

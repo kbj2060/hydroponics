@@ -6,6 +6,7 @@ import CurrentChecker from './CurrentChecker';
 import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {store} from "../../redux/store";
 
 const useStyles = makeStyles({
   controlCardButtons : {
@@ -41,17 +42,19 @@ const useStyles = makeStyles({
 })
 
 export default function SwitchController() {
-    const {machines} = require('root/values/preferences');
-    const {colors} = require('root/values/colors');
-    const classes = useStyles({
+  const currentPage = store.getState()['controlPage'];
+  const {machines} = require('root/values/preferences');
+  const {colors} = require('root/values/colors');
+  const classes = useStyles({
       customTheme : colors.customTheme,
-      n_machines : machines.length,
+      n_machines : machines[currentPage].length,
       neumOutShadow : colors.neumOutShadow
     })
+
     return (
       <Card className={classes.controlCardButtons}>
           <div className={classes.controlCardDiv}>
-              { machines.map(machine => {
+              { machines[currentPage].map(machine => {
                   return (
                     <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
                       <Box className={classes.alignNameBox} flexGrow={1} p={1} >

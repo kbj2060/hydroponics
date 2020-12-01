@@ -7,7 +7,6 @@ import Backdrop from "@material-ui/core/Backdrop";
 import {makeStyles} from "@material-ui/core/styles";
 import "../../assets/css/AutomationCircle.scss"
 import CustomStepper from "./CustomStepper";
-import {Typography} from "@material-ui/core";
 import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
 
 const useStyles = makeStyles((theme) => ({

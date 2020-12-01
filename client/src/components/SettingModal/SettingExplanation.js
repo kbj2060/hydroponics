@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import {makeStyles} from "@material-ui/core/styles";
-import TemperatureIcon from '../../assets/icons/TemperatureIcon'
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
@@ -61,6 +60,7 @@ const nullCheck = (arg) => {
 
 export default function SettingExplanation({position}) {
   const {colors} = require('root/values/colors')
+  const current_page = store.getState()['controlPage']
   const [setting, setSetting] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({
@@ -76,11 +76,11 @@ export default function SettingExplanation({position}) {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
-        where : autoItem,
-	      section: "s1"
+        where : autoItem[current_page],
+	      section: current_page
       }
     }).then(({data}) => {
-      if(Object.values(data).every(nullCheck) || Object.keys(data).length !== Object.keys(defaultSetting).length){
+      if(checkEmpty(data)){
         data = defaultSetting;
       }
       setSetting(data);
