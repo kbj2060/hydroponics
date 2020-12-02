@@ -42,19 +42,21 @@ const useStyles = makeStyles({
 })
 
 export default function SwitchController() {
-  const currentPage = store.getState()['controlPage'];
+  const {WordsTable} = require('root/values/strings')
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page];
   const {machines} = require('root/values/preferences');
   const {colors} = require('root/values/colors');
   const classes = useStyles({
       customTheme : colors.customTheme,
-      n_machines : machines[currentPage].length,
+      n_machines : machines[current_page].length,
       neumOutShadow : colors.neumOutShadow
     })
 
     return (
       <Card className={classes.controlCardButtons}>
           <div className={classes.controlCardDiv}>
-              { machines[currentPage].map(machine => {
+              { machines[current_page].map(machine => {
                   return (
                     <Box key={machine.toString()}  className={classes.controlCardBox} display='flex'>
                       <Box className={classes.alignNameBox} flexGrow={1} p={1} >
