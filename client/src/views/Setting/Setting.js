@@ -8,8 +8,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import {Typography} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import ThemeChecker from "../../components/ThemeChecker/ThemeChecker";
-import {useDispatch} from "react-redux";
-import {controlPage} from "../../redux/modules/ControlPage";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -48,9 +46,7 @@ const useStyles = makeStyles(() => ({
     color: props => props.fontColor
   }
 }))
-export default function Setting({page}) {
-  const dispatch = useDispatch();
-  dispatch(controlPage(page));
+export default function Setting() {
   const {colors} = require('root/values/colors')
   const classes = useStyles({
     customTheme : colors.customTheme,

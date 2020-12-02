@@ -15,7 +15,7 @@ module.exports = {
     'plant-s1-1' : 'LEFT',
     'plant-s1-2' : 'CENTER',
     'plant-s1-3' : 'RIGTH',
-    's1': '무들로29',
+    '무들로29': 's1',
   },
   unitsTable : {
     'humidity': '%',

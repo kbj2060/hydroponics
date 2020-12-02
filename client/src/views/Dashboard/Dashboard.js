@@ -10,15 +10,10 @@ import MachinesHistoryCard from "root/client/src/components/MachinesHistory";
 import EnvironmentsHistroy from "root/client/src/components/EnvironmentsHistroy";
 import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
-import {controlPage} from "../../redux/modules/ControlPage";
-import {useDispatch} from "react-redux";
 
 export default function Dashboard({page}) {
   const classes = useStyles();
   const {environments, sections} = require('root/values/preferences')
-  const dispatch = useDispatch();
-  console.log(page)
-  dispatch(controlPage(page));
 
   return (
     CheckLogin() ?

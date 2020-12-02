@@ -13,9 +13,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {resetState} from "../../components/LocalStorage";
 import {makeStyles} from "@material-ui/core/styles";
-import {controlPage} from "../../redux/modules/ControlPage";
 
 const {colors} = require('root/values/colors')
 const useStyles = makeStyles(()=>({
@@ -85,7 +83,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-export default function Login({page}) {
+export default function Login() {
     const classes = useStyles({
       customTheme : colors.customTheme,
       neumOutShadow : colors.neumOutShadow,
@@ -107,7 +105,6 @@ export default function Login({page}) {
     });
     const [open, setOpen] = React.useState(false);
     const history = useHistory()
-    dispatch(controlPage(page));
 
     const handleClickOpen = () => {
       setOpen(true);

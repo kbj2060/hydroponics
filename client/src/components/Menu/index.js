@@ -115,7 +115,7 @@ export default function Menu() {
 						<h1 className={classes.header}>Kairos</h1>
 					</div>
 					<div style={{height: "70%"}}>
-						<LinkButton value={WordsTable['s1']} to={WordsTable['s1']} buttonDesign={classes.menuButton} />
+						<LinkButton value={'무들로29'} to={'무들로29'} buttonDesign={classes.menuButton} />
 						<LinkButton value={"설정"} to={"setting"} buttonDesign={classes.menuButton} />
 						<LinkButton onClick={() => dispatch(logout())} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>

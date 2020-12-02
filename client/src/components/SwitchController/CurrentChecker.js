@@ -32,6 +32,9 @@ export default function CurrentChecker({machine}) {
 	const [disable, setDisable] = React.useState(false);
 	const [flowing, setFlowing] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const {WordsTable} = require('root/values/strings')
+	const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+	const current_page = WordsTable[han_current_page]
 	const classes = useStyles();
 
 
@@ -44,7 +47,7 @@ export default function CurrentChecker({machine}) {
 			params : {
 				selects : ['section', 'current'],
 				machine : machine,
-				section : "s1"
+				section : current_page
 			}}).then(( {data} ) => {
 				if(checkEmpty(data) || !currentActivationCheck(data)){
 					setDisable(true);

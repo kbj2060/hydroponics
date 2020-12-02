@@ -52,6 +52,8 @@ function Switches(props) {
   });
   const dispatch = useDispatch();
   const {WordsTable} = require('root/values/strings');
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
 
   const getCurrentUser = () => {
     return loadState()['authentication']['status']['currentUser'];
@@ -62,7 +64,7 @@ function Switches(props) {
     await axios.post('/api/post/switch/machine',{
       params: {
         machine : machine,
-        section : "s1",
+        section : current_page,
         status : status,
         name : name
       }

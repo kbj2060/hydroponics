@@ -60,7 +60,9 @@ const nullCheck = (arg) => {
 
 export default function SettingExplanation({position}) {
   const {colors} = require('root/values/colors')
-  const current_page = store.getState()['controlPage']
+  const {WordsTable} = require('root/values/strings')
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
   const [setting, setSetting] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({

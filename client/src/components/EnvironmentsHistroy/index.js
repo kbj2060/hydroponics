@@ -47,6 +47,8 @@ export default function Index(props) {
   const {WordsTable} = require('root/values/strings');
   const {colors} = require('root/values/colors');
   const {sections} = require('root/values/preferences');
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
   const { environment } = props;
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
@@ -75,7 +77,7 @@ export default function Index(props) {
     await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment],
-        section: "s1"
+        section: current_page
       }
     }).then(({data})=> {
       setHistory(data);

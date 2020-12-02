@@ -110,10 +110,10 @@ export default function CustomStepper({modalClose}) {
       fontColor: colors.fontColor
     });
   const [activeStep, setActiveStep] = React.useState(0);
-  const current_page = store.getState()['controlPage']
+  const {WordsTable} = require('root/values/strings')
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
   const {autoItem} = require('root/values/preferences')
-  const {WordsTable} = require('root/values/strings');
-  console.log(current_page)
   const copied = cloneObj(autoItem[current_page]);
   const steps = getSteps(copied);
   const labels = getLabels(steps, WordsTable);
