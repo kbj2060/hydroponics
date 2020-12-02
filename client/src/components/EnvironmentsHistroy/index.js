@@ -58,6 +58,7 @@ export default function Index(props) {
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor
   });
+
   // json 형태로 반환 받아 사용
   //  {
   //    '1': {
@@ -80,6 +81,7 @@ export default function Index(props) {
         section: current_page
       }
     }).then(({data})=> {
+      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);

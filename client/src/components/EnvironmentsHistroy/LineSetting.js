@@ -66,6 +66,21 @@ let getOptions = {
 		}*/
 }
 
+/*	const fetchLineSetting = useCallback(async () => {
+		try {
+			await axios.get('/api/get/lineLimit', {
+				params: { environment: environment, }
+			}).then(({data}) => {
+				setOptions(getOptions(data[0]));
+			})} catch (e) {
+			console.log('FETCH SETTING ERROR.');
+		}
+	}, [environment])*/
+
+/*	useEffect(() => {
+		fetchLineSetting();
+	}, [fetchLineSetting])*/
+
 export default function LineSetting (history, environment) {
 	const options = getOptions;
 	const {WordsTable} = require('root/values/strings');
@@ -96,21 +111,6 @@ export default function LineSetting (history, environment) {
 		}
 		return datasets
 	}
-
-/*	const fetchLineSetting = useCallback(async () => {
-		try {
-			await axios.get('/api/get/lineLimit', {
-				params: { environment: environment, }
-			}).then(({data}) => {
-				setOptions(getOptions(data[0]));
-			})} catch (e) {
-			console.log('FETCH SETTING ERROR.');
-		}
-	}, [environment])*/
-
-/*	useEffect(() => {
-		fetchLineSetting();
-	}, [fetchLineSetting])*/
 
 	state.datasets = makeBasicDataset(n_sections);
 	if(checkEmpty(history)){ return {state, options} }
