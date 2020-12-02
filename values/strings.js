@@ -12,9 +12,9 @@ module.exports = {
     "dashboard" : '홈',
     "setting" : '설정',
     "logout" : '로그아웃',
-    'plant-s1-1' : 'LEFT',
-    'plant-s1-2' : 'CENTER',
-    'plant-s1-3' : 'RIGTH',
+    'plant-s1-1' : 'CENTER',
+    'plant-s1-2' : 'LEFT',
+    'plant-s1-3' : 'RIGHT',
     '무들로29': 's1',
   },
   unitsTable : {
