@@ -71,8 +71,12 @@ export default function Index(props) {
   //  }
   const fetchHistory = useCallback(async () => {
     const getLastUpdatedTime = (data) => {
+      let data_len = []
+      let primary_key = ''
+      Object.keys(data).forEach((h) => { data_len[h] = Object.values(data[h]).length })
+      primary_key = Object.keys(data_len).reduce((p, c) => data_len[p] > data_len[c] ? p : c);
       if(checkEmpty(data)){ return null }
-      return Object.keys(data[sections[0]])[0];
+      return Object.keys(data[primary_key])[0];
     }
 
     await axios.get('/api/get/environment/history', {
