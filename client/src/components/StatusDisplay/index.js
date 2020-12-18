@@ -22,12 +22,11 @@ const useStyles = makeStyles({
 });
 
 export default function StatusDisplay(props) {
-  const {statusUpdateTime} = require('root/values/time');
-  const {environments} = require('root/values/preferences')
+  const {statusUpdateTime} = require('root/values/time.json');
+  const {environments} = require('root/values/preferences.json')
   const {plant} = props;
-  //const classes = useStyles();
-  const {WordsTable} = require('root/values/strings');
-  const {colors} = require('root/values/colors')
+  const {WordsTable} = require('root/values/strings.json');
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     n_environment : environments.length,
@@ -54,7 +53,9 @@ export default function StatusDisplay(props) {
       }
     }).then(({data:status}) => {
       if(checkEmpty(status)){ return; }
-      for (const [key, value] of Object.entries(status[0])) { status[key] = convertFixedFloat(value); }
+      for (const [key, value] of Object.entries(status[0])) {
+        status[key] = convertFixedFloat(value);
+      }
       setRecentStatus(status);
     }).catch((err) => {
       console.log('FETCH STATUS ERROR!');
@@ -66,7 +67,7 @@ export default function StatusDisplay(props) {
     fetchStatus();
     const interval = setInterval(() => {
       fetchStatus();
-    }, statusUpdateTime);
+    }, parseInt(statusUpdateTime));
     return () => clearInterval(interval);
   }, []);
 

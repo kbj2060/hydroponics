@@ -105,15 +105,15 @@ const autoSwitchDisable = (index, len) => {
 const cloneObj = obj => JSON.parse(JSON.stringify(obj));
 
 export default function CustomStepper({modalClose}) {
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
       fontColor: colors.fontColor
     });
   const [activeStep, setActiveStep] = React.useState(0);
-  const {WordsTable} = require('root/values/strings')
+  const {WordsTable} = require('root/values/strings.json')
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page]
-  const {autoItem} = require('root/values/preferences')
+  const {autoItem} = require('root/values/preferences.json')
   const copied = cloneObj(autoItem[current_page]);
   const steps = getSteps(copied);
   const labels = getLabels(steps, WordsTable);

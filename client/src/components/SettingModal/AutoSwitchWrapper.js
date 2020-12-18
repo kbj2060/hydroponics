@@ -7,7 +7,7 @@ import {controlSetting} from "../../redux/modules/ControlSetting";
 import update from "react-addons-update";
 
 export default function AutoSwitchWrapper({name:setting}) {
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
   const reduxSetting = store.getState()['controlSetting'][setting]
   const [status, setStatus] = React.useState(reduxSetting.enable);
   const dispatch = useDispatch();

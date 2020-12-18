@@ -25,14 +25,14 @@ const CurrentFlowing = withStyles((theme) => ({
 })
 
 export default function CurrentChecker({machine}) {
-	const {sections} = require('root/values/preferences')
-	const {currentUpdateTime } = require('root/values/time');
-	const {currentCriteria:criteria} = require('root/values/defaults')
+	const {sections} = require('root/values/preferences.json')
+	const {currentUpdateTime } = require('root/values/time.json');
+	const {currentCriteria:criteria} = require('root/values/defaults.json')
 	const [current, setCurrent] = React.useState({});
 	const [disable, setDisable] = React.useState(false);
 	const [flowing, setFlowing] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const {WordsTable} = require('root/values/strings')
+	const {WordsTable} = require('root/values/strings.json')
 	const han_current_page = decodeURI(window.location.pathname.replace('/',''))
 	const current_page = WordsTable[han_current_page]
 	const classes = useStyles();
@@ -71,7 +71,7 @@ export default function CurrentChecker({machine}) {
 		fetchCurrent();
 		const interval = setInterval(() => {
 			fetchCurrent();
-		}, currentUpdateTime);
+		}, parseInt(currentUpdateTime));
 		return () => {
 			clearInterval(interval);
 			setDisable(false);

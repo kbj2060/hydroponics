@@ -72,9 +72,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Menu() {
-	const {colors} = require('root/values/colors')
-	const {pages} = require('root/values/preferences')
-	const {WordsTable} = require('root/values/strings');
+	const {colors} = require('root/values/colors.json')
+	const {pages} = require('root/values/preferences.json')
+	const {WordsTable} = require('root/values/strings.json');
 	const dispatch = useDispatch();
 	const n_pages = pages.length;
 	const [open, setOpen] = React.useState(false);

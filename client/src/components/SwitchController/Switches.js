@@ -45,13 +45,13 @@ function Switches(props) {
   const [state, setState] = React.useState({ status: true, machine: machine});
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const {colors} = require('root/values/colors');
+  const {colors} = require('root/values/colors.json');
   const classes = style({
     buttonOn : colors.buttonOn,
     buttonOff : colors.buttonOff,
   });
   const dispatch = useDispatch();
-  const {WordsTable} = require('root/values/strings');
+  const {WordsTable} = require('root/values/strings.json');
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page]
 

@@ -48,6 +48,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9000",
+  "proxy": "http://127.0.0.1:9000",
   "devDependencies": {}
 }

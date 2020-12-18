@@ -15,7 +15,7 @@ import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {makeStyles} from "@material-ui/core/styles";
 
-const {colors} = require('root/values/colors')
+const {colors} = require('root/values/colors.json')
 const useStyles = makeStyles(()=>({
   root : {
     width: 'auto',
@@ -160,7 +160,7 @@ export default function Login() {
     }
 
     useEffect(() => {
-      const {pages} = require('root/values/preferences')
+      const {pages} = require('root/values/preferences.json')
 
       //TODO : 로그인 성공 후 다시 로그인 페이지로 들어갈 시 처리.
       console.log(store.getState()['authentication']);

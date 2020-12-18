@@ -13,7 +13,7 @@ import {Redirect} from "react-router-dom";
 
 export default function Dashboard({page}) {
   const classes = useStyles();
-  const {environments, sections} = require('root/values/preferences')
+  const {environments, sections} = require('root/values/preferences.json')
 
   return (
     CheckLogin() ?

@@ -4,7 +4,7 @@ const CONTROL_SETTING = "ControlSetting/CONTROL_SETTING";
 const RESET_SETTING = "ControlSetting/RESET_SETTING";
 const SAVE_SETTING = "ControlSetting/SAVE_SETTING";
 
-const {defaultSetting} = require('root/values/defaults')
+const {settings} = require('root/values/defaults.json')
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
@@ -22,7 +22,7 @@ let initialState = '';
 try {
   initialState = loadState()['controlSetting'];
 } catch(e) {
-  initialState = defaultSetting;
+  initialState = settings;
 }
 
 function ControlSetting(state = initialState, action) {
@@ -34,7 +34,7 @@ function ControlSetting(state = initialState, action) {
     case SAVE_SETTING:
       return action.setting;
     case RESET_SETTING:
-      return defaultSetting;
+      return settings;
     default:
       return initialState
   }

@@ -44,9 +44,9 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function Index(props) {
-  const {WordsTable} = require('root/values/strings');
-  const {colors} = require('root/values/colors');
-  const {sections} = require('root/values/preferences');
+  const {WordsTable} = require('root/values/strings.json');
+  const {colors} = require('root/values/colors.json');
+  const {sections} = require('root/values/preferences.json');
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page]
   const { environment } = props;
@@ -71,11 +71,11 @@ export default function Index(props) {
   //  }
   const fetchHistory = useCallback(async () => {
     const getLastUpdatedTime = (data) => {
+      if(checkEmpty(data)){ return null }
       let data_len = []
       let primary_key = ''
       Object.keys(data).forEach((h) => { data_len[h] = Object.values(data[h]).length })
       primary_key = Object.keys(data_len).reduce((p, c) => data_len[p] > data_len[c] ? p : c);
-      if(checkEmpty(data)){ return null }
       return Object.keys(data[primary_key])[0];
     }
 
@@ -85,7 +85,6 @@ export default function Index(props) {
         section: current_page
       }
     }).then(({data})=> {
-      console.log(data)
       setHistory(data);
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);
@@ -96,11 +95,11 @@ export default function Index(props) {
   }, [environment])
 
   useEffect(() => {
-    const {historyUpdateTime} = require('root/values/time');
+    const {historyUpdateTime} = require('root/values/time.json');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();
-    }, historyUpdateTime);
+    }, parseInt(historyUpdateTime));
     return () => {
       clearInterval(interval)
     };

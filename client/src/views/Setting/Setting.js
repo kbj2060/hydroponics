@@ -47,7 +47,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 export default function Setting() {
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
@@ -61,7 +61,7 @@ export default function Setting() {
         <AppBar page={'setting'} />
         <CssBaseline />
         <Grid container className={classes.container}>
-          <Grid item xs={12} sm={3} md={3} >
+          <Grid item xs={12} sm={6} md={6} >
             <div className={classes.item}>
               <Typography className={classes.title}>테 마</Typography>
               <div className={classes.parent}>
@@ -69,7 +69,7 @@ export default function Setting() {
               </div>
             </div>
           </Grid>
-          <Grid item xs={12} sm={3} md={3}>
+          <Grid item xs={12} sm={6} md={6}>
             <div className={classes.item}>
               <Typography className={classes.title}>기기 등록</Typography>
               <div className={classes.parent}>

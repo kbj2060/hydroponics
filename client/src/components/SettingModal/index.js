@@ -68,7 +68,7 @@ const customBackdrop = withStyles(() => ({
 
 export default function SettingModal() {
   	const [open, setOpen] = React.useState(false);
-  	const {colors} = require('root/values/colors');
+  	const {colors} = require('root/values/colors.json');
     const classes = useStyles({
 			customTheme : colors.customTheme,
 			neumOutShadow: colors.neumOutShadow,
@@ -91,14 +91,11 @@ export default function SettingModal() {
 					<AllInclusiveIcon className={classes.autoIcon}/>
         </Button>
 
-        <Modal
-					className={classes.modal}
+        <Modal className={classes.modal}
           disableAutoFocus={true}
           open={open}
           BackdropComponent={customBackdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}>
+          BackdropProps={{timeout: 500}}>
 				  <div className={classes.paper}>
 						<CustomStepper modalClose={handleClose}/>
           </div>

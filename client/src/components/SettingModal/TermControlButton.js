@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TermControlButton({setting}) {
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     fontColor : colors.fontColor
   });

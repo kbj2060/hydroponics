@@ -3,6 +3,7 @@
   "name": "Create React App Sample",
   "icons": [
   ],
+  "gcm_sender_id": "smartfarm",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

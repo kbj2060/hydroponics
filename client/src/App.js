@@ -4,13 +4,8 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch} from 'react-redux'
 import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
-import axios from "axios";
-import {saveSetting} from "./redux/modules/ControlSetting";
-import {controlSwitch} from "./redux/modules/ControlSwitch";
-import {checkEmpty} from "./components/utils/CheckEmpty";
 import Setting from "./views/Setting/Setting";
 
 const useStyles = makeStyles(() =>({
@@ -34,10 +29,8 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  const {machines, autoItem} = require('root/values/preferences');
-  const {defaultSetting} = require('root/values/defaults')
-  const dispatch = useDispatch();
-  const {colors} = require('root/values/colors')
+
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme
   });
@@ -98,7 +91,7 @@ export default function App() {
             <Login page={"login"}/>
           </Route>
           <Route exact path="/무들로29" >
-            <Dashboard page={"s1"}/>
+            <Dashboard page={"무들로29"}/>
           </Route>
           <Route exact path="/setting" >
             <Setting page={"setting"} />

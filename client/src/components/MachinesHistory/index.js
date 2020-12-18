@@ -18,6 +18,8 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
 import {store} from "../../redux/store";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
+import socket from "../../socket";
+import {controlSwitch} from "../../redux/modules/ControlSwitch";
 
 const theme = createMuiTheme({
   overrides: {
@@ -36,7 +38,7 @@ const useStyles1 = makeStyles({
 });
 
 function TablePaginationActions(props) {
-	const {colors} = require('root/values/colors');
+	const {colors} = require('root/values/colors.json');
 	const classes = useStyles1({
 		fontColor : colors.fontColor
 	});
@@ -129,14 +131,14 @@ const useStyles2 = makeStyles({
 });
 
 export default function MachineHistory() {
-	const {colors} = require('root/values/colors');
+	const {colors} = require('root/values/colors.json');
 	const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isLoading, setIsLoading] = React.useState(false);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const [refresh , setRefresh] = React.useState();
-	const {WordsTable} = require('root/values/strings');
+	const [refresh , setRefresh] = React.useState(true);
+	const {WordsTable} = require('root/values/strings.json');
 	const classes = useStyles2({
 		customTheme : colors.customTheme,
 		colorOn : colors['buttonOn'],
@@ -165,6 +167,12 @@ export default function MachineHistory() {
 		}
 	}
 
+	const receiveSocket = () => {
+		socket.on('receiveSwitchControl', (switchStatus) => {
+			setRefresh(false)
+			})
+	}
+
 	useEffect(() => {
 		const unsubscribe = store.subscribe(() => {
 			setRefresh(store.getState()['controlSwitch'])
@@ -174,7 +182,7 @@ export default function MachineHistory() {
 
 	useEffect(() => {
 		let mounted = true;
-		const {showHistoryNumber} = require('root/values/defaults');
+		const {showHistoryNumber} = require('root/values/defaults.json');
 
 		axios.get('/api/get/switch/history', {
 			params: {
@@ -196,7 +204,10 @@ export default function MachineHistory() {
 				}
 		})
 
-		return () => { mounted = false;}
+		return () => {
+			mounted = false;
+			setRefresh(true)
+		}
 	}, [refresh]);
 
 	if(isLoading){

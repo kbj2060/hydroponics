@@ -3,7 +3,7 @@ import Switch from "@material-ui/core/Switch";
 import React from "react";
 
 
-const {colors} = require('root/values/colors');
+const {colors} = require('root/values/colors.json');
 export const CustomIOSSwitch = withStyles((theme) => ({
   root: {
     width: 48,

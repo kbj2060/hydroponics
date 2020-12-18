@@ -54,13 +54,10 @@ const getRangeMax = (subject) => {
   return subject.range[1]
 }
 
-const nullCheck = (arg) => {
-  return arg === null;
-}
 
 export default function SettingExplanation({position}) {
-  const {colors} = require('root/values/colors')
-  const {WordsTable} = require('root/values/strings')
+  const {colors} = require('root/values/colors.json')
+  const {WordsTable} = require('root/values/strings.json')
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page]
   const [setting, setSetting] = React.useState({});
@@ -70,11 +67,11 @@ export default function SettingExplanation({position}) {
     fontColor : colors.fontColor
   });
   const dispatch = useDispatch();
-  const {defaultSetting} = require('root/values/defaults');
-  const {autoItem} = require('root/values/preferences')
+  const {settings:defaultSetting} = require('root/values/defaults.json');
+  const {autoItem} = require('root/values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
-  const getAutoFromJson = async () => {
+  const getAutoFromDB = async () => {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
@@ -153,15 +150,12 @@ export default function SettingExplanation({position}) {
     }
   }
 
-    useEffect(() => {
-    position === 'head' ? getAutoFromJson() : getAutoFromStore()
+  useEffect(() => {
+    position === 'head' ? getAutoFromDB() : getAutoFromStore()
   }, [])
 
-  if(isLoading){
-    return <ColorCircularProgress />
-  }
-
   return(
+    isLoading?<ColorCircularProgress />:
     <table className={classes.table}>
       <tbody>
       <tr className={classes.cell}>

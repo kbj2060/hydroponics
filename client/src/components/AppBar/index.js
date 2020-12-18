@@ -85,8 +85,7 @@ const useStyles =  makeStyles(theme => ({
 
 export default function PermanentAppBar(props) {
   const {page} = props;
-  const {colors} = require('root/values/colors');
-  const {WordsTable} = require('root/values/strings')
+  const {colors} = require('root/values/colors.json');
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
@@ -102,7 +101,7 @@ export default function PermanentAppBar(props) {
               color='primary'>
         <Toolbar>
           <Typography className={classes.title} variant="h6">
-            {WordsTable[page]}
+            {page}
           </Typography>
           <div className={classes.grow} />
             <div className={classes.menuWrapper} >

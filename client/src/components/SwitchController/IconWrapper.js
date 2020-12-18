@@ -10,7 +10,7 @@ import './FanOut.css'
 import {checkEmpty} from "../utils/CheckEmpty";
 import socket from "../../socket";
 
-const {colors} = require('root/values/colors');
+const {colors} = require('root/values/colors.json');
 
 const IconStyleHelper = onColor => {
   let neum = {  }
