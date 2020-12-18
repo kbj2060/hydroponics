@@ -6,7 +6,7 @@ const LOGGER_PATH = "./utils/useLogger";
 const SETTING_PATH = "../values/preferences";
 const STRING_PATH = "../values/strings";
 
-const {mqttURL:BROKER_URL, settingType} = require(SETTING_PATH)
+const {MQTT_BROKER, settingType} = require(SETTING_PATH)
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const {WordsTable} = require(STRING_PATH)
 const {connection} = require('./dbHandler');
@@ -408,7 +408,7 @@ io.on("connection", function (socket) {
   });
 });
 
-const client = mqtt.connect(BROKER_URL,{port: 1883, clientId: "MQTT"});
+const client = mqtt.connect(`mqtt://${MQTT_BROKER}`,{port: 1883, clientId: "MQTT"});
 
 /*
 mqtt data send example

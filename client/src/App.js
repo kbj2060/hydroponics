@@ -7,6 +7,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { store } from "./redux/store";
 import {saveState} from "./components/LocalStorage";
 import Setting from "./views/Setting/Setting";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import {checkEmpty} from "./components/utils/CheckEmpty";
+import {controlSwitch} from "./redux/modules/ControlSwitch";
+import {saveSetting} from "./redux/modules/ControlSetting";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -29,18 +34,20 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-
+  const {settings:defaultSetting} = require('root/values/defaults.json');
+  const {autoItem, machines} = require('root/values/preferences.json');
+  const dispatch = useDispatch();
   const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme
   });
 
-  /*const getControlSetting = async () => {
+  const getControlSetting = async () => {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
         where : autoItem,
-	section : "s1"
+	      section : "s1"
       }
     }).then(({data}) => {
       if(Object.keys(data).length === Object.keys(defaultSetting).length){
@@ -51,6 +58,8 @@ export default function App() {
     })
   }
 
+  // TODO : app.js 로드 될 때 모든 섹션의 스위치, 자동화 정보 등을 리덕스에 넣어놓는 것을 구현할 것.
+  // TODO : 백엔드 섹션 추가한 것처럼 리덕스도 섹션을 다 추가할 것.
   const getControlSwitch =  async (machine) => {
     return await axios.get('/api/get/query/last', {
       params: {
@@ -62,7 +71,7 @@ export default function App() {
   }
 
   const getControlSwitches = () => {
-    machines.forEach((machine) => {
+    machines['s1'].forEach((machine) => {
       getControlSwitch(machine)
         .then(({data}) => {
           if(checkEmpty(data)){
@@ -78,7 +87,7 @@ export default function App() {
     getControlSwitches();
     getControlSetting();
     saveState( store.getState() );
-  }, []);*/
+  }, []);
 
   store.subscribe(() => {
     saveState( store.getState() );

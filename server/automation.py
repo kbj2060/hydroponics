@@ -37,7 +37,7 @@ with open("../values/preferences.json", "rt", encoding='UTF8') as pref_json:
     SOCKET_PORT = preference['SOCKET_PORT']
     SOCKET_HOST = preference['SOCKET_HOST']
     MQTT_PORT = int(preference['MQTT_PORT'])
-    MQTT_HOST = preference['MQTT_HOST']
+    MQTT_BROKER = preference['MQTT_BROKER']
     CLIENT_ID = preference['CLIENT_ID']
     LED_TOPIC = preference['LED_TOPIC']
     HEATER_TOPIC = preference['HEATER_TOPIC']
@@ -103,7 +103,7 @@ class Automagic(MQTT):
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_publish = self.on_publish
-        self.client.connect(MQTT_HOST, MQTT_PORT, keepalive=60)
+        self.client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
         # self.client.loop_start()
 
         self.sio = socketio.Client()
