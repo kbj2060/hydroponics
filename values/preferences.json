@@ -1,8 +1,7 @@
 {
   "IP" : "192.168.1.61",
   "SOCKET_HOST" : "192.168.1.61",
-  "MQTT_HOST" : "192.168.1.61",
-  "mqttURL" : "mqtt://192.168.0.3",
+  "MQTT_BROKER" : "192.168.1.61",
   "SOCKET_PORT" : "9000",
   "MQTT_PORT" : "1883",
   "CLIENT_ID" : "Auto",
@@ -31,7 +30,7 @@
     "s1-1", "s1-2", "s1-3"
   ],
   "autoItem":{
-   "s1" : ["led", "heater","cooler", "fan", "waterpump"]
+    "s1" : ["led", "heater","cooler", "fan", "waterpump"]
   }
   ,
   "settingType": {
