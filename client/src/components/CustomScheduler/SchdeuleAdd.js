@@ -51,7 +51,7 @@ const useStyles = makeStyles( {
     width: '100%',
   },
   dateHeader: {
-    padding : '3.5% 0',
+    padding : '1.5% 0',
     width: '100%',
   },
   title: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles( {
   buttonGrid: {
     width : `100%`,
     textAlign: 'center',
-    padding : '2%'
+    padding : '1%'
   },
   button : {
     margin : '0 2%'

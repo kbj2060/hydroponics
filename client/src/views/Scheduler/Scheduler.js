@@ -87,7 +87,6 @@ export default function Scheduler() {
     setIsAdd(false)
   }, [selectedDay])
 
-  if(!month){ return null }
   return (
     CheckLogin()?
       <div className={classes.root}>
