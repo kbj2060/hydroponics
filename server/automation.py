@@ -6,38 +6,39 @@ import paho.mqtt.client as mqtt
 import json
 import socketio
 import requests
+import os
 
 # TODO [SERVER CHANGE] : Change Directory
-# os.chdir("/home/pi/automation/")
+os.chdir("/home/pi/hydroponics/")
 
-with open('../values/strings.json', "rt", encoding='UTF8') as string_json:
+with open('values/strings.json', "rt", encoding='UTF8') as string_json:
     strings = json.load(string_json)
     WordsTable = strings['WordsTable']
 
-with open('../values/defaults.json', "rt", encoding='UTF8') as default_json:
+with open('values/defaults.json', "rt", encoding='UTF8') as default_json:
     defaults = json.load(default_json)
     DEFAULT_SETTING = defaults['settings']
     DEFAULT_ENV = defaults['environments']
     DEFAULT_MACHINES = defaults['machines']
     DEFAULT_SECTIONS = defaults['sections']
 
-with open("../values/db_conf.json", "rt", encoding='UTF8') as db_conf:
+with open('values/db_conf.json', "rt", encoding='UTF8') as db_conf:
     conf = json.load(db_conf)
     DB_HOST = conf['host']
     DB_USER = conf['user']
     DB_PW = conf['password']
 
-with open("../values/telegram_conf.json", "rt", encoding='UTF8') as tg_conf:
+with open('values/telegram_conf.json', "rt", encoding='UTF8') as tg_conf:
     telegram_conf = json.load(tg_conf)
     token = telegram_conf['token']
     chat_id = telegram_conf['chat_id']
 
-with open("../values/preferences.json", "rt", encoding='UTF8') as pref_json:
+with open('values/preferences.json', "rt", encoding='UTF8') as pref_json:
     preference = json.load(pref_json)
     SOCKET_PORT = preference['SOCKET_PORT']
     SOCKET_HOST = preference['SOCKET_HOST']
     MQTT_PORT = int(preference['MQTT_PORT'])
-    MQTT_BROKER = preference['MQTT_BROKER']
+    MQTT_HOST = preference['MQTT_HOST']
     CLIENT_ID = preference['CLIENT_ID']
     LED_TOPIC = preference['LED_TOPIC']
     HEATER_TOPIC = preference['HEATER_TOPIC']
@@ -103,7 +104,7 @@ class Automagic(MQTT):
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.on_publish = self.on_publish
-        self.client.connect(MQTT_BROKER, MQTT_PORT, keepalive=60)
+        self.client.connect(MQTT_HOST, MQTT_PORT, keepalive=60)
         # self.client.loop_start()
 
         self.sio = socketio.Client()
@@ -112,6 +113,9 @@ class Automagic(MQTT):
         self.fetch_machines()
         self.fetch_settings()
         self.fetch_environments_mean()
+        
+        #임시작업
+        self.fetch_environments_main()
 
     def make_topic(self, machine):
         """
@@ -157,6 +161,16 @@ class Automagic(MQTT):
         except:
             self.environments = {"temperature": 0, "humidity": 0, "co2": 0}
 
+    def fetch_environments_main(self):
+        try:
+            sql = f"SELECT temperature FROM iot.env WHERE section = \"s1-2\" ORDER BY id DESC LIMIT 1"
+            self.cursor.execute(sql)
+            fetch = self.cursor.fetchall()
+            self.environments['temperature'] = fetch[0][0]
+            print(self.environments['temperature'])
+        except:
+            self.environments = {"temperature" : 0, "humidity":0, "co2":0}
+
     def make_setting_sql(self):
         """
 
@@ -201,6 +215,7 @@ class Automagic(MQTT):
             self.machines = {"heater": 0, "cooler": 0, "led": 0, "fan": 0, "waterpump": 0}
 
     # TODO : Section Field needs to be changed!
+    # TODO : FETCH 값들이 비어있을 경우, 출력 메세지 띄울 것.
     def insert_database(self, machine, status):
         """
 

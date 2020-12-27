@@ -1,46 +1,22 @@
 import {loadState} from "root/client/src/components/LocalStorage";
 import {checkEmpty} from "../../components/utils/CheckEmpty";
 
-const CONTROL_SWITCH = "CONTROL_SWITCH";
-const SAVE_SWITCH = "SAVE_SWITCH";
+const SAVE_DATE = "SAVE_DATE";
 
-export function controlSwitch(_switch) {
-  return { type: CONTROL_SWITCH, _switch }
+export function saveDate(date) {
+  return { type: SAVE_DATE, date }
 }
 
-export function saveSwitch(_switch) {
-  return { type: SAVE_SWITCH, _switch }
-}
+const today = new Date();
+const initialState = { "year": today.getFullYear(), "month": today.getMonth() + 1  }
 
-let initialState;
-try {
-  initialState = loadState()['controlSwitch'];
-} catch(e) {
-  initialState = {
-    'cooler': false, 'heater':false, 'led':false, 'fan':false, 'waterpump':false
-  }
-}
-
-function ControlSwitch(state =initialState, action) {
+function ControlScheduleDate(state =initialState, action) {
   switch(action.type){
-    case CONTROL_SWITCH:
-      const key = Object.keys(action._switch)[0];
-      const value = Object.values(action._switch)[0];
-      return { ...state, [key]: value };
-    case SAVE_SWITCH:
-      return action._switch;
+    case SAVE_DATE:
+      return action.date;
     default:
-      try{
-        if (checkEmpty(loadState()['controlSwitch'])) {
-          return state
-        } else {
-          return loadState()['controlSwitch'];
-        }
-      }
-      catch(e){
-        return state
-      }
+      return initialState
   }
 }
 
-export default ControlSwitch;
+export default ControlScheduleDate;

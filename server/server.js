@@ -2,6 +2,7 @@
 /*
   백엔드, 소켓, MQTT
  */
+
 const LOGGER_PATH = "./utils/useLogger";
 const SETTING_PATH = "../values/preferences";
 const STRING_PATH = "../values/strings";
@@ -23,6 +24,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 connection.connect()
+
+const checkEmpty = (value) => {
+    if ( value === [] || value === undefined || value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
+        return true;
+    }
+}
+
 /*
  * 기본 쿼리 구조 시작
  */
@@ -48,6 +56,7 @@ app.get('/api/get/query/last', (req, res) => {
  * ---------------------------------------------------------------------------------------------------------------------
  * 섹션 시작
  */
+// Android
 app.get('/api/get/section', (req, res) => {
   try {
     const sql = `SELECT id, section_name FROM iot.section;`
@@ -248,19 +257,6 @@ app.get('/api/get/current', (req, res) => {
 * ---------------------------------------------------------------------------------------------------------------------
 * 자동화 설정 시작
 */
-/*app.get('/api/get/switch/auto', (req, res) => {
-  try {
-    const item = req.query['item'];
-    const sql = `SELECT enable FROM iot.auto WHERE item = \"${item}\"  ORDER BY id DESC LIMIT 1;`;
-    connection.query(sql, (err, rows) => { res.send(rows[0]) })
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET AUTO SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});*/
-
 function union_all(selects, section, arr) {
   const sqls = arr.map((item, index) => {
     if(index === 0){ return `(SELECT ${selects} FROM iot.auto 
@@ -327,8 +323,117 @@ app.post('/api/post/save/auto', (req,res) => {
 /*
  * 자동화 설정 끝
  * ---------------------------------------------------------------------------------------------------------------------
+ * 일정 설정 시작
+ */
+  const date2moment = (date) => {
+    const json = typeof(date) === "string" ? JSON.parse(date): date;
+    const nDate = new Date(json.year, json.month-1, json.day)
+    return moment(nDate).format('YYYY-MM-DD')
+  }
+
+  const string2moment = (date) => {
+    const nDate = new Date(date);
+    return moment(nDate).format('YYYY-MM-DD')
+  }
+
+  const makeMoment = (date) => {
+    if (checkEmpty(date)) return null
+    if(typeof(date) === "object") return moment(new Date(`${date.year}-${date.month}-${date.day}`)).format('YYYY-MM-DD')
+    else if(typeof(date) === "string") return moment(new Date(date)).format('YYYY-MM-DD')
+  }
+
+  const getScheduleSql = (date, isMonth) => {
+    const format = isMonth === 'false'?'YYYY-MM-DD':'YYYY-MM';
+    const mDate = `%${moment(new Date(date)).format(format)}%`
+    return `select id, date, title, content, binding from iot.schedule where date LIKE \"${mDate}\" order by date desc;`
+  }
+
+app.get('/api/get/schedules', (req,res) => {
+  try{
+    const {date, month:isMonth} = req.query
+    const sql = getScheduleSql(date, isMonth);
+    console.log(sql)
+    connection.query(sql, (err, rows) => {
+      rows.forEach((row) => {
+        row.date = row.date.split(',')
+      })
+      res.send(rows)
+    });
+  }catch(err){
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `GET SCHEDULE ERROR : ${err}`
+    })
+  }
+})
+
+app.post('/api/post/remove/schedule', (req, res) => {
+  try {
+    let {ids} = req.body.params;
+    let sql = `DELETE FROM iot.schedule WHERE id in (${ids.join(",")})`;
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+        useInfoLogger('schedule').info({
+          level: 'info',
+          message: `[${ids}] 일정 제거`
+        });
+      }
+    )} catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST REMOVE SCHEDULE ERROR : ${err}`
+    })
+  }
+});
+
+app.post('/api/post/revise/schedules', (req, res) => {
+  try {
+    let {id, dates, title, content} = req.body.params;
+    const mDate = dates.map((date) => date2moment(date))
+    let sql = `UPDATE iot.schedule SET date = \"${mDate}\", title = \"${title}\", content = \"${content}\", binding = \"${mDate.length}\" WHERE id = \"${id}\";`
+    console.log(sql)
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+        useInfoLogger('schedule').info({
+          level: 'info',
+          message: `[${id}] 일정 수정`
+        });
+      }
+    )} catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST REVISE SCHEDULE ERROR : ${err}`
+    })
+  }
+});
+
+app.post('/api/post/schedules', (req, res) => {
+  try {
+    let {dates, title, content, binding} = req.body.params;
+    console.log(dates, title, content, binding)
+    let dateList = dates.map((date) => string2moment(date))
+    let sql = `INSERT INTO iot.schedule VALUES (null, \"${dateList}\", \"${title}\", \"${content}\", ${binding}, now(), 0);`;
+        console.log(sql)
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+        useInfoLogger('schedule').info({
+          level: 'info',
+          message: `[${dates}] 일정 추가`
+        });
+      }
+    )} catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST SCHEDULE ERROR : ${err}`
+    })
+  }
+});
+/*
+ * 일정 설정 끝
+ * ---------------------------------------------------------------------------------------------------------------------
  * 로그인 설정 시작
  */
+
 app.post('/api/post/signin', (req, res) => {
   try{
     const {username, password} = req.body.params;
@@ -372,14 +477,6 @@ const cleanHistoryDict = (res, env) => {
   }
   return res
 }
-
-/*
-const server = require('greenlock-express').init({
-        packageRoot:  path.join(__dirname, '..'),
-        configDir: '../greenlock.d',
-        maintainerEmail: 'kbj2060@naver.com',
-      }).serve(app)
-*/
 
 
 const server = http.createServer(app).listen(9000, function () {
@@ -500,26 +597,3 @@ client.on("error", () => {
     message: `CANNOT CONNECT MQTT`
   })
 })
-
-
-/*
- * 기본 쿼리 구조 시작
- */
-app.get('/api/get/query', (req, res) => {
-  try {
-    const table = req.query['table'];
-    const selects = req.query['selects'].join(",");
-    const num = req.query['num'];
-    connection.query(
-      `SELECT ${selects} FROM iot.${table} ORDER BY id DESC LIMIT ${num};`,
-      (err, rows) => {
-        res.send(rows);
-      }
-    )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `SIMPLE QUERY ERROR : ${err}`
-    })
-  }
-});

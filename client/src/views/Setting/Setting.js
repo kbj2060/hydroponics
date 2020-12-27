@@ -58,10 +58,10 @@ export default function Setting() {
   return (
     CheckLogin() ?
       <div className={classes.root}>
-        <AppBar page={'setting'} />
+        <AppBar page={'설정'} />
         <CssBaseline />
         <Grid container className={classes.container}>
-          <Grid item xs={12} sm={6} md={6} >
+          <Grid item xs={12} sm={6} md={3} >
             <div className={classes.item}>
               <Typography className={classes.title}>테 마</Typography>
               <div className={classes.parent}>
@@ -69,7 +69,7 @@ export default function Setting() {
               </div>
             </div>
           </Grid>
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} sm={6} md={3}>
             <div className={classes.item}>
               <Typography className={classes.title}>기기 등록</Typography>
               <div className={classes.parent}>

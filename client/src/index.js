@@ -8,11 +8,18 @@ import {Provider} from 'react-redux'
 import {store} from "./redux/store";
 
 const theme = createMuiTheme({
-  typography: {
-    color : "white",
-  },
-})
-
+    palette: {
+        primary: {
+            main : "#D9D8D2",
+        },
+        secondary: {
+            main: '#595957',
+        },
+        third: {
+            main: '#000',
+        },
+    },
+});
 ReactDOM.render(
   <Provider store={store}>
       <MuiThemeProvider theme={theme}>

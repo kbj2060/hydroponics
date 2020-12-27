@@ -12,6 +12,8 @@ import {useDispatch} from "react-redux";
 import {checkEmpty} from "./components/utils/CheckEmpty";
 import {controlSwitch} from "./redux/modules/ControlSwitch";
 import {saveSetting} from "./redux/modules/ControlSetting";
+import Scheduler from "./views/Scheduler/Scheduler";
+import {createMuiTheme} from "@material-ui/core";
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -32,6 +34,12 @@ const useStyles = makeStyles(() =>({
     overflowX:'hidden'
   }
 }));
+
+class ThemeProvider extends React.Component<{ theme: Theme, children: React.ReactNode }> {
+  render() {
+    return null;
+  }
+}
 
 export default function App() {
   const {settings:defaultSetting} = require('root/values/defaults.json');
@@ -101,6 +109,9 @@ export default function App() {
           </Route>
           <Route exact path="/무들로29" >
             <Dashboard page={"무들로29"}/>
+          </Route>
+          <Route exact path="/scheduler" >
+            <Scheduler page={"scheduler"}/>
           </Route>
           <Route exact path="/setting" >
             <Setting page={"setting"} />

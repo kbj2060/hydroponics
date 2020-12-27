@@ -24,6 +24,7 @@
     "mqtt": "^4.1.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.3",
+    "request": "^2.88.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
