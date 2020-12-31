@@ -25,12 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 connection.connect()
 
-const checkEmpty = (value) => {
-    if ( value === [] || value === undefined || value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
-        return true;
-    }
-}
-
 /*
  * 기본 쿼리 구조 시작
  */
@@ -82,6 +76,20 @@ app.get('/api/get/section', (req, res) => {
  * ---------------------------------------------------------------------------------------------------------------------
  * 환경 설정 시작
  */
+
+const cleanHistoryDict = (res, env) => {
+  let dic = Object({})
+  for (let [key, value] of Object.entries(res)) {
+    value.forEach((v) => {
+      const date = getLocaleMoment(v['created']);
+      dic[date] = v[env]
+    })
+    res[key] = dic;
+    dic = {};
+  }
+  return res
+}
+
 app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
@@ -200,23 +208,6 @@ app.get('/api/get/switch/history', (req, res) => {
   }
 });
 
-app.get('/api/get/switch/last', (req, res) => {
-  try {
-    const selects = req.query['selects'].join(",");
-    const sql = `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT 1;
-`
-    connection.query(sql, (err, rows) => {
-      rows.forEach((row) => {
-          row['created'] = getLocaleMoment(row['created'])
-        })
-        res.send(rows); } )
-  } catch (err) {
-    useErrorLogger('GET').error({
-      level: 'error',
-      message: `GET SWITCH QUERY ERROR : ${err}`
-    })
-  }
-});
 
 app.post('/api/post/switch/machine', (req, res) => {
   try {
@@ -291,7 +282,7 @@ function union_all(selects, section, arr) {
   return sqls.join(' ')
 }
 
-app.get('/api/get/load/auto', (req,res) => {
+app.get('/api/get/auto', (req,res) => {
   try{
     const selects = req.query['selects'].join(",");
     const auto = req.query['where'];
@@ -325,7 +316,7 @@ function classifyValues (section, controlSetting, user) {
   })
 }
 
-app.post('/api/post/save/auto', (req,res) => {
+app.post('/api/post/auto', (req,res) => {
   try{
     const { section, controlSetting, user } = req.body.params;
     const sqlValues = classifyValues(section, controlSetting, user).join(',');
@@ -356,12 +347,6 @@ app.post('/api/post/save/auto', (req,res) => {
   const string2moment = (date) => {
     const nDate = new Date(date);
     return moment(nDate).format('YYYY-MM-DD')
-  }
-
-  const makeMoment = (date) => {
-    if (checkEmpty(date)) return null
-    if(typeof(date) === "object") return moment(new Date(`${date.year}-${date.month}-${date.day}`)).format('YYYY-MM-DD')
-    else if(typeof(date) === "string") return moment(new Date(date)).format('YYYY-MM-DD')
   }
 
   const getScheduleSql = (date, isMonth) => {
@@ -487,24 +472,17 @@ const groupBy = function(xs, key) {
 
 function getLocaleMoment(date) { return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss'); }
 
-const cleanHistoryDict = (res, env) => {
-  let dic = Object({})
-  for (let [key, value] of Object.entries(res)) {
-    value.forEach((v) => {
-      const date = getLocaleMoment(v['created']);
-      dic[date] = v[env]
-    })
-    res[key] = dic;
-    dic = {};
-  }
-  return res
-}
-
+/*
+* 유틸함수 끝
+*/
 
 const server = http.createServer(app).listen(9000, function () {
   console.info("Listening for HTTP on", this.address());
 });
 
+/*
+  socketio 통신
+ */
 const io = require('socket.io').listen(server)
 
 io.on("connection", function (socket) {
@@ -527,6 +505,9 @@ io.on("connection", function (socket) {
   });
 });
 
+/*
+  MQTT 통신
+*/
 const client = mqtt.connect(`mqtt://${MQTT_BROKER}`,{port: 1883, clientId: "MQTT"});
 
 /*

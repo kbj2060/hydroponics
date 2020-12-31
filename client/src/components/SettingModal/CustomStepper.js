@@ -130,7 +130,7 @@ export default function CustomStepper({modalClose}) {
     const user = loadState('authentication')['status']['currentUser'];
     const controlSetting = store.getState()['auto']
     saveState('auto', controlSetting);
-    await axios.post('/api/post/save/auto',{
+    await axios.post('/api/post/auto',{
       params: {
         controlSetting : controlSetting,
         user : user,

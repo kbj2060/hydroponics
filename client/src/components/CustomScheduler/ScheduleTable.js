@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,17 +56,11 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, setIsLoading } = props;
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
-/*
-  useEffect(() => {
-    setIsLoading(true)
-  }, [rowCount])
-*/
 
   return (
     <TableHead>
@@ -378,7 +372,6 @@ export default function ScheduleTable({selectedDay}) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
-              setIsLoading={setIsLoading}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))

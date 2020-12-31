@@ -45,7 +45,7 @@ export default function App() {
   });
 
   const getControlAuto = async () => {
-    await axios.get('/api/get/load/auto', {
+    await axios.get('/api/get/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
         where : autoItem["s1"],

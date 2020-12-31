@@ -10,8 +10,6 @@ import {checkEmpty} from '../utils/CheckEmpty';
 import Chip from '@material-ui/core/Chip';
 import LoopIcon from '@material-ui/icons/Loop';
 import {store} from "../../redux/store";
-import {useDispatch} from "react-redux";
-import {saveSetting} from "../../redux/modules/ControlSetting";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const useStyles = makeStyles((theme) => ({
@@ -66,13 +64,12 @@ export default function SettingExplanation({position}) {
     borderColor : colors.fontColor,
     fontColor : colors.fontColor
   });
-  const dispatch = useDispatch();
   const {auto:defaultSetting} = require('root/values/defaults.json');
   const {autoItem} = require('root/values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
   const getAutoFromDB = async () => {
-    await axios.get('/api/get/load/auto', {
+    await axios.get('/api/get/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
         where : autoItem[current_page],

@@ -12,9 +12,7 @@ import ScheduleTable from "root/client/src/components/CustomScheduler/ScheduleTa
 import ScheduleAdd from "../../components/CustomScheduler/SchdeuleAdd";
 import {ButtonGroup} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {shallowEqual, useDispatch, useSelector} from "react-redux";
-import {saveDate} from "../../redux/modules/ControlScheduleDate";
-import {saveState} from "../../components/LocalStorage";
+import {shallowEqual, useSelector} from "react-redux";
 
 const useStyles = makeStyles(() => ({
   root: {

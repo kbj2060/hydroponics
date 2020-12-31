@@ -16,8 +16,9 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import {shallowEqual, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import getCurrentPage from "../utils/getCurrentPage";
+import {checkEmpty} from "../utils/CheckEmpty";
 
 const theme = createMuiTheme({
   overrides: {
@@ -164,39 +165,49 @@ export default function MachineHistory() {
   		return row.status !== 0? 'ON':'OFF'
 	}
 
-	useEffect(() => {
-		isMount || (
-			axios.get('/api/get/switch/last', {
-				params: {
-					selects: ['machine', 'status', 'created', 'controlledBy'],
-				}}).then(({data: switchHistory}) => {
+	const getLastSwitch = async () => {
+  	await axios.get('/api/get/switch/history', {
+			params: {
+				selects: ['machine', 'status', 'created', 'controlledBy'],
+				section : current_section,
+				num: 1
+			}}).then(({data}) => {
 					setRows(prevArray => {
 						prevArray.splice(-1, 1)
-						return [switchHistory[0], ...prevArray]
+						return [data[0], ...prevArray]
 					});
 			})
-		)
+	}
+
+	const getSwitchHistory = async  () => {
+  	const {showHistoryNumber} = require('root/values/defaults.json');
+  	await axios.get('/api/get/switch/history', {
+			params: {
+				selects: ['machine', 'status', 'created', 'controlledBy'],
+				section : current_section,
+				num: showHistoryNumber
+			}}).then(({data}) => {
+				if(checkEmpty(data)) return null
+				const rows = data.map((history) => {
+					return {
+						status: history['status'],
+						machine: history['machine'],
+						created: history['created'],
+						controlledBy : history['controlledBy']
+					}
+				})
+				setRows(rows);
+			})
+	}
+
+
+	useEffect(() => {
+		isMount || getLastSwitch()
 	}, [refresh])
 
 	useEffect(() => {
-		const {showHistoryNumber} = require('root/values/defaults.json');
-		axios.get('/api/get/switch/history', {
-			params: {
-				selects: ['machine', 'status', 'created', 'controlledBy'],
-				section : 's1',
-				num: showHistoryNumber
-			}}).then(({data: switchHistory}) => {
-					const rows = switchHistory.map((history) => {
-						return {
-							status: history['status'],
-							machine: history['machine'],
-							created: history['created'],
-							controlledBy : history['controlledBy']
-						}
-					})
-					setRows(rows);
-					setIsMount(false)
-			})
+		getSwitchHistory();
+		setIsMount(false);
 		return () => {
 			setIsMount(true);
 		}
@@ -212,7 +223,7 @@ export default function MachineHistory() {
 					  	(rowsPerPage > 0
 						? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						: rows
-					  ).map((row, index, arr) => {
+					  ).map((row, index) => {
 							  return (
 							  	<TableRow key={index}>
 										<TableCell className={classes.text} align="center" component="th" scope="row">
