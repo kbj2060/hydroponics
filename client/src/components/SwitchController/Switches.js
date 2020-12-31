@@ -56,7 +56,7 @@ function Switches(props) {
   const current_page = WordsTable[han_current_page]
 
   const getCurrentUser = () => {
-    return loadState()['authentication']['status']['currentUser'];
+    return loadState('authentication')['status']['currentUser'];
   }
 
   const postSwitchMachine = async (status) => {
@@ -97,10 +97,10 @@ function Switches(props) {
       }})
   }
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     e.persist();
     const status = e.target.checked;
-    const switches = store.getState()['controlSwitch'];
+    const switches = store.getState()['switches'];
 
     if (machine === "cooler" && status && switches['heater']){
       return;
@@ -113,7 +113,7 @@ function Switches(props) {
     setSnackbarOpen(true);
     setState({machine: machine, status: status});
     emitSocket(status);
-    postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
+    postSwitchMachine(status?1:0)
   };
 
   const closeSnackBar = () => {
@@ -126,6 +126,7 @@ function Switches(props) {
 
   const cleanup = () => {
     socket.disconnect();
+    setIsLoading(true);
   }
 
   useEffect(() => {
@@ -145,7 +146,9 @@ function Switches(props) {
           setIsLoading(false);
     }).catch(() => { setIsLoading(true); })
     receiveSocket();
-    return () => { cleanup(); }
+    return () => {
+      cleanup();
+    }
   }, [machine]);
 
   if(isLoading){
@@ -167,7 +170,7 @@ function Switches(props) {
           className={classes.controlForm}
          />
       </FormGroup>
-      {state.status?
+      {state.status ?
         <p className={classes.displayPowerOn}>ON</p>:<p className={classes.displayPowerOff}>OFF</p>}
       <Snackbar open={snackbarOpen} onClose={closeSnackBar} autoHideDuration={2000}>
         <Alert onClose={closeSnackBar} severity="info">

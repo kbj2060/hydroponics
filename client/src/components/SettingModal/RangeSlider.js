@@ -53,15 +53,15 @@ export default function RangeSlider(props) {
     fontColor : colors.fontColor
   });
   const { unitsTable } = require('root/values/strings.json');
-  const { settings:defaultSetting } = require('root/values/defaults.json')
+  const { auto:defaultSetting } = require('root/values/defaults.json')
   const [setting, setSetting] = React.useState(defaultSetting[settingKey]['range']);
   const [isLoading, setIsLoading] = React.useState(true);
-  const reduxSetting = store.getState()['controlSetting'][settingKey]
+  const reduxSetting = store.getState()['auto'][settingKey]
   const [visible, setVisible] = React.useState(reduxSetting['enable']);
   const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
-    const reduxSetting = store.getState()['controlSetting'][settingKey]
+    const reduxSetting = store.getState()['auto'][settingKey]
     dispatch(controlSetting({[settingKey] : update(reduxSetting, {
       range: {$set: newValue} })
     }))
@@ -85,13 +85,16 @@ const getOffExplanation = (_type) => {
   }
 
   useEffect(() => {
-    const reduxRange = store.getState()['controlSetting'][settingKey]['range']
+    const reduxRange = store.getState()['auto'][settingKey]['range']
     const unsubscribe = store.subscribe(() => {
-      setVisible(store.getState()['controlSetting'][settingKey]['enable']);
+      setVisible(store.getState()['auto'][settingKey]['enable']);
     })
     setSetting(reduxRange);
     setIsLoading(false);
-    return () => { unsubscribe(); }
+    return () => {
+      unsubscribe();
+      setIsLoading(true);
+    }
   }, [])
 
   function valuetext(value, index) {

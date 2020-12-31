@@ -2,17 +2,19 @@ import React, {useEffect} from 'react';
 import Box from "@material-ui/core/Box";
 import useStyles from '../../assets/jss/DashboardStyle';
 import axios from "axios";
-import {withStyles} from "@material-ui/core/styles";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import {checkEmpty} from "../utils/CheckEmpty";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
-		height : '1.3em',
-		width : '1.3em',
+		height : '1.8em',
+		width : '1.8em',
 		margin : 'auto',
 		verticalAlign: 'middle',
 		textAlign:'center',
+		padding: '1px'
 	}
 }))(({classes, ...props}) => {
 	const {fillColor} = props;
@@ -86,12 +88,5 @@ export default function CurrentChecker({machine}) {
 		return <div className={classes.disable} />
 	}
 
-	return (
-		<Box className={classes.optionBox}  p={1} flexGrow={1} >
-			{
-				flowing ?
-				<CurrentFlowing fillColor={'#dec11e'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
-			}
-		</Box>
-	);
+	return ( flowing && <CurrentFlowing fillColor={'#dec11e'} /> );
 }

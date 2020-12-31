@@ -7,6 +7,7 @@ import { store } from "../../redux/store";
 import {saveDate} from "../../redux/modules/ControlScheduleDate";
 import {useDispatch} from "react-redux";
 import { Header, MonthSelector, YearSelector, DaysList } from './components';
+import {saveState} from "../LocalStorage";
 
 
 const Calendar = ({
@@ -55,8 +56,9 @@ const Calendar = ({
 
   useEffect(() => {
     if(!isDatepicker){
-      const {year, month} = mainState.activeDate || store.getState()['saveDate']
+      const {year, month} = mainState.activeDate || store.getState()['date']
       dispatch(saveDate({"year":year, "month":month}));
+      saveState('date', {"year":year, "month":month})
     }
   },[mainState.activeDate])
 

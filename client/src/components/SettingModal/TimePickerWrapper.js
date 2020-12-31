@@ -9,7 +9,7 @@ import TermControlButton from "./TermControlButton";
 
 export default function TimeSpanWrapper({setting, outerSize}) {
   const dispatch = useDispatch();
-  const reduxSetting = store.getState()['controlSetting'][setting]
+  const reduxSetting = store.getState()['auto'][setting]
   const { height, width } = useWindowDimensions();
   const customHeight = (height/2) + 5;
   const customWidth = (width/2) - 34;
@@ -18,13 +18,13 @@ export default function TimeSpanWrapper({setting, outerSize}) {
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
-      setVisible(store.getState()['controlSetting'][setting]['enable']);
+      setVisible(store.getState()['auto'][setting]['enable']);
     })
     return () => { unsubscribe(); }
   }, [setting])
 
   const handleTimePicker = (time) => {
-    const reduxSetting = store.getState()['controlSetting'][setting]
+    const reduxSetting = store.getState()['auto'][setting]
     let startList=[], endList=[];
     time.forEach((t) => {
       startList.push(t[0].format('HH:mm'))

@@ -75,7 +75,7 @@ class CircularTimespanpicker extends Component {
 
   componentDidMount() {
     const { subject, interval } = this.props;
-    const {start:selectedStartHours, end:selectedEndHours} = store.getState()['controlSetting'][subject]
+    const {start:selectedStartHours, end:selectedEndHours} = store.getState()['auto'][subject]
 
     const selectedStart = this.getSelectedHours(selectedStartHours);
     const selectedEnd = this.getSelectedHours(selectedEndHours);

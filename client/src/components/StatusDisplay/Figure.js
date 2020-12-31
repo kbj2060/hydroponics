@@ -37,8 +37,9 @@ export default function Figure(props) {
   const {colors} = require('root/values/colors.json')
   const n_environment = environments.length;
   const roundFigureRef = useRef();
+
   const [width, setWidth] = React.useState(window.innerWidth);
-  const [dimensions, setDimensions] = useState({width: 0, height: 0});
+  const [dimensions, setDimensions] = useState({width: 0});
 
   const classes = useStyles({
     dimensions: dimensions,
@@ -49,28 +50,35 @@ export default function Figure(props) {
     fontColor : colors.fontColor
   });
 
+  const cleanup = () => {
+    setWidth(0);
+  }
+
   useLayoutEffect(() => {
     if (roundFigureRef.current) {
       setDimensions({
         width: roundFigureRef.current.offsetWidth,
-        height: roundFigureRef.current.offsetHeight
       });
     }
     window.addEventListener('resize', () => {
       setWidth(window.innerWidth)
     });
     return () => {
-      setDimensions({width: 0, height: 0 })
+      cleanup();
     }
-  }, [width]);
+  }, [ width]);
 
   return (
-      <div >
+      <div>
           <Typography className={classes.title}>{WordsTable[environment]}</Typography>
           <Paper className={classes.root} ref={roundFigureRef}>
-            <div>
-              <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
-            </div>
+            {
+              dimensions.width
+                ? (<div>
+                    <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
+                   </div>)
+                : null
+            }
           </Paper>
       </div>
   );

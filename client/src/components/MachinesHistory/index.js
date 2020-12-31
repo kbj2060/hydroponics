@@ -16,10 +16,8 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import {store} from "../../redux/store";
-import {ColorCircularProgress} from "../utils/ColorCircularProgress";
-import socket from "../../socket";
-import {controlSwitch} from "../../redux/modules/ControlSwitch";
+import {shallowEqual, useSelector} from "react-redux";
+import getCurrentPage from "../utils/getCurrentPage";
 
 const theme = createMuiTheme({
   overrides: {
@@ -132,12 +130,18 @@ const useStyles2 = makeStyles({
 
 export default function MachineHistory() {
 	const {colors} = require('root/values/colors.json');
+	const {machines} = require('root/values/preferences.json')
+	const current_section = getCurrentPage();
 	const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isMount, setIsMount] = React.useState(true);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const [refresh , setRefresh] = React.useState(true);
+	const refresh = useSelector(state => state.switches, (prev, next) => {
+    return machines[current_section].every((machine) => {
+			return prev[machine] === next[machine]
+		})
+	})
 	const {WordsTable} = require('root/values/strings.json');
 	const classes = useStyles2({
 		customTheme : colors.customTheme,
@@ -146,6 +150,7 @@ export default function MachineHistory() {
 		neumOutShadow : colors.neumOutShadow,
 		fontColor : colors.fontColor,
 	})
+
   const handleChangePage = (event, newPage) => {
 		setPage(newPage);
   };
@@ -156,65 +161,49 @@ export default function MachineHistory() {
   };
 
   const handleStatus = row => {
-  	if(row.machine === 'airconditioner'){
-  		if(row.status === 3){ return 'HEATER' }
-  		else if(row.status === 2){ return 'COOLER' }
-  		else if(row.status === 0){ return 'OFF' }
-  		else{ return 'None' }
-		}
-  	else{
   		return row.status !== 0? 'ON':'OFF'
-		}
 	}
 
-	const receiveSocket = () => {
-		socket.on('receiveSwitchControl', (switchStatus) => {
-			setRefresh(false)
+	useEffect(() => {
+		isMount || (
+			axios.get('/api/get/switch/last', {
+				params: {
+					selects: ['machine', 'status', 'created', 'controlledBy'],
+				}}).then(({data: switchHistory}) => {
+					setRows(prevArray => {
+						prevArray.splice(-1, 1)
+						return [switchHistory[0], ...prevArray]
+					});
 			})
-	}
+		)
+	}, [refresh])
 
 	useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setRefresh(store.getState()['controlSwitch'])
-		})
-		return () => { unsubscribe(); }
-	}, [])
-
-	useEffect(() => {
-		let mounted = true;
 		const {showHistoryNumber} = require('root/values/defaults.json');
-
 		axios.get('/api/get/switch/history', {
 			params: {
 				selects: ['machine', 'status', 'created', 'controlledBy'],
 				section : 's1',
 				num: showHistoryNumber
 			}}).then(({data: switchHistory}) => {
-				if(mounted) {
 					const rows = switchHistory.map((history) => {
 						return {
 							status: history['status'],
 							machine: history['machine'],
-							date: history['created'],
-							user : history['controlledBy']
+							created: history['created'],
+							controlledBy : history['controlledBy']
 						}
 					})
 					setRows(rows);
-					setIsLoading(false);
-				}
-		})
-
+					setIsMount(false)
+			})
 		return () => {
-			mounted = false;
-			setRefresh(true)
+			setIsMount(true);
 		}
-	}, [refresh]);
-
-	if(isLoading){
-		return <ColorCircularProgress />
-	}
+	}, []);
 
   return (
+  	isMount ||
     <MuiThemeProvider theme={theme}>
 		<TableContainer component={Paper} className={classes.container}>
 			  <Table className={classes.table} aria-label="custom pagination table">
@@ -229,9 +218,9 @@ export default function MachineHistory() {
 										<TableCell className={classes.text} align="center" component="th" scope="row">
 											{WordsTable[row.machine.toLowerCase()]}
 										</TableCell>
-										<TableCell className={row.status !== 0? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
-										<TableCell className={classes.text} align="center">{row.user}</TableCell>
-										<TableCell className={classes.text} align="center">{row.date}</TableCell>
+										<TableCell className={row.status !== 0 ? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
+										<TableCell className={classes.text} align="center">{row.controlledBy}</TableCell>
+										<TableCell className={classes.text} align="center">{row.created}</TableCell>
 								</TableRow>)
 						  })}
 

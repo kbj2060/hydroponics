@@ -63,10 +63,6 @@ export default function ScheduleDetail(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [open, setOpen] = useState(true);
-  /*
-  const handleChange = (prop) => (event) => {
-    setDate({ ...date, [prop]: event.target.value });
-  };*/
 
   const closeDrawer = () => {
     toggleDrawer();
@@ -124,6 +120,12 @@ export default function ScheduleDetail(props) {
     closeDrawer();
   }
 
+  const cleanup = () => {
+    setTitle("")
+    setContent("")
+    setSelectedDays([]);
+  }
+
   useEffect(() => {
     setContent(selectedRow.content);
     setTitle(selectedRow.title);
@@ -132,9 +134,7 @@ export default function ScheduleDetail(props) {
       return {"year": parseInt(year), "month":parseInt(month), "day":parseInt(day)}
     }):[]);
     return () => {
-      setTitle("")
-      setContent("")
-      setSelectedDays([]);
+      cleanup();
     }
   }, [])
 

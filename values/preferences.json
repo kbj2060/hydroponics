@@ -1,7 +1,7 @@
 {
   "IP" : "121.157.207.47",
   "SOCKET_HOST" : "121.157.207.47",
-  "MQTT_BROKER" : "192.168.0.3",
+  "MQTT_BROKER" : "localhost",
   "SOCKET_PORT" : "9000",
   "MQTT_PORT" : "1883",
   "CLIENT_ID" : "Auto",

@@ -9,17 +9,17 @@ import requests
 import os
 
 # TODO [SERVER CHANGE] : Change Directory
-os.chdir("/home/pi/hydroponics/")
-
+#os.chdir("/home/pi/hydroponics/")
+os.chdir("../")
 with open('values/strings.json', "rt", encoding='UTF8') as string_json:
     strings = json.load(string_json)
     WordsTable = strings['WordsTable']
 
 with open('values/defaults.json', "rt", encoding='UTF8') as default_json:
     defaults = json.load(default_json)
-    DEFAULT_SETTING = defaults['settings']
+    DEFAULT_SETTING = defaults['auto']
     DEFAULT_ENV = defaults['environments']
-    DEFAULT_MACHINES = defaults['machines']
+    DEFAULT_SWITCHES = defaults['switches']
     DEFAULT_SECTIONS = defaults['sections']
 
 with open('values/db_conf.json', "rt", encoding='UTF8') as db_conf:
@@ -38,7 +38,7 @@ with open('values/preferences.json', "rt", encoding='UTF8') as pref_json:
     SOCKET_PORT = preference['SOCKET_PORT']
     SOCKET_HOST = preference['SOCKET_HOST']
     MQTT_PORT = int(preference['MQTT_PORT'])
-    MQTT_HOST = preference['MQTT_HOST']
+    MQTT_HOST = preference['MQTT_BROKER']
     CLIENT_ID = preference['CLIENT_ID']
     LED_TOPIC = preference['LED_TOPIC']
     HEATER_TOPIC = preference['HEATER_TOPIC']
@@ -92,9 +92,9 @@ class Automagic(MQTT):
 
     """
     def __init__(self):
-        self.settings = DEFAULT_SETTING
+        self.auto = DEFAULT_SETTING
         self.environments = DEFAULT_ENV
-        self.machines = DEFAULT_MACHINES
+        self.switches = DEFAULT_SWITCHES
         self.sections = DEFAULT_SECTIONS
 
         self.conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PW, charset='utf8')
@@ -108,10 +108,10 @@ class Automagic(MQTT):
         # self.client.loop_start()
 
         self.sio = socketio.Client()
-        self.sio.connect(f'http://{SOCKET_HOST}:{SOCKET_PORT}')
+        self.sio.connect(f"http://{SOCKET_HOST}:{SOCKET_PORT}")
 
-        self.fetch_machines()
-        self.fetch_settings()
+        self.fetch_switches()
+        self.fetch_auto()
         self.fetch_environments_mean()
         
         #임시작업
@@ -142,7 +142,7 @@ class Automagic(MQTT):
         :return:
         """
         sqls = []
-        for machine in self.machines.keys():
+        for machine in self.switches.keys():
             sqls.append(
                 f"(SELECT machine, status FROM iot.switch WHERE machine = \"{machine}\" ORDER BY id DESC LIMIT 1)")
         return " UNION ALL ".join(sqls)
@@ -177,12 +177,12 @@ class Automagic(MQTT):
         :return:
         """
         sqls = []
-        for setting in self.settings.keys():
+        for setting in self.auto.keys():
             sqls.append(
                 f"(SELECT item, enable, duration FROM iot.auto WHERE item = \"{setting}\" ORDER BY id DESC LIMIT 1)")
         return " UNION ALL ".join(sqls)
 
-    def fetch_settings(self):
+    def fetch_auto(self):
         """
 
         """
@@ -195,12 +195,12 @@ class Automagic(MQTT):
                 dic = json.loads(setting[2])
                 dic['enable'] = setting[1] == 1
                 res_dic[setting[0]] = dic
-            self.settings = res_dic
+            self.auto = res_dic
         except JSONDecodeError:
             print("Please, set the auto settings through dashboard page.")
-            self.settings = DEFAULT_SETTING
+            self.auto = DEFAULT_SETTING
 
-    def fetch_machines(self):
+    def fetch_switches(self):
         """
 
         """
@@ -210,9 +210,9 @@ class Automagic(MQTT):
             fetch = self.cursor.fetchall()
             for row in fetch:
                 machine = row[0]
-                self.machines[machine] = row[1]
+                self.switches[machine] = row[1]
         except:
-            self.machines = {"heater": 0, "cooler": 0, "led": 0, "fan": 0, "waterpump": 0}
+            self.switches = {"heater": 0, "cooler": 0, "led": 0, "fan": 0, "waterpump": 0}
 
     # TODO : Section Field needs to be changed!
     # TODO : FETCH 값들이 비어있을 경우, 출력 메세지 띄울 것.
@@ -233,8 +233,8 @@ class Automagic(MQTT):
         :return:
         """
         current_value = self.environments['temperature']
-        _min = self.settings[ac_type]['range'][min_index]
-        _max = self.settings[ac_type]['range'][max_index]
+        _min = self.auto[ac_type]['range'][min_index]
+        _max = self.auto[ac_type]['range'][max_index]
         if ac_type == "heater":
             if current_value > _max:
                 return False
@@ -264,10 +264,10 @@ class Automagic(MQTT):
     def temp_control(self, ac_type):
         opposite_ac_type = self.get_opposite_ac(ac_type)
         ac_topic = self.make_topic(ac_type)
-        ac_status = self.machines[ac_type]
-        auto_switch = self.settings[ac_type]['enable']
-        _min = self.settings[ac_type]['range'][min_index]
-        _max = self.settings[ac_type]['range'][max_index]
+        ac_status = self.switches[ac_type]
+        auto_switch = self.auto[ac_type]['enable']
+        _min = self.auto[ac_type]['range'][min_index]
+        _max = self.auto[ac_type]['range'][max_index]
         temperature_condition = self.check_temp_condition(ac_type)
         machine_power = check_machine_on(ac_status)
         off, on = 0, 1
@@ -301,13 +301,13 @@ class Automagic(MQTT):
             print(f'{ac_type} Do Nothing.')
 
     def check_led_valid_hour(self, current_hour):
-        return self.settings['led']['range'][min_index] <= current_hour < self.settings['led']['range'][max_index]
+        return self.auto['led']['range'][min_index] <= current_hour < self.auto['led']['range'][max_index]
 
     def led_control(self):
         topic = self.make_topic('led')
         current_hour = int(time.strftime('%H', time.localtime(time.time())))
-        auto_switch = self.settings['led']['enable']
-        led_status = self.machines['led']
+        auto_switch = self.auto['led']['enable']
+        led_status = self.switches['led']
         off, on = 0, 1
 
         if not auto_switch:
@@ -348,7 +348,7 @@ class Automagic(MQTT):
         current_day = datetime.datetime.now()
         last_on_day = self.get_last_auto_day(cycle_machine)
         last_on_diff = current_day.day - last_on_day.day
-        if last_on_diff >= self.settings[cycle_machine]['term'] or last_on_diff == 0:
+        if last_on_diff >= self.auto[cycle_machine]['term'] or last_on_diff == 0:
             return True
         else:
             return False
@@ -356,7 +356,7 @@ class Automagic(MQTT):
     def check_right_hour(self, cycle_machine):
         current_time = int(time.strftime('%H', time.localtime(time.time())))
 
-        for start, end in zip(self.settings[cycle_machine]['start'], self.settings[cycle_machine]['end']):
+        for start, end in zip(self.auto[cycle_machine]['start'], self.auto[cycle_machine]['end']):
             int_start, int_end = self.get_int_hour(start), self.get_int_hour(end)
             if int_end == 0:
                 int_end = 24
@@ -368,9 +368,9 @@ class Automagic(MQTT):
         return int(hour_and_minute.split(':')[0])
 
     def cycle_control(self, cycle_machine):
-        auto_switch = self.settings[cycle_machine]['enable']
+        auto_switch = self.auto[cycle_machine]['enable']
         topic = self.make_topic(cycle_machine)
-        status = self.machines[cycle_machine]
+        status = self.switches[cycle_machine]
         off, on = 0, 1
 
         if not auto_switch:
@@ -406,7 +406,7 @@ class Automagic(MQTT):
 
 auto = Automagic()
 print(datetime.datetime.now())
-print(auto.machines)
+print(auto.switches)
 print(auto.environments)
 auto.led_control()
 auto.temp_control("heater")

@@ -20,8 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ScheduleDetail from "./ScheduleDetail";
 import {checkEmpty} from "../utils/CheckEmpty";
 import axios from "axios";
-import { store } from "../../redux/store";
 import moment from "moment";
+import {shallowEqual, useSelector} from "react-redux";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,10 +56,17 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, setIsLoading } = props;
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+/*
+  useEffect(() => {
+    setIsLoading(true)
+  }, [rowCount])
+*/
 
   return (
     <TableHead>
@@ -235,7 +242,7 @@ export default function ScheduleTable({selectedDay}) {
   const [selectedRow, setSelectedRow] = React.useState({})
   const [isLoading, setIsLoading] = React.useState(true);
   const [drawer, setDrawer] = React.useState(false);
-  const [date, setDate] = React.useState({})
+  const date = useSelector(state => state.date, shallowEqual)
 
   const toggleDrawer = () => {
     setDrawer(!drawer);
@@ -315,18 +322,15 @@ export default function ScheduleTable({selectedDay}) {
             let temp = []
             data.forEach((row) => { temp.push(row) })
             setRows(temp);
-          } else {
-            setRows([])
-          }
+          } else { setRows([]) }
           setIsLoading(false);
     })
   }
 
   const getMonthSchedule = async () => {
-    const {year, month} = store.getState()['saveDate'];
     await axios.get("/api/get/schedules", {
         params: {
-          date: `${year}-${month}`,
+          date: `${date.year}-${date.month}`,
           month : true
         }}).then(({data}) => {
           if(!checkEmpty(data)) {
@@ -335,26 +339,23 @@ export default function ScheduleTable({selectedDay}) {
               temp.push(row)
             })
             setRows(temp);
-          } else { setRows([]) }
+          } else {
+            setRows([])
+          }
           setIsLoading(false);
     })
   }
 
-  useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setDate(store.getState()['saveDate'])
-		})
-		return () => { unsubscribe(); }
-	}, [])
+  const cleanup = () => {
+    setRows([]);
+    setPage(0)
+    setSelected([])
+    setIsLoading(true);
+  }
 
   useEffect(() => {
-    selectedDay ? getDaySchedule():getMonthSchedule();
-    return () => {
-      setRows([]);
-      setIsLoading(true);
-      setPage(0)
-      setSelected([])
-    }
+    selectedDay ? getDaySchedule() : getMonthSchedule();
+    return () => { cleanup();}
   }, [selectedDay, date])
 
   return (
@@ -377,6 +378,7 @@ export default function ScheduleTable({selectedDay}) {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              setIsLoading={setIsLoading}
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
@@ -418,7 +420,7 @@ export default function ScheduleTable({selectedDay}) {
                 </TableRow>
               )}
             </TableBody>
-                  {console.log("Table Rendering", order, orderBy, rowsPerPage, isLoading, date, drawer, selectedDay, selectedRow)}
+                  {console.log("Table Rendering", rows, order, orderBy, rowsPerPage, isLoading, date, drawer, selectedDay, selectedRow)}
           </Table>
         </TableContainer>
         <TablePagination

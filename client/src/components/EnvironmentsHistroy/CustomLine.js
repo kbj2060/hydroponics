@@ -68,25 +68,24 @@ let getOptions = {
 }
 
 export default function CustomLine(props) {
-    const { history, width, height } = props;
+    const { history, width, height, primary_key } = props;
     const options = getOptions;
     const {WordsTable} = require('root/values/strings.json');
     const {sections} = require('root/values/preferences.json');
     const {colors} = require('root/values/colors.json');
     const n_sections = sections.length;
-    let primary_key = ""
-    let data_len = {};
     let state = {
         labels: '',
         datasets: []
     }
     if (checkEmpty(history)){ return <Line options={options} data={state} width={width} height={height}/> }
 
-    function makeBasicDataset(n_plant){
+    const makeDataset = (n_plant) => {
       let n;
       let datasets = []
       for(n = 0; n < n_plant; n++){
-        let section = sections[n];
+        const section = sections[n];
+        const data = Object.values(history[section])
         datasets.push({
           label: WordsTable[`plant-${section}`],
           fill: false,
@@ -95,20 +94,15 @@ export default function CustomLine(props) {
           borderColor: `${colors[section]}`,
           borderWidth: 2,
           pointRadius: 0,
-          data: []
+          data: data
         },)
       }
       return datasets
     }
 
-    state.datasets = makeBasicDataset(n_sections);
-    Object.keys(history).forEach((h, i) => {
-      state.datasets[i].data = Object.values(history[h])
-      data_len[h] = Object.values(history[h]).length
-    })
+    state.datasets = makeDataset(n_sections);
+    state.labels = Object.keys(history[primary_key]);
 
-    primary_key = Object.keys(data_len).reduce((a, b) => data_len[a] > data_len[b] ? a : b);
-    state.labels = Object.keys(history[primary_key])
     return(<Line options={options} data={state} width={width} height={height}/>)
 }
 

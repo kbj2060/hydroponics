@@ -5,10 +5,10 @@ import Authentication from "./Authentication";
 import ControlScheduleDate from "./ControlScheduleDate";
 
 const allReducers = combineReducers({
-	controlSwitch: ControlSwitch,
-	controlSetting: ControlSetting,
+	switches: ControlSwitch,
+	auto: ControlSetting,
 	authentication: Authentication,
-	saveDate : ControlScheduleDate
+	date : ControlScheduleDate
 });
 /*
 const rootReducer = (state, action) => {

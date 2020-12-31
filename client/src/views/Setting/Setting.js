@@ -5,7 +5,7 @@ import AppBar from 'root/client/src/components/AppBar';
 import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Typography} from "@material-ui/core";
+import {IconButton, Typography} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import ThemeChecker from "../../components/ThemeChecker/ThemeChecker";
 
@@ -44,6 +44,9 @@ const useStyles = makeStyles(() => ({
     height : '20%',
     width : '20%',
     color: props => props.fontColor
+  },
+  addIconButton: {
+    height : '100%',
   }
 }))
 export default function Setting() {
@@ -53,7 +56,6 @@ export default function Setting() {
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor
   });
-
 
   return (
     CheckLogin() ?
@@ -73,7 +75,9 @@ export default function Setting() {
             <div className={classes.item}>
               <Typography className={classes.title}>기기 등록</Typography>
               <div className={classes.parent}>
-                <AddIcon className={classes.addIcon} />
+                <IconButton  className={classes.addIconButton} >
+                  <AddIcon className={classes.addIcon} />
+                </IconButton>
               </div>
             </div>
           </Grid>

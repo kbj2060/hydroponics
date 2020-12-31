@@ -4,16 +4,15 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { store } from "./redux/store";
-import {saveState} from "./components/LocalStorage";
 import Setting from "./views/Setting/Setting";
 import axios from "axios";
-import {useDispatch} from "react-redux";
+import { useDispatch} from "react-redux";
 import {checkEmpty} from "./components/utils/CheckEmpty";
-import {controlSwitch} from "./redux/modules/ControlSwitch";
+import { saveSwitch} from "./redux/modules/ControlSwitch";
 import {saveSetting} from "./redux/modules/ControlSetting";
 import Scheduler from "./views/Scheduler/Scheduler";
-import {createMuiTheme} from "@material-ui/core";
+import {saveState} from "./components/LocalStorage";
+
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -35,73 +34,65 @@ const useStyles = makeStyles(() =>({
   }
 }));
 
-class ThemeProvider extends React.Component<{ theme: Theme, children: React.ReactNode }> {
-  render() {
-    return null;
-  }
-}
-
 export default function App() {
-  const {settings:defaultSetting} = require('root/values/defaults.json');
-  const {autoItem, machines} = require('root/values/preferences.json');
+  const {auto:defaultSetting, switches:defaultMachineStatus} = require('root/values/defaults.json');
+  const {autoItem} = require('root/values/preferences.json');
   const dispatch = useDispatch();
   const {colors} = require('root/values/colors.json')
+  const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({
     customTheme : colors.customTheme
   });
 
-  const getControlSetting = async () => {
+  const getControlAuto = async () => {
     await axios.get('/api/get/load/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
-        where : autoItem,
+        where : autoItem["s1"],
 	      section : "s1"
       }
     }).then(({data}) => {
       if(Object.keys(data).length === Object.keys(defaultSetting).length){
         dispatch(saveSetting(data))
+        saveState("auto", data)
       } else {
         dispatch(saveSetting(defaultSetting));
+        saveState("auto", defaultSetting)
       }
     })
   }
 
-  // TODO : app.js 로드 될 때 모든 섹션의 스위치, 자동화 정보 등을 리덕스에 넣어놓는 것을 구현할 것.
-  // TODO : 백엔드 섹션 추가한 것처럼 리덕스도 섹션을 다 추가할 것.
-  const getControlSwitch =  async (machine) => {
-    return await axios.get('/api/get/query/last', {
-      params: {
-        where: machine,
-        whereColumn: 'machine',
-        selects: ['status'],
-        table: 'switch'
-      }})
-  }
-
-  const getControlSwitches = () => {
-    machines['s1'].forEach((machine) => {
-      getControlSwitch(machine)
-        .then(({data}) => {
+  const getControlSwitches = async () => {
+      await axios.get('/api/get/switch/now',{
+        params: {
+          section : "s1"
+        }
+      }).then(({data}) => {
           if(checkEmpty(data)){
-            dispatch(controlSwitch({[machine]: false}))
+            dispatch(saveSwitch(defaultMachineStatus))
+            saveState("switches", defaultMachineStatus)
           } else {
-            dispatch(controlSwitch({[machine]: data[0]['status'] === 1}))
+            let status = {}
+            Object.keys(defaultMachineStatus).forEach((machine) => {
+              status[machine] = data["s1"].includes(machine)
+            })
+            dispatch(saveSwitch(status))
+            saveState("switches", status)
           }
       })
-    })
   }
 
   useEffect(() => {
-    getControlSwitches();
-    getControlSetting();
-    saveState( store.getState() );
+      getControlSwitches();
+      getControlAuto();
+      setIsLoading(false);
+      return () => {
+        setIsLoading(true);
+      }
   }, []);
 
-  store.subscribe(() => {
-    saveState( store.getState() );
-  });
-
   return (
+    isLoading ||
     <BrowserRouter>
         <div className={classes.parent}>
           <Route exact path="/">
@@ -117,6 +108,7 @@ export default function App() {
             <Setting page={"setting"} />
           </Route>
         </div>
+      {console.log("app")}
       </BrowserRouter>
   )
 }

@@ -25,11 +25,11 @@ export default function TermControlButton({setting}) {
     fontColor : colors.fontColor
   });
   const dispatch = useDispatch();
-  const reduxSetting = store.getState()['controlSetting'][setting]
+  const reduxSetting = store.getState()['auto'][setting]
   const [term, setTerm] = React.useState(reduxSetting['term']);
 
   const handleTermUp = () => {
-    const reduxSetting = store.getState()['controlSetting'][setting]
+    const reduxSetting = store.getState()['auto'][setting]
     setTerm(prev => {
       const updated = update(reduxSetting, {
         term : {$set: ++prev},
@@ -40,7 +40,7 @@ export default function TermControlButton({setting}) {
   }
 
   const handleTermDown = () => {
-    const reduxSetting = store.getState()['controlSetting'][setting]
+    const reduxSetting = store.getState()['auto'][setting]
     setTerm(prev => {
       if(prev <= 1) { return 1; }
       const updated = update(reduxSetting, {

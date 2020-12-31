@@ -67,11 +67,8 @@ function Authentication(state, action) {
     default:
 
       try {
-        if (checkEmpty(loadState()['authentication'])) {
-          return state
-        } else {
-          return loadState()['authentication'];
-        }
+        return checkEmpty(loadState('authentication'))?
+          state : loadState('authentication');
       }
       catch(e){
         return initialState

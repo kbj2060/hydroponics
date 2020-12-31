@@ -67,7 +67,7 @@ export default function SettingExplanation({position}) {
     fontColor : colors.fontColor
   });
   const dispatch = useDispatch();
-  const {settings:defaultSetting} = require('root/values/defaults.json');
+  const {auto:defaultSetting} = require('root/values/defaults.json');
   const {autoItem} = require('root/values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
@@ -79,18 +79,19 @@ export default function SettingExplanation({position}) {
 	      section: current_page
       }
     }).then(({data}) => {
+      console.log(data)
       if(checkEmpty(data)){
         data = defaultSetting;
       }
       setSetting(data);
-      dispatch(saveSetting(data));
+      //dispatch(saveSetting(data));
       setIsLoading(false);
     })
   }
 
   // TAIL(현재 설정) 데이터 보여주기 함수
   const getAutoFromStore = () => {
-    setSetting(store.getState()['controlSetting']);
+    setSetting(store.getState()['auto']);
     setIsLoading(false);
   }
 
@@ -152,6 +153,9 @@ export default function SettingExplanation({position}) {
 
   useEffect(() => {
     position === 'head' ? getAutoFromDB() : getAutoFromStore()
+    return () => {
+      setIsLoading(true);
+    }
   }, [])
 
   return(

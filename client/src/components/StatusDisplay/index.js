@@ -5,6 +5,7 @@ import Figure from "./Figure";
 import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
 import {makeStyles} from "@material-ui/core/styles";
+import TableContainer from "@material-ui/core/TableContainer";
 
 
 const useStyles = makeStyles({
@@ -33,6 +34,7 @@ export default function StatusDisplay(props) {
     neumOutShadow : colors.neumOutShadow
   });
 
+  const [isLoading, setIsLoading] = React.useState(true);
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
     "co2": 0,
@@ -57,22 +59,35 @@ export default function StatusDisplay(props) {
         status[key] = convertFixedFloat(value);
       }
       setRecentStatus(status);
+      setIsLoading(false);
     }).catch((err) => {
       console.log('FETCH STATUS ERROR!');
       console.log(err);
     });
   };
 
+  const cleanup = () => {
+    setRecentStatus({
+    "humidity": 0,
+    "co2": 0,
+    "temperature": 0
+  })
+  }
+
   useEffect(() => {
     fetchStatus();
     const interval = setInterval(() => {
       fetchStatus();
     }, parseInt(statusUpdateTime));
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval)
+      cleanup();
+    };
   }, []);
 
 
   return (
+    isLoading ||
     <Card className={classes.parentItem}>
       <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant-${plant}`]}</Typography>
       <div className={classes.figureCardDiv}>

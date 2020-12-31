@@ -12,7 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import SettingExplanation from "./SettingExplanation";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AutoSwitchWrapper from "./AutoSwitchWrapper";
-import {loadState} from "../LocalStorage";
+import {loadState, saveState} from "../LocalStorage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,8 +127,9 @@ export default function CustomStepper({modalClose}) {
   };
 
   const handleApply = async () => {
-    const user = loadState()['authentication']['status']['currentUser'];
-    const controlSetting = store.getState()['controlSetting']
+    const user = loadState('authentication')['status']['currentUser'];
+    const controlSetting = store.getState()['auto']
+    saveState('auto', controlSetting);
     await axios.post('/api/post/save/auto',{
       params: {
         controlSetting : controlSetting,
@@ -153,6 +154,7 @@ export default function CustomStepper({modalClose}) {
   return (
     <div className={classes.root}>
       <div className={classes.wrapper}>
+                {console.log("Stepper")}
         <div style={{display:'flex'}}>
           <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:colors.fontColor, cursor:'pointer'}}/>
         </div>

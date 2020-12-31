@@ -1,7 +1,7 @@
 {
   "currentCriteria" : 1,
   "showHistoryNumber" : 20,
-  "settings" : {
+  "auto" : {
     "fan" : { "start": [], "end": [], "term": 1, "enable": "False"},
     "waterpump" : { "start": [], "end": [], "term": 1, "enable": "False" },
     "cooler" : { "range": [10, 40], "enable": "False" },
@@ -9,6 +9,6 @@
     "led" : { "range": [0, 23], "enable": "False" }
   },
   "environments" : {"temperature": 0, "humidity": 0, "co2": 0},
-  "machines" : {"heater": 0, "cooler": 0, "led": 0, "fan": 0, "waterpump": 0},
+  "switches" : {"heater": false, "cooler": false, "led": false, "fan": false, "waterpump": false},
   "sections" : ["s1-1", "s1-2", "s1-3"]
 }

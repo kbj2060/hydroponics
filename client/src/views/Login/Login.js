@@ -14,6 +14,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {makeStyles} from "@material-ui/core/styles";
+import {saveSwitch} from "../../redux/modules/ControlSwitch";
+import {saveState} from "../../components/LocalStorage";
 
 const {colors} = require('root/values/colors.json')
 const useStyles = makeStyles(()=>({
@@ -136,6 +138,7 @@ export default function Login() {
           checkEmpty(data)?
             dispatchLoginFailure() : dispatchLoginSuccess(username)
           const updatedAuth = store.getState()['authentication'];
+          saveState("authentication", updatedAuth);
           setAuth(updatedAuth);
         }).catch((error) => {
           dispatchLoginFailure()

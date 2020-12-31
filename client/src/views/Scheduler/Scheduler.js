@@ -12,7 +12,9 @@ import ScheduleTable from "root/client/src/components/CustomScheduler/ScheduleTa
 import ScheduleAdd from "../../components/CustomScheduler/SchdeuleAdd";
 import {ButtonGroup} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {store} from "../../redux/store";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {saveDate} from "../../redux/modules/ControlScheduleDate";
+import {saveState} from "../../components/LocalStorage";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -47,7 +49,8 @@ export default function Scheduler() {
   const {colors} = require('root/values/colors.json')
   const [selectedDay, setSelectedDay] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
-  const [month, setMonth] = useState(null);
+  const month = useSelector(state =>
+    state.date.month ,shallowEqual)
 
   const classes = useStyles({
     customTheme : colors.customTheme,
@@ -76,15 +79,19 @@ export default function Scheduler() {
     </ButtonGroup>
   )
 
-  useEffect(() => {
-		const unsubscribe = store.subscribe(() => {
-			setMonth(store.getState()['saveDate']['month'])
-		})
-		return () => { unsubscribe(); }
-	}, [])
+  const cleanup = () => {
+    setSelectedDay(null);
+    setIsAdd(false);
+  }
 
   useEffect(() => {
-    setIsAdd(false)
+    setSelectedDay(null)
+    return () => cleanup()
+	}, [month])
+
+
+  useEffect(() => {
+    setIsAdd(false);
   }, [selectedDay])
 
   return (
@@ -92,6 +99,7 @@ export default function Scheduler() {
       <div className={classes.root}>
         <AppBar page={'일정'} />
         <CssBaseline />
+        {console.log("Scheduler", month, selectedDay, isAdd)}
         <Grid container className={classes.container}>
           <Grid item xs={12} sm={12} md={5} className={classes.item}>
             <Calendar value={selectedDay}
@@ -104,9 +112,11 @@ export default function Scheduler() {
                       shouldHighlightWeekends />
           </Grid>
           <Grid item xs={12} sm={12} md={6} className={classes.item}>
-            {isAdd ? <ScheduleAdd selectedDay={selectedDay} handleAddFinish={handleAddFinish} />:<ScheduleTable selectedDay={selectedDay}/>}
+            {isAdd
+              ? <ScheduleAdd selectedDay={selectedDay} handleAddFinish={handleAddFinish} />
+              : <ScheduleTable selectedDay={selectedDay}/>
+            }
           </Grid>
-          {console.log("Scheduler Rendering", isAdd, month, selectedDay)}
         </Grid>
       </div> :  <Redirect to={'/'} />
       );

@@ -90,7 +90,6 @@ export default function SettingModal() {
         <Button onClick={handleOpen} type="button">
 					<AllInclusiveIcon className={classes.autoIcon}/>
         </Button>
-
         <Modal className={classes.modal}
           disableAutoFocus={true}
           open={open}

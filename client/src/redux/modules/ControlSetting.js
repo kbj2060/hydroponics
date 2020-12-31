@@ -1,10 +1,10 @@
 import {loadState} from "root/client/src/components/LocalStorage";
 
-const CONTROL_SETTING = "ControlSetting/CONTROL_SETTING";
-const RESET_SETTING = "ControlSetting/RESET_SETTING";
-const SAVE_SETTING = "ControlSetting/SAVE_SETTING";
+const CONTROL_SETTING = "CONTROL_SETTING";
+const RESET_SETTING = "RESET_SETTING";
+const SAVE_SETTING = "SAVE_SETTING";
 
-const {settings} = require('root/values/defaults.json')
+const {auto} = require('root/values/defaults.json')
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}
@@ -18,12 +18,7 @@ export const  resetSetting = () => {
   return { type: RESET_SETTING }
 }
 
-let initialState = '';
-try {
-  initialState = loadState()['controlSetting'];
-} catch(e) {
-  initialState = settings;
-}
+let initialState = loadState('auto') || auto
 
 function ControlSetting(state = initialState, action) {
   switch(action.type){
@@ -34,9 +29,9 @@ function ControlSetting(state = initialState, action) {
     case SAVE_SETTING:
       return action.setting;
     case RESET_SETTING:
-      return settings;
+      return auto;
     default:
-      return initialState
+      return state
   }
 }
 

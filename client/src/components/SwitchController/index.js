@@ -7,6 +7,7 @@ import SettingModal from "../SettingModal";
 import IconWrapper from "./IconWrapper";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {store} from "../../redux/store";
+import AutoChecker from "./AutoChecker";
 
 const useStyles = makeStyles({
   controlCardButtons : {
@@ -39,6 +40,9 @@ const useStyles = makeStyles({
     margin:'auto',
     textAlign:'center',
   },
+  checker : {
+    margin:'auto',
+  }
 })
 
 export default function SwitchController() {
@@ -62,12 +66,16 @@ export default function SwitchController() {
                       <Box className={classes.alignNameBox} flexGrow={1} p={1} >
                         <IconWrapper key={machine} machine={machine} />
                       </Box>
-                      <CurrentChecker machine={machine}/>
+                      <Box className={classes.checker} flexGrow={1} p={1} >
+                        <CurrentChecker machine={machine}/>
+                        <AutoChecker machine={machine} />
+                      </Box>
                       <Box className={classes.alignButtonIcon} p={1} flexGrow={1}>
                         <Switch key={machine} machine={machine} />
                       </Box>
                     </Box>
-                  )})}
+                  )}
+                )}
               <Box style={{textAlign:'center'}}>
                 <SettingModal />
               </Box>

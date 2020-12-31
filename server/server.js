@@ -51,6 +51,8 @@ app.get('/api/get/query/last', (req, res) => {
     })
   }
 });
+
+
 /*
  * 기본 쿼리 구조 끝
  * ---------------------------------------------------------------------------------------------------------------------
@@ -84,7 +86,6 @@ app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
     const section = req.query['section'];
-
     const sql = `SELECT section, ${environment}, created
                 FROM iot.env
                 WHERE 
@@ -148,11 +149,13 @@ app.get('/api/get/environment/average', (req, res) => {
  * ---------------------------------------------------------------------------------------------------------------------
  * 스위치 설정 시작
  */
-//Android
+
 app.get('/api/get/switch/now', (req, res) => {
   try{
+    const section = req.query['section'];
     const sql = `SELECT section, machine, status FROM iot.switch
-                WHERE id in (SELECT max(id) FROM iot.switch GROUP BY section, machine)
+                WHERE id in (SELECT max(id) FROM iot.switch WHERE section = \"${section}\" 
+                GROUP BY section, machine)
                 ORDER BY id DESC;`
     connection.query(sql, (err, rows) => {
         let results = {}
@@ -167,7 +170,7 @@ app.get('/api/get/switch/now', (req, res) => {
           }
         })
         console.log({"switches" : results});
-        res.send({"switches" : results});
+        res.send(results);
       }
     )} catch (err) {
     useErrorLogger('GET').error({
@@ -193,6 +196,24 @@ app.get('/api/get/switch/history', (req, res) => {
     useErrorLogger('GET').error({
       level: 'error',
       message: `GET SWITCH HISTORY QUERY ERROR : ${err}`
+    })
+  }
+});
+
+app.get('/api/get/switch/last', (req, res) => {
+  try {
+    const selects = req.query['selects'].join(",");
+    const sql = `SELECT ${selects} FROM iot.switch ORDER BY id DESC LIMIT 1;
+`
+    connection.query(sql, (err, rows) => {
+      rows.forEach((row) => {
+          row['created'] = getLocaleMoment(row['created'])
+        })
+        res.send(rows); } )
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET SWITCH QUERY ERROR : ${err}`
     })
   }
 });
@@ -258,6 +279,7 @@ app.get('/api/get/current', (req, res) => {
 * 자동화 설정 시작
 */
 function union_all(selects, section, arr) {
+  console.log(arr)
   const sqls = arr.map((item, index) => {
     if(index === 0){ return `(SELECT ${selects} FROM iot.auto 
 	    WHERE item = '${item}' AND section = \"${section}\" 
