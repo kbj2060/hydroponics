@@ -95,18 +95,23 @@ export default function ScheduleAdd({selectedDay, handleAddFinish}) {
   }
 
   const date2moment = (date) => {
-    if (checkEmpty(date)) return null
-    if(typeof(date) === "object") return moment(new Date(`${date.year}-${date.month}-${date.day}`)).format('YYYY-MM-DD')
-    else if(typeof(date) === "string") return moment(new Date(date)).format('YYYY-MM-DD')
+    if (checkEmpty(date))
+      return null
+    if(typeof(date) === "object")
+      return moment(new Date(date.year,date.month-1, date.day)).format('YYYY-MM-DD')
+    else if(typeof(date) === "string")
+      return moment(new Date(date)).format('YYYY-MM-DD')
   }
 
   const getToday = () => {
     const today = new Date()
-    return {"year":today.getFullYear(), "month":today.getMonth()+1, "day":today.getDate()}
+    return {"day":today.getDate(), "month":today.getMonth()+1, "year":today.getFullYear()}
   }
 
   useEffect(() => {
-    selectedDay ? setSelectedDays([selectedDay]) : setSelectedDays([getToday()])
+    selectedDay
+      ? setSelectedDays([selectedDay])
+      : setSelectedDays([getToday()])
   }, [])
 
   const renderCustomInput = ({ ref }) => {
@@ -167,6 +172,7 @@ export default function ScheduleAdd({selectedDay, handleAddFinish}) {
           shouldHighlightWeekends
           />
         </Grid>
+              {console.log("Scheduler Add")}
         <Grid item className={classes.gridItem}>
           <OutlinedInput
             value={title}
