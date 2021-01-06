@@ -180,11 +180,15 @@ function Switches(props) {
     CheckLogin()
       ? <>
           <SwitchForm>
-            <CustomIOSSwitch
-                key={machine}
-                checked={state.status}
-                onChange={handleChange}
-                value={machine} />
+          <FormGroup>
+          <FormControlLabel
+            control={ <CustomIOSSwitch
+              key={machine}
+              checked={state.status}
+              onChange={handleChange}
+              value={machine} /> }
+            className={classes.controlForm} />
+          </FormGroup>
           </SwitchForm>
           <PowerDisplay />
           <Alarm />
