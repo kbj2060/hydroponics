@@ -172,8 +172,8 @@ export default function MachineHistory() {
 							controlledBy :controlledBy }
 	}
 
-	const getLastSwitch = async () => {
-  	await axios.get('/api/get/switch/history', {
+	const getLastSwitch =  () => {
+  	axios.get('/api/get/switch/history', {
 			params: {
 				selects: ['machine', 'status', 'created', 'controlledBy'],
 				section : current_section,
