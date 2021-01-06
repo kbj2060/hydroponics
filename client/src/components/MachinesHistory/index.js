@@ -179,16 +179,10 @@ export default function MachineHistory() {
 				section : current_section,
 				num: 1
 			}}).then(({data}) => {
-				if(checkEmpty(data)){
-					const username = getCurrentUser();
-					SwitchEmptyResponseHandler(username, current_section);
-					window.location.reload();
-				} else {
 					setRows(prevArray => {
 						prevArray.splice(-1, 1)
 						return [data[0], ...prevArray]
 					});
-				}
 			})
 	}
 

@@ -90,7 +90,8 @@ function Switches(props) {
     socket.on('receiveSwitchControl', (switchStatus) => {
       if(machine === switchStatus.machine){
         setState(switchStatus);
-        dispatch(controlSwitch({[machine] : switchStatus.status}));
+        const _switch = store.getState()['switches'][machine];
+        if (_switch !== switchStatus.status) {dispatch(controlSwitch({[machine] : switchStatus.status}));}
       }})
   }
 
