@@ -12,7 +12,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import SettingExplanation from "./SettingExplanation";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import AutoSwitchWrapper from "./AutoSwitchWrapper";
-import {loadState, saveState} from "../LocalStorage";
+import {saveState} from "../LocalStorage";
+import getCurrentPage from "../utils/getCurrentPage";
+import getCurrentUser from "../utils/getCurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
     color: props => props.font,
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
+  },
+  contentBottom : {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   alternativeLabel: {
     color: props => props.font,
@@ -111,35 +118,11 @@ export default function CustomStepper({modalClose}) {
     });
   const [activeStep, setActiveStep] = React.useState(0);
   const {WordsTable} = require('root/values/strings.json')
-  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
-  const current_page = WordsTable[han_current_page]
+  const current_page = getCurrentPage()
   const {autoItem} = require('root/values/preferences.json')
   const copied = cloneObj(autoItem[current_page]);
   const steps = getSteps(copied);
   const labels = getLabels(steps, WordsTable);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleApply = async () => {
-    const user = loadState('authentication')['status']['currentUser'];
-    const controlSetting = store.getState()['auto']
-    saveState('auto', controlSetting);
-    await axios.post('/api/post/auto',{
-      params: {
-        controlSetting : controlSetting,
-        user : user,
-	      section : current_page
-      }
-    }).then(()=>{
-      modalClose();
-    })
-  };
 
   const stepperComponents = {
     'head' : <SettingExplanation key={'head'} position={'head'} />,
@@ -151,14 +134,9 @@ export default function CustomStepper({modalClose}) {
     'tail' : <SettingExplanation key={'tail'} position={'tail'} />,
   }
 
-  return (
-    <div className={classes.root}>
-      <div className={classes.wrapper}>
-                {console.log("Stepper")}
-        <div style={{display:'flex'}}>
-          <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:colors.fontColor, cursor:'pointer'}}/>
-        </div>
-        <Stepper className={classes.stepper} activeStep={activeStep} alternativeLabel>
+  const StepperRenderer = () => {
+    return (
+      <Stepper className={classes.stepper} activeStep={activeStep} alternativeLabel>
           {labels.map((label) => (
             <Step key={label}>
               <StepLabel classes={{
@@ -175,57 +153,109 @@ export default function CustomStepper({modalClose}) {
             </Step>
           ))}
         </Stepper>
+    )
+  }
 
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              <Button className={classes.NextButton} onClick={modalClose}> 닫기 </Button>
-            </div>
-          ) : (
-            <div>
-              <div className={classes.instructions}>
-                {getStepContent(steps[activeStep], stepperComponents)}
-              </div>
-              <div style={{display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'}}>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  className={classes.backButton}
-                >
-                  뒤로
-                </Button>
-                <div style={{display: 'inline-flex'}}>
-                  {autoSwitchDisable(activeStep, steps.length)
-                    ? null
-                    : <FormControlLabel
-                      value="자동화"
-                      control={ <AutoSwitchWrapper key={Object.keys(stepperComponents)[activeStep]}
-                                                   name={Object.keys(stepperComponents)[activeStep]}/> }
-                      label="자동화"
-                      labelPlacement="top"
-                      classes={{
-                       label:classes.buttonLabel
-                      }}
-                    />
-                  }
-
-                </div>
-                {
-                  activeStep === steps.length - 1 ? (
-                  <Button className={classes.NextButton} onClick={handleApply}>
-                    저장
-                  </Button>
-                  ) :
-                  <Button className={classes.NextButton} onClick={handleNext}>
-                    다음
-                  </Button>
-                }
-              </div>
-            </div>
-          )}
+  const ContentRenderer = ({children}) => {
+    return (
+      <div>
+        <div className={classes.instructions}>
+          {getStepContent(steps[activeStep], stepperComponents)}
         </div>
+        <div className={classes.contentBottom}>
+          {children}
+        </div>
+      </div>
+    )
+  }
+
+  const AutoSwitch = () => {
+    return (
+      <div style={{display: 'inline-flex'}}>
+          {autoSwitchDisable(activeStep, steps.length)
+            ? null
+            : <FormControlLabel
+              value="자동화"
+              control={ <AutoSwitchWrapper key={Object.keys(stepperComponents)[activeStep]}
+                                           name={Object.keys(stepperComponents)[activeStep]}/> }
+              label="자동화"
+              labelPlacement="top"
+              classes={{
+               label:classes.buttonLabel
+              }}
+            />
+          }
+      </div>
+    )
+  }
+
+  const NextSaveButton = () => {
+    const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleApply = async () => {
+    const user = getCurrentUser();
+    const auto = store.getState()['auto']
+    saveState('auto', auto);
+    await axios.post('/api/post/auto',{
+        params: {
+          auto : auto,
+          user : user,
+          section : current_page
+        }
+      }).then(()=>{
+        modalClose();
+      })
+    };
+
+    return (
+      <>
+      {activeStep === steps.length - 1
+        ? (<Button className={classes.NextButton} onClick={handleApply}>
+          저장
+          </Button>)
+        : (<Button className={classes.NextButton} onClick={handleNext}>
+          다음
+          </Button>)}
+      </>
+      )
+  }
+
+  const BackButton = () => {
+    const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    return (
+      <Button
+        disabled={activeStep === 0}
+        onClick={handleBack}
+        className={classes.backButton}
+      >
+        뒤로
+      </Button>
+    )
+  }
+
+  const CloseIconButton = () => {
+    return (
+      <div style={{display:'flex'}}>
+          <CloseIcon onClick={modalClose} style={{marginLeft:'auto', color:colors.fontColor, cursor:'pointer'}}/>
+      </div>
+    )
+  }
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.wrapper}>
+        <CloseIconButton />
+        <StepperRenderer />
+        <ContentRenderer>
+            <BackButton />
+            <AutoSwitch />
+            <NextSaveButton />
+        </ContentRenderer>
       </div>
     </div>
   );

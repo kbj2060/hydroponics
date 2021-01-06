@@ -1,5 +1,5 @@
 export default function getCurrentPage() {
   const {WordsTable} = require('root/values/strings.json');
-  const han_current_page = decodeURI(window.location.pathname.replace('/', ''))
-  return WordsTable[han_current_page]
+  const current_page = decodeURI(window.location.pathname.replace('/', ''))
+  return WordsTable[current_page] ? WordsTable[current_page] : current_page
 }

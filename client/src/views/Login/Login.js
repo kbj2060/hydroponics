@@ -14,7 +14,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {makeStyles} from "@material-ui/core/styles";
-import {saveSwitch} from "../../redux/modules/ControlSwitch";
 import {saveState} from "../../components/LocalStorage";
 
 const {colors} = require('root/values/colors.json')
@@ -165,7 +164,6 @@ export default function Login() {
     useEffect(() => {
       const {pages} = require('root/values/preferences.json')
 
-      //TODO : 로그인 성공 후 다시 로그인 페이지로 들어갈 시 처리.
       console.log(store.getState()['authentication']);
       if (auth.login.status === 'INIT'){ return; }
 
@@ -178,7 +176,7 @@ export default function Login() {
 
     return(
       <div className={classes.root}>
-      <div className={classes.loginForm}>
+        <div className={classes.loginForm}>
             <form>
               <p className={classes.title}>Kairos</p>
               <CssTextField id="name" InputProps={{

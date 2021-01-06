@@ -5,7 +5,6 @@ import Figure from "./Figure";
 import axios from "axios";
 import {checkEmpty} from "../utils/CheckEmpty";
 import {makeStyles} from "@material-ui/core/styles";
-import TableContainer from "@material-ui/core/TableContainer";
 
 
 const useStyles = makeStyles({
@@ -22,18 +21,17 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StatusDisplay(props) {
+export default function StatusDisplay({plant}) {
   const {statusUpdateTime} = require('root/values/time.json');
   const {environments} = require('root/values/preferences.json')
-  const {plant} = props;
   const {WordsTable} = require('root/values/strings.json');
   const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     n_environment : environments.length,
-    neumOutShadow : colors.neumOutShadow
-  });
+    neumOutShadow : colors.neumOutShadow,
 
+  });
   const [isLoading, setIsLoading] = React.useState(true);
   const [recentStatus, setRecentStatus] = useState({
     "humidity": 0,
@@ -41,11 +39,20 @@ export default function StatusDisplay(props) {
     "temperature": 0
   });
 
-  const convertFixedFloat = (x) => {
-      return Number.parseFloat(x).toFixed(1);
-  }
 
   const fetchStatus = async () => {
+    const resetStatus = () => {
+      setRecentStatus({
+        "humidity": 0,
+        "co2": 0,
+        "temperature": 0
+      })
+    }
+
+    const convertFixedFloat = (x) => {
+      return Number.parseFloat(x).toFixed(1);
+    }
+
     await axios.get('/api/get/query/last', {
       params: {
         where: plant,
@@ -54,7 +61,11 @@ export default function StatusDisplay(props) {
         table: 'env'
       }
     }).then(({data:status}) => {
-      if(checkEmpty(status)){ return; }
+      if(checkEmpty(status)){
+        resetStatus();
+        setIsLoading(false);
+        return;
+      }
       for (const [key, value] of Object.entries(status[0])) {
         status[key] = convertFixedFloat(value);
       }
@@ -68,10 +79,32 @@ export default function StatusDisplay(props) {
 
   const cleanup = () => {
     setRecentStatus({
-    "humidity": 0,
-    "co2": 0,
-    "temperature": 0
-  })
+      "humidity": 0,
+      "co2": 0,
+      "temperature": 0
+    })
+  }
+
+  const Figures = () => {
+    return (
+      <div className={classes.figureCardDiv}>
+      {
+      environments.map((env) =>
+        <Figure key={env.toString()}
+                environment={env}
+                values={recentStatus[env]}
+                plant={plant}/>)
+      }
+      </div>
+    )
+  }
+
+  const FigureTitle = () => {
+    return (
+      <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>
+        {WordsTable[`plant-${plant}`]}
+      </Typography>
+    )
   }
 
   useEffect(() => {
@@ -89,16 +122,8 @@ export default function StatusDisplay(props) {
   return (
     isLoading ||
     <Card className={classes.parentItem}>
-      <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant-${plant}`]}</Typography>
-      <div className={classes.figureCardDiv}>
-        {
-          environments.map((env) =>
-            <Figure key={env.toString()}
-                    environment={env}
-                    values={recentStatus[env]}
-                    plant={plant}/>)
-        }
-      </div>
+      <FigureTitle />
+      <Figures />
     </Card>
   );
 }

@@ -1,10 +1,8 @@
 import React, {useEffect} from 'react';
-import Box from "@material-ui/core/Box";
 import useStyles from '../../assets/jss/DashboardStyle';
 import axios from "axios";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import {checkEmpty} from "../utils/CheckEmpty";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 const CurrentFlowing = withStyles((theme) => ({
@@ -82,11 +80,9 @@ export default function CurrentChecker({machine}) {
 
 	if(isLoading){
 		return <ColorCircularProgress />
-	}
-
-	if(disable){
+	} else if (disable){
 		return <div className={classes.disable} />
+	} else {
+		return flowing && <CurrentFlowing fillColor={'#dec11e'} />
 	}
-
-	return ( flowing && <CurrentFlowing fillColor={'#dec11e'} /> );
 }

@@ -65,7 +65,6 @@ export default function Index(props) {
       Object.keys(data).forEach((h) => {
         data_len[h] = Object.values(data[h]).length
       })
-
       return Object.keys(data_len).reduce((a, b) => data_len[a] < data_len[b] ? a : b);
   }
 

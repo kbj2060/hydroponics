@@ -54,6 +54,19 @@ export default function Figure(props) {
     setWidth(0);
   }
 
+  const EnvironmentCircleDisplay = () => {
+    return (
+      <>
+      {
+        dimensions.width &&
+        <div>
+          <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
+        </div>
+      }
+      </>
+    )
+  }
+
   useLayoutEffect(() => {
     if (roundFigureRef.current) {
       setDimensions({
@@ -66,19 +79,13 @@ export default function Figure(props) {
     return () => {
       cleanup();
     }
-  }, [ width]);
+  }, [width]);
 
   return (
       <div>
           <Typography className={classes.title}>{WordsTable[environment]}</Typography>
           <Paper className={classes.root} ref={roundFigureRef}>
-            {
-              dimensions.width
-                ? (<div>
-                    <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
-                   </div>)
-                : null
-            }
+            <EnvironmentCircleDisplay />
           </Paper>
       </div>
   );

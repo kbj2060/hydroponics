@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   cell : {
     display: 'flex',
     padding: theme.spacing(1)
+  },
+  defaultIcon : {
+    color: props => props.defaultIcon
   }
 }))
 
@@ -62,13 +65,14 @@ export default function SettingExplanation({position}) {
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({
     borderColor : colors.fontColor,
-    fontColor : colors.fontColor
+    fontColor : colors.fontColor,
+    defaultIcon : colors.defaultIcon
   });
   const {auto:defaultSetting} = require('root/values/defaults.json');
   const {autoItem} = require('root/values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
-  const getAutoFromDB = async () => {
+  const getAuto = async () => {
     await axios.get('/api/get/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
@@ -149,19 +153,21 @@ export default function SettingExplanation({position}) {
   }
 
   useEffect(() => {
-    position === 'head' ? getAutoFromDB() : getAutoFromStore()
+    position === 'head' ? getAuto() : getAutoFromStore()
     return () => {
       setIsLoading(true);
     }
   }, [])
 
   return(
-    isLoading?<ColorCircularProgress />:
+    isLoading?
+    <ColorCircularProgress />
+    :
     <table className={classes.table}>
       <tbody>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WbSunnyIcon style={{color: colors.defaultIcon}}/>
+          <WbSunnyIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('led') ? getOffChips() : getRangeLEDChips()}
@@ -169,7 +175,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WhatshotIcon style={{color: colors.defaultIcon}}/>
+          <WhatshotIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('heater') ? getOffChips() : getHeaterChips()}
@@ -177,7 +183,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <AcUnitIcon style={{color: colors.defaultIcon}}/>
+          <AcUnitIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
           {!getAutoEnable('cooler') ? getOffChips() : getCoolerChips()}
@@ -185,7 +191,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <ToysIcon style={{color: colors.defaultIcon}}/>
+          <ToysIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('fan') ? getOffChips() : getCycleChips('fan')}
@@ -193,7 +199,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <OpacityIcon style={{color: colors.defaultIcon}}/>
+          <OpacityIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('waterpump') ? getOffChips() : getCycleChips('waterpump')}

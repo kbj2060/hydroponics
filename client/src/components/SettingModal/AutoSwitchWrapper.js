@@ -4,8 +4,6 @@ import {CustomAntSwitch} from "../utils/CustomAntSwitch";
 import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
 import {controlSetting} from "../../redux/modules/ControlSetting";
-import update from "react-addons-update";
-import {controlSwitch} from "../../redux/modules/ControlSwitch";
 
 export default function AutoSwitchWrapper({name:setting}) {
   const {colors} = require('root/values/colors.json')

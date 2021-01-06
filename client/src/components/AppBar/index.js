@@ -8,7 +8,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '../Menu';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-
 const MenuButton = () => {
   return (
       <IconButton
@@ -104,9 +103,9 @@ export default function PermanentAppBar(props) {
             {page}
           </Typography>
           <div className={classes.grow} />
-            <div className={classes.menuWrapper} >
-              <Menu MenuButton={MenuButton} />
-            </div>
+          <div className={classes.menuWrapper} >
+            <Menu MenuButton={MenuButton} />
+          </div>
         </Toolbar>
       </AppBar>
     </div>

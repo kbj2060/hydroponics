@@ -76,20 +76,26 @@ export default function SettingModal() {
 			defaultIconColor : colors.defaultIcon
 		});
 
-  	const handleOpen = () => {
-      setOpen((prev) => !prev);
-    };
-
     const handleClose = () => {
       setOpen(false)
     }
 
+    const AutoIconButton = () => {
+    	const handleOpen = () => {
+      	setOpen((prev) => !prev);
+    	}
+
+    	return (
+    		<Button onClick={handleOpen} type="button">
+					<AllInclusiveIcon className={classes.autoIcon}/>
+        </Button>
+			)
+		}
+
     return(
 		<ClickAwayListener onClickAway={handleClose}>
       <div className={classes.autoButtonDiv}>
-        <Button onClick={handleOpen} type="button">
-					<AllInclusiveIcon className={classes.autoIcon}/>
-        </Button>
+        <AutoIconButton />
         <Modal className={classes.modal}
           disableAutoFocus={true}
           open={open}

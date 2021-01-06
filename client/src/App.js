@@ -12,6 +12,9 @@ import { saveSwitch} from "./redux/modules/ControlSwitch";
 import {saveSetting} from "./redux/modules/ControlSetting";
 import Scheduler from "./views/Scheduler/Scheduler";
 import {saveState} from "./components/LocalStorage";
+import {store} from "./redux/store";
+import SwitchEmptyResponseHandler from "./components/utils/ErrorHandler/SwitchEmptyResponseHandler";
+import getCurrentPage from "./components/utils/getCurrentPage";
 
 
 const useStyles = makeStyles(() =>({
@@ -35,64 +38,12 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  const {auto:defaultSetting, switches:defaultMachineStatus} = require('root/values/defaults.json');
-  const {autoItem} = require('root/values/preferences.json');
-  const dispatch = useDispatch();
   const {colors} = require('root/values/colors.json')
-  const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({
     customTheme : colors.customTheme
-  });
-
-  const getControlAuto = async () => {
-    await axios.get('/api/get/auto', {
-      params: {
-        selects : ['item', 'enable', 'duration'],
-        where : autoItem["s1"],
-	      section : "s1"
-      }
-    }).then(({data}) => {
-      if(Object.keys(data).length === Object.keys(defaultSetting).length){
-        dispatch(saveSetting(data))
-        saveState("auto", data)
-      } else {
-        dispatch(saveSetting(defaultSetting));
-        saveState("auto", defaultSetting)
-      }
-    })
-  }
-
-  const getControlSwitches = async () => {
-      await axios.get('/api/get/switch/now',{
-        params: {
-          section : "s1"
-        }
-      }).then(({data}) => {
-          if(checkEmpty(data)){
-            dispatch(saveSwitch(defaultMachineStatus))
-            saveState("switches", defaultMachineStatus)
-          } else {
-            let status = {}
-            Object.keys(defaultMachineStatus).forEach((machine) => {
-              status[machine] = data["s1"].includes(machine)
-            })
-            dispatch(saveSwitch(status))
-            saveState("switches", status)
-          }
-      })
-  }
-
-  useEffect(() => {
-      getControlSwitches();
-      getControlAuto();
-      setIsLoading(false);
-      return () => {
-        setIsLoading(true);
-      }
-  }, []);
+  })
 
   return (
-    isLoading ||
     <BrowserRouter>
         <div className={classes.parent}>
           <Route exact path="/">

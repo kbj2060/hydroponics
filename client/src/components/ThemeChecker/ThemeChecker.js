@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export default function ThemeChecker(props) {
+export default function ThemeChecker() {
   const [value, setValue] = React.useState('female');
   const classes = useStyles({
   });

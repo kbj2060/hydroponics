@@ -103,6 +103,6 @@ export default function CustomLine(props) {
     state.datasets = makeDataset(n_sections);
     state.labels = Object.keys(history[primary_key]);
 
-    return(<Line options={options} data={state} width={width} height={height}/>)
+    return <Line options={options} data={state} width={width} height={height}/>
 }
 

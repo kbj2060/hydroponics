@@ -74,23 +74,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Menu() {
 	const {colors} = require('root/values/colors.json')
 	const {pages} = require('root/values/preferences.json')
-	const {WordsTable} = require('root/values/strings.json');
 	const dispatch = useDispatch();
 	const n_pages = pages.length;
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles({n_pages});
 
-	const handleOpen = () => {
-		setOpen((prev) => !prev);
-	};
-
 	const handleClose = () => {
 		setOpen(false)
 	}
 
-	return (
-		<ClickAwayListener onClickAway={handleClose}>
-		<div>
+	const MenuIconButton = () => {
+		const handleOpen = () => {
+			setOpen((prev) => !prev);
+		};
+
+		return (
 			<IconButton
 				onClick={handleOpen}
 				type="button"
@@ -98,7 +96,11 @@ export default function Menu() {
 				aria-haspopup="true">
 				<MenuIcon style={{ color: colors.fontColor }} />
 			</IconButton>
+		)
+	}
 
+	const ModalWrapper = ({children}) => {
+		return (
 			<Modal
 				disableAutoFocus={true}
 				className={classes.modal}
@@ -109,10 +111,35 @@ export default function Menu() {
 					timeout: 500,
 				}}
 			>
-				<div className={classes.paper}>
+				{children}
+			</Modal>
+		)
+	}
 
+	const MenuContent = () => {
+		return (
+			<div className={classes.paper}>
+				<div style={{height: "30%"}}>
+					<h1 className={classes.header}>PlantPoint</h1>
+				</div>
+				<div style={{height: "70%"}}>
+					<LinkButton value={'무들로29'} to={'무들로29'} buttonDesign={classes.menuButton} />
+					<LinkButton value={'일정'} to={'scheduler'} buttonDesign={classes.menuButton} />
+					<LinkButton value={"설정"} to={"setting"} buttonDesign={classes.menuButton} />
+					<LinkButton onClick={() => dispatch(logout())} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
+				</div>
+			</div>
+		)
+	}
+
+	return (
+		<ClickAwayListener onClickAway={handleClose}>
+		<div>
+			<MenuIconButton />
+				<ModalWrapper >
+					<div className={classes.paper}>
 					<div style={{height: "30%"}}>
-						<h1 className={classes.header}>Kairos</h1>
+						<h1 className={classes.header}>PlantPoint</h1>
 					</div>
 					<div style={{height: "70%"}}>
 						<LinkButton value={'무들로29'} to={'무들로29'} buttonDesign={classes.menuButton} />
@@ -121,8 +148,7 @@ export default function Menu() {
 						<LinkButton onClick={() => dispatch(logout())} value={"로그아웃"} to={""} buttonDesign={classes.menuButton} />
 					</div>
 				</div>
-
-			</Modal>
+			</ModalWrapper>
 		</div>
 		</ClickAwayListener>
 	);

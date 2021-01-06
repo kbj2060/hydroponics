@@ -11,6 +11,8 @@
     "dev": "concurrently --kill-others-on-fail \"nodemon server/server.js\" \"yarn client\""
   },
   "dependencies": {
+    "@nestjs/core": "^7.6.5",
+    "@nestjs/testing": "^7.6.5",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "body-parser": "^1.19.0",

@@ -7,7 +7,7 @@ const LOGGER_PATH = "./utils/useLogger";
 const SETTING_PATH = "../values/preferences";
 const STRING_PATH = "../values/strings";
 
-const {MQTT_BROKER, settingType} = require(SETTING_PATH)
+const {MQTT_BROKER, settingType, machines} = require(SETTING_PATH)
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const {WordsTable} = require(STRING_PATH)
 const {connection} = require('./dbHandler');
@@ -216,7 +216,7 @@ app.post('/api/post/switch/machine', (req, res) => {
     let name = req.body.params['name'];
     let section = req.body.params['section'];
     let sql = `INSERT INTO iot.switch VALUES (null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0)`;
-    new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 ${WordsTable[machine]}을 ${status?"켰":"껐"}습니다.`);
+    //new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 ${WordsTable[machine]}을 ${status?"켰":"껐"}습니다.`);
 
     connection.query(sql, (err, rows) => {
         res.send(rows);
@@ -226,6 +226,38 @@ app.post('/api/post/switch/machine', (req, res) => {
         });
         console.log(`${machine} power has been changed.`);
         client.publish(`switch/${machine}`, String(status));
+      }
+    )} catch (err) {
+    useErrorLogger('POST').error({
+      level: 'error',
+      message: `POST SWITCH QUERY ERROR : ${err}`
+    })
+  }
+});
+
+app.post('/api/post/switch/reset', (req, res) => {
+  try {
+    let name = req.body.params['name'];
+    let section = req.body.params['section'];
+    const status = 0;
+    const values = machines[section].map((machine, idx) => {
+      return idx === machines.length - 1
+      ? `(null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0);`
+      : `(null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0)`
+    })
+    let sql = `INSERT INTO iot.switch VALUES ` + values.join(',');
+    //new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 모든 전원을 차단했습니다.`);
+
+    connection.query(sql, (err, rows) => {
+        res.send(rows);
+        useInfoLogger('switch').info({
+          level: 'info',
+          message: `[${name}] ${machines[section]} ${status?"ON":"OFF"}`
+        });
+        console.log(`${machines[section]} power has been changed.`);
+        machines[section].forEach((machine) => {
+          client.publish(`switch/${machine}`, String(status));
+        })
       }
     )} catch (err) {
     useErrorLogger('POST').error({
@@ -318,10 +350,10 @@ function classifyValues (section, controlSetting, user) {
 
 app.post('/api/post/auto', (req,res) => {
   try{
-    const { section, controlSetting, user } = req.body.params;
-    const sqlValues = classifyValues(section, controlSetting, user).join(',');
+    const { section, auto, user } = req.body.params;
+    const sqlValues = classifyValues(section, auto, user).join(',');
     const sql =  `INSERT INTO iot.auto VALUES ${sqlValues};`;
-    console.log(controlSetting, user)
+    console.log(auto, user)
     connection.query(sql, (err, rows) => {
         res.send(rows);
       }
@@ -460,7 +492,7 @@ app.post('/api/post/signin', (req, res) => {
 })
 /*
  * 로그인 설정 끝
- * ---------------------------------------------------------------------------------------------------------------------
+* ---------------------------------------------------------------------------------------------------------------------
  * 유틸 함수 시작
  */
 const groupBy = function(xs, key) {
@@ -540,7 +572,7 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
                VALUES (null, \"${section}\", ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;
-  connection.query(sql, (err, rows) => {
+  connection.query(sql, (err) => {
       if(err) {console.log(err);}
     }
   )
@@ -548,7 +580,6 @@ const handlePlantEnvironmentsMQTT = (topic, message) => {
 // emit 할 때는 status의 값은 불리언 값으로 해야한다.
 // 숫자로 할 시 스위치 전환이 되지 않음.
 const emitMqttSwitch = async (machine, status) => {
-  console.log(machine, status)
   io.emit('receiveSwitchControl', {
     machine : machine,
     status : status
@@ -563,7 +594,6 @@ data : '1' or '0'
 const handleSwitchesMQTT = (topic, message) => {
   const [_, machine] = topic.split("/");
   const status = JSON.parse(message.toString()) !== 0;
-  console.log(machine, status);
   emitMqttSwitch(machine, status);
 }
 

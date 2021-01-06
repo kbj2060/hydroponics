@@ -172,7 +172,6 @@ export default function ScheduleAdd({selectedDay, handleAddFinish}) {
           shouldHighlightWeekends
           />
         </Grid>
-              {console.log("Scheduler Add")}
         <Grid item className={classes.gridItem}>
           <OutlinedInput
             value={title}

@@ -1,14 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import ToysIcon from "@material-ui/icons/Toys";
 import OpacityIcon from "@material-ui/icons/Opacity";
-import {store} from "../../redux/store";
-import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import './FanOut.css'
-import {checkEmpty} from "../utils/CheckEmpty";
-import socket from "../../socket";
 import {shallowEqual, useSelector} from "react-redux";
 
 const {colors} = require('root/values/colors.json');

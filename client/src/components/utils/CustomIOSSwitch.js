@@ -19,7 +19,7 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     padding: 1,
     display:'flex',
     alignItems:'center',
-    transition: 'transform 0.4s cubic-bezier(0.85, 0.05, 0.18, 1.35)',
+    transition: 'transform 0.6s cubic-bezier(0.85, 0.05, 0.18, 1.35)',
     '&$checked': {
       overflow: 'hidden',
       transform: 'translateX(22px)',

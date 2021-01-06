@@ -62,20 +62,23 @@ function EnhancedTableHead(props) {
     onRequestSort(event, property);
   };
 
-  return (
-    <TableHead>
-      <TableRow>
-        {console.log("Header Rendering",order, orderBy,numSelected,rowCount)}
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            style ={{color :"#595957"}}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
+  const CheckBoxHeader = () => {
+    return(
+      <TableCell padding="checkbox">
+        <Checkbox
+          indeterminate={numSelected > 0 && numSelected < rowCount}
+          checked={rowCount > 0 && numSelected === rowCount}
+          onChange={onSelectAllClick}
+          style ={{color :"#595957"}}
+          inputProps={{ 'aria-label': 'select all desserts' }}
+        />
+      </TableCell>
+    )
+  }
+  const ColumnNameHeader = () => {
+    return(
+      <>
+      {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={'center'}
@@ -96,6 +99,14 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+      </>
+    )
+  }
+  return (
+    <TableHead>
+      <TableRow>
+        <CheckBoxHeader />
+        <ColumnNameHeader />
       </TableRow>
     </TableHead>
   );
@@ -148,33 +159,42 @@ const EnhancedTableToolbar = (props) => {
     postRemoveSchedule();
   }
 
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-      variant="dense"
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} 선택됨
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="subtitle1" id="tableTitle" component="div">
-          세부 일정
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
+  const HeaderCenterDisplay = () => {
+    return(
+      <>
+        {numSelected > 0 ? (
+          <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+            {numSelected} 선택됨
+          </Typography>
+        ) : (
+          <Typography className={classes.title} variant="subtitle1" id="tableTitle" component="div">
+            세부 일정
+          </Typography>
+        )}
+      </>
+    )
+  }
+  const HeaderRightDisplay = () => {
+    return (
+      <>
+      {
+        numSelected > 0 &&
           <Tooltip title="Delete">
             <IconButton onClick={handleDeleteSchedule} aria-label="delete">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
-      ) : (
-          <>
-          </>
-      )}
+      }
+      </>
+    )
+  }
+  return (
+    <Toolbar
+      className={clsx(classes.root, {[classes.highlight]: numSelected > 0,})}
+      variant="dense"
+    >
+      <HeaderCenterDisplay />
+      <HeaderRightDisplay />
     </Toolbar>
   );
 };
@@ -257,30 +277,6 @@ export default function ScheduleTable({selectedDay}) {
     setSelected([]);
   };
 
-  const handleRowClick = (event, row) => {
-    toggleDrawer();
-    setSelectedRow(row);
-  }
-
-  const handleCheckboxClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -290,12 +286,7 @@ export default function ScheduleTable({selectedDay}) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  const handleMomentFormat = (date) => {
-    return moment(new Date(date.year, date.month-1, date.day)).format("YYYY-MM-DD")
-  }
 
   const removeRows = (ids) => {
     setRows(rows.filter((row) => !ids.includes(row.id)))
@@ -352,29 +343,39 @@ export default function ScheduleTable({selectedDay}) {
     return () => { cleanup();}
   }, [selectedDay, date])
 
-  return (
-    isLoading ||
-    <div className={classes.tableWrapper}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected} removeRows={removeRows} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={'medium'}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+  const TableContent = () => {
+    const isSelected = (name) => selected.indexOf(name) !== -1;
+    const handleMomentFormat = (date) => {
+      return moment(new Date(date.year, date.month-1, date.day)).format("YYYY-MM-DD")
+    }
+
+    const handleRowClick = (event, row) => {
+      toggleDrawer();
+      setSelectedRow(row);
+    }
+
+    const handleCheckboxClick = (event, name) => {
+      const selectedIndex = selected.indexOf(name);
+      let newSelected = [];
+
+      if (selectedIndex === -1) {
+        newSelected = newSelected.concat(selected, name);
+      } else if (selectedIndex === 0) {
+        newSelected = newSelected.concat(selected.slice(1));
+      } else if (selectedIndex === selected.length - 1) {
+        newSelected = newSelected.concat(selected.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelected = newSelected.concat(
+          selected.slice(0, selectedIndex),
+          selected.slice(selectedIndex + 1),
+        );
+      }
+      setSelected(newSelected);
+    };
+
+    return (
+      <>
+      {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -407,13 +408,58 @@ export default function ScheduleTable({selectedDay}) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height:  53 * emptyRows }}>
+      </>
+    )
+  }
+
+  const TableEmptyHandler = () => {
+    const defaultHeight = 53
+    return (
+      <>
+      {emptyRows > 0 && (
+                <TableRow style={{ height:  defaultHeight * emptyRows }}>
                   <TableCell colSpan={5} />
                 </TableRow>
               )}
+      </>
+    )
+  }
+
+  const DrawerHandler = () => {
+    return (
+      <>
+      {drawer && <ScheduleDetail
+          toggleDrawer={toggleDrawer}
+          selectedRow={selectedRow}
+          reviseRow={reviseRow}/>}
+      </>
+    )
+  }
+  return (
+    isLoading ||
+    <div className={classes.tableWrapper}>
+      <Paper className={classes.paper}>
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected} removeRows={removeRows} />
+        <TableContainer>
+          <Table
+            className={classes.table}
+            aria-labelledby="tableTitle"
+            size={'medium'}
+            aria-label="enhanced table"
+          >
+            <EnhancedTableHead
+              classes={classes}
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              <TableContent />
+              <TableEmptyHandler />
             </TableBody>
-                  {console.log("Table Rendering", rows, order, orderBy, rowsPerPage, isLoading, date, drawer, selectedDay, selectedRow)}
           </Table>
         </TableContainer>
         <TablePagination
@@ -425,11 +471,7 @@ export default function ScheduleTable({selectedDay}) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        {drawer && <ScheduleDetail
-          toggleDrawer={toggleDrawer}
-          selectedRow={selectedRow}
-          reviseRow={reviseRow}
-        />}
+        <DrawerHandler />
       </Paper>
     </div>
   );

@@ -16,9 +16,12 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import { useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import getCurrentPage from "../utils/getCurrentPage";
 import {checkEmpty} from "../utils/CheckEmpty";
+import {store} from "../../redux/store";
+import SwitchEmptyResponseHandler from "../utils/ErrorHandler/SwitchEmptyResponseHandler";
+import getCurrentUser from "../utils/getCurrentUser";
 
 const theme = createMuiTheme({
   overrides: {
@@ -38,9 +41,7 @@ const useStyles1 = makeStyles({
 
 function TablePaginationActions(props) {
 	const {colors} = require('root/values/colors.json');
-	const classes = useStyles1({
-		fontColor : colors.fontColor
-	});
+	const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
 
@@ -58,18 +59,17 @@ function TablePaginationActions(props) {
 
   const handleLastPageButtonClick = event => {
 	onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
+	};
 
   return (
 	<div className={classes.root}>
-	  <IconButton
+	<IconButton
     style={{color: colors.fontColor}}
 		onClick={handleFirstPageButtonClick}
 		disabled={page === 0}
-		aria-label="first page"
-	  >
+		aria-label="first page">
 		{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-	  </IconButton>
+		</IconButton>
 	  <IconButton style={{color: colors.fontColor}} onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
 		{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
 	  </IconButton>
@@ -138,11 +138,6 @@ export default function MachineHistory() {
   const [isMount, setIsMount] = React.useState(true);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const refresh = useSelector(state => state.switches, (prev, next) => {
-    return machines[current_section].every((machine) => {
-			return prev[machine] === next[machine]
-		})
-	})
 	const {WordsTable} = require('root/values/strings.json');
 	const classes = useStyles2({
 		customTheme : colors.customTheme,
@@ -150,6 +145,11 @@ export default function MachineHistory() {
 		colorOff : colors['buttonOff'],
 		neumOutShadow : colors.neumOutShadow,
 		fontColor : colors.fontColor,
+	})
+	const refresh = useSelector(state => state.switches, (prev, next) => {
+    return machines[current_section].every((machine) => {
+			return prev[machine] === next[machine]
+		})
 	})
 
   const handleChangePage = (event, newPage) => {
@@ -162,7 +162,14 @@ export default function MachineHistory() {
   };
 
   const handleStatus = row => {
-  		return row.status !== 0? 'ON':'OFF'
+  		return row.status ? 'ON':'OFF'
+	}
+
+	const createDefaultData = (status, machine, created, controlledBy) => {
+		return {	status: status,
+							machine: machine,
+							created: created,
+							controlledBy :controlledBy }
 	}
 
 	const getLastSwitch = async () => {
@@ -172,10 +179,16 @@ export default function MachineHistory() {
 				section : current_section,
 				num: 1
 			}}).then(({data}) => {
+				if(checkEmpty(data)){
+					const username = getCurrentUser();
+					SwitchEmptyResponseHandler(username, current_section);
+					window.location.reload();
+				} else {
 					setRows(prevArray => {
 						prevArray.splice(-1, 1)
 						return [data[0], ...prevArray]
 					});
+				}
 			})
 	}
 
@@ -187,40 +200,26 @@ export default function MachineHistory() {
 				section : current_section,
 				num: showHistoryNumber
 			}}).then(({data}) => {
-				if(checkEmpty(data)) return null
-				const rows = data.map((history) => {
-					return {
-						status: history['status'],
-						machine: history['machine'],
-						created: history['created'],
-						controlledBy : history['controlledBy']
-					}
-				})
-				setRows(rows);
+				if(checkEmpty(data)){
+					const username = store.getState()['authentication']['status']['currentUser']
+					SwitchEmptyResponseHandler(username, current_section);
+					window.location.reload();
+					setIsMount(false);
+				} else {
+					const rows = data.map((history) => {
+						return createDefaultData(history.status, history.machine, history.created, history.controlledBy)
+					});
+					setRows(rows);
+					setIsMount(false);
+				}
 			})
 	}
 
-
-	useEffect(() => {
-		isMount || getLastSwitch()
-	}, [refresh])
-
-	useEffect(() => {
-		getSwitchHistory();
-		setIsMount(false);
-		return () => {
-			setIsMount(true);
-		}
-	}, []);
-
-  return (
-  	isMount ||
-    <MuiThemeProvider theme={theme}>
-		<TableContainer component={Paper} className={classes.container}>
-			  <Table className={classes.table} aria-label="custom pagination table">
-					<TableBody>
-					  {
-					  	(rowsPerPage > 0
+	const TableContent = () => {
+  	return (
+  		<>
+  		{
+			(rowsPerPage > 0
 						? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						: rows
 					  ).map((row, index) => {
@@ -234,31 +233,66 @@ export default function MachineHistory() {
 										<TableCell className={classes.text} align="center">{row.created}</TableCell>
 								</TableRow>)
 						  })}
-
-					  {emptyRows > 0 && (
-						<TableRow style={{ height: 53 * emptyRows }}>
+			</>
+		)
+	}
+	const TableEmptyHandler = () => {
+  	const defaultHeight = 53;
+  	return (
+  		<>
+  		{
+  			emptyRows > 0 && (
+						<TableRow style={{ height: defaultHeight * emptyRows }}>
 						  <TableCell colSpan={6} />
 						</TableRow>
-					  )}
+					  )
+  		}
+			</>
+		)
+	}
+	const CustomTableFooter = () => {
+  	return(
+  		<TableRow>
+				<TablePagination
+					className={classes.footer}
+					rowsPerPageOptions={[5]}
+					colSpan={5}
+					count={rows.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					SelectProps={{
+					inputProps: { 'aria-label': 'rows per page' },
+					native: true,
+					}}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+					ActionsComponent={TablePaginationActions}
+				/>
+			</TableRow>
+		)
+	}
+	useEffect(() => {
+		isMount || getLastSwitch()
+	}, [refresh])
+
+	useEffect(() => {
+		getSwitchHistory();
+		return () => {
+			setIsMount(true);
+		}
+	}, []);
+
+  return (
+  	isMount ||
+    <MuiThemeProvider theme={theme}>
+		<TableContainer component={Paper} className={classes.container}>
+			  <Table className={classes.table} aria-label="custom pagination table">
+					<TableBody>
+					  <TableContent />
+						<TableEmptyHandler/>
 					</TableBody>
 					<TableFooter>
-						<TableRow>
-						<TablePagination
-			        className={classes.footer}
-						  rowsPerPageOptions={[5]}
-						  colSpan={5}
-						  count={rows.length}
-						  rowsPerPage={rowsPerPage}
-						  page={page}
-						  SelectProps={{
-							inputProps: { 'aria-label': 'rows per page' },
-							native: true,
-						  }}
-						  onChangePage={handleChangePage}
-						  onChangeRowsPerPage={handleChangeRowsPerPage}
-						  ActionsComponent={TablePaginationActions}
-						/>
-						</TableRow>
+						<CustomTableFooter />
 					</TableFooter>
 			  </Table>
 			</TableContainer>
