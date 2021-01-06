@@ -14,6 +14,8 @@ import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
 import getCurrentUser from "../utils/getCurrentUser";
+import {checkEmpty} from "../utils/CheckEmpty";
+
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -148,8 +150,7 @@ function Switches(props) {
       <FormGroup>
         <FormControlLabel
           control={ children }
-          className={classes.controlForm}
-         />
+          className={classes.controlForm} />
       </FormGroup>
     )
   }
@@ -157,8 +158,13 @@ function Switches(props) {
   useEffect(() => {
     getSwitchMachine()
       .then(({data}) => {
-        setState({status: handleStatus(data[0]['status']), machine: machine})
-        setIsLoading(false);
+        if(checkEmpty(data)){
+          postSwitchMachine(0);
+          window.location.reload();
+        } else {
+          setState({status: handleStatus(data[0]['status']), machine: machine})
+          setIsLoading(false);
+        }
     }).catch(() => { setIsLoading(true); })
     receiveSocket();
     return () => {
