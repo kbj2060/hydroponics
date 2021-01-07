@@ -347,7 +347,7 @@ class Automagic(MQTT):
     def check_right_term(self, cycle_machine):
         current_day = datetime.datetime.now()
         last_on_day = self.get_last_auto_day(cycle_machine)
-        last_on_diff = current_day.day - last_on_day.day
+        last_on_diff = (current_day - last_on_day).days
         if last_on_diff >= self.auto[cycle_machine]['term'] or last_on_diff == 0:
             return True
         else:
