@@ -50,7 +50,6 @@ export default function App() {
             <Setting page={"setting"} />
           </Route>
         </div>
-      {console.log("app")}
       </BrowserRouter>
   )
 }

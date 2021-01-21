@@ -237,6 +237,13 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  textContainer: {
+    maxWidth : '100px',
+    display: "block",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }
 }));
 
 export default function ScheduleTable({selectedDay}) {
@@ -403,7 +410,11 @@ export default function ScheduleTable({selectedDay}) {
                       <TableCell onClick={(event) => handleRowClick(event, row)} align="center">
                         {selectedDay?handleMomentFormat(selectedDay):row.date[0]}
                       </TableCell>
-                      <TableCell onClick={(event) => handleRowClick(event, row)} align="center">{row.title}</TableCell>
+                      <TableCell onClick={(event) => handleRowClick(event, row)} align="center">
+                        <div className={classes.textContainer}>
+                          {row.title}
+                        </div>
+                      </TableCell>
                       <TableCell onClick={(event) => handleRowClick(event, row)} align="center">{!row.binding?'':row.binding+'회'}</TableCell>
                     </TableRow>
                   );
