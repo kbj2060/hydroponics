@@ -5,16 +5,7 @@ import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Setting from "./views/Setting/Setting";
-import axios from "axios";
-import { useDispatch} from "react-redux";
-import {checkEmpty} from "./components/utils/CheckEmpty";
-import { saveSwitch} from "./redux/modules/ControlSwitch";
-import {saveSetting} from "./redux/modules/ControlSetting";
 import Scheduler from "./views/Scheduler/Scheduler";
-import {saveState} from "./components/LocalStorage";
-import {store} from "./redux/store";
-import SwitchEmptyResponseHandler from "./components/utils/ErrorHandler/SwitchEmptyResponseHandler";
-import getCurrentPage from "./components/utils/getCurrentPage";
 
 
 const useStyles = makeStyles(() =>({
