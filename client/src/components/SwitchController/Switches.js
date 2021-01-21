@@ -91,7 +91,7 @@ function Switches(props) {
       if(machine === switchStatus.machine){
         setState(switchStatus);
         const _switch = store.getState()['switches'][machine];
-        if (_switch !== switchStatus.status) {dispatch(controlSwitch({[machine] : switchStatus.status}));}
+        if (_switch !== switchStatus.status){dispatch(controlSwitch({[machine] : switchStatus.status}));}
       }})
   }
 
@@ -112,7 +112,7 @@ function Switches(props) {
     setState({machine: machine, status: status});
     emitSocket(status);
     postSwitchMachine(status?1:0)
-  };
+  }
 
   const closeSnackBar = () => {
     setSnackbarOpen(false);
@@ -181,15 +181,15 @@ function Switches(props) {
     CheckLogin()
       ? <>
           <SwitchForm>
-          <FormGroup>
-          <FormControlLabel
-            control={ <CustomIOSSwitch
-              key={machine}
-              checked={state.status}
-              onChange={handleChange}
-              value={machine} /> }
-            className={classes.controlForm} />
-          </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                control={ <CustomIOSSwitch
+                  key={machine}
+                  checked={state.status}
+                  onChange={handleChange}
+                  value={machine} /> }
+                className={classes.controlForm} />
+            </FormGroup>
           </SwitchForm>
           <PowerDisplay />
           <Alarm />

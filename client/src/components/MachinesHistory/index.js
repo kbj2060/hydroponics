@@ -146,6 +146,7 @@ export default function MachineHistory() {
 		neumOutShadow : colors.neumOutShadow,
 		fontColor : colors.fontColor,
 	})
+
 	const refresh = useSelector(state => state.switches, (prev, next) => {
     return machines[current_section].every((machine) => {
 			return prev[machine] === next[machine]
@@ -195,10 +196,9 @@ export default function MachineHistory() {
 				num: showHistoryNumber
 			}}).then(({data}) => {
 				if(checkEmpty(data)){
-					const username = store.getState()['authentication']['status']['currentUser']
+					/*const username = store.getState()['authentication']['status']['currentUser']
 					SwitchEmptyResponseHandler(username, current_section);
-					window.location.reload();
-					setIsMount(false);
+					window.location.reload();*/
 				} else {
 					const rows = data.map((history) => {
 						return createDefaultData(history.status, history.machine, history.created, history.controlledBy)

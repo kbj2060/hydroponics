@@ -132,6 +132,7 @@ class Automagic(MQTT):
         """
         sqls = []
         selects = ",".join(list(self.environments.keys()))
+        # TODO : Section Problem
         for section in self.sections:
             sqls.append(f"(SELECT {selects} FROM iot.env WHERE section = \"{section}\" ORDER BY id DESC LIMIT 1)")
         return " UNION ALL ".join(sqls)
@@ -223,6 +224,7 @@ class Automagic(MQTT):
         :param status:
         """
         name = "Auto"
+        # TODO : Section Problem
         sql = f"INSERT INTO iot.switch VALUES (null,\"s1\", \"{machine}\", {status}, \"{name}\", now(), 0)"
         self.cursor.execute(sql)
 

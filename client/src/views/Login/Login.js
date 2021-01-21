@@ -84,6 +84,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
+
 export default function Login() {
     const classes = useStyles({
       customTheme : colors.customTheme,
@@ -178,7 +179,7 @@ export default function Login() {
       <div className={classes.root}>
         <div className={classes.loginForm}>
             <form>
-              <p className={classes.title}>Kairos</p>
+              <p className={classes.title}>Plant Point</p>
               <CssTextField id="name" InputProps={{
                 className: classes.input
               }} className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
