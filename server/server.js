@@ -105,6 +105,7 @@ app.get('/api/get/environment/history', (req, res) => {
       sql, (err, rows) => {
         let results = JSON.parse(JSON.stringify(rows));
         results = groupBy(results, 'section');
+	      console.log(results);
         results = cleanHistoryDict(results, environment);
         res.send(results);
       });
@@ -569,6 +570,11 @@ data : {
  */
 const handlePlantEnvironmentsMQTT = (topic, message) => {
   const _json = JSON.parse(message.toString());
+  for (key in Object.keys(_json)){
+	  if(_json[key] === undefined ) {
+	    _json[key] = 0;
+	  }
+  }
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
                VALUES (null, \"${section}\", ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;

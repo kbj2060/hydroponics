@@ -85,7 +85,7 @@ export default function CustomLine(props) {
       let datasets = []
       for(n = 0; n < n_plant; n++){
         const section = sections[n];
-        const data = Object.values(history[section])
+	const data = history[section] === undefined? {} :Object.values(history[section])
         datasets.push({
           label: WordsTable[`plant-${section}`],
           fill: false,
