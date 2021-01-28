@@ -332,7 +332,7 @@
   dependencies:
     "color-convert" "^2.0.1"
 
-"anymatch@~3.1.1":
+"anymatch@^3", "anymatch@~3.1.1":
   "integrity" "sha512-mM8522psRCqzV+6LhomX5wgp25YVibjh8Wj23I5RPkPppSVSjyKD2A2mBJmWGa+KN7f2D6LNh9jkBCeyLktzjg=="
   "resolved" "https://registry.npmjs.org/anymatch/-/anymatch-3.1.1.tgz"
   "version" "3.1.1"
@@ -748,6 +748,11 @@
   "version" "1.0.8"
   dependencies:
     "delayed-stream" "~1.0.0"
+
+"commander@^2.20.0":
+  "integrity" "sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ=="
+  "resolved" "https://registry.npmjs.org/commander/-/commander-2.20.3.tgz"
+  "version" "2.20.3"
 
 "commist@^1.0.0":
   "integrity" "sha512-rraC8NXWOEjhADbZe9QBNzLAN5Q3fsTPQtBV+fEVj6xKIgDgNiEVE6ZNfHpZOqfQ21YUzfVNUXLOEZquYvQPPg=="
@@ -3215,10 +3220,28 @@
     "socket.io-client" "2.3.0"
     "socket.io-parser" "~3.4.0"
 
+"source-map-support@~0.5.12":
+  "integrity" "sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw=="
+  "resolved" "https://registry.npmjs.org/source-map-support/-/source-map-support-0.5.19.tgz"
+  "version" "0.5.19"
+  dependencies:
+    "buffer-from" "^1.0.0"
+    "source-map" "^0.6.0"
+
 "source-map@^0.5.0":
   "integrity" "sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w="
   "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.5.7.tgz"
   "version" "0.5.7"
+
+"source-map@^0.6.0":
+  "integrity" "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
+  "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
+  "version" "0.6.1"
+
+"source-map@~0.6.1":
+  "integrity" "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
+  "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
+  "version" "0.6.1"
 
 "spawn-command@^0.0.2-1":
   "integrity" "sha1-YvXpRmmBwbeW3Fkpk34RycaSG9A="
@@ -3411,6 +3434,23 @@
   "integrity" "sha512-a6sumDlzyHVJWb8+YofY4TW112G6p2FCPEAFk+59gIYHv3XHRhm9ltVQ9kli4hNWeQBwSpe8cRN25x0ROunMOw=="
   "resolved" "https://registry.npmjs.org/term-size/-/term-size-2.2.0.tgz"
   "version" "2.2.0"
+
+"terser-brunch@^4.0.0":
+  "integrity" "sha512-bmT9+/7HHwmgCbfZ0IaX26em9d2SpyoxSiiO+xSHJU4EG0FLsk52M7bRcTF/xMaSPl9LXTVkqjgSEllFmcoUFg=="
+  "resolved" "https://registry.npmjs.org/terser-brunch/-/terser-brunch-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "anymatch" "^3"
+    "terser" "^4.4"
+
+"terser@^4.4":
+  "integrity" "sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw=="
+  "resolved" "https://registry.npmjs.org/terser/-/terser-4.8.0.tgz"
+  "version" "4.8.0"
+  dependencies:
+    "commander" "^2.20.0"
+    "source-map" "~0.6.1"
+    "source-map-support" "~0.5.12"
 
 "text-hex@1.0.x":
   "integrity" "sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg=="

@@ -19,11 +19,14 @@ const moment = require('moment')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express();
+const path = require("path");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 connection.connect()
+
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 /*
  * 기본 쿼리 구조 시작
@@ -90,6 +93,36 @@ const cleanHistoryDict = (res, env) => {
   return res
 }
 
+const convertFixedFloat = (x) => {
+  return Number.parseFloat(x).toFixed(1);
+}
+
+app.get('/api/get/environment/latter', (req, res) => {
+  try{
+    const section = req.query['section']
+    const sql = `SELECT co2, humidity, temperature FROM iot.env 
+                WHERE section = \"${section}\"
+                ORDER BY id DESC LIMIT 1;`
+    connection.query(sql, (err, rows) => {
+      if(rows.length === 1){
+        const status = rows[0]
+        for (const [key, value] of Object.entries(status)) {
+          status[key] = convertFixedFloat(parseFloat(value));
+        }
+        res.send(status); 
+      } else {
+        res.send({'co2':0, 'humdity':0, 'temperature':0})
+      }
+    })
+  } catch (err) {
+    useErrorLogger('GET').error({
+      level: 'error',
+      message: `GET ENV LATTER QUERY ERROR : ${err}`
+    })
+  }
+});
+
+
 app.get('/api/get/environment/history', (req, res) => {
   try{
     const [environment] = req.query['selects'];
@@ -105,7 +138,6 @@ app.get('/api/get/environment/history', (req, res) => {
       sql, (err, rows) => {
         let results = JSON.parse(JSON.stringify(rows));
         results = groupBy(results, 'section');
-	      console.log(results);
         results = cleanHistoryDict(results, environment);
         res.send(results);
       });
@@ -142,7 +174,6 @@ app.get('/api/get/environment/average', (req, res) => {
       avgs['temperature'] = parseInt( avgs['temperature'] / n_subsection)
       avgs['humidity'] = parseInt( avgs['humidity'] / n_subsection)
       avgs['co2'] = parseInt( avgs['co2'] / n_subsection)
-      console.log(avgs);
       res.send(avgs);
     })
   } catch (err) {
@@ -158,6 +189,13 @@ app.get('/api/get/environment/average', (req, res) => {
  * ---------------------------------------------------------------------------------------------------------------------
  * 스위치 설정 시작
  */
+
+const createDefaultData = (status, machine, created, controlledBy) => {
+  return {	status: status,
+            machine: machine,
+            created: created,
+            controlledBy :controlledBy }
+}
 
 app.get('/api/get/switch/now', (req, res) => {
   try{
@@ -196,12 +234,13 @@ app.get('/api/get/switch/history', (req, res) => {
     const section = req.query['section']
     const sql = `SELECT ${selects} FROM iot.switch WHERE section = \"${section}\" ORDER BY id DESC LIMIT ${num};`
     connection.query(sql, (err, rows) => {
-        rows.forEach((row) => {
-          row['created'] = getLocaleMoment(row['created'])
-        })
-        res.send(rows);
-      }
-    )} catch (err) {
+        const result = rows.map((row) => {
+            const localMomentCreated = getLocaleMoment(row.created)
+						return createDefaultData(row.status, row.machine, localMomentCreated, row.controlledBy)
+				});
+        res.send(result);
+      })   
+  } catch (err) {
     useErrorLogger('GET').error({
       level: 'error',
       message: `GET SWITCH HISTORY QUERY ERROR : ${err}`
@@ -287,7 +326,10 @@ app.get('/api/get/current', (req, res) => {
                 ORDER BY id desc;`
     connection.query( sql, (err, rows) => {
       let results = groupBy(rows, "section")
-      Object.keys(results).forEach((key) => { results[key] = results[key][0]['current']; })
+      Object.keys(results).forEach((key) => { 
+        results[key] = results[key][0]['current']; 
+      })
+
       res.send(results)
     })
   } catch(err){
@@ -303,7 +345,6 @@ app.get('/api/get/current', (req, res) => {
 * 자동화 설정 시작
 */
 function union_all(selects, section, arr) {
-  console.log(arr)
   const sqls = arr.map((item, index) => {
     if(index === 0){ return `(SELECT ${selects} FROM iot.auto 
 	    WHERE item = '${item}' AND section = \"${section}\" 
@@ -392,7 +433,6 @@ app.get('/api/get/schedules', (req,res) => {
   try{
     const {date, month:isMonth} = req.query
     const sql = getScheduleSql(date, isMonth);
-    console.log(sql)
     connection.query(sql, (err, rows) => {
       rows.forEach((row) => {
         row.date = row.date.split(',')
@@ -431,7 +471,6 @@ app.post('/api/post/revise/schedules', (req, res) => {
     let {id, dates, title, content} = req.body.params;
     const mDate = dates.map((date) => date2moment(date))
     let sql = `UPDATE iot.schedule SET date = \"${mDate}\", title = \"${title}\", content = \"${content}\", binding = \"${mDate.length}\" WHERE id = \"${id}\";`
-    console.log(sql)
     connection.query(sql, (err, rows) => {
         res.send(rows);
         useInfoLogger('schedule').info({
@@ -450,10 +489,8 @@ app.post('/api/post/revise/schedules', (req, res) => {
 app.post('/api/post/schedules', (req, res) => {
   try {
     let {dates, title, content, binding} = req.body.params;
-    console.log(dates, title, content, binding)
     let dateList = dates.map((date) => string2moment(date))
     let sql = `INSERT INTO iot.schedule VALUES (null, \"${dateList}\", \"${title}\", \"${content}\", ${binding}, now(), 0);`;
-        console.log(sql)
     connection.query(sql, (err, rows) => {
         res.send(rows);
         useInfoLogger('schedule').info({
@@ -509,6 +546,7 @@ function getLocaleMoment(date) { return moment.utc(date).local().format('YYYY/MM
 * 유틸함수 끝
 */
 
+
 const server = http.createServer(app).listen(9000, function () {
   console.info("Listening for HTTP on", this.address());
 });
@@ -551,8 +589,7 @@ data : 2.3
 const handleCurrentsMQTT = (topic, message) => {
   const current = JSON.parse(message.toString());
   const [table, machine, section] = topic.split("/");
-  const sql = `INSERT INTO iot.${table} 
-               VALUES (null, \"${machine}\", \"${section}\", ${current}, now(), 0);`
+  const sql = `INSERT INTO iot.${table} VALUES (null, \"${machine}\", \"${section}\", ${current}, now(), 0);`
   connection.query(sql,(err) => {
       if(err) {console.log(err);}
     }
@@ -570,11 +607,6 @@ data : {
  */
 const handlePlantEnvironmentsMQTT = (topic, message) => {
   const _json = JSON.parse(message.toString());
-  for (key in Object.keys(_json)){
-	  if(_json[key] === undefined ) {
-	    _json[key] = 0;
-	  }
-  }
   const [table, _, section] = topic.split("/")
   const sql = `INSERT INTO iot.${table}
                VALUES (null, \"${section}\", ${_json['co2']}, ${_json['humidity']}, ${_json['temperature']}, now(), 0);`;

@@ -49,8 +49,7 @@ const defaultIcons = {
 }
 
 export default function IconWrapper({machine}) {
-  const animation = useSelector(state => state.switches[machine] ,shallowEqual)
-
+  const animation = useSelector(state => state.switches[machine], shallowEqual)
   const getIcon = (machine, active) => {
     const icons = {
       "cooler" : <CustomCoolerIcon active={active.toString()} />,
@@ -61,6 +60,5 @@ export default function IconWrapper({machine}) {
     }
     return icons[machine]
   }
-
-  return getIcon(machine, animation)
+  return animation === undefined ? getIcon(machine, false) : getIcon(machine, animation)
 }

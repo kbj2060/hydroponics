@@ -16,12 +16,9 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import getCurrentPage from "../utils/getCurrentPage";
 import {checkEmpty} from "../utils/CheckEmpty";
-import {store} from "../../redux/store";
-import SwitchEmptyResponseHandler from "../utils/ErrorHandler/SwitchEmptyResponseHandler";
-import getCurrentUser from "../utils/getCurrentUser";
 
 const theme = createMuiTheme({
   overrides: {
@@ -166,13 +163,6 @@ export default function MachineHistory() {
   		return row.status ? 'ON':'OFF'
 	}
 
-	const createDefaultData = (status, machine, created, controlledBy) => {
-		return {	status: status,
-							machine: machine,
-							created: created,
-							controlledBy :controlledBy }
-	}
-
 	const getLastSwitch =  () => {
   	axios.get('/api/get/switch/history', {
 			params: {
@@ -195,41 +185,27 @@ export default function MachineHistory() {
 				section : current_section,
 				num: showHistoryNumber
 			}}).then(({data}) => {
-				if(checkEmpty(data)){
-					/*const username = store.getState()['authentication']['status']['currentUser']
-					SwitchEmptyResponseHandler(username, current_section);
-					window.location.reload();*/
-				} else {
-					const rows = data.map((history) => {
-						return createDefaultData(history.status, history.machine, history.created, history.controlledBy)
-					});
-					setRows(rows);
-					setIsMount(false);
-				}
+				setRows(data);
+				setIsMount(false);
 			})
 	}
 
 	const TableContent = () => {
-  	return (
-  		<>
-  		{
-			(rowsPerPage > 0
-						? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-						: rows
-					  ).map((row, index) => {
-							  return (
-							  	<TableRow key={index}>
-										<TableCell className={classes.text} align="center" component="th" scope="row">
-											{WordsTable[row.machine.toLowerCase()]}
-										</TableCell>
-										<TableCell className={row.status !== 0 ? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
-										<TableCell className={classes.text} align="center">{row.controlledBy}</TableCell>
-										<TableCell className={classes.text} align="center">{row.created}</TableCell>
-								</TableRow>)
-						  })}
-			</>
-		)
+			return (
+				(rowsPerPage > 0 ? Array.from(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)) : Array.from(rows)).map(
+					(row, index) => 
+						<TableRow key={index}>
+							<TableCell className={classes.text} align="center" component="th" scope="row">
+								{WordsTable[row.machine]}
+							</TableCell>
+							<TableCell className={row.status !== 0 ? classes.statusOn: classes.statusOff} align="center">{handleStatus(row)}</TableCell>
+							<TableCell className={classes.text} align="center">{row.controlledBy}</TableCell>
+							<TableCell className={classes.text} align="center">{row.created}</TableCell>
+						</TableRow>
+					)
+			)
 	}
+
 	const TableEmptyHandler = () => {
   	const defaultHeight = 53;
   	return (
@@ -244,6 +220,7 @@ export default function MachineHistory() {
 			</>
 		)
 	}
+
 	const CustomTableFooter = () => {
   	return(
   		<TableRow>
@@ -282,7 +259,7 @@ export default function MachineHistory() {
 		<TableContainer component={Paper} className={classes.container}>
 			  <Table className={classes.table} aria-label="custom pagination table">
 					<TableBody>
-					  <TableContent />
+						<TableContent />
 						<TableEmptyHandler/>
 					</TableBody>
 					<TableFooter>

@@ -80,12 +80,10 @@ export default function SettingExplanation({position}) {
 	      section: current_page
       }
     }).then(({data}) => {
-      console.log(data)
       if(checkEmpty(data)){
-        data = defaultSetting;
+        setSetting(defaultSetting);
       }
       setSetting(data);
-      //dispatch(saveSetting(data));
       setIsLoading(false);
     })
   }

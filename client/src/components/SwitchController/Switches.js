@@ -43,7 +43,7 @@ const style = makeStyles({
 
 function Switches(props) {
   const {machine} = props
-  const [state, setState] = React.useState({ status: true, machine: machine});
+  const [state, setState] = React.useState({ [machine]: true});
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const {colors} = require('root/values/colors.json');
@@ -69,12 +69,9 @@ function Switches(props) {
   }
 
   const getSwitchMachine = async () => {
-    return await axios.get('/api/get/query/last', {
+    return await axios.get('/api/get/switch/now', {
       params: {
-        selects : ['status'],
-        whereColumn : 'machine',
-        where : machine,
-        table : 'switch'
+        section : current_page
       }
     })
   }
@@ -89,7 +86,8 @@ function Switches(props) {
   const receiveSocket = () => {
     socket.on('receiveSwitchControl', (switchStatus) => {
       if(machine === switchStatus.machine){
-        setState(switchStatus);
+        console.log(switchStatus)
+        setState({[machine] : switchStatus.status});
         const _switch = store.getState()['switches'][machine];
         if (_switch !== switchStatus.status){dispatch(controlSwitch({[machine] : switchStatus.status}));}
       }})
@@ -109,7 +107,7 @@ function Switches(props) {
 
     dispatch(controlSwitch({[machine] : status}));
     setSnackbarOpen(true);
-    setState({machine: machine, status: status});
+    setState({[machine] : status});
     emitSocket(status);
     postSwitchMachine(status?1:0)
   }
@@ -129,7 +127,7 @@ function Switches(props) {
 
   const PowerDisplay = () => {
     return (
-      state.status
+      state[machine]
         ? <p className={classes.displayPowerOn}>ON</p>
         : <p className={classes.displayPowerOff}>OFF</p>
     )
@@ -157,8 +155,11 @@ function Switches(props) {
   }
 
   useEffect(() => {
-    getSwitchMachine()
+    setState({[machine] : store.getState()['switches'][machine]})
+    setIsLoading(false)
+    /* getSwitchMachine()
       .then(({data}) => {
+        console.log(data)
         if(checkEmpty(data)){
           postSwitchMachine(0);
           window.location.reload();
@@ -167,7 +168,7 @@ function Switches(props) {
           setIsLoading(false);
         }
     }).catch(() => { setIsLoading(true); })
-    receiveSocket();
+ */    receiveSocket();
     return () => {
       cleanup();
     }
@@ -185,7 +186,7 @@ function Switches(props) {
               <FormControlLabel
                 control={ <CustomIOSSwitch
                   key={machine}
-                  checked={state.status}
+                  checked={state[machine]}
                   onChange={handleChange}
                   value={machine} /> }
                 className={classes.controlForm} />

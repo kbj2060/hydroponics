@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
-import Figure from "./Figure";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from '@material-ui/core/Typography';
 import axios from "axios";
-import {checkEmpty} from "../utils/CheckEmpty";
-import {makeStyles} from "@material-ui/core/styles";
+import React, { useEffect, useState } from 'react';
+import { checkEmpty } from "../utils/CheckEmpty";
+import Figure from "./Figure";
 
 
 const useStyles = makeStyles({
@@ -34,56 +34,32 @@ export default function StatusDisplay({plant}) {
   });
   const [isLoading, setIsLoading] = React.useState(true);
   const [recentStatus, setRecentStatus] = useState({
-    "humidity": 0,
-    "co2": 0,
-    "temperature": 0
+    "humidity": '0',
+    "co2": '0',
+    "temperature": '0'
   });
 
+  const resetStatus = () => {
+    setRecentStatus({
+      "humidity": '0',
+      "co2": '0',
+      "temperature": '0'
+    })
+  }
 
   const fetchStatus = async () => {
-    const resetStatus = () => {
-      setRecentStatus({
-        "humidity": 0,
-        "co2": 0,
-        "temperature": 0
-      })
-    }
-
-    const convertFixedFloat = (x) => {
-      return Number.parseFloat(x).toFixed(1);
-    }
-
-    await axios.get('/api/get/query/last', {
+    await axios.get('/api/get/environment/latter', {
       params: {
-        where: plant,
-        whereColumn: 'section',
-        selects: environments,
-        table: 'env'
+        section: plant,
       }
-    }).then(({data:status}) => {
-      if(checkEmpty(status)){
-        resetStatus();
-        setIsLoading(false);
-        return;
-      }
-      for (const [key, value] of Object.entries(status[0])) {
-        status[key] = convertFixedFloat(value);
-      }
-      setRecentStatus(status);
+    }).then(({data}) => {
+      checkEmpty(data) ? resetStatus() : setRecentStatus(data)
       setIsLoading(false);
     }).catch((err) => {
       console.log('FETCH STATUS ERROR!');
       console.log(err);
     });
   };
-
-  const cleanup = () => {
-    setRecentStatus({
-      "humidity": 0,
-      "co2": 0,
-      "temperature": 0
-    })
-  }
 
   const Figures = () => {
     return (
@@ -114,7 +90,7 @@ export default function StatusDisplay({plant}) {
     }, parseInt(statusUpdateTime));
     return () => {
       clearInterval(interval)
-      cleanup();
+      resetStatus();
     };
   }, []);
 

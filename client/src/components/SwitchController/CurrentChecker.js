@@ -37,11 +37,12 @@ export default function CurrentChecker({machine}) {
 	const current_page = WordsTable[han_current_page]
 	const classes = useStyles();
 
-
+/*
 	sections.forEach((section, index) => {
+		console.log(current)
 		current[`${machine}${section}`] = 0
 	})
-
+*/
 	const fetchCurrent = async () => {
 		await axios.get('/api/get/current', {
 			params : {
@@ -55,8 +56,8 @@ export default function CurrentChecker({machine}) {
 				}
 				else {
 					setCurrent(data);
-					setFlowing(true);
 					setDisable(false);
+					setFlowing(true);
 				}
 				setIsLoading(false);
 		})
