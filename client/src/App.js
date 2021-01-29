@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Setting from "./views/Setting/Setting";
 import Scheduler from "./views/Scheduler/Scheduler";
-
+const moment = require('moment')
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -33,6 +33,8 @@ export default function App() {
   const classes = useStyles({
     customTheme : colors.customTheme
   })
+
+  console.log(`-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
 
   return (
     <BrowserRouter>

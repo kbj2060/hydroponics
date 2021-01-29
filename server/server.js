@@ -64,7 +64,6 @@ app.get('/api/get/section', (req, res) => {
       rows.forEach((row) => {
         result[row.id] = row["section_name"]
       })
-      console.log({"sections" : result})
       res.send({"sections" : result})
     })
   } catch (err) {
@@ -216,7 +215,6 @@ app.get('/api/get/switch/now', (req, res) => {
             }
           }
         })
-        console.log({"switches" : results});
         res.send(results);
       }
     )} catch (err) {
@@ -395,7 +393,6 @@ app.post('/api/post/auto', (req,res) => {
     const { section, auto, user } = req.body.params;
     const sqlValues = classifyValues(section, auto, user).join(',');
     const sql =  `INSERT INTO iot.auto VALUES ${sqlValues};`;
-    console.log(auto, user)
     connection.query(sql, (err, rows) => {
         res.send(rows);
       }
