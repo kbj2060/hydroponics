@@ -14,7 +14,6 @@ import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
 import getCurrentUser from "../utils/getCurrentUser";
-import {checkEmpty} from "../utils/CheckEmpty";
 
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
@@ -68,14 +67,6 @@ function Switches(props) {
     })
   }
 
-  const getSwitchMachine = async () => {
-    return await axios.get('/api/get/switch/now', {
-      params: {
-        section : current_page
-      }
-    })
-  }
-
   const emitSocket = (status) => {
     socket.emit('sendSwitchControl', {
       machine : machine,
@@ -109,15 +100,11 @@ function Switches(props) {
     setSnackbarOpen(true);
     setState({[machine] : status});
     emitSocket(status);
-    postSwitchMachine(status?1:0)
+    postSwitchMachine(status?1:0);
   }
 
   const closeSnackBar = () => {
     setSnackbarOpen(false);
-  }
-
-  const handleStatus = (data) => {
-    return data !== 0;
   }
 
   const cleanup = () => {
@@ -157,22 +144,16 @@ function Switches(props) {
   useEffect(() => {
     setState({[machine] : store.getState()['switches'][machine]})
     setIsLoading(false)
-    /* getSwitchMachine()
-      .then(({data}) => {
-        console.log(data)
-        if(checkEmpty(data)){
-          postSwitchMachine(0);
-          window.location.reload();
-        } else {
-          setState({status: handleStatus(data[0]['status']), machine: machine})
-          setIsLoading(false);
-        }
-    }).catch(() => { setIsLoading(true); })
- */    receiveSocket();
+    receiveSocket();
     return () => {
       cleanup();
     }
   }, [machine]);
+
+    useEffect(() => {
+      setState({[machine] : store.getState()['switches'][machine]})
+      setIsLoading(false)
+    }, [])
 
   if(isLoading){
     return <ColorCircularProgress />
@@ -184,11 +165,12 @@ function Switches(props) {
           <SwitchForm>
             <FormGroup>
               <FormControlLabel
-                control={ <CustomIOSSwitch
-                  key={machine}
-                  checked={state[machine]}
-                  onChange={handleChange}
-                  value={machine} /> }
+                control={
+                  <CustomIOSSwitch
+                    key={machine}
+                    checked={state[machine]}
+                    onChange={handleChange}
+                    value={machine} /> }
                 className={classes.controlForm} />
             </FormGroup>
           </SwitchForm>

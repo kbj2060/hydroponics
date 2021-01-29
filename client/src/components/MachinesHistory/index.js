@@ -106,7 +106,6 @@ const useStyles2 = makeStyles({
 		height: '100%'
 	},
 	text : {
-		padding: '0 !important',
 		color : props => props.fontColor,
 		fontWeight : 'bold',
 	},

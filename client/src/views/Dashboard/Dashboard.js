@@ -36,9 +36,10 @@ export default function Dashboard({page}) {
   const {auto:defaultSetting, switches:defaultMachineStatus} = require('root/values/defaults.json');
   const {autoItem} = require('root/values/preferences.json');
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = React.useState(true);
+  const [isLoadingSwitch, setIsLoadingSwitch] = React.useState(true);
+  const [isLoadingAuto, setIsLoadingAuto] = React.useState(true);
+
 	const current_section = getCurrentPage();
-  const [hasError, setHasError] = React.useState(false);
 
   const myErrorHandler = (error, info) => {
     console.log("error")
@@ -63,16 +64,6 @@ export default function Dashboard({page}) {
       })
   }
 
-  function ErrorFallback({error, resetErrorBoundary}) {
-    return (
-      <div role="alert">
-        <p>Something went wrong:</p>
-        <pre>{error.message}</pre>
-        <button onClick={resetErrorBoundary}>Try again</button>
-      </div>
-    )
-  }
-
   const getControlAuto = async () => {
     await axios.get('/api/get/auto', {
       params: {
@@ -88,11 +79,8 @@ export default function Dashboard({page}) {
         dispatch(saveSetting(defaultSetting));
         saveState("auto", defaultSetting)
       }
+      setIsLoadingAuto(false);
     })
-  }
-
-  const Bomb = () => {
-    throw new Error('I crashed!');
   }
 
   const getControlSwitches = async () => {
@@ -112,21 +100,36 @@ export default function Dashboard({page}) {
             dispatch(saveSwitch(status))
             saveState("switches", status)
           }
+        setIsLoadingSwitch(false);
       })
+  }
+
+  function ErrorFallback({error, resetErrorBoundary}) {
+    return (
+      <div role="alert">
+        <p>Something went wrong:</p>
+        <pre>{error.message}</pre>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    )
   }
 
   useEffect(() => {
       getControlSwitches();
       getControlAuto();
-      setIsLoading(false);
       return () => {
-        setIsLoading(true);
+        setIsLoadingSwitch(true);
+        setIsLoadingAuto(true);
       }
   }, []);
 
-  if(!isLoading){
-    return (
-      CheckLogin() ?
+  if(isLoadingAuto || isLoadingSwitch) {
+    return null
+  }
+
+  return (
+    CheckLogin() ?
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <div className={classes.root}>
           <AppBar page={page}/>
           <CssBaseline />
@@ -152,10 +155,7 @@ export default function Dashboard({page}) {
               })}
           </Grid>
         </div>
-          : <Redirect to='/' /> 
-    )
-  } else {
-    return null
-  }
-  
+      </ErrorBoundary>
+        : <Redirect to='/' />
+  )
 }
