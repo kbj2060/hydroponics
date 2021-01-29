@@ -21,6 +21,8 @@ const bodyParser = require('body-parser')
 const app = express();
 const path = require("path");
 
+console.log(`\n-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -138,7 +140,7 @@ app.get('/api/get/environment/history', (req, res) => {
         let results = JSON.parse(JSON.stringify(rows));
         results = groupBy(results, 'section');
         results = cleanHistoryDict(results, environment);
-        res.send(results);
+	res.send(results);
       });
   } catch (err) {
     useErrorLogger('GET').error({

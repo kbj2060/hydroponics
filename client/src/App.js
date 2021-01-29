@@ -34,7 +34,7 @@ export default function App() {
     customTheme : colors.customTheme
   })
 
-  console.log(`-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
+  console.log(`\n-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
 
   return (
     <BrowserRouter>
