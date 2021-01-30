@@ -241,6 +241,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth : '100px',
     display: "block",
     whiteSpace: "nowrap",
+    margin : 'auto',
     overflow: "hidden",
     textOverflow: "ellipsis",
   }
@@ -265,6 +266,7 @@ export default function ScheduleTable({selectedDay}) {
   const [drawer, setDrawer] = React.useState(false);
   const date = useSelector(state => state.date, shallowEqual)
 
+  //console.log(date, drawer, isLoading, selectedRow, rows, rowsPerPage, page, selected, order, orderBy);
   const toggleDrawer = () => {
     setDrawer(!drawer);
   }
@@ -310,11 +312,7 @@ export default function ScheduleTable({selectedDay}) {
           date : date,
           month : false
         }}).then(({data}) => {
-          if(!checkEmpty(data)) {
-            let temp = []
-            data.forEach((row) => { temp.push(row) })
-            setRows(temp);
-          } else { setRows([]) }
+          setRows(data);
           setIsLoading(false);
     })
   }
@@ -325,15 +323,7 @@ export default function ScheduleTable({selectedDay}) {
           date: `${date.year}-${date.month}`,
           month : true
         }}).then(({data}) => {
-          if(!checkEmpty(data)) {
-            let temp = []
-            data.forEach((row) => {
-              temp.push(row)
-            })
-            setRows(temp);
-          } else {
-            setRows([])
-          }
+          setRows(data);
           setIsLoading(false);
     })
   }
@@ -446,6 +436,7 @@ export default function ScheduleTable({selectedDay}) {
       </>
     )
   }
+
   return (
     isLoading ||
     <div className={classes.tableWrapper}>

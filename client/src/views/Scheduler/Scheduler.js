@@ -109,7 +109,7 @@ export default function Scheduler() {
                       renderFooter={renderFooter}
                       shouldHighlightWeekends />
           </Grid>
-          <Grid item xs={12} sm={12} md={6} className={classes.item}>
+          <Grid item xs={12} sm={12} md={4} className={classes.item}>
             {isAdd
               ? <ScheduleAdd selectedDay={selectedDay} handleAddFinish={handleAddFinish} />
               : <ScheduleTable selectedDay={selectedDay}/>

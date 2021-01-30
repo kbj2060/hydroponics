@@ -433,13 +433,15 @@ app.get('/api/get/schedules', (req,res) => {
     const {date, month:isMonth} = req.query
     const sql = getScheduleSql(date, isMonth);
     connection.query(sql, (err, rows) => {
-      rows.forEach((row) => {
-        row.date = row.date.split(',')
-      })
-      res.send(rows)
+      if(checkEmpty(rows)){
+        res.send([])
+      } else {
+        rows.forEach((row) => { row.date = row.date.split(',') })
+        res.send(rows)
+      }
     });
   }catch(err){
-    useErrorLogger('POST').error({
+    useErrorLogger('GET').error({
       level: 'error',
       message: `GET SCHEDULE ERROR : ${err}`
     })
@@ -541,6 +543,11 @@ const groupBy = function(xs, key) {
 
 function getLocaleMoment(date) { return moment.utc(date).local().format('YYYY/MM/DD HH:mm:ss'); }
 
+const checkEmpty = (value) => {
+    if ( value === [] || value === undefined || value === "" || value === null || (typeof value === "object" && !Object.keys(value).length)){
+        return true;
+    }
+}
 /*
 * 유틸함수 끝
 */
