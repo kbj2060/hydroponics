@@ -9,12 +9,12 @@ import {controlSwitch} from "../../redux/modules/ControlSwitch";
 import socket from '../../socket';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from '@material-ui/lab/Alert';
-import {loadState} from "../LocalStorage";
 import {Redirect} from "react-router-dom";
 import {CheckLogin} from "../utils/CheckLogin";
 import {CustomIOSSwitch} from "../utils/CustomIOSSwitch";
 import {store} from "../../redux/store";
-import {checkEmpty} from "../utils/CheckEmpty";
+import getCurrentUser from "../utils/getCurrentUser";
+
 
 function Alert(props) { return <MuiAlert elevation={6} variant="filled" {...props} />; }
 
@@ -42,40 +42,27 @@ const style = makeStyles({
 
 function Switches(props) {
   const {machine} = props
-  const [state, setState] = React.useState({ status: true, machine: machine});
+  const [state, setState] = React.useState({ [machine]: true});
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
-  const {colors} = require('root/values/colors');
+  const {colors} = require('root/values/colors.json');
   const classes = style({
     buttonOn : colors.buttonOn,
     buttonOff : colors.buttonOff,
   });
   const dispatch = useDispatch();
-  const {WordsTable} = require('root/values/strings');
-
-  const getCurrentUser = () => {
-    return loadState()['authentication']['status']['currentUser'];
-  }
+  const {WordsTable} = require('root/values/strings.json');
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
 
   const postSwitchMachine = async (status) => {
     const name = getCurrentUser();
     await axios.post('/api/post/switch/machine',{
       params: {
         machine : machine,
-        section : "s1",
+        section : current_page,
         status : status,
         name : name
-      }
-    })
-  }
-
-  const getSwitchMachine = async () => {
-    return await axios.get('/api/get/query/last', {
-      params: {
-        selects : ['status'],
-        whereColumn : 'machine',
-        where : machine,
-        table : 'switch'
       }
     })
   }
@@ -90,15 +77,17 @@ function Switches(props) {
   const receiveSocket = () => {
     socket.on('receiveSwitchControl', (switchStatus) => {
       if(machine === switchStatus.machine){
-        setState(switchStatus);
-        dispatch(controlSwitch({[machine] : switchStatus.status}));
+        console.log(switchStatus)
+        setState({[machine] : switchStatus.status});
+        const _switch = store.getState()['switches'][machine];
+        if (_switch !== switchStatus.status){dispatch(controlSwitch({[machine] : switchStatus.status}));}
       }})
   }
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     e.persist();
     const status = e.target.checked;
-    const switches = store.getState()['controlSwitch'];
+    const switches = store.getState()['switches'];
 
     if (machine === "cooler" && status && switches['heater']){
       return;
@@ -109,70 +98,86 @@ function Switches(props) {
 
     dispatch(controlSwitch({[machine] : status}));
     setSnackbarOpen(true);
-    setState({machine: machine, status: status});
+    setState({[machine] : status});
     emitSocket(status);
-    postSwitchMachine(status?1:0).then(() => { console.log('switch machine') });
-  };
+    postSwitchMachine(status?1:0);
+  }
 
   const closeSnackBar = () => {
     setSnackbarOpen(false);
   }
 
-  const handleSqlStatus = (data) => {
-    return data !== 0;
-  }
-
   const cleanup = () => {
     socket.disconnect();
+    setIsLoading(true);
+  }
+
+  const PowerDisplay = () => {
+    return (
+      state[machine]
+        ? <p className={classes.displayPowerOn}>ON</p>
+        : <p className={classes.displayPowerOff}>OFF</p>
+    )
+  }
+
+  const Alarm = () => {
+    return (
+      <Snackbar open={snackbarOpen} onClose={closeSnackBar} autoHideDuration={2000}>
+        <Alert onClose={closeSnackBar} severity="info">
+          {`${WordsTable[machine.toLowerCase()]} 전원 수동 전환 완료!`}
+        </Alert>
+      </Snackbar>
+    )
+  }
+
+
+  const SwitchForm = ({children}) => {
+    return (
+      <FormGroup>
+        <FormControlLabel
+          control={ children }
+          className={classes.controlForm} />
+      </FormGroup>
+    )
   }
 
   useEffect(() => {
-    getSwitchMachine()
-      .then(({data}) => {
-        if(checkEmpty(data)) {
-          setState({
-            status: false,
-            machine: machine
-          })
-        } else {
-          setState({
-            status: handleSqlStatus(data[0]['status']),
-            machine: machine
-          })
-        }
-          setIsLoading(false);
-    }).catch(() => { setIsLoading(true); })
+    setState({[machine] : store.getState()['switches'][machine]})
+    setIsLoading(false)
     receiveSocket();
-    return () => { cleanup(); }
+    return () => {
+      cleanup();
+    }
   }, [machine]);
+
+    useEffect(() => {
+      setState({[machine] : store.getState()['switches'][machine]})
+      setIsLoading(false)
+    }, [])
 
   if(isLoading){
     return <ColorCircularProgress />
   }
 
   return (
-    CheckLogin() ? <>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <CustomIOSSwitch
-              key={machine}
-              checked={state.status}
-              onChange={handleChange}
-              value={machine}
-            />
-          }
-          className={classes.controlForm}
-         />
-      </FormGroup>
-      {state.status?
-        <p className={classes.displayPowerOn}>ON</p>:<p className={classes.displayPowerOff}>OFF</p>}
-      <Snackbar open={snackbarOpen} onClose={closeSnackBar} autoHideDuration={2000}>
-        <Alert onClose={closeSnackBar} severity="info">
-          {`${WordsTable[machine.toLowerCase()]} 전원 수동 전환 완료!`}
-        </Alert>
-      </Snackbar>
-    </> : <Redirect to={'/'} />);
+    CheckLogin()
+      ? <>
+          <SwitchForm>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <CustomIOSSwitch
+                    key={machine}
+                    checked={state[machine]}
+                    onChange={handleChange}
+                    value={machine} /> }
+                className={classes.controlForm} />
+            </FormGroup>
+          </SwitchForm>
+          <PowerDisplay />
+          <Alarm />
+        </>
+      : <Redirect to={'/'} />);
 }
 
 export default memo(Switches);

@@ -7,7 +7,6 @@
 # vscode file
 .vscode
 
-automation/automation_setting.json
 db_conf.json
 .logs/
 
@@ -33,3 +32,4 @@ db_conf.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/venv/

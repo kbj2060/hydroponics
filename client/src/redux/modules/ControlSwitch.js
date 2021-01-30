@@ -12,14 +12,8 @@ export function saveSwitch(_switch) {
   return { type: SAVE_SWITCH, _switch }
 }
 
-let initialState;
-try {
-  initialState = loadState()['controlSwitch'];
-} catch(e) {
-  initialState = {
-    'cooler': false, 'heater':false, 'led':false, 'fan':false, 'waterpump':false
-  }
-}
+const {switches} = require('root/values/defaults.json')
+const initialState = loadState('switches') || switches
 
 function ControlSwitch(state =initialState, action) {
   switch(action.type){
@@ -30,16 +24,7 @@ function ControlSwitch(state =initialState, action) {
     case SAVE_SWITCH:
       return action._switch;
     default:
-      try{
-        if (checkEmpty(loadState()['controlSwitch'])) {
-          return state
-        } else {
-          return loadState()['controlSwitch'];
-        }
-      }
-      catch(e){
-        return state
-      }
+      return  state
   }
 }
 

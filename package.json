@@ -6,11 +6,13 @@
   "author": "kbj2060 <kbj2060@naver.com>",
   "license": "MIT",
   "scripts": {
-    "client": "cd client && npm start",
+    "client": "cd client &&  npm start",
     "server": "nodemon server/server.js",
     "dev": "concurrently --kill-others-on-fail \"nodemon server/server.js\" \"yarn client\""
   },
   "dependencies": {
+    "@nestjs/core": "^7.6.5",
+    "@nestjs/testing": "^7.6.5",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "body-parser": "^1.19.0",
@@ -24,12 +26,15 @@
     "mqtt": "^4.1.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.3",
+    "request": "^2.88.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
     "babel-plugin-module-resolver": "^4.0.0",
-    "socket.io": "^2.3.0"
+    "sass": "^1.26.11",
+    "socket.io": "^2.3.0",
+    "terser-brunch": "^4.0.0"
   },
   "@std/esm": "cjs",
   "_moduleAliases": {

@@ -1,16 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import AcUnitIcon from "@material-ui/icons/AcUnit";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import ToysIcon from "@material-ui/icons/Toys";
 import OpacityIcon from "@material-ui/icons/Opacity";
-import {store} from "../../redux/store";
-import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import './FanOut.css'
-import {checkEmpty} from "../utils/CheckEmpty";
-import socket from "../../socket";
+import {shallowEqual, useSelector} from "react-redux";
 
-const {colors} = require('root/values/colors');
+const {colors} = require('root/values/colors.json');
 
 const IconStyleHelper = onColor => {
   let neum = {  }
@@ -52,10 +49,7 @@ const defaultIcons = {
 }
 
 export default function IconWrapper({machine}) {
-  const [animation, setAnimation] = useState(false);
-  const [icon ,setIcon] = useState(defaultIcons[machine]);
-  const [isLoading, setIsLoading] = React.useState(true);
-
+  const animation = useSelector(state => state.switches[machine], shallowEqual)
   const getIcon = (machine, active) => {
     const icons = {
       "cooler" : <CustomCoolerIcon active={active.toString()} />,
@@ -66,45 +60,5 @@ export default function IconWrapper({machine}) {
     }
     return icons[machine]
   }
-
-  const receiveSocket = () => {
-    socket.on('receiveSwitchControl', (switchStatus) => {
-      if(machine === switchStatus.machine){
-        setAnimation(switchStatus.status);
-      }})
-  }
-
-  const cleanup = () => {
-    socket.disconnect();
-  }
-
-  useEffect(() => {
-    receiveSocket();
-    return () => cleanup();
-  }, [machine]);
-
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      const activeSwitch = store.getState()['controlSwitch'][machine]
-      if(!checkEmpty(activeSwitch)) { setAnimation(activeSwitch); }
-    })
-    return () => { unsubscribe(); }
-  }, [])
-
-  useEffect(() => {
-    const activeSwitch = store.getState()['controlSwitch'][machine]
-    if(!checkEmpty(activeSwitch)) {
-      setAnimation(activeSwitch);
-    }
-  }, []);
-
-  useEffect(() => {
-    if(!checkEmpty(animation)){
-      setIcon(getIcon(machine, animation))
-      setIsLoading(false);
-    }
-  }, [animation])
-
-  if(isLoading){ return <ColorCircularProgress /> }
-  else {return icon}
+  return animation === undefined ? getIcon(machine, false) : getIcon(machine, animation)
 }

@@ -1,5 +1,5 @@
-import {loadState} from "../LocalStorage";
+import {store} from "../../redux/store";
 
 export const CheckLogin =  () => {
-  return !(loadState() === undefined || !loadState()['authentication']['status']['isLoggedIn']);
+  return store.getState()['authentication']['login']['status'] === "SUCCESS"
 }

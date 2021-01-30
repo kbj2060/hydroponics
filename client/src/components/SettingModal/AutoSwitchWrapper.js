@@ -4,22 +4,21 @@ import {CustomAntSwitch} from "../utils/CustomAntSwitch";
 import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
 import {controlSetting} from "../../redux/modules/ControlSetting";
-import update from "react-addons-update";
 
 export default function AutoSwitchWrapper({name:setting}) {
-  const {colors} = require('root/values/colors')
-  const reduxSetting = store.getState()['controlSetting'][setting]
+  const {colors} = require('root/values/colors.json')
+  const reduxSetting = store.getState()['auto'][setting];
   const [status, setStatus] = React.useState(reduxSetting.enable);
   const dispatch = useDispatch();
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     event.persist();
     const updatedStatus = event.target.checked;
-    const reduxSetting = store.getState()['controlSetting'][setting];
-    setStatus(updatedStatus);
-    dispatch(controlSetting({[setting]: update(reduxSetting, {
-        enable: {$set: updatedStatus} })
+    console.log(store.getState())
+    dispatch(controlSetting({
+      [setting]: {...reduxSetting, enable : updatedStatus}
     }));
+    setStatus(updatedStatus);
   }
 
   return(

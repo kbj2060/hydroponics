@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,7 +7,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '../Menu';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
 
 const MenuButton = () => {
   return (
@@ -85,7 +84,7 @@ const useStyles =  makeStyles(theme => ({
 
 export default function PermanentAppBar(props) {
   const {page} = props;
-  const {colors} = require('root/values/colors');
+  const {colors} = require('root/values/colors.json');
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
@@ -104,9 +103,9 @@ export default function PermanentAppBar(props) {
             {page}
           </Typography>
           <div className={classes.grow} />
-            <div className={classes.menuWrapper} >
-              <Menu MenuButton={MenuButton} />
-            </div>
+          <div className={classes.menuWrapper} >
+            <Menu MenuButton={MenuButton} />
+          </div>
         </Toolbar>
       </AppBar>
     </div>

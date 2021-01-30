@@ -1,18 +1,18 @@
 import React, {useEffect} from 'react';
-import Box from "@material-ui/core/Box";
 import useStyles from '../../assets/jss/DashboardStyle';
 import axios from "axios";
-import {withStyles} from "@material-ui/core/styles";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 import {checkEmpty} from "../utils/CheckEmpty";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const CurrentFlowing = withStyles((theme) => ({
 	icon:{
-		height : '1.3em',
-		width : '1.3em',
+		height : '1.8em',
+		width : '1.8em',
 		margin : 'auto',
 		verticalAlign: 'middle',
 		textAlign:'center',
+		padding: '1px'
 	}
 }))(({classes, ...props}) => {
 	const {fillColor} = props;
@@ -25,26 +25,30 @@ const CurrentFlowing = withStyles((theme) => ({
 })
 
 export default function CurrentChecker({machine}) {
-	const {sections} = require('root/values/preferences')
-	const {currentUpdateTime } = require('root/values/time');
-	const {currentCriteria:criteria} = require('root/values/defaults')
+	const {sections} = require('root/values/preferences.json')
+	const {currentUpdateTime } = require('root/values/time.json');
+	const {currentCriteria:criteria} = require('root/values/defaults.json')
 	const [current, setCurrent] = React.useState({});
 	const [disable, setDisable] = React.useState(false);
 	const [flowing, setFlowing] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(true);
+	const {WordsTable} = require('root/values/strings.json')
+	const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+	const current_page = WordsTable[han_current_page]
 	const classes = useStyles();
 
-
+/*
 	sections.forEach((section, index) => {
+		console.log(current)
 		current[`${machine}${section}`] = 0
 	})
-
+*/
 	const fetchCurrent = async () => {
 		await axios.get('/api/get/current', {
 			params : {
 				selects : ['section', 'current'],
 				machine : machine,
-				section : "s1"
+				section : current_page
 			}}).then(( {data} ) => {
 				if(checkEmpty(data) || !currentActivationCheck(data)){
 					setDisable(true);
@@ -52,8 +56,8 @@ export default function CurrentChecker({machine}) {
 				}
 				else {
 					setCurrent(data);
-					setFlowing(true);
 					setDisable(false);
+					setFlowing(true);
 				}
 				setIsLoading(false);
 		})
@@ -68,7 +72,7 @@ export default function CurrentChecker({machine}) {
 		fetchCurrent();
 		const interval = setInterval(() => {
 			fetchCurrent();
-		}, currentUpdateTime);
+		}, parseInt(currentUpdateTime));
 		return () => {
 			clearInterval(interval);
 			setDisable(false);
@@ -77,18 +81,9 @@ export default function CurrentChecker({machine}) {
 
 	if(isLoading){
 		return <ColorCircularProgress />
-	}
-
-	if(disable){
+	} else if (disable){
 		return <div className={classes.disable} />
+	} else {
+		return flowing && <CurrentFlowing fillColor={'#dec11e'} />
 	}
-
-	return (
-		<Box className={classes.optionBox}  p={1} flexGrow={1} >
-			{
-				flowing ?
-				<CurrentFlowing fillColor={'#dec11e'}/> : <CurrentFlowing fillColor={'#1E2425'}/>
-			}
-		</Box>
-	);
 }

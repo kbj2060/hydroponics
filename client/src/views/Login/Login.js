@@ -1,6 +1,4 @@
 import React,{ useEffect } from 'react';
-import Background from '../Background/Background';
-import backgroundImage from '../../assets/img/background2.jpg'
 import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
@@ -15,10 +13,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link, useHistory} from "react-router-dom";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {resetState} from "../../components/LocalStorage";
 import {makeStyles} from "@material-ui/core/styles";
+import {saveState} from "../../components/LocalStorage";
 
-const {colors} = require('root/values/colors')
+const {colors} = require('root/values/colors.json')
 const useStyles = makeStyles(()=>({
   root : {
     width: 'auto',
@@ -86,6 +84,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
+
 export default function Login() {
     const classes = useStyles({
       customTheme : colors.customTheme,
@@ -139,6 +138,7 @@ export default function Login() {
           checkEmpty(data)?
             dispatchLoginFailure() : dispatchLoginSuccess(username)
           const updatedAuth = store.getState()['authentication'];
+          saveState("authentication", updatedAuth);
           setAuth(updatedAuth);
         }).catch((error) => {
           dispatchLoginFailure()
@@ -163,9 +163,8 @@ export default function Login() {
     }
 
     useEffect(() => {
-      const {pages} = require('root/values/preferences')
+      const {pages} = require('root/values/preferences.json')
 
-      //TODO : 로그인 성공 후 다시 로그인 페이지로 들어갈 시 처리.
       console.log(store.getState()['authentication']);
       if (auth.login.status === 'INIT'){ return; }
 
@@ -178,9 +177,9 @@ export default function Login() {
 
     return(
       <div className={classes.root}>
-      <div className={classes.loginForm}>
+        <div className={classes.loginForm}>
             <form>
-              <p className={classes.title}>Kairos</p>
+              <p className={classes.title}>Plant Point</p>
               <CssTextField id="name" InputProps={{
                 className: classes.input
               }} className={classes.login} placeholder="이름"  type="text" onChange={handleChange('name')}/>
@@ -206,7 +205,7 @@ export default function Login() {
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={handleClose} color="black" autoFocus>
+                    <Button onClick={handleClose}  autoFocus>
                       확인
                     </Button>
                   </DialogActions>

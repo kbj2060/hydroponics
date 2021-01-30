@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import axios from 'axios';
 import {makeStyles} from "@material-ui/core/styles";
-import TemperatureIcon from '../../assets/icons/TemperatureIcon'
 import WhatshotIcon from '@material-ui/icons/Whatshot';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import WbSunnyIcon from '@material-ui/icons/WbSunny';
@@ -11,8 +10,6 @@ import {checkEmpty} from '../utils/CheckEmpty';
 import Chip from '@material-ui/core/Chip';
 import LoopIcon from '@material-ui/icons/Loop';
 import {store} from "../../redux/store";
-import {useDispatch} from "react-redux";
-import {saveSetting} from "../../redux/modules/ControlSetting";
 import {ColorCircularProgress} from "../utils/ColorCircularProgress";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   cell : {
     display: 'flex',
     padding: theme.spacing(1)
+  },
+  defaultIcon : {
+    color: props => props.defaultIcon
   }
 }))
 
@@ -55,43 +55,42 @@ const getRangeMax = (subject) => {
   return subject.range[1]
 }
 
-const nullCheck = (arg) => {
-  return arg === null;
-}
 
 export default function SettingExplanation({position}) {
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
+  const {WordsTable} = require('root/values/strings.json')
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const current_page = WordsTable[han_current_page]
   const [setting, setSetting] = React.useState({});
   const [isLoading, setIsLoading] = React.useState(true);
   const classes = useStyles({
     borderColor : colors.fontColor,
-    fontColor : colors.fontColor
+    fontColor : colors.fontColor,
+    defaultIcon : colors.defaultIcon
   });
-  const dispatch = useDispatch();
-  const {defaultSetting} = require('root/values/defaults');
-  const {autoItem} = require('root/values/preferences')
+  const {auto:defaultSetting} = require('root/values/defaults.json');
+  const {autoItem} = require('root/values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
-  const getAutoFromJson = async () => {
-    await axios.get('/api/get/load/auto', {
+  const getAuto = async () => {
+    await axios.get('/api/get/auto', {
       params: {
         selects : ['item', 'enable', 'duration'],
-        where : autoItem,
-	      section: "s1"
+        where : autoItem[current_page],
+	      section: current_page
       }
     }).then(({data}) => {
-      if(Object.values(data).every(nullCheck) || Object.keys(data).length !== Object.keys(defaultSetting).length){
-        data = defaultSetting;
+      if(checkEmpty(data)){
+        setSetting(defaultSetting);
       }
       setSetting(data);
-      dispatch(saveSetting(data));
       setIsLoading(false);
     })
   }
 
   // TAIL(현재 설정) 데이터 보여주기 함수
   const getAutoFromStore = () => {
-    setSetting(store.getState()['controlSetting']);
+    setSetting(store.getState()['auto']);
     setIsLoading(false);
   }
 
@@ -151,20 +150,22 @@ export default function SettingExplanation({position}) {
     }
   }
 
-    useEffect(() => {
-    position === 'head' ? getAutoFromJson() : getAutoFromStore()
+  useEffect(() => {
+    position === 'head' ? getAuto() : getAutoFromStore()
+    return () => {
+      setIsLoading(true);
+    }
   }, [])
 
-  if(isLoading){
-    return <ColorCircularProgress />
-  }
-
   return(
+    isLoading?
+    <ColorCircularProgress />
+    :
     <table className={classes.table}>
       <tbody>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WbSunnyIcon style={{color: colors.defaultIcon}}/>
+          <WbSunnyIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('led') ? getOffChips() : getRangeLEDChips()}
@@ -172,7 +173,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <WhatshotIcon style={{color: colors.defaultIcon}}/>
+          <WhatshotIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('heater') ? getOffChips() : getHeaterChips()}
@@ -180,7 +181,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <AcUnitIcon style={{color: colors.defaultIcon}}/>
+          <AcUnitIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
           {!getAutoEnable('cooler') ? getOffChips() : getCoolerChips()}
@@ -188,7 +189,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <ToysIcon style={{color: colors.defaultIcon}}/>
+          <ToysIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('fan') ? getOffChips() : getCycleChips('fan')}
@@ -196,7 +197,7 @@ export default function SettingExplanation({position}) {
       </tr>
       <tr className={classes.cell}>
         <td className={classes.icon}>
-          <OpacityIcon style={{color: colors.defaultIcon}}/>
+          <OpacityIcon className={classes.defaultIcon} />
         </td>
         <td style={{margin: 'auto'}}>
             {!getAutoEnable('waterpump') ? getOffChips() : getCycleChips('waterpump')}

@@ -4,14 +4,9 @@ import Login from './views/Login/Login';
 import { Route } from "react-router";
 import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch} from 'react-redux'
-import { store } from "./redux/store";
-import {saveState} from "./components/LocalStorage";
-import axios from "axios";
-import {saveSetting} from "./redux/modules/ControlSetting";
-import {controlSwitch} from "./redux/modules/ControlSwitch";
-import {checkEmpty} from "./components/utils/CheckEmpty";
 import Setting from "./views/Setting/Setting";
+import Scheduler from "./views/Scheduler/Scheduler";
+const moment = require('moment')
 
 const useStyles = makeStyles(() =>({
   video : {
@@ -34,74 +29,27 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  const {machines, autoItem} = require('root/values/preferences');
-  const {defaultSetting} = require('root/values/defaults')
-  const dispatch = useDispatch();
-  const {colors} = require('root/values/colors')
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme
-  });
+  })
 
-  const getControlSetting = async () => {
-    await axios.get('/api/get/load/auto', {
-      params: {
-        selects : ['item', 'enable', 'duration'],
-        where : autoItem,
-	section : "s1"
-      }
-    }).then(({data}) => {
-      if(Object.keys(data).length === Object.keys(defaultSetting).length){
-        dispatch(saveSetting(data))
-      } else {
-        dispatch(saveSetting(defaultSetting));
-      }
-    })
-  }
-
-  const getControlSwitch =  async (machine) => {
-    return await axios.get('/api/get/query/last', {
-      params: {
-        where: machine,
-        whereColumn: 'machine',
-        selects: ['status'],
-        table: 'switch'
-      }})
-  }
-
-  const getControlSwitches = () => {
-    machines.forEach((machine) => {
-      getControlSwitch(machine)
-        .then(({data}) => {
-          if(checkEmpty(data)){
-            dispatch(controlSwitch({[machine]: false}))
-          } else {
-            dispatch(controlSwitch({[machine]: data[0]['status'] === 1}))
-          }
-      })
-    })
-  }
-
-  useEffect(() => {
-    getControlSwitches();
-    getControlSetting();
-    saveState( store.getState() );
-  }, []);
-
-  store.subscribe(() => {
-    saveState( store.getState() );
-  });
+  console.log(`\n-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
 
   return (
     <BrowserRouter>
         <div className={classes.parent}>
           <Route exact path="/">
-            <Login />
+            <Login page={"login"}/>
           </Route>
           <Route exact path="/무들로29" >
             <Dashboard page={"무들로29"}/>
           </Route>
+          <Route exact path="/scheduler" >
+            <Scheduler page={"scheduler"}/>
+          </Route>
           <Route exact path="/setting" >
-            <Setting />
+            <Setting page={"setting"} />
           </Route>
         </div>
       </BrowserRouter>

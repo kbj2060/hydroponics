@@ -1,0 +1,31 @@
+{
+  "WordsTable" : {
+    "cooler": "냉방",
+    "heater": "난방",
+    "humidity" : "습도",
+    "temperature": "온도",
+    "co2": "이산화탄소",
+    "led" : "조명",
+    "fan" : "환기",
+    "airconditioner" : "공조기",
+    "waterpump" : "급수",
+    "dashboard" : "홈",
+    "setting" : "설정",
+    "logout" : "로그아웃",
+    "plant-s1-1" : "LEFT",
+    "plant-s1-2" : "CENTER",
+    "plant-s1-3" : "RIGHT",
+    "무들로29": "s1",
+    "s1": "무들로29"
+  },
+  "unitsTable" : {
+    "humidity": "%",
+    "co2": "ppm",
+    "temperature": "°C",
+    "cooler": "°C",
+    "heater": "°C",
+    "led" : "시",
+    "fan" : "시간",
+    "waterpump" : "시간"
+  }
+}

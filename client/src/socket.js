@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 
-const {ip, socketIoPort} = require('root/values/preferences')
+const {SOCKET_HOST, SOCKET_PORT} = require('root/values/preferences.json')
 
-const socket = io.connect(`${ip}:${socketIoPort}`);
+const socket = io.connect(`${SOCKET_HOST}:${SOCKET_PORT}`);
 
 export default socket;

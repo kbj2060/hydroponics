@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import Typography from '@material-ui/core/Typography';
 import Card from "@material-ui/core/Card";
-import Figure from "./Figure";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from '@material-ui/core/Typography';
 import axios from "axios";
-import {checkEmpty} from "../utils/CheckEmpty";
-import {makeStyles} from "@material-ui/core/styles";
+import React, { useEffect, useState } from 'react';
+import { checkEmpty } from "../utils/CheckEmpty";
+import Figure from "./Figure";
 
 
 const useStyles = makeStyles({
@@ -21,68 +21,85 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StatusDisplay(props) {
-  const {statusUpdateTime} = require('root/values/time');
-  const {environments} = require('root/values/preferences')
-  const {plant} = props;
-  //const classes = useStyles();
-  const {WordsTable} = require('root/values/strings');
-  const {colors} = require('root/values/colors')
+export default function StatusDisplay({plant}) {
+  const {statusUpdateTime} = require('root/values/time.json');
+  const {environments} = require('root/values/preferences.json')
+  const {WordsTable} = require('root/values/strings.json');
+  const {colors} = require('root/values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     n_environment : environments.length,
-    neumOutShadow : colors.neumOutShadow
-  });
+    neumOutShadow : colors.neumOutShadow,
 
+  });
+  const [isLoading, setIsLoading] = React.useState(true);
   const [recentStatus, setRecentStatus] = useState({
-    "humidity": 0,
-    "co2": 0,
-    "temperature": 0
+    "humidity": '0',
+    "co2": '0',
+    "temperature": '0'
   });
 
-  const convertFixedFloat = (x) => {
-      return Number.parseFloat(x).toFixed(1);
+  const resetStatus = () => {
+    setRecentStatus({
+      "humidity": '0',
+      "co2": '0',
+      "temperature": '0'
+    })
   }
 
   const fetchStatus = async () => {
-    await axios.get('/api/get/query/last', {
+    await axios.get('/api/get/environment/latter', {
       params: {
-        where: plant,
-        whereColumn: 'section',
-        selects: environments,
-        table: 'env'
+        section: plant,
       }
-    }).then(({data:status}) => {
-      if(checkEmpty(status)){ return; }
-      for (const [key, value] of Object.entries(status[0])) { status[key] = convertFixedFloat(value); }
-      setRecentStatus(status);
+    }).then(({data}) => {
+      checkEmpty(data) ? resetStatus() : setRecentStatus(data)
+      setIsLoading(false);
     }).catch((err) => {
       console.log('FETCH STATUS ERROR!');
       console.log(err);
     });
   };
 
+  const Figures = () => {
+    return (
+      <div className={classes.figureCardDiv}>
+      {
+      environments.map((env) =>
+        <Figure key={env.toString()}
+                environment={env}
+                values={recentStatus[env]}
+                plant={plant}/>)
+      }
+      </div>
+    )
+  }
+
+  const FigureTitle = () => {
+    return (
+      <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>
+        {WordsTable[`plant-${plant}`]}
+      </Typography>
+    )
+  }
+
   useEffect(() => {
     fetchStatus();
     const interval = setInterval(() => {
       fetchStatus();
-    }, statusUpdateTime);
-    return () => clearInterval(interval);
+    }, parseInt(statusUpdateTime));
+    return () => {
+      clearInterval(interval)
+      resetStatus();
+    };
   }, []);
 
 
   return (
+    isLoading ||
     <Card className={classes.parentItem}>
-      <Typography style={{color: `${colors[plant]}`, padding: "5px 0px 5px 0px"}}>{WordsTable[`plant-${plant}`]}</Typography>
-      <div className={classes.figureCardDiv}>
-        {
-          environments.map((env) =>
-            <Figure key={env.toString()}
-                    environment={env}
-                    values={recentStatus[env]}
-                    plant={plant}/>)
-        }
-      </div>
+      <FigureTitle />
+      <Figures />
     </Card>
   );
 }

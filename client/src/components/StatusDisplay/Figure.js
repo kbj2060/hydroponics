@@ -32,13 +32,14 @@ const useStyles = makeStyles({
 
 export default function Figure(props) {
   const { environment, values, plant } = props;
-  const { unitsTable, WordsTable } = require('root/values/strings');
-  const {environments} = require('root/values/preferences')
-  const {colors} = require('root/values/colors')
+  const { unitsTable, WordsTable } = require('root/values/strings.json');
+  const {environments} = require('root/values/preferences.json')
+  const {colors} = require('root/values/colors.json')
   const n_environment = environments.length;
   const roundFigureRef = useRef();
+
   const [width, setWidth] = React.useState(window.innerWidth);
-  const [dimensions, setDimensions] = useState({width: 0, height: 0});
+  const [dimensions, setDimensions] = useState({width: 0});
 
   const classes = useStyles({
     dimensions: dimensions,
@@ -49,28 +50,42 @@ export default function Figure(props) {
     fontColor : colors.fontColor
   });
 
+  const cleanup = () => {
+    setWidth(0);
+  }
+
+  const EnvironmentCircleDisplay = () => {
+    return (
+      <>
+      {
+        dimensions.width &&
+        <div>
+          <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
+        </div>
+      }
+      </>
+    )
+  }
+
   useLayoutEffect(() => {
     if (roundFigureRef.current) {
       setDimensions({
         width: roundFigureRef.current.offsetWidth,
-        height: roundFigureRef.current.offsetHeight
       });
     }
     window.addEventListener('resize', () => {
       setWidth(window.innerWidth)
     });
     return () => {
-      setDimensions({width: 0, height: 0 })
+      cleanup();
     }
   }, [width]);
 
   return (
-      <div >
+      <div>
           <Typography className={classes.title}>{WordsTable[environment]}</Typography>
           <Paper className={classes.root} ref={roundFigureRef}>
-            <div>
-              <span className={classes.environmentValues}>{values}{unitsTable[environment]}</span>
-            </div>
+            <EnvironmentCircleDisplay />
           </Paper>
       </div>
   );

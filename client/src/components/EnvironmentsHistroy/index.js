@@ -44,18 +44,30 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function Index(props) {
-  const {WordsTable} = require('root/values/strings');
-  const {colors} = require('root/values/colors');
-  const {sections} = require('root/values/preferences');
+  const {WordsTable} = require('root/values/strings.json');
+  const {colors} = require('root/values/colors.json');
+  const han_current_page = decodeURI(window.location.pathname.replace('/',''))
+  const section = WordsTable[han_current_page]
   const { environment } = props;
   const [history, setHistory] = React.useState([]);
   const [lastUpdate, setLastUpdate] = React.useState('');
+  const [primaryKey, setPrimaryKey] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(true)
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,
     fontColor : colors.fontColor
   });
+
+  const getPrimaryLabel = (data) => {
+    if(checkEmpty(data)){ return null }
+      let data_len = {}
+      Object.keys(data).forEach((h) => {
+        data_len[h] = Object.values(data[h]).length
+      })
+      return Object.keys(data_len).reduce((a, b) => data_len[a] < data_len[b] ? a : b);
+  }
+
   // json 형태로 반환 받아 사용
   //  {
   //    '1': {
@@ -69,16 +81,18 @@ export default function Index(props) {
   const fetchHistory = useCallback(async () => {
     const getLastUpdatedTime = (data) => {
       if(checkEmpty(data)){ return null }
-      return Object.keys(data[sections[0]])[0];
+      const primary_key = getPrimaryLabel(data)
+      return Object.keys(data[primary_key])[0];
     }
 
     await axios.get('/api/get/environment/history', {
       params: {
         selects: [environment],
-        section: "s1"
+        section: section
       }
     }).then(({data})=> {
       setHistory(data);
+      setPrimaryKey(getPrimaryLabel(data));
       setLastUpdate(getLastUpdatedTime(data));
       setIsLoading(false);
     }).catch((err) => {
@@ -87,25 +101,34 @@ export default function Index(props) {
     })
   }, [environment])
 
+
+  const cleanup = () => {
+    setIsLoading(true);
+    setHistory([]);
+    setLastUpdate('');
+  }
+
   useEffect(() => {
-    const {historyUpdateTime} = require('root/values/time');
+    const {historyUpdateTime} = require('root/values/time.json');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();
-    }, historyUpdateTime);
+    }, parseInt(historyUpdateTime));
     return () => {
       clearInterval(interval)
+      cleanup();
     };
   }, [fetchHistory]);
 
   return (
-    !isLoading ? <div className={classes.foreground}>
+    isLoading ||
+    <div className={classes.foreground}>
       <Typography className={classes.title}> {WordsTable[environment]} </Typography>
-      <CustomLine environment={environment} history={history} width={5} height={2} />
+      <CustomLine primary_key={primaryKey} environment={environment} history={history} width={5} height={2} />
         <div className={classes.updateInfo}>
           <TimerIcon />
           <Typography variant="inherit" className={classes.updateTime}> 마지막 업데이트 : {lastUpdate} </Typography>
         </div>
-      </div>: <></>
+      </div>
     )
   }

@@ -3,7 +3,7 @@ import Switch from "@material-ui/core/Switch";
 import React from "react";
 
 
-const {colors} = require('root/values/colors');
+const {colors} = require('root/values/colors.json');
 export const CustomIOSSwitch = withStyles((theme) => ({
   root: {
     width: 48,
@@ -19,7 +19,7 @@ export const CustomIOSSwitch = withStyles((theme) => ({
     padding: 1,
     display:'flex',
     alignItems:'center',
-    transition: 'transform 0.4s cubic-bezier(0.85, 0.05, 0.18, 1.35)',
+    transition: 'transform 0.6s cubic-bezier(0.85, 0.05, 0.18, 1.35)',
     '&$checked': {
       overflow: 'hidden',
       transform: 'translateX(22px)',
