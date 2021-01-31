@@ -16,13 +16,6 @@
   "machines": {
     "s1" : ["cooler", "heater", "led", "fan", "waterpump"]
   },
-  "n_machines": {
-    "heater": 2,
-    "cooler": 2,
-    "led": 4,
-    "waterpump": 1,
-    "fan" : 4
-  },
   "environments": [
     "co2", "humidity", "temperature"
   ],

@@ -256,7 +256,7 @@ app.post('/api/post/switch/machine', (req, res) => {
     let name = req.body.params['name'];
     let section = req.body.params['section'];
     let sql = `INSERT INTO iot.switch VALUES (null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0)`;
-    //new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 ${WordsTable[machine]}을 ${status?"켰":"껐"}습니다.`);
+    new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 ${WordsTable[machine]}을 ${status?"켰":"껐"}습니다.`);
 
     connection.query(sql, (err, rows) => {
         res.send(rows);
@@ -286,7 +286,7 @@ app.post('/api/post/switch/reset', (req, res) => {
       : `(null,\"${section}\",\"${machine}\", \"${status}\", \"${name}\", now(), 0)`
     })
     let sql = `INSERT INTO iot.switch VALUES ` + values.join(',');
-    //new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 모든 전원을 차단했습니다.`);
+    new TelegramWrapper().post_text(`${name}(이)가 ${WordsTable[section]}의 모든 전원을 차단했습니다.`);
 
     connection.query(sql, (err, rows) => {
         res.send(rows);
