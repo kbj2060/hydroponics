@@ -5,12 +5,8 @@
 텔레그램 알림을 통해 모바일에서도 알림을 받을 수 있습니다.
 
 
+## Environments
 
-## About
-
-### Tech
-
---------------------------------
 
 - FrontEnd : React, Redux
 - BackEnd : Nodejs
@@ -19,9 +15,7 @@
 - Automation : Python
 - Telegram
 
-### Usage
-
---------------------------------------------------------------------------
+## Configure
 
 **STEP 1. 프론트엔드 패키지와 백엔드 패키지를 npm을 통해 설치합니다.**
 
@@ -100,9 +94,7 @@ $ cd values && touch db_conf.json
 }
 ```
 
-### Func
-
----------------------------
+## Usage
 
 ![image](./image/intro.png)
 
