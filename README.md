@@ -96,7 +96,9 @@ $ cd values && touch db_conf.json
 
 ## Usage
 
-![image](./image/intro.png)
+<p align="center">
+  <img src="./image/intro.png" width="700" />
+</p>
 
 위 대시보드에는 아래의 기능들이 존재합니다.
 
@@ -106,9 +108,9 @@ $ cd values && touch db_conf.json
 * CCTV
 * 텔레그램 알림
 
-
-
-![schedule](./image/schedule.png)
+<p align="center">
+  <img src="./image/schedule.png" width="700" />
+</p>
 
 위의 일정에는 아래의 기능들이 존재합니다.
 
