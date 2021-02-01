@@ -111,13 +111,11 @@ $ cd values && vi telegram_conf.json
 </p>
 <br/>
 
-위 대시보드에는 아래의 기능들이 존재합니다.
-
-* 전원 자동화
-* 전원 원격 조종
-* 전원 기록 및 환경 기록
+* Power Automation
+* Remote Control
+* Environments and Power Logging
 * CCTV
-* 텔레그램 알림
+* Telegram Alarm
 
 <br/>
 
@@ -126,18 +124,19 @@ $ cd values && vi telegram_conf.json
 </p>
 <br/>
 
-위의 일정에는 아래의 기능들이 존재합니다.
-
-* 일정 추가 / 삭제 / 조회 / 수정
+* Add Schedule 
+* Change Schedule
+* Find Schedule
+* Remove Schedule
 
 
 
 ## TO DO LIST
 
-🙋 타입스크립트로 전환
+🙋 Change to Typescript
 
-🙋 Next.js 프레임워크로 전환
+🙋 Next.js
 
-🙋 RxJs 로 비동기 전환
+🙋 RxJs
 
-🙋 쉬운 기기 추가
+🙋 Easy adding machine 
