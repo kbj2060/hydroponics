@@ -1,5 +1,5 @@
 import update from 'react-addons-update';
-import {loadState} from "root/client/src/components/LocalStorage";
+import {loadState, saveState} from "root/client/src/components/LocalStorage";
 import {checkEmpty} from "../../components/utils/CheckEmpty";
 
 export const AUTH_INIT = "AUTH_INIT";
@@ -55,6 +55,7 @@ function Authentication(state, action) {
           currentUser: { $set: action.username }
         }
       });
+
     case AUTH_LOGIN_FAILURE:
       console.log('login failed');
       return update(state, {
@@ -62,10 +63,12 @@ function Authentication(state, action) {
           status: { $set: 'FAILURE' }
         }
       });
-    case LOGOUT:
-      return initialState;
-    default:
 
+    case LOGOUT:
+      saveState("authentication", initialState)
+      return initialState;
+
+    default:
       try {
         return checkEmpty(loadState('authentication'))?
           state : loadState('authentication');
