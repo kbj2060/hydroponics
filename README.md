@@ -2,6 +2,9 @@
 
 This is a smartfarm remote system for effective farming. This system make you communicate with device wherever you are. Plus, if you set the conditions, the system controls the power of device automatically  and environments could be regulated. You can take the mobile messages through Telegram whenever the device power changes.
 
+## Demo
+
+This is [Demo](http://bit.ly/3cwArUg). Temporary ID and password are "temp" and "temp". For short explanation, Infinite Icon on switch controller component is for **setting automations**. Plus, The environments history which is on the bottom of the page could show you the data for **today**.
 
 ## Environments
 
@@ -12,6 +15,7 @@ This is a smartfarm remote system for effective farming. This system make you co
 - Network : MQTT
 - Automation : Python
 - Telegram
+- pm2
 
 ## Configure
 
