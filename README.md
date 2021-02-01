@@ -107,8 +107,9 @@ $ cd values && vi telegram_conf.json
 ## Usage
 
 <p align="center">
-  <img src="./image/intro.png" width="700" />
+  <img src="./image/intro.png" width="90%" />
 </p>
+
 <br/>
 
 * Power Automation
@@ -120,8 +121,9 @@ $ cd values && vi telegram_conf.json
 <br/>
 
 <p align="center">
-  <img src="./image/schedule.png" width="700" />
+  <img src="./image/schedule.png" width="90%" />
 </p>
+
 <br/>
 
 * Add Schedule 
