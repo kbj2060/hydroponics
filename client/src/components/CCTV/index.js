@@ -6,6 +6,6 @@ export default function CCTV () {
 			background: '#161717',
 			boxShadow:  'inset 6px 6px 12px #0b0b0b,inset -6px -6px 12px #212323',}}
 				 src="CCTV IP ADDRESS"
+				 src={process.env.PUBLIC_URL + '/sample.png'}
 		     width='100%' height='100%' muted autoPlay={true} />
-	)
-}
+}	)	)}
