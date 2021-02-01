@@ -102,8 +102,6 @@ $ cd values && vi telegram_conf.json
 }
 ```
 
-
-
 ## Usage
 
 <p align="center">
@@ -132,7 +130,6 @@ $ cd values && vi telegram_conf.json
 * Remove Schedule
 
 
-
 ## TO DO LIST
 
 🙋 Change to Typescript
@@ -141,4 +138,4 @@ $ cd values && vi telegram_conf.json
 
 🙋 RxJs
 
-🙋 Easy adding machine 
+🙋 Easy adding machine
