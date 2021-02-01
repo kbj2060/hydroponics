@@ -102,13 +102,12 @@ $ cd values && vi telegram_conf.json
 }
 ```
 
-
-
 ## Usage
 
 <p align="center">
   <img src="./image/intro.png" width="700" />
 </p>
+
 <br/>
 
 * Power Automation
@@ -130,7 +129,6 @@ $ cd values && vi telegram_conf.json
 * Remove Schedule
 
 
-
 ## TO DO LIST
 
 🙋 Change to Typescript
@@ -139,4 +137,4 @@ $ cd values && vi telegram_conf.json
 
 🙋 RxJs
 
-🙋 Easy adding machine 
+🙋 Easy adding machine
