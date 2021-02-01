@@ -1,8 +1,6 @@
 # PlantPoint Web
 
-스마트팜 원격 시스템으로서 농부의 윤택한 생활 을 위해 만들었습니다.
-원하는 기기를 서버와 통신하게 하여 원격으로 수동 조종이 가능하고 자동화를 통해 자동 조종이 가능합니다.
-텔레그램 알림을 통해 모바일에서도 알림을 받을 수 있습니다.
+This is a smartfarm remote system for effective farming. This system make you communicate with device wherever you are. Plus, if you set the conditions, the system controls the power of device automatically  and environments could be regulated. You can take the mobile messages through Telegram whenever the device power changes.
 
 
 ## Environments
@@ -17,14 +15,14 @@
 
 ## Configure
 
-**STEP 1. 프론트엔드 패키지와 백엔드 패키지를 npm을 통해 설치합니다.**
+**STEP 1. Install the client side and server side packages**
 
 ```bash
 $ npm i
 $ cd client && npm i
 ```
 
-**STEP 2. 설정 파일들을 수정합니다.**
+**STEP 2. Revise setting file**
 
 ```json
 {
@@ -68,20 +66,20 @@ $ cd client && npm i
 
 ```
 
-* IP : 웹의 외부 접속 주소
-* SOCKET_HOST : 소켓 통신 주소
-* SOKET_PORT : 소켓 통신 포트
-* MQTT_BROKER : MQTT Broker 주소
-* CLIENT_ID : 자동화 로그 주체
-* TOPICS : mqtt 통신의 토픽 주제
-* pages : 여러 웹페이지 이름
-* machines : 섹션 별 기계
-* environments : 환경 변수
-* sections : 여러 섹션 구분
-* autoItems : 섹션별 자동화 기계
-* settingType : 섹션별 자동화 구분 (cycle : 시간 사이클, range : 환경 범위에 따른 자동화)
+* IP : external web ip address
+* SOCKET_HOST : socket communication ip address
+* SOKET_PORT : socket communication port
+* MQTT_BROKER : MQTT Broker ip address
+* CLIENT_ID : Automation logging id
+* TOPICS :mqtt topic names
+* pages : pages name
+* machines : machines with section
+* environments : sensor data with environments
+* sections : section names
+* autoItems : automation devices
+* settingType : automation type division (cycle : time cycle, range : environments range)
 
-**STEP 3. 데이터베이스 설정 파일 추가**
+**STEP 3. Should add DB configure file**
 
 ``` bash
 $ cd values && touch db_conf.json
@@ -94,11 +92,24 @@ $ cd values && touch db_conf.json
 }
 ```
 
+**STEP 4. If you want telegram alarm, should change telegram setting file.**
+
+```bash
+$ cd values && vi telegram_conf.json
+{
+  "token" : "TOKEN FROM TELEGRAM BOT",
+  "chat_id" : ID FROM TELEGRAM BOT CHATTING
+}
+```
+
+
+
 ## Usage
 
 <p align="center">
   <img src="./image/intro.png" width="700" />
 </p>
+<br/>
 
 위 대시보드에는 아래의 기능들이 존재합니다.
 
@@ -108,9 +119,12 @@ $ cd values && touch db_conf.json
 * CCTV
 * 텔레그램 알림
 
+<br/>
+
 <p align="center">
   <img src="./image/schedule.png" width="700" />
 </p>
+<br/>
 
 위의 일정에는 아래의 기능들이 존재합니다.
 
