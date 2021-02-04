@@ -93,7 +93,6 @@ export default function Scheduler() {
   }, [selectedDay])
 
   return (
-    CheckLogin()?
       <div className={classes.root}>
         <AppBar page={'일정'} />
         <CssBaseline />
@@ -116,6 +115,6 @@ export default function Scheduler() {
             }
           </Grid>
         </Grid>
-      </div> :  <Redirect to={'/'} />
+      </div>
       );
     }

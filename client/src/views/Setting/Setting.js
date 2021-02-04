@@ -58,7 +58,6 @@ export default function Setting() {
   });
 
   return (
-    CheckLogin() ?
       <div className={classes.root}>
         <AppBar page={'설정'} />
         <CssBaseline />
@@ -82,6 +81,6 @@ export default function Setting() {
             </div>
           </Grid>
         </Grid>
-      </div> :  <Redirect to={'/'} />
+      </div>
       );
     }

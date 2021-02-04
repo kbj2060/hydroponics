@@ -160,8 +160,7 @@ function Switches(props) {
   }
 
   return (
-    CheckLogin()
-      ? <>
+      <>
           <SwitchForm>
             <FormGroup>
               <FormControlLabel
@@ -177,7 +176,7 @@ function Switches(props) {
           <PowerDisplay />
           <Alarm />
         </>
-      : <Redirect to={'/'} />);
+    )
 }
 
 export default memo(Switches);
