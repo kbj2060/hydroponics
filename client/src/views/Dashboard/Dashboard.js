@@ -128,7 +128,6 @@ export default function Dashboard({page}) {
   }
 
   return (
-    CheckLogin() ?
       <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
         <div className={classes.root}>
           <AppBar page={page}/>
@@ -156,6 +155,5 @@ export default function Dashboard({page}) {
           </Grid>
         </div>
       </ErrorBoundary>
-        : <Redirect to='/' />
   )
 }

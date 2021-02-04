@@ -13,5 +13,13 @@ const connection = mysql.createConnection({
 		multipleStatements: true
 	});
 
-module.exports = {connection}
+const pool = mysql.createPool({
+  host: conf.host, 
+  user: conf.user,
+  password : conf.password,
+  database: conf.database,
+  port: conf.port
+});
+
+module.exports = {connection, pool}
 

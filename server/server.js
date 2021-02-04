@@ -10,7 +10,7 @@ const STRING_PATH = "../values/strings";
 const {MQTT_BROKER, settingType, machines} = require(SETTING_PATH)
 const {useInfoLogger, useErrorLogger} = require(LOGGER_PATH);
 const {WordsTable} = require(STRING_PATH)
-const {connection} = require('./dbHandler');
+const {connection, pool} = require('./dbHandler');
 const {TelegramWrapper} = require('./telegramWrapper');
 
 const http = require("http")
@@ -21,14 +21,14 @@ const bodyParser = require('body-parser')
 const app = express();
 const path = require("path");
 
-console.log(`\n-------------------------${moment.utc().local().format('YYYY/MM/DD HH:mm:ss')}-------------------------`)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 connection.connect()
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+/* 연결 끊김 방지 */
+pool.query('select 1 + 1', (err, rows) => { /* */ });
 
 /*
  * 기본 쿼리 구조 시작
