@@ -4,7 +4,7 @@ This is a smartfarm remote system for effective farming. This system make you co
 
 ## Demo
 
-This is [Demo](http://bit.ly/3cwArUg). Temporary ID and password are "temp" and "temp". For short explanation, Infinite Icon on switch controller component is for **setting automations**. Plus, The environments history which is on the bottom of the page could show you the data for **today**.
+This is [Demo](http://bit.ly/3cwArUg). Temporary ID and password are "temp" and "temp". For short explanation, Infinite Icon on switch controller component is for **setting automations**. Plus, The environments history which is on the bottom of the page could show you the data for **today**. CCTV component is a photo in this demo. Please, revise src in this image tag from the CCTV/index.js file.
 
 ## Environments
 
@@ -90,7 +90,7 @@ $ cd values && touch db_conf.json
 {
   "host" : "localhost",
   "user" : "root",
-  "password" : "1234",
+  "password" : "PASSWORD_FOR_DB",
   "port" : "3306",
   "database" : "iot"
 }
@@ -101,8 +101,8 @@ $ cd values && touch db_conf.json
 ```bash
 $ cd values && vi telegram_conf.json
 {
-  "token" : "TOKEN FROM TELEGRAM BOT",
-  "chat_id" : ID FROM TELEGRAM BOT CHATTING
+  "token" : "TOKEN_FROM_TELEGRAM_BOT",
+  "chat_id" : ID_FROM_TELEGRAM_BOT_CHATTING
 }
 ```
 
