@@ -4,7 +4,7 @@ This is a smartfarm remote system for effective farming. This system make you co
 
 ## Demo
 
-This is [Demo](http://bit.ly/3cwArUg). Temporary ID and password are "temp" and "temp". For short explanation, Infinite Icon on switch controller component is for **setting automations**. Plus, The environments history which is on the bottom of the page could show you the data for **today**. CCTV component is a photo in this demo. Please, revise src in this image tag from the CCTV/index.js file.
+This is [Demo](http://kbj2060.asuscomm.com:11000/%EB%AC%B4%EB%93%A4%EB%A1%9C29). Temporary ID and password are "temp" and "temp". For short explanation, Infinite Icon on switch controller component is for **setting automations**. Plus, The environments history which is on the bottom of the page could show you the data for **today**. CCTV component is a photo in this demo. Please, revise src in this image tag from the CCTV/index.js file.
 
 ## Environments
 
