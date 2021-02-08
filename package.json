@@ -9,7 +9,6 @@
     "client": "cd client &&  npm start",
     "server": "nodemon server/server.js",
     "dev": "concurrently --kill-others-on-fail \"nodemon server/server.js\" \"yarn client\"",
-    "build": "cd clinet && npm build"
   },
   "dependencies": {
     "@nestjs/core": "^7.6.5",
