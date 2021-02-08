@@ -5,11 +5,11 @@ const data = fs.readFileSync(DB_CONF_PATH)
 const conf = JSON.parse(data)
 const mysql = require('mysql');
 const connection = mysql.createConnection({
-		host: conf.host,
-		user: conf.user,
-		password: conf.password,
-		port: conf.port,
-		database: conf.database,
+		host: process.env.host,
+		user: process.env.user,
+		password: process.env.password,
+		port: process.env.port,
+		database: process.env.database,
 		multipleStatements: true
 	});
 
