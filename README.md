@@ -1,7 +1,7 @@
 # Notice
-This project will be divided into frontend with Typescript and Refactoring and backend with Typescript and Nestjs.
+This project will be divided into [frontend](https://github.com/kbj2060/plantpoint-frontend) with Typescript and  [backend](https://github.com/kbj2060/plantpoint-backend) with Typescript and Nestjs.
 
-# PlantPoint Web
+# PlantPoint Web [Deprecated]
 
 This is a smartfarm remote system for effective farming. This system make you communicate with device wherever you are. Plus, if you set the conditions, the system controls the power of device automatically  and environments could be regulated. You can take the mobile messages through Telegram whenever the device power changes.
 
