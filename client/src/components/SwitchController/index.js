@@ -45,11 +45,11 @@ const useStyles = makeStyles({
 })
 
 export default function SwitchController() {
-  const {WordsTable} = require('root/values/strings.json')
+  const {WordsTable} = require('../../values/strings.json')
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page];
-  const {machines} = require('root/values/preferences.json');
-  const {colors} = require('root/values/colors.json');
+  const {machines} = require('../../values/preferences.json');
+  const {colors} = require('../../values/colors.json');
   const classes = useStyles({
       customTheme : colors.customTheme,
       n_machines : machines[current_page].length,

@@ -10,7 +10,7 @@ import {CustomIOSSlider} from "../utils/CustomIOSSlider";
 import update from 'react-addons-update';
 import Chip from "@material-ui/core/Chip";
 
-const {colors} = require('root/values/colors.json')
+const {colors} = require('../../values/colors.json')
 const StyledValueLabel = withStyles({
   label: {
     color : colors.fontColor,
@@ -52,8 +52,8 @@ export default function RangeSlider(props) {
     borderColor : colors.fontColor,
     fontColor : colors.fontColor
   });
-  const { unitsTable } = require('root/values/strings.json');
-  const { auto:defaultSetting } = require('root/values/defaults.json')
+  const { unitsTable } = require('../../values/strings.json');
+  const { auto:defaultSetting } = require('../../values/defaults.json')
   const [setting, setSetting] = React.useState(defaultSetting[settingKey]['range']);
   const [isLoading, setIsLoading] = React.useState(true);
   const reduxSetting = store.getState()['auto'][settingKey]

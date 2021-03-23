@@ -22,10 +22,10 @@ const useStyles = makeStyles({
 });
 
 export default function StatusDisplay({plant}) {
-  const {statusUpdateTime} = require('root/values/time.json');
-  const {environments} = require('root/values/preferences.json')
-  const {WordsTable} = require('root/values/strings.json');
-  const {colors} = require('root/values/colors.json')
+  const {statusUpdateTime} = require('../../values/time.json');
+  const {environments} = require('../../values/preferences.json')
+  const {WordsTable} = require('../../values/strings.json');
+  const {colors} = require('../../values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     n_environment : environments.length,

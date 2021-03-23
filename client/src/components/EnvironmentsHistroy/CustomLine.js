@@ -3,7 +3,7 @@ import React from "react";
 import {checkEmpty} from "../utils/CheckEmpty";
 import 'chartjs-plugin-annotation';
 
-const {colors} = require('root/values/colors.json');
+const {colors} = require('../../values/colors.json');
 let getOptions = {
   legend: {
     display: true
@@ -70,9 +70,9 @@ let getOptions = {
 export default function CustomLine(props) {
     const { history, width, height, primary_key } = props;
     const options = getOptions;
-    const {WordsTable} = require('root/values/strings.json');
-    const {sections} = require('root/values/preferences.json');
-    const {colors} = require('root/values/colors.json');
+    const {WordsTable} = require('../../values/strings.json');
+    const {sections} = require('../../values/preferences.json');
+    const {colors} = require('../../values/colors.json');
     const n_sections = sections.length;
     let state = {
         labels: '',

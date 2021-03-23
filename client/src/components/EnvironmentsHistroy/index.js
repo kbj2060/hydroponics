@@ -44,8 +44,8 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function Index(props) {
-  const {WordsTable} = require('root/values/strings.json');
-  const {colors} = require('root/values/colors.json');
+  const {WordsTable} = require('../../values/strings.json');
+  const {colors} = require('../../values/colors.json');
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const section = WordsTable[han_current_page]
   const { environment } = props;
@@ -109,7 +109,7 @@ export default function Index(props) {
   }
 
   useEffect(() => {
-    const {historyUpdateTime} = require('root/values/time.json');
+    const {historyUpdateTime} = require('../../values/time.json');
     fetchHistory();
     const interval = setInterval(() => {
       fetchHistory();

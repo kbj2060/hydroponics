@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from 'root/client/src/components/AppBar';
-import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
+import AppBar from '../../components/AppBar';
+import {CheckLogin} from "../../components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Calendar} from "root/client/src/components/CustomScheduler/Calendar";
-import "root/client/src/components/CustomScheduler/DatePicker.css";
-import {CustomLocale} from "root/client/src/components/CustomScheduler/CustomLocale";
-import ScheduleTable from "root/client/src/components/CustomScheduler/ScheduleTable";
+import {Calendar} from "../../components/CustomScheduler/Calendar";
+import "../../components/CustomScheduler/DatePicker.css";
+import {CustomLocale} from "../../components/CustomScheduler/CustomLocale";
+import ScheduleTable from "../../components/CustomScheduler/ScheduleTable";
 import ScheduleAdd from "../../components/CustomScheduler/SchdeuleAdd";
 import {ButtonGroup} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 export default function Scheduler() {
-  const {colors} = require('root/values/colors.json')
+  const {colors} = require('../../values/colors.json')
   const [selectedDay, setSelectedDay] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
   const month = useSelector(state =>

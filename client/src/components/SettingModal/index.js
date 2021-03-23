@@ -68,7 +68,7 @@ const customBackdrop = withStyles(() => ({
 
 export default function SettingModal() {
   	const [open, setOpen] = React.useState(false);
-  	const {colors} = require('root/values/colors.json');
+  	const {colors} = require('../../values/colors.json');
     const classes = useStyles({
 			customTheme : colors.customTheme,
 			neumOutShadow: colors.neumOutShadow,

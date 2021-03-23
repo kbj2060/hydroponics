@@ -57,8 +57,8 @@ const getRangeMax = (subject) => {
 
 
 export default function SettingExplanation({position}) {
-  const {colors} = require('root/values/colors.json')
-  const {WordsTable} = require('root/values/strings.json')
+  const {colors} = require('../../values/colors.json')
+  const {WordsTable} = require('../../values/strings.json')
   const han_current_page = decodeURI(window.location.pathname.replace('/',''))
   const current_page = WordsTable[han_current_page]
   const [setting, setSetting] = React.useState({});
@@ -68,8 +68,8 @@ export default function SettingExplanation({position}) {
     fontColor : colors.fontColor,
     defaultIcon : colors.defaultIcon
   });
-  const {auto:defaultSetting} = require('root/values/defaults.json');
-  const {autoItem} = require('root/values/preferences.json')
+  const {auto:defaultSetting} = require('../../values/defaults.json');
+  const {autoItem} = require('../../values/preferences.json')
 
   // HEAD(이전 설정) 데이터 불러오기 함수
   const getAuto = async () => {

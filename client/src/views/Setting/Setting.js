@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from 'root/client/src/components/AppBar';
-import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
+import AppBar from '../../components/AppBar';
+import {CheckLogin} from "../../components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {IconButton, Typography} from "@material-ui/core";
@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 export default function Setting() {
-  const {colors} = require('root/values/colors.json')
+  const {colors} = require('../../values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,

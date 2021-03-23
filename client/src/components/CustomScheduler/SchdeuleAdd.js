@@ -76,7 +76,7 @@ const useStyles = makeStyles( {
 
 
 export default function ScheduleAdd({selectedDay, handleAddFinish}) {
-  const {colors} = require('root/values/colors.json')
+  const {colors} = require('../../values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme,
     neumOutShadow : colors.neumOutShadow,

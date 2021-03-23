@@ -1,4 +1,4 @@
-import {loadState} from "root/client/src/components/LocalStorage";
+import {loadState} from "../../components/LocalStorage";
 import {checkEmpty} from "../../components/utils/CheckEmpty";
 
 const CONTROL_SWITCH = "CONTROL_SWITCH";
@@ -12,7 +12,7 @@ export function saveSwitch(_switch) {
   return { type: SAVE_SWITCH, _switch }
 }
 
-const {switches} = require('root/values/defaults.json')
+const {switches} = require('../../values/defaults.json')
 const initialState = loadState('switches') || switches
 
 function ControlSwitch(state =initialState, action) {

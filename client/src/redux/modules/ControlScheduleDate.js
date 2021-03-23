@@ -1,4 +1,4 @@
-import {loadState} from "root/client/src/components/LocalStorage";
+import {loadState} from "../../components/LocalStorage";
 import {checkEmpty} from "../../components/utils/CheckEmpty";
 
 const SAVE_DATE = "SAVE_DATE";

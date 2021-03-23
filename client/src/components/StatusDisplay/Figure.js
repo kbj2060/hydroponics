@@ -32,9 +32,9 @@ const useStyles = makeStyles({
 
 export default function Figure(props) {
   const { environment, values, plant } = props;
-  const { unitsTable, WordsTable } = require('root/values/strings.json');
-  const {environments} = require('root/values/preferences.json')
-  const {colors} = require('root/values/colors.json')
+  const { unitsTable, WordsTable } = require('../../values/strings.json');
+  const {environments} = require('../../values/preferences.json')
+  const {colors} = require('../../values/colors.json')
   const n_environment = environments.length;
   const roundFigureRef = useRef();
 

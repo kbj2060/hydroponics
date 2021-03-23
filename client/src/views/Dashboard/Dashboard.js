@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import CCTV from "root/client/src/components/CCTV";
-import AppBar from 'root/client/src/components/AppBar';
-import SwitchController from 'root/client/src/components/SwitchController';
-import StatusDisplay from "root/client/src/components/StatusDisplay";
+import CCTV from "../../components/CCTV";
+import AppBar from '../../components/AppBar';
+import SwitchController from '../../components/SwitchController';
+import StatusDisplay from "../../components/StatusDisplay";
 import useStyles from '../../assets/jss/DashboardStyle';
-import MachinesHistoryCard from "root/client/src/components/MachinesHistory";
-import EnvironmentsHistroy from "root/client/src/components/EnvironmentsHistroy";
-import {CheckLogin} from "root/client/src/components/utils/CheckLogin";
+import MachinesHistoryCard from "../../components/MachinesHistory";
+import EnvironmentsHistroy from "../../components/EnvironmentsHistroy";
+import {CheckLogin} from "../../components/utils/CheckLogin";
 import {Redirect} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import getCurrentPage from "../../components/utils/getCurrentPage";
@@ -32,9 +32,9 @@ const timezone = () => {
 
 export default function Dashboard({page}) {
   const classes = useStyles();
-  const {environments, sections, machines} = require('root/values/preferences.json')
-  const {auto:defaultSetting, switches:defaultMachineStatus} = require('root/values/defaults.json');
-  const {autoItem} = require('root/values/preferences.json');
+  const {environments, sections, machines} = require('../../values/preferences.json')
+  const {auto:defaultSetting, switches:defaultMachineStatus} = require('../../values/defaults.json');
+  const {autoItem} = require('../../values/preferences.json');
   const dispatch = useDispatch();
   const [isLoadingSwitch, setIsLoadingSwitch] = React.useState(true);
   const [isLoadingAuto, setIsLoadingAuto] = React.useState(true);

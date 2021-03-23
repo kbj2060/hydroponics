@@ -3,7 +3,7 @@ import axios from "axios";
 import {loginFailure, loginSuccess} from "../../redux/modules/Authentication";
 import {useDispatch} from "react-redux";
 import {store} from "../../redux/store";
-import {checkEmpty} from "root/client/src/components/utils/CheckEmpty";
+import {checkEmpty} from "../../components/utils/CheckEmpty";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,7 +16,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {makeStyles} from "@material-ui/core/styles";
 import {saveState} from "../../components/LocalStorage";
 
-const {colors} = require('root/values/colors.json')
+const {colors} = require('../../values/colors.json')
 const useStyles = makeStyles(()=>({
   root : {
     width: 'auto',
@@ -163,7 +163,7 @@ export default function Login() {
     }
 
     useEffect(() => {
-      const {pages} = require('root/values/preferences.json')
+      const {pages} = require('../../values/preferences.json')
 
       console.log(store.getState()['authentication']);
       if (auth.login.status === 'INIT'){ return; }

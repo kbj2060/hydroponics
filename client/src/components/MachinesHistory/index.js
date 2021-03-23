@@ -37,7 +37,7 @@ const useStyles1 = makeStyles({
 });
 
 function TablePaginationActions(props) {
-	const {colors} = require('root/values/colors.json');
+	const {colors} = require('../../values/colors.json');
 	const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
@@ -126,15 +126,15 @@ const useStyles2 = makeStyles({
 });
 
 export default function MachineHistory() {
-	const {colors} = require('root/values/colors.json');
-	const {machines} = require('root/values/preferences.json')
+	const {colors} = require('../../values/colors.json');
+	const {machines} = require('../../values/preferences.json')
 	const current_section = getCurrentPage();
 	const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [isMount, setIsMount] = React.useState(true);
   const [ rows, setRows ] = React.useState([]);
 	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-	const {WordsTable} = require('root/values/strings.json');
+	const {WordsTable} = require('../../values/strings.json');
 	const classes = useStyles2({
 		customTheme : colors.customTheme,
 		colorOn : colors['buttonOn'],
@@ -177,7 +177,7 @@ export default function MachineHistory() {
 	}
 
 	const getSwitchHistory = async  () => {
-  	const {showHistoryNumber} = require('root/values/defaults.json');
+  	const {showHistoryNumber} = require('../../values/defaults.json');
   	await axios.get('/api/get/switch/history', {
 			params: {
 				selects: ['machine', 'status', 'created', 'controlledBy'],

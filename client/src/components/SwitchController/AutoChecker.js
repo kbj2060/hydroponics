@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 })
 
 export default function AutoChecker({machine}) {
-	const {colors} = require('root/values/colors.json')
+	const {colors} = require('../../values/colors.json')
 	const classes = useStyles({
 		fontColor : colors.fontColor
 	});

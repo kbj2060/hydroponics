@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Timer(props) {
-  const {colors} = require('root/values/colors.json')
+  const {colors} = require('../../values/colors.json')
   const classes = useStyles({
     timerIcon : colors.timerIcon
   });

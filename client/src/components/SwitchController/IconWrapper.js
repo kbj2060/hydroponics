@@ -7,7 +7,7 @@ import OpacityIcon from "@material-ui/icons/Opacity";
 import './FanOut.css'
 import {shallowEqual, useSelector} from "react-redux";
 
-const {colors} = require('root/values/colors.json');
+const {colors} = require('../../values/colors.json');
 
 const IconStyleHelper = onColor => {
   let neum = {  }

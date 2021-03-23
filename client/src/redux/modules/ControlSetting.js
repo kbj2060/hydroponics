@@ -1,10 +1,10 @@
-import {loadState} from "root/client/src/components/LocalStorage";
+import {loadState} from "../../components/LocalStorage";
 
 const CONTROL_SETTING = "CONTROL_SETTING";
 const RESET_SETTING = "RESET_SETTING";
 const SAVE_SETTING = "SAVE_SETTING";
 
-const {auto} = require('root/values/defaults.json')
+const {auto} = require('../../values/defaults.json')
 
 export const  controlSetting = setting => {
   return { type: CONTROL_SETTING, setting}

@@ -29,7 +29,7 @@ const useStyles = makeStyles(() =>({
 }));
 
 export default function App() {
-  const {colors} = require('root/values/colors.json')
+  const {colors} = require('./values/colors.json')
   const classes = useStyles({
     customTheme : colors.customTheme
   })
